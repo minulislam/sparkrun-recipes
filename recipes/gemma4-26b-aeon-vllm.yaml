@@ -1,0 +1,103 @@
+# >>> VERIFIED LAUNCH (host + cluster facts re-verified live 2026-07-08 on head gb10-spark):
+# >>>   sparkrun run ./gemma4-26b-aeon-vllm.yaml --cluster default --tp 1
+# >>> Cluster is 'default' (head 10.10.20.10 gb10-spark + worker 10.10.20.11 gx10-spark); 'dgxlab' does NOT exist.
+# >>> Global ssh.user=devops is set in ~/.config/sparkrun/config.yaml. '--solo' is deprecated -> use '--tp 1'.
+# >>> Endpoint serves on the head: http://10.10.20.10:8000
+
+# =============================================================================
+# sparkrun recipe — Gemma-4-26B-A4B-it-Uncensored-NVFP4 (AEON DFlash build)
+# Recommended / maximum-performance path. SINGLE NODE on the head (10.10.20.10).
+# =============================================================================
+# WHY SINGLE NODE (not --tp 2):
+#   The model is a 26B-total / ~4B-active MoE quantized to NVFP4 — 15.3 GB on
+#   disk, ~16.25 GB loaded. That fits with huge KV headroom on ONE DGX Spark
+#   (128 GB unified). The vendor's own production recipe runs --tensor-parallel-
+#   size 1, and the DFlash speculative-decoding path is tuned for one GPU.
+#   Tensor-parallel across 2 nodes would add NCCL overhead for zero benefit and
+#   is NOT the supported configuration. So: max_nodes = 1; head serves, worker
+#   (10.10.20.11) stays free for a second model.
+#
+# Every flag, env var, container, and the drafter come straight from the model
+# card: https://huggingface.co/AEON-7/Gemma-4-26B-A4B-it-Uncensored-NVFP4
+# Recipe schema: https://sparkrun.dev/recipes/format/
+#
+# !! ONE-TIME PREREQ (DFlash drafter):
+#    sparkrun pre-syncs only the primary `model`. The DFlash drafter is a SECOND
+#    model the container needs. The control machine IS the head (gb10-spark), so
+#    put it in the local HF cache once:
+#       huggingface-cli download z-lab/gemma-4-26B-A4B-it-DFlash
+#    sparkrun mounts that HF cache into the container, so vLLM resolves the
+#    drafter by its HF id (below) from cache. If the head has internet+HF access,
+#    vLLM can also fetch it on first run.
+#
+# !! RESOLVED (verified 2026-07-08 via --dry-run on sparkrun 0.2.39): the
+#    {placeholder} engine renders the --speculative-config JSON braces intact.
+#    If a future sparkrun version regresses, fall back to the no-DFlash recipe
+#    (gemma4-26b-stock-vllm.yaml) or drop the --speculative-config line — the
+#    model still serves fine without speculative decoding.
+# =============================================================================
+
+model: AEON-7/Gemma-4-26B-A4B-it-Uncensored-NVFP4
+runtime: vllm
+container: ghcr.io/aeon-7/aeon-vllm-ultimate:latest   # digest f0cc5e9c (2026-07-08); NOTE: dated tag :2026-06-18-v0.23.0-dflashfix now points to a DIFFERENT (older) image
+
+# AEON image sets ENTRYPOINT ["/bin/bash"], which collides with sparkrun's
+# 'bash -c <serve cmd>' container command (exit 126, verified 2026-07-08).
+executor_config:
+  entrypoint: ""
+
+# Topology: this model fits one DGX Spark; force single-node.
+min_nodes: 1
+max_nodes: 1
+
+metadata:
+  description: >-
+    Gemma 4 26B-A4B MoE (top-8/128), NVFP4 compressed-tensors, uncensored.
+    AEON vLLM-Ultimate container with DFlash speculative decoding. Single DGX Spark.
+  maintainer: AEON-7 (model) — recipe adapted for sparkrun
+  model_params: 26B          # total params (MoE); ~4B active per token
+  model_dtype: nvfp4
+  kv_dtype: bfloat16         # DFlash drafter requires BF16 KV — do NOT use fp8 KV
+  model_vram: 16.25          # GB loaded (from the model card); overrides auto-detect
+
+# Env vars from the model card's reference `docker run` (NVFP4 + GB10 specifics).
+env:
+  VLLM_ALLOW_LONG_MAX_MODEL_LEN: "1"
+  TORCH_MATMUL_PRECISION: "high"
+  PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
+  VLLM_USE_FLASHINFER_MOE_FP4: "0"
+  VLLM_TEST_FORCE_FP8_MARLIN: "0"
+  VLLM_NVFP4_GEMM_BACKEND: "flashinfer-cutlass"
+  VLLM_USE_FLASHINFER_SAMPLER: "1"
+
+defaults:
+  host: 0.0.0.0
+  port: 8000
+  tensor_parallel: 1
+  gpu_memory_utilization: 0.80
+  max_model_len: 262144            # full context; lower (e.g. -o max_model_len=32768) for throughput
+  max_num_seqs: 64
+  max_num_batched_tokens: 32768
+  served_model_name: gemma4-aeon-uncensored gemma4-fast gemma4-deep
+
+# Drafter is referenced by HF id (resolved from the mounted HF cache — see prereq).
+command: |
+  vllm serve {model} \
+      --served-model-name {served_model_name} \
+      --host {host} \
+      --port {port} \
+      --tensor-parallel-size {tensor_parallel} \
+      --dtype auto \
+      --quantization compressed-tensors \
+      --attention-backend triton_attn \
+      --max-model-len {max_model_len} \
+      --max-num-seqs {max_num_seqs} \
+      --max-num-batched-tokens {max_num_batched_tokens} \
+      --gpu-memory-utilization {gpu_memory_utilization} \
+      --enable-chunked-prefill \
+      --enable-prefix-caching \
+      --trust-remote-code \
+      --enable-auto-tool-choice \
+      --tool-call-parser gemma4 \
+      --reasoning-parser gemma4 \
+      --speculative-config '{"method":"dflash","model":"z-lab/gemma-4-26B-A4B-it-DFlash","num_speculative_tokens":10,"attention_backend":"flash_attn"}'

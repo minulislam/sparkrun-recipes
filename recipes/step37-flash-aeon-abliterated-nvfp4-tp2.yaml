@@ -1,0 +1,91 @@
+# >>> VERIFIED TOPOLOGY (re-verified live 2026-07-08): cluster 'default' spans BOTH nodes —
+# >>> head gb10-spark 10.10.20.10 + worker gx10-spark 10.10.20.11, each a live GB10, SSH user devops.
+# >>>   sparkrun run  ./step37-flash-aeon-abliterated-nvfp4-tp2.yaml --cluster default --tp 2
+# >>>   sparkrun stop ./step37-flash-aeon-abliterated-nvfp4-tp2.yaml --cluster default --tp 2   # repeat --tp 2
+# >>> 'dgxlab' cluster does NOT exist. Global ssh.user=devops is set in ~/.config/sparkrun/config.yaml.
+# >>> UNVERIFIED: the 2-node TP launch itself + the StepFun container image have not been run on this hardware.
+# >>> NOTE: worker has NO Step-3.7 weights cached yet — first launch transfers/downloads ~124 GB to it.
+
+# =============================================================================
+# sparkrun recipe — Step-3.7-Flash-AEON-Ultimate-Abliterated-NVFP4   [FRONTIER]
+# *** DUAL NODE — TENSOR PARALLEL ACROSS BOTH SPARKS (TP=2) ***
+# head = 10.10.20.10, worker = 10.10.20.11
+# -----------------------------------------------------------------------------
+# Footprint: ~124 GB (experts NVFP4; attn/routers/shared/vision BF16) -> does NOT
+# fit one Spark. Requires both units. 198B-MoE VLM, ~11B active. Modality: text + vision.
+# Refusal removed via Expert-Granular Abliteration (all 288 routed experts/layer).
+# Launch (note: --tp 2 must be repeated on stop/logs):
+#   sparkrun run  ./step37-flash-aeon-abliterated-nvfp4-tp2.yaml --cluster default --tp 2 --dry-run
+#   sparkrun run  ./step37-flash-aeon-abliterated-nvfp4-tp2.yaml --cluster default --tp 2
+#   sparkrun stop ./step37-flash-aeon-abliterated-nvfp4-tp2.yaml --cluster default --tp 2
+#   curl http://10.10.20.10:8000/v1/models      # API served on the head
+# -----------------------------------------------------------------------------
+# !! VERIFY (https://huggingface.co/AEON-7/Step-3.7-Flash-AEON-Ultimate-Abliterated-NVFP4):
+#    - CONTAINER: needs StepFun's vLLM image — stock vLLM <=0.22 lacks the Step3p7
+#      architecture. The report names it "vllm-openai:stepfun37" but the exact
+#      registry/tag is UNVERIFIED. Set the precise image from the card before
+#      running (placeholder below will NOT pull as-is).
+#    - quant is ModelOpt NVFP4 -> left to vLLM auto-detect (add --quantization
+#      modelopt if needed).
+#    - max_model_len: the card's context length was not in the report — 65536 is a
+#      conservative placeholder; set the card's supported value.
+#    - prefer the stable "-NVFP4" build over "-NVFP4-staging".
+#    - Re-run the refusal-subspace probe post-quant (card guidance); FP8 KV may
+#      drift over very long <think> traces.
+# =============================================================================
+
+model: AEON-7/Step-3.7-Flash-AEON-Ultimate-Abliterated-NVFP4
+runtime: vllm
+container: vllm-openai:stepfun37          # !! FLAG: set exact StepFun registry/tag from card
+
+# Most vllm-openai-family images set a non-passthrough ENTRYPOINT that collides
+# with sparkrun's 'bash -c <serve cmd>' container command (exit 126 / mangled
+# args). Clearing it is safe for any image with bash. Keep this when the real
+# StepFun image is filled in.
+executor_config:
+  entrypoint: ""
+
+# Frontier model spans BOTH Sparks.
+min_nodes: 2
+max_nodes: 2
+
+metadata:
+  description: >-
+    Step-3.7-Flash 198B-MoE VLM (~11B active), experts NVFP4, expert-granular
+    abliteration. ~124 GB -> tensor-parallel across 2 DGX Sparks.
+  maintainer: AEON-7 (model) — recipe adapted for sparkrun
+  model_params: 198B         # ~11B active per token
+  model_dtype: nvfp4
+  kv_dtype: fp8
+  model_vram: 124            # GB across the two nodes combined
+
+env:
+  VLLM_ALLOW_LONG_MAX_MODEL_LEN: "1"
+  PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
+
+defaults:
+  host: 0.0.0.0
+  port: 8000
+  tensor_parallel: 2         # = 2 hosts on DGX Spark (1 GPU each)
+  gpu_memory_utilization: 0.88   # report: served under the 0.88 unified-memory cap
+  max_model_len: 65536       # FLAG: placeholder — set the card's supported context
+  max_num_seqs: 16
+  max_num_batched_tokens: 16384
+  served_model_name: step37-flash-aeon
+
+# ModelOpt NVFP4 left to auto-detect. FP8 KV per the report.
+command: |
+  vllm serve {model} \
+      --served-model-name {served_model_name} \
+      --host {host} \
+      --port {port} \
+      --tensor-parallel-size {tensor_parallel} \
+      --dtype auto \
+      --kv-cache-dtype fp8 \
+      --max-model-len {max_model_len} \
+      --max-num-seqs {max_num_seqs} \
+      --max-num-batched-tokens {max_num_batched_tokens} \
+      --gpu-memory-utilization {gpu_memory_utilization} \
+      --enable-chunked-prefill \
+      --enable-prefix-caching \
+      --trust-remote-code

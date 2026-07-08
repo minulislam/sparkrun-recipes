@@ -1,0 +1,4 @@
+registries:
+  - name: gb10-lab
+    description: Custom AEON/StepFun NVFP4 recipes, live-validated end-to-end on the gb10-spark DGX Spark cluster (2026-07-08)
+    recipes: recipes

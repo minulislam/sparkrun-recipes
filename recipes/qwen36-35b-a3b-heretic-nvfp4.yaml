@@ -1,0 +1,82 @@
+# >>> VERIFIED LAUNCH (host + cluster facts re-verified live 2026-07-08 on head gb10-spark):
+# >>>   sparkrun run ./qwen36-35b-a3b-heretic-nvfp4.yaml --cluster default --tp 1
+# >>> Cluster is 'default' (head 10.10.20.10 gb10-spark + worker 10.10.20.11 gx10-spark); 'dgxlab' does NOT exist.
+# >>> Global ssh.user=devops is set in ~/.config/sparkrun/config.yaml. '--solo' is deprecated -> use '--tp 1'.
+# >>> Endpoint serves on the head: http://10.10.20.10:8000
+
+# =============================================================================
+# sparkrun recipe — Qwen3.6-35B-A3B-heretic-NVFP4   [MID MoE: vision + reasoning]
+# SINGLE NODE on the head (10.10.20.10).
+# -----------------------------------------------------------------------------
+# Footprint: 21 GB disk / ~22 GB loaded   |   Context: 262K native (~1M via YaRN)
+# Modality: text + vision   |   Speed: 91 tok/s single / 729 @64 concurrent
+# Refusal: 5/100 ("heretic" — effectively uncensored, not the 0/100 guarantee)
+# Launch:
+#   sparkrun run ./qwen36-35b-a3b-heretic-nvfp4.yaml --cluster default --tp 1 --dry-run
+#   sparkrun run ./qwen36-35b-a3b-heretic-nvfp4.yaml --cluster default --tp 1
+# -----------------------------------------------------------------------------
+# !! VERIFY (https://huggingface.co/AEON-7/Qwen3.6-35B-A3B-heretic-NVFP4):
+#    - container tag (unified AEON image assumed; confirm).
+#    - 1M context needs YaRN rope-scaling flags (NOT enabled here — default 262K).
+#    - DFlash drafter id (card cites 4-5x DFlash) — add via the commented block.
+#    - tool/reasoning parser names for Qwen3.6 (commented) — confirm.
+# =============================================================================
+
+model: AEON-7/Qwen3.6-35B-A3B-heretic-NVFP4
+runtime: vllm
+container: ghcr.io/aeon-7/aeon-vllm-ultimate:latest    # FLAG: confirm tag per card
+
+# AEON image sets ENTRYPOINT ["/bin/bash"], which collides with sparkrun's
+# 'bash -c <serve cmd>' container command (exit 126, verified 2026-07-08).
+executor_config:
+  entrypoint: ""
+
+min_nodes: 1
+max_nodes: 1
+
+metadata:
+  description: >-
+    Qwen3.6 35B-A3B MoE (~3B active), NVFP4 compressed-tensors, vision + reasoning,
+    262K (1M YaRN). Fastest "large-feeling" model on GB10. Single DGX Spark.
+  maintainer: AEON-7 (model) — recipe adapted for sparkrun
+  model_params: 35B          # ~3B active per token
+  model_dtype: nvfp4
+  model_vram: 22
+
+env:
+  VLLM_ALLOW_LONG_MAX_MODEL_LEN: "1"
+  TORCH_MATMUL_PRECISION: "high"
+  PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
+
+defaults:
+  host: 0.0.0.0
+  port: 8000
+  tensor_parallel: 1
+  gpu_memory_utilization: 0.75     # 0.85 caused NVRM OOM on the live GB10 (2026-07-08); 0.75 leaves 68 GB for KV vs 20 needed
+  max_model_len: 262144
+  max_num_seqs: 64
+  max_num_batched_tokens: 32768
+  served_model_name: qwen36-35b-a3b
+
+command: |
+  vllm serve {model} \
+      --served-model-name {served_model_name} \
+      --host {host} \
+      --port {port} \
+      --tensor-parallel-size {tensor_parallel} \
+      --dtype auto \
+      --quantization compressed-tensors \
+      --max-model-len {max_model_len} \
+      --max-num-seqs {max_num_seqs} \
+      --max-num-batched-tokens {max_num_batched_tokens} \
+      --gpu-memory-utilization {gpu_memory_utilization} \
+      --enable-chunked-prefill \
+      --enable-prefix-caching \
+      --trust-remote-code
+
+# --- OPTIONAL: tool/reasoning parsers (confirm names) -------------------------
+#     --enable-auto-tool-choice --tool-call-parser hermes --reasoning-parser qwen3
+# --- OPTIONAL: ~1M context via YaRN (confirm factor from card) ----------------
+#     -o max_model_len=1010000  AND add: --rope-scaling '{"rope_type":"yarn","factor":4.0,"original_max_position_embeddings":262144}'
+# --- OPTIONAL: DFlash speculative decoding (confirm drafter id) ----------------
+#     --speculative-config '{"method":"dflash","model":"<drafter id>","num_speculative_tokens":10,"attention_backend":"flash_attn"}'

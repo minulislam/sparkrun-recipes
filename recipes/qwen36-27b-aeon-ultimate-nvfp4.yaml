@@ -1,0 +1,91 @@
+# >>> VERIFIED LAUNCH (host + cluster facts re-verified live 2026-07-08 on head gb10-spark):
+# >>>   sparkrun run ./qwen36-27b-aeon-ultimate-nvfp4.yaml --cluster default --tp 1
+# >>> Cluster is 'default' (head 10.10.20.10 gb10-spark + worker 10.10.20.11 gx10-spark); 'dgxlab' does NOT exist.
+# >>> Global ssh.user=devops is set in ~/.config/sparkrun/config.yaml. '--solo' is deprecated -> use '--tp 1'.
+# >>> Endpoint serves on the head: http://10.10.20.10:8000
+
+# =============================================================================
+# sparkrun recipe — Qwen3.6-27B-AEON-Ultimate-Uncensored-NVFP4   [FLAGSHIP]
+# SINGLE NODE on the head (10.10.20.10).
+# -----------------------------------------------------------------------------
+# Footprint: 26 GB disk / ~30 GB loaded   |   Context: 262K   |   Modality: text + vision
+# Speed: ~50 tok/s single-stream (hybrid GatedDeltaNet reads few bytes/token)
+# Refusal: 0/100 ("DGX Spark production-validated"). KL <=0.001 vs BF16.
+# Launch:
+#   sparkrun run ./qwen36-27b-aeon-ultimate-nvfp4.yaml --cluster default --tp 1 --dry-run
+#   sparkrun run ./qwen36-27b-aeon-ultimate-nvfp4.yaml --cluster default --tp 1
+#   curl http://10.10.20.10:8000/v1/models
+# -----------------------------------------------------------------------------
+# !! VERIFY against the live card (https://huggingface.co/AEON-7/Qwen3.6-27B-AEON-Ultimate-Uncensored-NVFP4):
+#    - container tag: using the unified AEON image (the Gemma-4-26B card states
+#      "all AEON models run on one unified container"). The research report also
+#      references a Qwen-family image pattern (ghcr.io/aeon-7/vllm-spark-q36*) —
+#      if this image fails to load Qwen3.6, switch to the card's exact image.
+#    - DFlash drafter repo id is NOT enabled here (id unverified). The card
+#      "pairs with DFlash" or use the MTP self-speculative sibling
+#      (Qwen3.6-27B-...-Multimodal-NVFP4-MTP-XS). See the commented block below.
+#    - tool/reasoning parser names for Qwen3.6 (commented, optional) — confirm.
+#    - DO NOT force Marlin on this model (card: patched CUTLASS path beats Marlin
+#      on GB10). The env below selects the CUTLASS path.
+# =============================================================================
+
+model: AEON-7/Qwen3.6-27B-AEON-Ultimate-Uncensored-NVFP4
+runtime: vllm
+container: ghcr.io/aeon-7/aeon-vllm-ultimate:latest    # FLAG: confirm tag per card
+
+# AEON image sets ENTRYPOINT ["/bin/bash"], which collides with sparkrun's
+# 'bash -c <serve cmd>' container command (exit 126, verified 2026-07-08).
+executor_config:
+  entrypoint: ""
+
+min_nodes: 1
+max_nodes: 1
+
+metadata:
+  description: >-
+    Qwen3.6 27B hybrid (GatedDeltaNet + full attn), NVFP4 compressed-tensors,
+    uncensored 0/100, vision-preserved. Flagship quality pick. Single DGX Spark.
+  maintainer: AEON-7 (model) — recipe adapted for sparkrun
+  model_params: 27B
+  model_dtype: nvfp4
+  model_vram: 30        # GB loaded (report); overrides auto-detect
+
+env:
+  VLLM_ALLOW_LONG_MAX_MODEL_LEN: "1"
+  TORCH_MATMUL_PRECISION: "high"
+  PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
+  VLLM_NVFP4_GEMM_BACKEND: "flashinfer-cutlass"   # NOT marlin (card warning)
+
+defaults:
+  host: 0.0.0.0
+  port: 8000
+  tensor_parallel: 1
+  gpu_memory_utilization: 0.80      # 0.85 caused NVRM OOM on the live GB10 (2026-07-08). NOTE: full 262144
+                                    # context needs 94 GB of the 96.8 GB budget at 0.80 — knife-edge; if boot
+                                    # OOMs, cap context (-o max_model_len=131072) before touching utilization
+  max_model_len: 262144
+  max_num_seqs: 32
+  max_num_batched_tokens: 16384
+  served_model_name: qwen36-27b-aeon
+
+command: |
+  vllm serve {model} \
+      --served-model-name {served_model_name} \
+      --host {host} \
+      --port {port} \
+      --tensor-parallel-size {tensor_parallel} \
+      --dtype auto \
+      --quantization compressed-tensors \
+      --max-model-len {max_model_len} \
+      --max-num-seqs {max_num_seqs} \
+      --max-num-batched-tokens {max_num_batched_tokens} \
+      --gpu-memory-utilization {gpu_memory_utilization} \
+      --enable-chunked-prefill \
+      --enable-prefix-caching \
+      --trust-remote-code
+
+# --- OPTIONAL: tool/reasoning parsers (confirm exact names from the card) ------
+#     --enable-auto-tool-choice --tool-call-parser hermes --reasoning-parser qwen3
+# --- OPTIONAL: DFlash speculative decoding (confirm drafter repo id, then add) --
+#     --speculative-config '{"method":"dflash","model":"<AEON-7 or z-lab drafter id>","num_speculative_tokens":10,"attention_backend":"flash_attn"}'
+#     (Always --dry-run first; sparkrun's {placeholder} engine may need the JSON braces checked.)

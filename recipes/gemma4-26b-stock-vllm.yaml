@@ -1,0 +1,77 @@
+# >>> VERIFIED LAUNCH (host + cluster facts re-verified live 2026-07-08 on head gb10-spark):
+# >>>   sparkrun run ./gemma4-26b-stock-vllm.yaml --cluster default --tp 1
+# >>> Cluster is 'default' (head 10.10.20.10 gb10-spark + worker 10.10.20.11 gx10-spark); 'dgxlab' does NOT exist.
+# >>> Global ssh.user=devops is set in ~/.config/sparkrun/config.yaml. '--solo' is deprecated -> use '--tp 1'.
+# >>> Endpoint serves on the head: http://10.10.20.10:8000
+
+# =============================================================================
+# sparkrun recipe — Gemma-4-26B-A4B-it-Uncensored-NVFP4 (stock vLLM, no DFlash)
+# Simplest path: ONE model, no drafter, no inline JSON -> clean for sparkrun's
+# template engine and most likely to "just work". Lower single-stream speed than
+# the AEON/DFlash recipe (~47-49 tok/s vs ~150 on coding) but higher many-request
+# aggregate throughput. SINGLE NODE on the head (10.10.20.10).
+# =============================================================================
+# Per the model card, upstream vLLM (community image, 2026-05-06+) boots this
+# model on GB10 with FlashInfer CUTLASS NVFP4 + vLLM CUTLASS MoE — no source
+# build, no special env. vLLM forces TRITON_ATTN for Gemma 4 automatically; it's
+# set explicitly here for clarity.
+# Model card: https://huggingface.co/AEON-7/Gemma-4-26B-A4B-it-Uncensored-NVFP4
+# Recipe schema: https://sparkrun.dev/recipes/format/
+# =============================================================================
+
+model: AEON-7/Gemma-4-26B-A4B-it-Uncensored-NVFP4
+runtime: vllm
+# Pinned digest from the model card's verified baseline run (swap to :latest if preferred):
+container: vllm/vllm-openai@sha256:9eff9734a30b6713a8566217d36f8277630fd2d31cec7f0a0292835901a23aa4
+
+# This image sets ENTRYPOINT ["vllm","serve"], which collides with sparkrun's
+# 'bash -c <serve cmd>' container command (args get appended to the entrypoint).
+# Clearing it lets sparkrun's full command run; 'vllm' is on PATH in the image.
+executor_config:
+  entrypoint: ""
+
+min_nodes: 1
+max_nodes: 1
+
+metadata:
+  description: >-
+    Gemma 4 26B-A4B MoE NVFP4 (uncensored) on stock community vLLM — no DFlash
+    speculative decoding. Single DGX Spark.
+  maintainer: AEON-7 (model) — recipe adapted for sparkrun
+  model_params: 26B
+  model_dtype: nvfp4
+  kv_dtype: bfloat16
+  model_vram: 16.25
+
+env:
+  VLLM_ALLOW_LONG_MAX_MODEL_LEN: "1"
+
+defaults:
+  host: 0.0.0.0
+  port: 8000
+  tensor_parallel: 1
+  gpu_memory_utilization: 0.80
+  max_model_len: 32768             # throughput profile; raise toward 262144 for long context
+  max_num_seqs: 256
+  max_num_batched_tokens: 32768
+  served_model_name: gemma4-aeon-uncensored
+
+command: |
+  vllm serve {model} \
+      --served-model-name {served_model_name} \
+      --host {host} \
+      --port {port} \
+      --tensor-parallel-size {tensor_parallel} \
+      --dtype auto \
+      --quantization compressed-tensors \
+      --attention-backend triton_attn \
+      --max-model-len {max_model_len} \
+      --max-num-seqs {max_num_seqs} \
+      --max-num-batched-tokens {max_num_batched_tokens} \
+      --gpu-memory-utilization {gpu_memory_utilization} \
+      --enable-chunked-prefill \
+      --enable-prefix-caching \
+      --trust-remote-code \
+      --enable-auto-tool-choice \
+      --tool-call-parser gemma4 \
+      --reasoning-parser gemma4
