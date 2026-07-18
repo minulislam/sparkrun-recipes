@@ -1,0 +1,52 @@
+{
+  "label": "qwen36-27b-aeon",
+  "base": "http://10.10.20.10:8000",
+  "ready_wait_s": 520.1,
+  "served_model": "qwen36-27b-aeon",
+  "ttft_s": 0.173,
+  "decode_tps": 9.5,
+  "decode_runs": [
+    {
+      "ttft_s": 0.332,
+      "decode_tps": 9.5,
+      "completion_tokens": 320
+    },
+    {
+      "ttft_s": 0.173,
+      "decode_tps": 9.5,
+      "completion_tokens": 320
+    },
+    {
+      "ttft_s": 0.127,
+      "decode_tps": 9.5,
+      "completion_tokens": 320
+    }
+  ],
+  "prefill_tokens": 3140,
+  "prefill_ttft_s": 1.697,
+  "prefill_tps": 1850,
+  "concurrent": {
+    "n": 8,
+    "ok": 8,
+    "wall_s": 29.55,
+    "total_completion_tokens": 2048,
+    "agg_tps": 69.3
+  },
+  "quality": {
+    "code": {
+      "text": "Here's a thinking process:\n\n1.  **Understand the Goal**: The user wants a Python function `merge_intervals(intervals)` that takes a list of `[start, end]` pairs, merges overlapping intervals, and returns them sorted. It needs a brief docstring and one usage example with expected output. The output should be \"Code only\".\n\n2.  **Key Requirements**:\n   - Function name: `merge_intervals`\n   - Input: List of `[start, end]` pairs (intervals)\n   - Output: Merged, sorted list of intervals\n   - Include: Brief docstring, one usage example with expected output\n   - Format: Code only\n\n3.  **Algorithm Design**:\n   - Handle edge cases: empty list, single interval\n   - Sort intervals by start time\n   - Iterate through sorted intervals, merging overlapping ones\n   - Overlap condition: current interval's start <= previous interval's end\n   - Merge: update previous interval's end to max(prev_end, curr_end)\n   - Return merged list\n\n   Pseudocode:\n   ```python\n   def merge_intervals(intervals):\n       if not intervals:\n           return []\n       intervals.sort(key=lambda x: x[0])\n       merged = [intervals[0]]\n       for start, end in intervals[1:]:\n           last = merged[-1]\n           if start <= last[1]:\n               last[1] = max(last[1], end)\n           else:\n               merged.append([start, end])\n       return merged\n   ```\n\n4.  **Refine & Check**:\n   - Does it handle overlapping correctly? Yes.\n   - Does it handle nested intervals? Yes (e.g., [1, 4] and [2, 3] -> [1, 4])\n   - Does it handle adjacent intervals? The problem says \"overlapping\", but typically [1, 2] and [2, 3] are considered overlapping/mergeable. The condition `start <= last[1]` handles this.\n   - Sorting: The problem says \"returns them sorted\", which is naturally handled by sorting by start time initially.\n   - Docstring: Brief, describes input, output, and behavior.\n   - Usage example: One example with expected output.\n   - Format: \"Code only\" means I should wrap everything in a code block or just output",
+      "completion_tokens": 600,
+      "total_s": 63.273
+    },
+    "reasoning": {
+      "text": "Here's a thinking process that leads to the solution:\n\n1.  **Analyze the Problem:**\n    *   Animals: Chickens and Rabbits.\n    *   Total Heads: 35 (implies 35 animals in total).\n    *   Total Legs: 94.\n    *   Goal: Find the number of chickens and the number of rabbits.\n\n2.  **Define Variables:**\n    *   Let $c$ = number of chickens.\n    *   Let $r$ = number of rabbits.\n\n3.  **Formulate Equations:**\n    *   *Heads equation:* Each animal has 1 head.\n        $$c + r = 35$$\n    *   *Legs equation:* Chickens have 2 legs, rabbits have 4 legs.\n        $$2c + 4r = 94$$\n\n4.  **Solve the System of Equations:**\n\n    *   *Method 1: Substitution*\n        From the heads equation: $c = 35 - r$.\n        Substitute into the legs equation:\n        $$2(35 - r) + 4r = 94$$\n        $$70 - 2r + 4r = 94$$\n        $$70 + 2r = 94$$\n        $$2r = 94 - 70$$\n        $$2r = 24$$\n        $$r = 12$$\n        Now find $c$:\n        $$c = 35 - 12$$\n        $$c = 23$$\n\n    *   *Method 2: Elimination*\n        Multiply the heads equation by 2:\n        $$2c + 2r = 70$$\n        Subtract this from the legs equation ($2c + 4r = 94$):\n        $$(2c + 4r) - (2c + 2r) = 94 - 70$$\n        $$2r = 24$$\n        $$r = 12$$\n        Substitute back:\n        $$c + 12 = 35$$\n        $$c = 23$$\n\n    *   *Method 3: Logical/Arithmetic approach (The \"All Chickens\" method)*\n        Assume all 35 animals are chickens.\n        Total legs = $35 \\times 2 = 70$ legs.\n        Actual legs = 94.\n        Difference = $94 - 70 = 24$ extra legs.\n        Each rabbit has 2 more legs than a chicken.\n        Number of rabbits = $24 / 2 = 12$.\n        Number of chickens = $",
+      "completion_tokens": 600,
+      "total_s": 63.279
+    },
+    "format": {
+      "text": "Thinking Process:\n1.  Analyze input:\n   - Output format: ONLY a JSON object\n   - No markdown fence (no ```json ... ```)\n   - No commentary\n   - Keys: \"languages\" (array of exactly 3 programming language names as strings), \"reason\" (one sentence explaining a shared trait)\n   - Valid JSON only\n\n2.  Construct JSON:\n   - \"languages\": [\"Python\", \"Java\", \"C++\"]\n   - \"reason\": \"All three are widely used, object-oriented programming languages that support static or dynamic typing and have large standard libraries.\"\n   - Check constraints: exactly 3 languages? Yes. One sentence reason? Yes. Valid JSON? Yes. No markdown? Yes.\n\n   Let's refine the reason to be strictly one sentence and clearly explain a shared trait.\n   \"All three are general-purpose, object-oriented programming languages that support static typing and are widely used in enterprise software development.\" (Wait, Python is dynamically typed by default, though it supports type hints. Let's pick languages that share a clearer trait, or adjust the reason to be accurate.)\n   Better: [\"Java\", \"C#\", \"Kotlin\"] -> \"All three are primarily object-oriented, statically typed languages that run on a virtual machine or compile to bytecode for cross-platform execution.\"\n   Or stick to Python, Java, C++ but make the reason accurate: \"All three are general-purpose programming languages that support object-oriented programming paradigms and are widely used across various software development domains.\" (Accurate)\n   Let's use [\"JavaScript\", \"TypeScript\", \"CoffeeScript\"] -> \"All three are superset or derivative languages that compile to or run as JavaScript in web browsers and Node.js environments.\"\n   Actually, simpler is better: [\"Python\", \"Ruby\", \"JavaScript\"] -> \"All three are dynamically typed, interpreted programming languages that emphasize developer productivity and readable syntax.\"\n   Check constraint: \"one sentence explaining a shared trait\".\n   Let's stick to [\"Java\", \"C++\", \"C#\"] -> \"All three are statically typed, ob",
+      "completion_tokens": 600,
+      "total_s": 63.28
+    }
+  }
+}

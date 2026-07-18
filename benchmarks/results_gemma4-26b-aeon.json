@@ -1,0 +1,52 @@
+{
+  "label": "gemma4-26b-aeon",
+  "base": "http://10.10.20.10:8000",
+  "ready_wait_s": 325.1,
+  "served_model": "gemma4-aeon-uncensored",
+  "ttft_s": 0.098,
+  "decode_tps": 76.8,
+  "decode_runs": [
+    {
+      "ttft_s": 0.114,
+      "decode_tps": 74.5,
+      "completion_tokens": 320
+    },
+    {
+      "ttft_s": 0.098,
+      "decode_tps": 79.5,
+      "completion_tokens": 320
+    },
+    {
+      "ttft_s": 0.096,
+      "decode_tps": 76.8,
+      "completion_tokens": 320
+    }
+  ],
+  "prefill_tokens": 2663,
+  "prefill_ttft_s": 0.456,
+  "prefill_tps": 5840,
+  "concurrent": {
+    "n": 8,
+    "ok": 8,
+    "wall_s": 11.86,
+    "total_completion_tokens": 1847,
+    "agg_tps": 155.7
+  },
+  "quality": {
+    "code": {
+      "text": "```python\ndef merge_intervals(intervals):\n    \"\"\"\n    Merges overlapping intervals and returns a sorted list of disjoint intervals.\n    \n    Args:\n        intervals (list[list[int]]): A list of [start, end] pairs.\n        \n    Returns:\n        list[list[int]]: A sorted list of merged intervals.\n    \"\"\"\n    if not intervals:\n        return []\n\n    # Sort intervals based on the start time\n    intervals.sort(key=lambda x: x[0])\n\n    merged = []\n    for interval in intervals:\n        # If the list of merged intervals is empty or the current \n        # interval does not overlap with the previous, append it.\n        if not merged or interval[0] > merged[-1][1]:\n            merged.append(interval)\n        else:\n            # There is an overlap, so merge the current interval with the previous one\n            # by updating the end time to the maximum end time found so far.\n            merged[-1][1] = max(merged[-1][1], interval[1])\n\n    return merged\n\n# Usage Example\nif __name__ == \"__main__\":\n    example_input = [[1, 3], [2, 6], [8, 10], [15, 18]]\n    result = merge_intervals(example_input)\n    print(f\"Input: {example_input}\")\n    print(f\"Output: {result}\")\n    # Expected Output: [[1, 6], [8, 10], [15, 18]]\n```",
+      "completion_tokens": 355,
+      "total_s": 2.26
+    },
+    "reasoning": {
+      "text": "To solve this problem, we can use a system of linear equations. Let $c$ be the number of chickens and $r$ be the number of rabbits.\n\n**1. Set up the equations based on the given information:**\n*   **Heads:** Each animal has 1 head.\n    $c + r = 35$\n*   **Legs:** Chickens have 2 legs and rabbits have 4 legs.\n    $2c + 4r = 94$\n\n**2. Solve the system:**\n*   From the first equation, we can express $c$ in terms of $r$:\n    $c = 35 - r$\n*   Substitute this into the second equation:\n    $2(35 - r) + 4r = 94$\n    $70 - 2r + 4r = 94$\n    $70 + 2r = 94$\n    $2r = 24$\n    $r = 12$\n*   Now, find $c$:\n    $c = 35 - 12 = 23$\n\n**3. Verify the result:**\n*   Heads: $23 + 12 = 35$ (Correct)\n*   Legs: $2(23) + 4(12) = 46 + 48 = 94$ (Correct)\n\nANSWER: 23,12",
+      "completion_tokens": 325,
+      "total_s": 1.838
+    },
+    "format": {
+      "text": "{\n  \"languages\": [\"Python\", \"JavaScript\", \"Ruby\"],\n  \"reason\": \"These are all high-level, dynamically typed, and interpreted programming languages.\"\n}",
+      "completion_tokens": 39,
+      "total_s": 0.531
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "label": "qwen36-35b-a3b",
+  "base": "http://10.10.20.10:8000",
+  "ready_wait_s": 340.1,
+  "served_model": "qwen36-35b-a3b",
+  "ttft_s": 0.062,
+  "decode_tps": 43.4,
+  "decode_runs": [
+    {
+      "ttft_s": 0.222,
+      "decode_tps": 43.4,
+      "completion_tokens": 320
+    },
+    {
+      "ttft_s": 0.062,
+      "decode_tps": 43.4,
+      "completion_tokens": 320
+    },
+    {
+      "ttft_s": 0.061,
+      "decode_tps": 43.4,
+      "completion_tokens": 320
+    }
+  ],
+  "prefill_tokens": 3140,
+  "prefill_ttft_s": 0.639,
+  "prefill_tps": 4914,
+  "concurrent": {
+    "n": 8,
+    "ok": 8,
+    "wall_s": 9.15,
+    "total_completion_tokens": 2048,
+    "agg_tps": 223.9
+  },
+  "quality": {
+    "code": {
+      "text": "Here's a thinking process:\n\n1.  **Understand the Goal**: The user wants a Python function `merge_intervals(intervals)` that takes a list of intervals (each as `[start, end]`), merges overlapping ones, and returns the merged intervals sorted. It needs a docstring, one usage example with expected output, and should be code-only.\n\n2.  **Key Requirements**:\n   - Input: List of intervals, e.g., `[[1,3],[2,6],[8,10],[15,18]]`\n   - Output: Merged overlapping intervals, sorted by start time.\n   - Include docstring.\n   - Include usage example with expected output.\n   - Code only (no extra text).\n\n3.  **Algorithm Design**:\n   - Sort the intervals by start time.\n   - Initialize a result list with the first interval.\n   - Iterate through the rest of the intervals:\n     - Compare the current interval's start with the last interval's end in the result.\n     - If they overlap (current start <= last end), merge them by updating the end to max(last end, current end).\n     - If not overlapping, append the current interval to the result.\n   - Return the result.\n\n4.  **Edge Cases**:\n   - Empty list: Return empty list.\n   - Single interval: Return as is.\n   - All overlapping: Merge into one.\n   - No overlaps: Return sorted original.\n   - Intervals with same start/end: Handled correctly by the algorithm.\n   - Unsorted input: Handled by sorting first.\n\n5.  **Draft Code**:\n   ```python\n   def merge_intervals(intervals):\n       \"\"\"\n       Merge overlapping intervals in a list of [start, end] pairs.\n       Returns the merged intervals sorted by start time.\n       \"\"\"\n       if not intervals:\n           return []\n\n       # Sort intervals by start time\n       intervals.sort(key=lambda x: x[0])\n\n       merged = [intervals[0]]\n       for current in intervals[1:]:\n           last = merged[-1]\n           if current[0] <= last[1]:  # Overlapping\n               last[1] = max(last[1], current[1])\n           else:\n               merged.append(current)\n\n       return merged\n   ```\n\n6.  **Add Usage Exam",
+      "completion_tokens": 600,
+      "total_s": 13.871
+    },
+    "reasoning": {
+      "text": "Here's a thinking process:\n\n1.  **Understand the Problem**: The farmer has chickens and rabbits. Total heads = 35. Total legs = 94. Need to find the number of chickens and rabbits.\n\n2.  **Identify Variables**:\n   - Let $c$ = number of chickens\n   - Let $r$ = number of rabbits\n\n3.  **Set up Equations**:\n   - Each animal has 1 head, so: $c + r = 35$\n   - Chickens have 2 legs, rabbits have 4 legs, so: $2c + 4r = 94$\n\n4.  **Solve the System**:\n   - From first equation: $c = 35 - r$\n   - Substitute into second equation: $2(35 - r) + 4r = 94$\n   - Simplify: $70 - 2r + 4r = 94$\n   - $70 + 2r = 94$\n   - $2r = 24$\n   - $r = 12$\n   - Then $c = 35 - 12 = 23$\n\n5.  **Verify**:\n   - Heads: $23 + 12 = 35$ \u2713\n   - Legs: $2(23) + 4(12) = 46 + 48 = 94$ \u2713\n\n6.  **Format Output**:\n   - Show brief reasoning\n   - Final line: `ANSWER: 23,12`\n\n   Check format requirement: \"formatted exactly as: ANSWER: <chickens>,<rabbits>\"\n   So: `ANSWER: 23,12`\n\n7.  **Draft Response**:\n   Let $c$ be the number of chickens and $r$ be the number of rabbits.\n   Each animal has 1 head: $c + r = 35$\n   Chickens have 2 legs, rabbits have 4: $2c + 4r = 94$\n   Multiply the first equation by 2: $2c + 2r = 70$\n   Subtract from the second: $(2c + 4r) - (2c + 2r) = 94 - 70 \\Rightarrow 2r = 24 \\Rightarrow r = 12$\n   Then $c = 35 - 12 = 23$.\n   Check: 23 chickens + 12 rabbits = 35 heads; (23\u00d72) + (12\u00d74) = 46 + 48 = 94 legs",
+      "completion_tokens": 600,
+      "total_s": 13.886
+    },
+    "format": {
+      "text": "Here's a thinking process:\n\n1.  **Analyze User Input:**\n   - **Output format:** ONLY a JSON object\n   - **No markdown fence:** Do not use ```json ... ```\n   - **No commentary:** Just the JSON\n   - **Keys required:** \n     - \"languages\": array of exactly 3 programming language names as strings\n     - \"reason\": one sentence explaining a shared trait\n   - **Constraint:** Valid JSON only\n\n2.  **Determine Content:**\n   - Need 3 programming languages: e.g., \"Python\", \"JavaScript\", \"Ruby\"\n   - Need a shared trait reason: e.g., \"All three are dynamically typed, high-level languages known for their readability and extensive standard libraries.\"\n   - Check constraints: exactly 3 strings, one sentence, valid JSON.\n\n3.  **Construct JSON:**\n   ```json\n   {\n     \"languages\": [\"Python\", \"JavaScript\", \"Ruby\"],\n     \"reason\": \"All three are dynamically typed, high-level languages known for their readability and extensive standard libraries.\"\n   }\n   ```\n\n4.  **Verify Constraints:**\n   - ONLY JSON object? Yes.\n   - No markdown fence? Yes.\n   - No commentary? Yes.\n   - Keys: \"languages\" (array of exactly 3 strings), \"reason\" (one sentence)? Yes.\n   - Valid JSON? Yes.\n\n   I'll make sure there's no extra whitespace or newlines that could be considered commentary, but standard JSON formatting is fine. I'll output it directly.\n\n   Let's double-check the exact wording: \"Return ONLY a JSON object (no markdown fence, no commentary) with keys \"languages\" (array of exactly 3 programming language names as strings) and \"reason\" (one sentence explaining a shared trait). Valid JSON only.\"\n\n   I will produce exactly:\n   {\"languages\":[\"Python\",\"JavaScript\",\"Ruby\"],\"reason\":\"All three are dynamically typed, high-level languages known for their readability and extensive standard libraries.\"}\n\n   Wait, should I format it with newlines/indentation? It doesn't matter as long as it's valid JSON. I'll keep it compact to be safe.\n\n   Check: \"languages\" array has exactly 3 strings. \"reason\" is one sentence. ",
+      "completion_tokens": 600,
+      "total_s": 13.925
+    }
+  }
+}
