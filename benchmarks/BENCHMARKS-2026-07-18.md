@@ -30,10 +30,10 @@ prefill probe, 8 concurrent 256-tok requests, and 3 quality probes at temperatur
 - **The flagship Qwen-27B decodes at 9.5 tok/s, not ~50.** Confirmed by vLLM's own engine
   logs, so it's not a harness artifact. Worse, it's a *thinker*: at temp 0 it spent the whole
   600-token budget "thinking" and never emitted the required answer line. As configured today
-  it is the slowest, least usable recipe of the five that boot. Suspects: the NVFP4 GEMM env
-  (`VLLM_NVFP4_GEMM_BACKEND=flashinfer-cutlass`) not engaging on this newer image, and/or the
-  hybrid GatedDeltaNet path regressing; needs a dedicated look before trusting the "~50 tok/s"
-  claim on the current image.
+  it is the slowest, least usable recipe of the five that boot. **Root cause found (see
+  `AEON-FINDINGS-2026-07-18.md`): the recipe ships with DFlash speculative decoding commented
+  out — 9.5 tok/s matches AEON's published no-DFlash stock baseline (~10.5); the ~50 tok/s
+  claim was always a DFlash number.**
 - **Best all-rounder: `gemma4-26b-aeon-vllm`** — fastest single-stream (77 tok/s), fastest
   prefill, cleanest instruction-following (only model besides 12B to pass strict-JSON), loads
   in 17 GiB.
@@ -50,12 +50,13 @@ prefill probe, 8 concurrent 256-tok requests, and 3 quality probes at temperatur
 
 ## Failures & blockers (with unblock paths)
 
-1. **`gemma4-31b-deckard-heretic-nvfp4` no longer boots** on the current cached image:
-   `ValidationError: ModelOpt currently only supports ['FP8', …, 'NVFP4', …]` — the model's
-   `hf_quant_config.json` declares a scheme this vLLM rejects. **Image drift is the likely
-   cause**: the recipes were validated 2026-07-08 against digest `f0cc5e9c`, but `:latest` on
-   the head is now `b47f2ce2`. Unblock: re-pull/pin the validated digest, or patch
-   `hf_quant_config.json` in the HF cache, or wait for an AEON image fix.
+1. **`gemma4-31b-deckard-heretic-nvfp4` does not boot on the unified image — and never could**
+   (corrected from an earlier "image drift" hypothesis; the cached image is in fact the
+   validated 2026-07-08 `v0.24.0-maxsafe` build): the Deckard checkpoint is quantized as
+   `quant_algo=NVFP4_AWQ`, which the unified image's ModelOpt loader rejects on any build.
+   AEON ships a dedicated container for this model
+   (`ghcr.io/aeon-7/gemma-4-31b-uncensored-nvfp4-dflash:latest`) with the NVFP4_AWQ loader
+   patch + DFlash — see `AEON-FINDINGS-2026-07-18.md` §5 for the recipe fix.
 2. **`gemma4-26b-stock-vllm` blocked**: pinned image `vllm/vllm-openai@sha256:9eff9734…` exists
    on neither node and the lab's internet was throttled to ~0.7 MB/s all session. Unblock:
    pull when the uplink recovers (image ~10 GB+).
