@@ -1,0 +1,52 @@
+{
+  "label": "gemma4-31b-deckard-dflash",
+  "base": "http://10.10.20.10:8000",
+  "ready_wait_s": 0.0,
+  "served_model": "gemma4-31b-deckard",
+  "ttft_s": 0.391,
+  "decode_tps": 31.3,
+  "decode_runs": [
+    {
+      "ttft_s": 0.272,
+      "decode_tps": 31.4,
+      "completion_tokens": 320
+    },
+    {
+      "ttft_s": 0.391,
+      "decode_tps": 31.3,
+      "completion_tokens": 320
+    },
+    {
+      "ttft_s": 0.391,
+      "decode_tps": 31.3,
+      "completion_tokens": 320
+    }
+  ],
+  "prefill_tokens": 2665,
+  "prefill_ttft_s": 1.642,
+  "prefill_tps": 1623,
+  "concurrent": {
+    "n": 8,
+    "ok": 8,
+    "wall_s": 18.0,
+    "total_completion_tokens": 2048,
+    "agg_tps": 113.8
+  },
+  "quality": {
+    "code": {
+      "text": "*   Goal: Write a Python function `merge_intervals(intervals)`.\n    *   Input: A list of `[start, end]` pairs.\n    *   Output: A list of merged intervals, sorted.\n    *   Requirements: Brief docstring, one usage example with expected output, code only.\n\n    *   Sort the intervals by their start time.\n    *   Initialize an empty list `merged`.\n    *   Iterate through the sorted intervals.\n    *   If `merged` is empty or the current interval's start is greater than the last merged interval's end, append the current interval.\n    *   Otherwise, the current interval overlaps with the last merged interval; update the last merged interval's end to be the maximum of its current end and the current interval's end.\n\n    *   Function name: `merge_intervals`.\n    *   Input: `intervals`.\n    *   Docstring: \"Merge overlapping intervals and return a sorted list of merged intervals.\"\n    *   Implementation:\n        ```python\n        def merge_intervals(intervals):\n            \"\"\"Merge overlapping intervals and return a sorted list of merged intervals.\"\"\"\n            if not intervals:\n                return []\n            intervals.sort(key=lambda x: x[0])\n            merged = [intervals[0]]\n            for current in intervals[1:]:\n                last_start, last_end = merged[-1]\n                curr_start, curr_end = current\n                if curr_start <= last_end:\n                    merged[-1][1] = max(last_end, curr_end)\n                else:\n                    merged.append(current)\n            return merged\n        ```\n\n    *   Input: `[[1, 3], [2, 6], [8, 10], [15, 18]]`\n    *   Expected Output: `[[1, 6], [8, 10], [15, 18]]`\n\n    *   Ensure it's \"Code only\" as requested.```python\ndef merge_intervals(intervals):\n    \"\"\"Merge overlapping intervals and return a sorted list of merged intervals.\"\"\"\n    if not intervals:\n        return []\n\n    # Sort intervals by start time\n    intervals.sort(key=lambda x: x[0])\n    \n    merged = [intervals[0]]\n    for current in intervals[1:",
+      "completion_tokens": 600,
+      "total_s": 10.767
+    },
+    "reasoning": {
+      "text": "*   Total heads: 35\n    *   Total legs: 94\n    *   Animals: Chickens (2 legs each) and Rabbits (4 legs each)\n\n    *   Let $C$ be the number of chickens.\n    *   Let $R$ be the number of rabbits.\n    *   $C + R = 35$ (Total heads)\n    *   $2C + 4R = 94$ (Total legs)\n\n    *   From the first equation: $C = 35 - R$\n    *   Substitute $C$ into the second equation:\n        $2(35 - R) + 4R = 94$\n        $70 - 2R + 4R = 94$\n        $70 + 2R = 94$\n        $2R = 94 - 70$\n        $2R = 24$\n        $R = 12$\n    *   Now find $C$:\n        $C = 35 - 12$\n        $C = 23$\n\n    *   Heads: $23 + 12 = 35$ (Correct)\n    *   Legs: $2(23) + 4(12) = 46 + 48 = 94$ (Correct)\n\n    *   If all 35 animals were chickens, there would be $35 \\times 2 = 70$ legs.\n    *   The actual number of legs is 94, which is $94 - 70 = 24$ more than if they were all chickens.\n    *   Each rabbit has 2 more legs than a chicken.\n    *   Number of rabbits = $24 / 2 = 12$.\n    *   Number of chickens = $35 - 12 = 23$.\n\n    *   Chickens: 23\n    *   Rabbits: 12\n\n    *   Brief reasoning.\n    *   Final line: ANSWER: 23,1If all 35 animals were chickens, there would be 70 legs (35 \u00d7 2). The actual total is 94 legs, which is 24 more than 70. Since each rabbit has 2 more legs than a chicken, there must be 12 rabbits (24 \u00f7 2). Subtracting the 12 rabbits from the 35 total animals leaves 23 chickens.\n\nANSWER: 23,12",
+      "completion_tokens": 574,
+      "total_s": 10.024
+    },
+    "format": {
+      "text": "*   Output format: JSON object only.\n    *   Keys required: \"languages\" (array of 3 strings), \"reason\" (one sentence string).\n    *   Constraint: No markdown fences, no commentary.\n    *   Content: 3 programming languages and a shared trait.\n\n    *   Languages: Python, JavaScript, Ruby.\n    *   Shared trait: They are all interpreted, high-level, and dynamically typed.\n\n    *   `{\"languages\": [\"Python\", \"JavaScript\", \"Ruby\"], \"reason\": \"These are all high-level, dynamically typed programming languages.\"}`\n\n    *   JSON object? Yes.\n    *   Keys \"languages\" and \"reason\"? Yes.\n    *   \"languages\" is an array of exactly 3 strings? Yes.\n    *   \"reason\" is one sentence? Yes.\n    *   No markdown fences? Yes.\n    *   No commentary? Yes{\n  \"languages\": [\n    \"Python\",\n    \"JavaScript\",\n    \"Ruby\"\n  ],\n  \"reason\": \"These are all high-level, dynamically typed programming languages.\"\n}",
+      "completion_tokens": 251,
+      "total_s": 6.525
+    }
+  }
+}

@@ -1,0 +1,85 @@
+# >>> Cluster facts (verified 2026-07-08): cluster 'default' = head gb10-spark 10.10.20.10
+# >>> + worker gx10-spark 10.10.20.11; global ssh.user=devops. Launch:
+# >>>   sparkrun run ./diffusiongemma-26b-a4b-nvfp4.yaml --cluster default --tp 1
+# >>> Endpoint serves on the head: http://10.10.20.10:8000
+
+# =============================================================================
+# sparkrun recipe — DiffusionGemma-26B-A4B-it (NVIDIA ModelOpt NVFP4)  [DIFFUSION LM]
+# SINGLE NODE on the head (10.10.20.10).
+# -----------------------------------------------------------------------------
+# Google's diffusion-LM sibling of Gemma-4-26B-A4B (26B MoE, ~4B active,
+# text + vision base), released 2026-06-09. Quant: nvidia's official ModelOpt
+# NVFP4 (quant_algo NVFP4 — in the unified AEON image's supported list, unlike
+# the 31B Deckard's NVFP4_AWQ).
+# STATUS 2026-07-25: LIVE-VALIDATED on gb10-spark. Ready in 232 s (weights
+# pre-cached, 18 GB). 17.96 GiB loaded; KV 1,154,675 tokens @ 32K = 35.2x
+# concurrency. Measured: ~358 tok/s single-stream decode (fastest c=1 model in
+# the fleet — diffusion parallel decoding), TTFT 1.2-1.6 s, prefill 2278 tok/s,
+# 8-way aggregate 126 tok/s (concurrency barely scales: the GPU is already
+# saturated at c=1 — prefer this model for interactive, NOT fleet serving).
+#   - KNOWN QUIRK: outputs start with a literal "thought" marker + thinking
+#     text — no reasoning parser exists for diffusion_gemma on this build, so
+#     thinking is not separated. Strip client-side or revisit when the fork
+#     ships a parser.
+#   - Big KV headroom at 32768 — raising max_model_len is safe if needed.
+#   - Speculative decoding does NOT apply: generation is non-autoregressive
+#     block-diffusion, not token-by-token drafting. No DFlash here, ever.
+#   - Parser names for tool-calls/reasoning unknown for this arch — omitted.
+#   - Chunked prefill / prefix caching omitted for first boot: their semantics
+#     under diffusion decoding are unverified. Add back once boot is clean.
+# =============================================================================
+
+model: nvidia/diffusiongemma-26B-A4B-it-NVFP4
+runtime: vllm
+# Digest = :2026-07-08-v0.24.0-maxsafe (vllm 0.24.0+aeon.sm121a.dflash) — same
+# pinned build as the other AEON recipes; digest pin avoids sparkrun's ':latest'
+# re-pull hang and silent upstream tag drift.
+container: ghcr.io/aeon-7/aeon-vllm-ultimate@sha256:b47f2ce2e38ea7b8ff31714214344fdf40f693002b8e2ef2f534c3a3eaf9c996
+
+# AEON image sets ENTRYPOINT ["/bin/bash"], which collides with sparkrun's
+# 'bash -c <serve cmd>' container command (exit 126, verified 2026-07-08).
+executor_config:
+  entrypoint: ""
+
+min_nodes: 1
+max_nodes: 1
+
+metadata:
+  description: >-
+    DiffusionGemma 26B-A4B (Google diffusion LM, MoE ~4B active), NVIDIA
+    ModelOpt NVFP4. Non-autoregressive block-diffusion decoding. Single DGX Spark.
+  maintainer: nvidia (quant) / google (model) — recipe by gb10-lab
+  model_params: 26B          # total (MoE); ~4B active
+  model_dtype: nvfp4
+  model_vram: 17             # est. from the NVFP4 Gemma-4-26B sibling (16.25 GB loaded); verify at first boot
+
+env:
+  TORCH_MATMUL_PRECISION: "high"
+  PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
+  VLLM_CACHE_ROOT: "/cache/huggingface/.vllm_cache"  # persists FlashInfer FP4 autotune across
+                                                     # containers (~13 min cold -> ~2 min warm)
+
+defaults:
+  host: 0.0.0.0
+  port: 8000
+  tensor_parallel: 1
+  gpu_memory_utilization: 0.75   # GB10 unified memory: 0.85 NVRM-OOMs at boot (2026-07-08); 0.70-0.80 is the safe band
+  max_model_len: 32768           # conservative first-boot cap — diffusion KV/memory profile
+                                 # unmeasured on GB10; raise after the first clean boot
+  max_num_seqs: 16
+  max_num_batched_tokens: 16384
+  served_model_name: diffusiongemma-26b
+
+command: |
+  vllm serve {model} \
+      --served-model-name {served_model_name} \
+      --host {host} \
+      --port {port} \
+      --tensor-parallel-size {tensor_parallel} \
+      --dtype auto \
+      --quantization modelopt \
+      --max-model-len {max_model_len} \
+      --max-num-seqs {max_num_seqs} \
+      --max-num-batched-tokens {max_num_batched_tokens} \
+      --gpu-memory-utilization {gpu_memory_utilization} \
+      --trust-remote-code

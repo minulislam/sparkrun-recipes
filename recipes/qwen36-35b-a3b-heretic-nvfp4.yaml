@@ -8,23 +8,33 @@
 # sparkrun recipe — Qwen3.6-35B-A3B-heretic-NVFP4   [MID MoE: vision + reasoning]
 # SINGLE NODE on the head (10.10.20.10).
 # -----------------------------------------------------------------------------
-# Footprint: 21 GB disk / ~22 GB loaded   |   Context: 262K native (~1M via YaRN)
-# Modality: text + vision   |   Speed: 91 tok/s single / 729 @64 concurrent
+# Footprint: 21 GB disk / ~22 GB loaded (+0.9 GB DFlash drafter)   |   Context: 262K native (~1M via YaRN)
+# Modality: text + vision
+# Speed: 43.4 tok/s drafterless (measured 2026-07-18); ~97 tok/s single-stream
+#        avg with DFlash (75-124 by category), ~740-800 tok/s aggregate c=32-64
+#        per AEON's GB10 numbers.
 # Refusal: 5/100 ("heretic" — effectively uncensored, not the 0/100 guarantee)
 # Launch:
 #   sparkrun run ./qwen36-35b-a3b-heretic-nvfp4.yaml --cluster default --tp 1 --dry-run
 #   sparkrun run ./qwen36-35b-a3b-heretic-nvfp4.yaml --cluster default --tp 1
 # -----------------------------------------------------------------------------
-# !! VERIFY (https://huggingface.co/AEON-7/Qwen3.6-35B-A3B-heretic-NVFP4):
-#    - container tag (unified AEON image assumed; confirm).
-#    - 1M context needs YaRN rope-scaling flags (NOT enabled here — default 262K).
-#    - DFlash drafter id (card cites 4-5x DFlash) — add via the commented block.
-#    - tool/reasoning parser names for Qwen3.6 (commented) — confirm.
+# 2026-07-25: fixes applied from the AEON-7 GitHub cross-check
+# (benchmarks/AEON-FINDINGS-2026-07-18.md):
+#   - DFlash ENABLED: drafter z-lab/Qwen3.6-35B-A3B-DFlash (905 MB, 8-layer full
+#     attention), num_speculative_tokens 11 per their config. No attention-backend
+#     override, no mamba flags needed for this MoE. BF16 KV required — never add
+#     --kv-cache-dtype with DFlash.
+#   - Parsers verified: --reasoning-parser qwen3 --tool-call-parser qwen3_coder.
+#   - KV headroom at 0.75 is ~68 GB vs ~20 needed at 262K, so the drafter's
+#     ~1 GB fits without capping context.
 # =============================================================================
 
 model: AEON-7/Qwen3.6-35B-A3B-heretic-NVFP4
 runtime: vllm
-container: ghcr.io/aeon-7/aeon-vllm-ultimate:latest    # FLAG: confirm tag per card
+# Digest = :2026-07-08-v0.24.0-maxsafe (vllm 0.24.0+aeon.sm121a.dflash), the build
+# all 2026-07-18 benchmarks ran on. Digest pin avoids sparkrun's ':latest' re-pull
+# hang AND silent upstream tag drift (AEON has re-pointed dated tags before).
+container: ghcr.io/aeon-7/aeon-vllm-ultimate@sha256:b47f2ce2e38ea7b8ff31714214344fdf40f693002b8e2ef2f534c3a3eaf9c996
 
 # AEON image sets ENTRYPOINT ["/bin/bash"], which collides with sparkrun's
 # 'bash -c <serve cmd>' container command (exit 126, verified 2026-07-08).
@@ -37,16 +47,20 @@ max_nodes: 1
 metadata:
   description: >-
     Qwen3.6 35B-A3B MoE (~3B active), NVFP4 compressed-tensors, vision + reasoning,
-    262K (1M YaRN). Fastest "large-feeling" model on GB10. Single DGX Spark.
+    262K (1M YaRN), DFlash speculative decoding. Fastest "large-feeling" model
+    on GB10. Single DGX Spark.
   maintainer: AEON-7 (model) — recipe adapted for sparkrun
   model_params: 35B          # ~3B active per token
   model_dtype: nvfp4
-  model_vram: 22
+  kv_dtype: bfloat16         # DFlash (non-causal drafter) requires BF16 KV
+  model_vram: 23
 
 env:
   VLLM_ALLOW_LONG_MAX_MODEL_LEN: "1"
   TORCH_MATMUL_PRECISION: "high"
   PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
+  VLLM_CACHE_ROOT: "/cache/huggingface/.vllm_cache"  # persists FlashInfer FP4 autotune across
+                                                     # containers (~13 min cold -> ~2 min warm)
 
 defaults:
   host: 0.0.0.0
@@ -72,11 +86,11 @@ command: |
       --gpu-memory-utilization {gpu_memory_utilization} \
       --enable-chunked-prefill \
       --enable-prefix-caching \
-      --trust-remote-code
+      --trust-remote-code \
+      --enable-auto-tool-choice \
+      --tool-call-parser qwen3_coder \
+      --reasoning-parser qwen3 \
+      --speculative-config '{"method":"dflash","model":"z-lab/Qwen3.6-35B-A3B-DFlash","num_speculative_tokens":11}'
 
-# --- OPTIONAL: tool/reasoning parsers (confirm names) -------------------------
-#     --enable-auto-tool-choice --tool-call-parser hermes --reasoning-parser qwen3
 # --- OPTIONAL: ~1M context via YaRN (confirm factor from card) ----------------
 #     -o max_model_len=1010000  AND add: --rope-scaling '{"rope_type":"yarn","factor":4.0,"original_max_position_embeddings":262144}'
-# --- OPTIONAL: DFlash speculative decoding (confirm drafter id) ----------------
-#     --speculative-config '{"method":"dflash","model":"<drafter id>","num_speculative_tokens":10,"attention_backend":"flash_attn"}'

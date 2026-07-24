@@ -1,0 +1,4 @@
+(EngineCore pid=325) INFO 07-24 22:38:28 [gpu_model_runner.py:4879] Model loading took 22.51 GiB memory and 139.886745 seconds
+(EngineCore pid=325) INFO 07-24 22:40:21 [kv_cache_utils.py:1766] GPU KV cache size: 61,960 tokens
+(EngineCore pid=325) INFO 07-24 22:40:21 [kv_cache_utils.py:1767] Maximum concurrency for 65,536 tokens per request: 0.95x
+["ghcr.io/aeon-7/gemma-4-31b-uncensored-nvfp4-dflash@sha256:6986488e0bb80d1a879fc6d40a66c048efd5c77c9ed897a68fe6a98dd88118f5"]

@@ -84,7 +84,7 @@ docs: **TP=2 is wired in but untested upstream** (they have one Spark; we have t
 - The v0.25.x notes flag nothing that would change our measured ranking: their own 0.24→0.25
   fleet A/B is throughput-parity.
 
-## Recipe changes this implies (not yet applied)
+## Recipe changes this implies (APPLIED + live-validated 2026-07-25 — see VALIDATION-2026-07-25.md)
 
 | Recipe | Change |
 |---|---|

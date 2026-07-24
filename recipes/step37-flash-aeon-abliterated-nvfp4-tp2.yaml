@@ -3,7 +3,7 @@
 # >>>   sparkrun run  ./step37-flash-aeon-abliterated-nvfp4-tp2.yaml --cluster default --tp 2
 # >>>   sparkrun stop ./step37-flash-aeon-abliterated-nvfp4-tp2.yaml --cluster default --tp 2   # repeat --tp 2
 # >>> 'dgxlab' cluster does NOT exist. Global ssh.user=devops is set in ~/.config/sparkrun/config.yaml.
-# >>> UNVERIFIED: the 2-node TP launch itself + the StepFun container image have not been run on this hardware.
+# >>> UNVERIFIED: the 2-node TP launch itself has not been run on this hardware.
 # >>> NOTE: worker has NO Step-3.7 weights cached yet — first launch transfers/downloads ~124 GB to it.
 
 # =============================================================================
@@ -20,28 +20,31 @@
 #   sparkrun stop ./step37-flash-aeon-abliterated-nvfp4-tp2.yaml --cluster default --tp 2
 #   curl http://10.10.20.10:8000/v1/models      # API served on the head
 # -----------------------------------------------------------------------------
-# !! VERIFY (https://huggingface.co/AEON-7/Step-3.7-Flash-AEON-Ultimate-Abliterated-NVFP4):
-#    - CONTAINER: needs StepFun's vLLM image — stock vLLM <=0.22 lacks the Step3p7
-#      architecture. The report names it "vllm-openai:stepfun37" but the exact
-#      registry/tag is UNVERIFIED. Set the precise image from the card before
-#      running (placeholder below will NOT pull as-is).
-#    - quant is ModelOpt NVFP4 -> left to vLLM auto-detect (add --quantization
-#      modelopt if needed).
-#    - max_model_len: the card's context length was not in the report — 65536 is a
-#      conservative placeholder; set the card's supported value.
-#    - prefer the stable "-NVFP4" build over "-NVFP4-staging".
-#    - Re-run the refusal-subspace probe post-quant (card guidance); FP8 KV may
-#      drift over very long <think> traces.
+# 2026-07-25: container fix applied from the AEON-7 GitHub cross-check
+# (benchmarks/AEON-FINDINGS-2026-07-18.md):
+#   - The old "vllm-openai:stepfun37" placeholder image never existed. The
+#     unified image's validated-models table lists THIS model as expected-to-work
+#     on aeon-vllm-ultimate itself with --quantization modelopt (now explicit
+#     below; their fork carries the Step3p7 architecture).
+#   - CAUTION (their docs): TP=2 is wired in but UNTESTED upstream (AEON has one
+#     Spark; we have two) — treat the first dual-node boot as an experiment.
+#   - NEVER enable NCCL symmetric memory on SM121 (hard crash per AEON docs).
+#     Leave NCCL vars alone.
+#   - max_model_len: the card's context length was not in the report — 65536 is a
+#     conservative placeholder; set the card's supported value.
+#   - prefer the stable "-NVFP4" build over "-NVFP4-staging".
+#   - Re-run the refusal-subspace probe post-quant (card guidance); FP8 KV may
+#     drift over very long <think> traces.
 # =============================================================================
 
 model: AEON-7/Step-3.7-Flash-AEON-Ultimate-Abliterated-NVFP4
 runtime: vllm
-container: vllm-openai:stepfun37          # !! FLAG: set exact StepFun registry/tag from card
+# Digest = :2026-07-08-v0.24.0-maxsafe (vllm 0.24.0+aeon.sm121a.dflash) — same
+# pinned build as the other AEON recipes; avoids the ':latest' re-pull hang.
+container: ghcr.io/aeon-7/aeon-vllm-ultimate@sha256:b47f2ce2e38ea7b8ff31714214344fdf40f693002b8e2ef2f534c3a3eaf9c996
 
-# Most vllm-openai-family images set a non-passthrough ENTRYPOINT that collides
-# with sparkrun's 'bash -c <serve cmd>' container command (exit 126 / mangled
-# args). Clearing it is safe for any image with bash. Keep this when the real
-# StepFun image is filled in.
+# AEON image sets ENTRYPOINT ["/bin/bash"], which collides with sparkrun's
+# 'bash -c <serve cmd>' container command (exit 126, verified 2026-07-08).
 executor_config:
   entrypoint: ""
 
@@ -62,6 +65,8 @@ metadata:
 env:
   VLLM_ALLOW_LONG_MAX_MODEL_LEN: "1"
   PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
+  VLLM_CACHE_ROOT: "/cache/huggingface/.vllm_cache"  # persists FlashInfer FP4 autotune across
+                                                     # containers (~13 min cold -> ~2 min warm)
 
 defaults:
   host: 0.0.0.0
@@ -73,7 +78,8 @@ defaults:
   max_num_batched_tokens: 16384
   served_model_name: step37-flash-aeon
 
-# ModelOpt NVFP4 left to auto-detect. FP8 KV per the report.
+# ModelOpt NVFP4 made explicit per the unified image's validated-models table.
+# FP8 KV per the report.
 command: |
   vllm serve {model} \
       --served-model-name {served_model_name} \
@@ -81,6 +87,7 @@ command: |
       --port {port} \
       --tensor-parallel-size {tensor_parallel} \
       --dtype auto \
+      --quantization modelopt \
       --kv-cache-dtype fp8 \
       --max-model-len {max_model_len} \
       --max-num-seqs {max_num_seqs} \

@@ -27,8 +27,14 @@
 #    put it in the local HF cache once:
 #       huggingface-cli download z-lab/gemma-4-26B-A4B-it-DFlash
 #    sparkrun mounts that HF cache into the container, so vLLM resolves the
-#    drafter by its HF id (below) from cache. If the head has internet+HF access,
-#    vLLM can also fetch it on first run.
+#    drafter by its HF id (below) from cache. NOTE (verified 2026-07-25): sparkrun
+#    serve containers run with HF_HUB_OFFLINE=1 — an uncached drafter FAILS boot
+#    with "Invalid repository ID or local directory"; it can NOT be fetched at
+#    first run. Pre-cache is mandatory. No hf CLI on the host — use a one-off
+#    container:
+#      docker run --rm --network host -v /home/devops/.cache/huggingface:/cache/huggingface \
+#        -e HF_HOME=/cache/huggingface --entrypoint python3 <this recipe's image> \
+#        -c "from huggingface_hub import snapshot_download; snapshot_download('z-lab/gemma-4-26B-A4B-it-DFlash')"
 #
 # !! RESOLVED (verified 2026-07-08 via --dry-run on sparkrun 0.2.39): the
 #    {placeholder} engine renders the --speculative-config JSON braces intact.
@@ -39,7 +45,11 @@
 
 model: AEON-7/Gemma-4-26B-A4B-it-Uncensored-NVFP4
 runtime: vllm
-container: ghcr.io/aeon-7/aeon-vllm-ultimate:latest   # digest f0cc5e9c (2026-07-08); NOTE: dated tag :2026-06-18-v0.23.0-dflashfix now points to a DIFFERENT (older) image
+# Digest = :2026-07-08-v0.24.0-maxsafe (vllm 0.24.0+aeon.sm121a.dflash), the build
+# all 2026-07-18 benchmarks ran on (76.8 tok/s single-stream on this recipe).
+# Digest pin avoids sparkrun's ':latest' re-pull hang AND silent upstream tag
+# drift (the dated tag :2026-06-18-v0.23.0-dflashfix was re-pointed upstream).
+container: ghcr.io/aeon-7/aeon-vllm-ultimate@sha256:b47f2ce2e38ea7b8ff31714214344fdf40f693002b8e2ef2f534c3a3eaf9c996
 
 # AEON image sets ENTRYPOINT ["/bin/bash"], which collides with sparkrun's
 # 'bash -c <serve cmd>' container command (exit 126, verified 2026-07-08).
@@ -61,14 +71,18 @@ metadata:
   model_vram: 16.25          # GB loaded (from the model card); overrides auto-detect
 
 # Env vars from the model card's reference `docker run` (NVFP4 + GB10 specifics).
+# 2026-07-25: dropped VLLM_NVFP4_GEMM_BACKEND + VLLM_USE_FLASHINFER_MOE_FP4 —
+# both removed upstream in vLLM v0.24.0 (silently ignored on the pinned image).
+# This checkpoint auto-selects CUTLASS; do NOT force --linear-backend
+# flashinfer_cutlass (crashes checkpoints without per-input global scales).
 env:
   VLLM_ALLOW_LONG_MAX_MODEL_LEN: "1"
   TORCH_MATMUL_PRECISION: "high"
   PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
-  VLLM_USE_FLASHINFER_MOE_FP4: "0"
   VLLM_TEST_FORCE_FP8_MARLIN: "0"
-  VLLM_NVFP4_GEMM_BACKEND: "flashinfer-cutlass"
   VLLM_USE_FLASHINFER_SAMPLER: "1"
+  VLLM_CACHE_ROOT: "/cache/huggingface/.vllm_cache"  # persists FlashInfer FP4 autotune across
+                                                     # containers (~13 min cold -> ~2 min warm)
 
 defaults:
   host: 0.0.0.0

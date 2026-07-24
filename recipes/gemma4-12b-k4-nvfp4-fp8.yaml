@@ -26,7 +26,10 @@
 
 model: AEON-7/Gemma-4-12B-it-AEON-Abliterated-K4-NVFP4-FP8
 runtime: vllm
-container: ghcr.io/aeon-7/aeon-vllm-ultimate:latest    # FLAG: confirm tag per card
+# Digest = :2026-07-08-v0.24.0-maxsafe (vllm 0.24.0+aeon.sm121a.dflash) — live-
+# validated with this recipe 2026-07-18 (21.7 tok/s single-stream). Digest pin
+# avoids sparkrun's ':latest' re-pull hang and silent upstream tag drift.
+container: ghcr.io/aeon-7/aeon-vllm-ultimate@sha256:b47f2ce2e38ea7b8ff31714214344fdf40f693002b8e2ef2f534c3a3eaf9c996
 
 # The AEON image sets ENTRYPOINT ["/bin/bash"], which collides with sparkrun's
 # own 'bash -c <serve cmd>' container command (docker concatenates them ->
@@ -51,6 +54,8 @@ env:
   VLLM_ALLOW_LONG_MAX_MODEL_LEN: "1"
   TORCH_MATMUL_PRECISION: "high"
   PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
+  VLLM_CACHE_ROOT: "/cache/huggingface/.vllm_cache"  # persists FlashInfer FP4 autotune across
+                                                     # containers (~13 min cold -> ~2 min warm)
 
 defaults:
   host: 0.0.0.0

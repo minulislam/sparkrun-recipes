@@ -8,34 +8,47 @@
 # sparkrun recipe — Gemma-4-31B-it-DECKARD-HERETIC-Uncensored-NVFP4   [DENSE/QUALITY]
 # SINGLE NODE on the head (10.10.20.10).
 # -----------------------------------------------------------------------------
-# Footprint: 20.5 GB disk / ~21 GB loaded   |   Context: 262K native, CAPPED to 64K here (KV limit)   |   Modality: text + vision
-# Speed: SLOW on GB10 — ~12-14 tok/s single (pure dense 31B is bandwidth-bound;
-#        ~43 tok/s with the E4B EAGLE drafter at low concurrency).
+# Footprint: 20.5 GB disk / ~21 GB loaded (+ DFlash drafter)   |   Context: 262K native, CAPPED to 64K here (KV limit)
+# Modality: text + vision
+# Speed (AEON's numbers on THIS container): 38.8 tok/s c=1 with DFlash k=15
+#        (vs ~11 tok/s drafterless), 427 tok/s aggregate at c=32.
 # Pick this only when full-dense answer quality matters more than speed.
 # Launch:
 #   sparkrun run ./gemma4-31b-deckard-heretic-nvfp4.yaml --cluster default --tp 1 --dry-run
 #   sparkrun run ./gemma4-31b-deckard-heretic-nvfp4.yaml --cluster default --tp 1
 # -----------------------------------------------------------------------------
-# !! BLOCKED ON CONTAINER (verified on a live boot 2026-07-08): the unified AEON
-#    image (vllm 0.24.0+aeon) REJECTS this checkpoint. hf_quant_config.json
-#    declares quant_algo NVFP4_AWQ (ModelOpt 0.42.0, pre_quant_scale: true) but
-#    this build supports only [FP8, FP8_PER_CHANNEL_PER_TOKEN, FP8_PB_WO, NVFP4,
-#    W4A16_NVFP4, MXFP8, MIXED_PRECISION] -> VllmConfig validation fails at boot.
-#    FIX: use the card's family image (vllm-spark-gemma4-nvfp4 — get the exact
-#    tag from the card) or any vLLM build that lists NVFP4_AWQ. Do NOT hand-edit
-#    quant_algo to W4A16_NVFP4: pre_quant_scale tensors could be silently
-#    ignored -> silent quality corruption.
-# !! VERIFY (https://huggingface.co/AEON-7/Gemma-4-31B-it-DECKARD-HERETIC-Uncensored-NVFP4):
-#    - EAGLE spec-decode via drafter AEON-7/Gemma-4-E4B-DECKARD-HERETIC-Uncensored-NVFP4
-#      is OPTIONAL and uses EAGLE (not DFlash) config — syntax unverified, see below.
+# 2026-07-25: container fix applied from the AEON-7 GitHub cross-check
+# (benchmarks/AEON-FINDINGS-2026-07-18.md):
+#   - The checkpoint is quant_algo NVFP4_AWQ (ModelOpt 0.42.0, pre_quant_scale) —
+#     the unified aeon-vllm-ultimate image REJECTS it on every build (its ModelOpt
+#     loader lists only FP8*, NVFP4, W4A16_NVFP4, MXFP8, MIXED_PRECISION). Boot
+#     failure verified live 2026-07-08 and 2026-07-18.
+#   - AEON ships a DEDICATED container for this model (NVFP4_AWQ loader patch:
+#     pre_quant_scale registration + NaN block-scale scrub, gemma4 parsers,
+#     DFlash). Their reference deployment: GPU_MEMORY_UTILIZATION=0.82,
+#     MAX_MODEL_LEN=65536, MAX_NUM_SEQS=16, MAX_NUM_BATCHED_TOKENS=32768 —
+#     mirrored in the defaults below. Note their image is self-contained (baked
+#     entrypoint + local /models mounts); sparkrun clears the entrypoint and
+#     composes its own `vllm serve` with HF ids instead, which the same patched
+#     vLLM inside serves. If boot fails, inspect the baked entrypoint script for
+#     the exact flags: docker inspect + cat inside the image.
+#   - DFlash drafter: z-lab/gemma-4-31B-it-DFlash, num_speculative_tokens 15.
+#     attention_backend flash_attn follows the verified gemma-26B drafter
+#     pattern. BF16 KV required — never add --kv-cache-dtype with DFlash.
+#   - Do NOT hand-edit quant_algo to W4A16_NVFP4: pre_quant_scale tensors would
+#     be silently ignored -> silent quality corruption.
 # =============================================================================
 
 model: AEON-7/Gemma-4-31B-it-DECKARD-HERETIC-Uncensored-NVFP4
 runtime: vllm
-container: ghcr.io/aeon-7/aeon-vllm-ultimate:latest    # FLAG: confirm tag per card
+# Digest = ':latest' as pulled + live-validated 2026-07-25 (31.3 tok/s c=1,
+# 113.8 tok/s 8-way on gb10-spark). NOTE: this container ships vLLM 0.20.1 (not
+# the unified image's 0.24) — flags verified working on that vintage. Digest pin
+# avoids sparkrun's ':latest' re-pull hang and upstream tag drift.
+container: ghcr.io/aeon-7/gemma-4-31b-uncensored-nvfp4-dflash@sha256:6986488e0bb80d1a879fc6d40a66c048efd5c77c9ed897a68fe6a98dd88118f5
 
-# AEON image sets ENTRYPOINT ["/bin/bash"], which collides with sparkrun's
-# 'bash -c <serve cmd>' container command (exit 126, verified 2026-07-08).
+# The image has a baked non-passthrough entrypoint (self-contained server);
+# clearing it lets sparkrun's 'bash -c <serve cmd>' run the patched vLLM directly.
 executor_config:
   entrypoint: ""
 
@@ -44,32 +57,39 @@ max_nodes: 1
 
 metadata:
   description: >-
-    Gemma 4 31B DENSE, NVFP4 AWQ_FULL (ModelOpt), thinking + vision, uncensored
-    (DECKARD/Heretic). Quality-critical pick; slow decode on GB10. Single DGX Spark.
-  maintainer: AEON-7 (model) — recipe adapted for sparkrun
+    Gemma 4 31B DENSE, NVFP4_AWQ (ModelOpt), thinking + vision, uncensored
+    (DECKARD/Heretic), DFlash k=15 on AEON's dedicated patched container.
+    Quality-critical pick. Single DGX Spark.
+  maintainer: AEON-7 (model + container) — recipe adapted for sparkrun
   model_params: 31B
   model_dtype: nvfp4
-  model_vram: 21
+  kv_dtype: bfloat16    # DFlash (non-causal drafter) requires BF16 KV
+  model_vram: 24
 
 env:
   VLLM_ALLOW_LONG_MAX_MODEL_LEN: "1"
   TORCH_MATMUL_PRECISION: "high"
   PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
+  VLLM_CACHE_ROOT: "/cache/huggingface/.vllm_cache"  # persists FlashInfer FP4 autotune across
+                                                     # containers (~13 min cold -> ~2 min warm)
 
 defaults:
   host: 0.0.0.0
   port: 8000
   tensor_parallel: 1
-  gpu_memory_utilization: 0.75     # 0.85 caused NVRM out-of-memory during boot on the live GB10 (2026-07-08)
-  max_model_len: 65536             # 262144 native does NOT fit: dense 60L x 16KV heads needs 240 GB KV at full
-                                   # context. 65536 -> 60 GB KV + 21 GB weights = 81 GB, inside the 90.75 GB
-                                   # budget at 0.75. vLLM refuses to boot if one max-len seq exceeds KV capacity.
+  gpu_memory_utilization: 0.82     # AEON's reference value for THIS container on Spark
+                                   # (0.85 caused NVRM OOM on the unified image 2026-07-08 —
+                                   # if boot OOMs here, drop to 0.75 before touching context)
+  max_model_len: 61440             # 262144 native does NOT fit (dense 60L x 16KV heads = ~1 MB KV/token).
+                                   # Measured 2026-07-25 at 0.82: KV capacity = 61,960 tokens, so AEON's
+                                   # 65536 gives only 0.95x concurrency (one full-length request can't fit);
+                                   # 61440 keeps a single max-len request inside capacity.
   max_num_seqs: 16
-  max_num_batched_tokens: 16384
+  max_num_batched_tokens: 32768    # AEON reference value (was 16384)
   served_model_name: gemma4-31b-deckard
 
-# Gemma 4 -> triton_attn + gemma4 parsers (verified pattern). ModelOpt NVFP4
-# quant left to vLLM auto-detect.
+# Gemma 4 -> triton_attn + gemma4 parsers (verified pattern). NVFP4_AWQ quant
+# left to the patched loader's auto-detect.
 command: |
   vllm serve {model} \
       --served-model-name {served_model_name} \
@@ -87,10 +107,5 @@ command: |
       --trust-remote-code \
       --enable-auto-tool-choice \
       --tool-call-parser gemma4 \
-      --reasoning-parser gemma4
-
-# --- OPTIONAL: EAGLE speculative decoding (confirm exact config from card) -----
-#     pre-download the drafter first (the control machine IS the head, run locally):
-#       huggingface-cli download AEON-7/Gemma-4-E4B-DECKARD-HERETIC-Uncensored-NVFP4
-#     then add (EAGLE method/fields are model-specific — verify):
-#       --speculative-config '{"method":"eagle","model":"AEON-7/Gemma-4-E4B-DECKARD-HERETIC-Uncensored-NVFP4","num_speculative_tokens":5}'
+      --reasoning-parser gemma4 \
+      --speculative-config '{"method":"dflash","model":"z-lab/gemma-4-31B-it-DFlash","num_speculative_tokens":15,"attention_backend":"flash_attn"}'
