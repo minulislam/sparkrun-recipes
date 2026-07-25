@@ -1,62 +1,77 @@
-# AEON‑7 NVFP4 sparkrun recipes — index (DGX Spark, head 10.10.20.10 / worker 10.10.20.11)
+# gb10-lab sparkrun recipes — index (DGX Spark: head gb10-spark 10.10.20.10 / worker gx10-spark 10.10.20.11)
 
-> **Verified launch (this Mac, 2026-07-01):** single-node -> `sparkrun run ./<recipe>.yaml --cluster dgxlab --solo`; Step-3.7 -> `sparkrun run ./step37-...yaml --cluster dgxlab --tp 2`. A bare `--hosts <ip>` SSHes as the wrong global user `agenticos` and fails (`run` has no `--user`; `--cluster dgxlab` carries the `devops` user).
+> **Launch basics (re-verified live 2026-07-25):** cluster is **`default`**
+> (`dgxlab` does not exist), global `ssh.user=devops`, single node =
+> `--tp 1` (`--solo` is deprecated). Endpoint: `http://10.10.20.10:8000/v1`.
+> Always `--dry-run` first; always `--no-follow` for scripted launches.
+> **DFlash drafters must be pre-cached** — serve containers run
+> `HF_HUB_OFFLINE=1` (see `benchmarks/VALIDATION-2026-07-25.md` §Operational).
 
+All speed numbers below are **measured on this cluster** (2026-07-18 baseline +
+2026-07-25 post-fix validation, greedy decoding, stdlib harness —
+`benchmarks/README.md` indexes the full reports).
 
-Seven recipes, one per model selected as best‑for‑GB10. All single‑node on the head **except Step‑3.7**, which is tensor‑parallel across both Sparks. Specs come from the on‑Mac report (`AEON-7_DGX-Spark_uncensored_model_recommendations.md`); serving conventions reuse the **verified** Gemma‑4‑26B card (container, NVFP4 flags, `triton_attn`, parsers, DFlash).
+| # | Recipe file | Model | Loaded | c=1 tok/s | 8-way | Modality | Placement | Use for |
+|---|---|---|---|---|---|---|---|---|
+| 1 | `diffusiongemma-26b-a4b-nvfp4.yaml` | DiffusionGemma-26B-A4B (NVIDIA NVFP4) | 18.0 GiB | **358** | 126 | text (+vision base) | 1 node | **Fastest interactive** (diffusion decoding; TTFT ~1.5 s; "thought"-marker quirk) |
+| 2 | `gemma4-26b-aeon-vllm.yaml` | Gemma-4-26B-A4B AEON NVFP4 + DFlash | 16.8 GiB | 76.8 | 156 | text + vision | 1 node | **Interactive agents / tools** — clean strict-JSON |
+| 3 | `nemotron3-nano-omni-aeon-nvfp4.yaml` | Nemotron-3-Nano-Omni NVFP4 | 20.9 GiB | 72.7 | **265** | text+image+audio+video | 1 node | **Fleet / batch champion**; only audio model |
+| 4 | `qwen36-35b-a3b-heretic-nvfp4.yaml` | Qwen3.6-35B-A3B heretic NVFP4 + DFlash n=11 | 22.7 GiB | **82** | 149 | text + vision | 1 node | Interactive mid-MoE, 262K ctx |
+| 5 | `qwen36-35b-a3b-heretic-nvfp4-batch.yaml` | same, drafterless batch twin | 21.9 GiB | 43.4 | **224** | text + vision | 1 node | Batch/fleet lane of #4 |
+| 6 | `qwen36-27b-aeon-ultimate-nvfp4.yaml` | Qwen3.6-27B AEON NVFP4 + DFlash n=10 | 29.3 GiB | 23.7 | 88 | text + vision | 1 node | **Flagship quality**, 0/100 refusal |
+| 7 | `qwen36-27b-aeon-colocate.yaml` | same, 0.40 GPU co-location profile | ~30 GiB | — | — | text + vision | shares 1 node | Second endpoint beside #2 (port 8001) |
+| 8 | `gemma4-31b-deckard-heretic-nvfp4.yaml` | Gemma-4-31B DECKARD NVFP4_AWQ + DFlash k=15 | 22.5 GiB | 31.3 | 114 | text + vision | 1 node | Quality-critical dense (dedicated container, vLLM 0.20.1) |
+| 9 | `gemma4-12b-k4-nvfp4-fp8.yaml` | Gemma-4-12B K4 NVFP4-FP8 | 9.1 GiB | 21.7 | 162 | text + vision | 1 node | Smallest footprint; leaves room for a neighbor |
+| 10 | `step37-flash-aeon-abliterated-nvfp4-tp2.yaml` | Step-3.7-Flash abliterated NVFP4 (198B MoE) | ~124 GB | untested | — | text + vision | **2 nodes TP=2** | Frontier; TP=2 boot still unvalidated |
+| 11 | `gemma4-26b-stock-vllm.yaml` | Gemma-26B on stock vLLM image | — | untested | — | text + vision | 1 node | No-DFlash fallback for #2 |
 
-**Always `--dry-run` first** to see the rendered command before launching.
-
-| # | Recipe file | Model | Footprint | Speed (GB10) | Modality | Placement | Use it for |
-|---|---|---|---|---|---|---|---|
-| 1 | `qwen36-27b-aeon-ultimate-nvfp4.yaml` | Qwen3.6‑27B‑AEON‑Ultimate‑NVFP4 | 26 GB / ~30 GB | ~50 tok/s | text + vision | 1 node | **Flagship.** Highest quality, 0/100 refusal, production‑validated |
-| 2 | `gemma4-26b-aeon-vllm.yaml` | Gemma‑4‑26B‑A4B‑NVFP4 (MoE) | 15.3 GB / 16.25 GB | 50 → **1,430 @128** | text (+vision*) | 1 node | **Fast agent fleets / max concurrency** (DFlash, verified) |
-| 3 | `qwen36-35b-a3b-heretic-nvfp4.yaml` | Qwen3.6‑35B‑A3B‑heretic‑NVFP4 (MoE) | 21 GB / ~22 GB | **91** / 729 @64 | text + vision | 1 node | Mid MoE with vision + reasoning + 1M ctx (5/100 refusal) |
-| 4 | `nemotron3-nano-omni-aeon-nvfp4.yaml` | Nemotron‑3‑Nano‑Omni‑NVFP4 | ~22 GB / ~24 GB | ~71 tok/s | **text+image+audio+video** | 1 node | **Omni** — the only audio‑capable model |
-| 5 | `gemma4-12b-k4-nvfp4-fp8.yaml` | Gemma‑4‑12B‑K4‑NVFP4‑FP8 | 9.3 GB / ~10 GB | ~250+ @16 | text + vision | 1 node | **Smallest + fastest**; leaves room for a 2nd model |
-| 6 | `gemma4-31b-deckard-heretic-nvfp4.yaml` | Gemma‑4‑31B‑DECKARD‑NVFP4 (dense) | 20.5 GB / ~21 GB | ~12–14 tok/s | text + vision | 1 node | Quality‑critical dense answers (slow decode) |
-| 7 | `step37-flash-aeon-abliterated-nvfp4-tp2.yaml` | Step‑3.7‑Flash‑NVFP4 (198B MoE VLM) | ~124 GB | frontier | text + vision | **2 nodes (TP=2)** | Maximum capability; dedicates both Sparks |
-
-> A simpler no‑DFlash fallback for model #2 also exists: `gemma4-26b-stock-vllm.yaml`.
-
-## One‑line launch commands (run from the Mac)
+## Launch
 
 ```bash
-# 1 — Qwen3.6 27B flagship
-sparkrun run ./qwen36-27b-aeon-ultimate-nvfp4.yaml   --cluster dgxlab --solo --dry-run
-# 2 — Gemma 26B MoE (fast)
-sparkrun run ./gemma4-26b-aeon-vllm.yaml             --cluster dgxlab --solo --dry-run
-# 3 — Qwen3.6 35B-A3B MoE
-sparkrun run ./qwen36-35b-a3b-heretic-nvfp4.yaml     --cluster dgxlab --solo --dry-run
-# 4 — Nemotron Omni (audio/vision)
-sparkrun run ./nemotron3-nano-omni-aeon-nvfp4.yaml   --cluster dgxlab --solo --dry-run
-# 5 — Gemma 12B (small/fast)
-sparkrun run ./gemma4-12b-k4-nvfp4-fp8.yaml          --cluster dgxlab --solo --dry-run
-# 6 — Gemma 31B dense (quality)
-sparkrun run ./gemma4-31b-deckard-heretic-nvfp4.yaml --cluster dgxlab --solo --dry-run
-# 7 — Step-3.7 198B (BOTH nodes, TP=2)
-sparkrun run ./step37-flash-aeon-abliterated-nvfp4-tp2.yaml --cluster dgxlab --tp 2 --dry-run
+# interactive default
+sparkrun run ./recipes/diffusiongemma-26b-a4b-nvfp4.yaml --cluster default --tp 1 --no-follow
+# fleet default
+sparkrun run ./recipes/nemotron3-nano-omni-aeon-nvfp4.yaml --cluster default --tp 1 --no-follow
+# stop (same flags as run)
+sparkrun stop ./recipes/<file>.yaml --cluster default --tp 1
 ```
-Drop `--dry-run` to actually launch. Endpoint is OpenAI‑compatible on the head: `http://10.10.20.10:8000/v1/...`. Ctrl+C detaches from logs (never kills the job). Stop with `sparkrun stop ./<recipe>.yaml` (add `--tp 2` for Step‑3.7).
 
-## Suggested two‑node layout (independent replicas beat TP=2 on GB10)
-- **Spark A (10.10.20.10):** flagship `qwen36-27b` (quality) — or `nemotron3-omni` if you need audio.
-- **Spark B (10.10.20.11):** `gemma4-26b` (fast agent fleet) — run it with `--hosts 10.10.20.11`.
-- **Or** dedicate both to `step37` (TP=2) when you want the one frontier model.
+By registry name (after `sparkrun registry update gb10-lab`):
+`sparkrun run @gb10-lab/<recipe-name> --cluster default --tp 1`
 
-## What's verified vs. flagged
+## Two-node layout (independent replicas beat TP=2 on GB10)
 
-**Verified** (from the live Gemma‑4‑26B card last session + the on‑Mac report): the sparkrun recipe schema; the unified AEON container claim (`ghcr.io/aeon-7/aeon-vllm-ultimate:latest`); NVFP4 conventions (`--quantization compressed-tensors`, `--attention-backend triton_attn` for Gemma, `gemma4` tool/reasoning parsers, BF16‑KV‑with‑DFlash, the NVFP4 env vars); each model's footprint, context, modality, tok/s, and single‑node‑vs‑TP2 placement.
+- **Spark A (head):** `diffusiongemma` (interactive) or `qwen36-27b` (flagship quality)
+- **Spark B (worker):** `nemotron3-omni` or `qwen36-35b-…-batch` (fleet lane) — `--hosts 10.10.20.11`
+- **Or** both nodes → `step37` TP=2 (once validated)
 
-**Flagged — confirm against each model card (web_fetch to huggingface.co was timing out this session, and the HF MCP tools were disallowed):**
-- **Exact container image/tag per model.** I used the unified AEON image for all AEON models; the report also references family‑specific images (`vllm-spark-q36*`, `vllm-spark-gemma4-nvfp4*`, `vllm-nemotron-omni-aeon-ultimate`). **Step‑3.7's StepFun image (`vllm-openai:stepfun37`) registry/tag is a placeholder — set the real one before running.**
-- **DFlash/EAGLE drafter repo ids** for Qwen‑27B, Qwen‑35B, and Gemma‑31B (spec‑decode left commented/optional; only Gemma‑26B's drafter `z-lab/gemma-4-26B-A4B-it-DFlash` is verified).
-- **Quantization flag for ModelOpt builds** (Nemotron, Gemma‑31B, Step‑3.7) — left to vLLM auto‑detect; add `--quantization modelopt` if it mis‑detects.
-- **Tool/reasoning parser names** for the non‑Gemma models (Qwen/Nemotron) — left commented.
-- **Step‑3.7 context length** — `65536` placeholder; set the card's value.
-- 1M‑context YaRN flags for Qwen‑35B (commented), and whether end‑to‑end NVFP4 + vision is validated on Gemma‑26B (card calls it untested).
+## Conventions (all live-verified)
 
-## Sources
-- On‑Mac report: `AEON-7_DGX-Spark_uncensored_model_recommendations.md`
-- Verified serving card: https://huggingface.co/AEON-7/Gemma-4-26B-A4B-it-Uncensored-NVFP4
-- sparkrun recipe format: https://sparkrun.dev/recipes/format/
+- Containers **pinned by digest** — avoids sparkrun's `:latest` re-pull hang and
+  upstream tag drift. Unified AEON image = `@sha256:b47f2ce2…`
+  (`:2026-07-08-v0.24.0-maxsafe`, vLLM `0.24.0+aeon.sm121a.dflash`).
+- `executor_config: {entrypoint: ""}` everywhere (AEON/vllm-openai ENTRYPOINT collision).
+- `VLLM_CACHE_ROOT=/cache/huggingface/.vllm_cache` persists FlashInfer autotune.
+- DFlash needs **BF16 KV** (never `--kv-cache-dtype` with a drafter) and the
+  drafter **pre-cached** in the head's HF cache.
+- Qwen parsers: `--reasoning-parser qwen3 --tool-call-parser qwen3_coder`
+  (tool_calls parse verified live; `qwen3_xml` also works, `hermes` does not).
+- GB10 memory: 0.70–0.82 `gpu_memory_utilization`; 0.85 NVRM-OOMs at boot.
+- Never enable NCCL symmetric memory on SM121.
+
+## Documents
+
+- `benchmarks/README.md` — index of all benchmark/validation reports + raw data
+- `benchmarks/GITHUB-RECIPES-COMPARE-2026-07-25.md` — how these recipes compare
+  to the GitHub recipe repos (eugr, spark-arena) and what we adopted
+- `gemma4-26b-usage-note.md` — usage notes for the Gemma-26B endpoint
+
+## Open items
+
+- Step-3.7 TP=2 first boot (worker currently occupied by a long-running job);
+  when testing, try eugr-style `max_model_len 262144` and 0.8 utilization.
+- DiffusionGemma thinking toggle (`--default-chat-template-kwargs`) and
+  `--diffusion-config canvas_length` experiments (adopted from eugr — see the
+  compare report).
+- Qwen-35B DFlash n=11 → 15 sweep; Qwen-27B MTP-XS body A/B.
+- Nemotron tool/reasoning parser names still unverified.
