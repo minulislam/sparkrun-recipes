@@ -1,4 +1,4 @@
-# gb10-lab benchmark & validation documents
+# spark-forge benchmark & validation documents
 
 All measurements taken live on the `default` cluster (head gb10-spark
 10.10.20.10, worker gx10-spark 10.10.20.11 — both GB10, 121 GB unified memory)

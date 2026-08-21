@@ -48,7 +48,7 @@ metadata:
   description: >-
     DiffusionGemma 26B-A4B (Google diffusion LM, MoE ~4B active), NVIDIA
     ModelOpt NVFP4. Non-autoregressive block-diffusion decoding. Single DGX Spark.
-  maintainer: nvidia (quant) / google (model) — recipe by gb10-lab
+  maintainer: nvidia (quant) / google (model) — recipe by spark-forge
   model_params: 26B          # total (MoE); ~4B active
   model_dtype: nvfp4
   model_vram: 17             # est. from the NVFP4 Gemma-4-26B sibling (16.25 GB loaded); verify at first boot

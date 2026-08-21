@@ -1,4 +1,4 @@
-# gb10-lab sparkrun recipes — index (DGX Spark: head gb10-spark 10.10.20.10 / worker gx10-spark 10.10.20.11)
+# spark-forge sparkrun recipes — index (DGX Spark: head gb10-spark 10.10.20.10 / worker gx10-spark 10.10.20.11)
 
 > **Launch basics (re-verified live 2026-07-25):** cluster is **`default`**
 > (`dgxlab` does not exist), global `ssh.user=devops`, single node =
@@ -36,8 +36,8 @@ sparkrun run ./recipes/nemotron3-nano-omni-aeon-nvfp4.yaml --cluster default --t
 sparkrun stop ./recipes/<file>.yaml --cluster default --tp 1
 ```
 
-By registry name (after `sparkrun registry update gb10-lab`):
-`sparkrun run @gb10-lab/<recipe-name> --cluster default --tp 1`
+By registry name (after `sparkrun registry update spark-forge`):
+`sparkrun run @spark-forge/<recipe-name> --cluster default --tp 1`
 
 ## Two-node layout (independent replicas beat TP=2 on GB10)
 

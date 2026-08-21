@@ -1,4 +1,4 @@
-# gb10-lab recipe benchmarks — live head-to-head (2026-07-18)
+# spark-forge recipe benchmarks — live head-to-head (2026-07-18)
 
 Measured on **gb10-spark** (head, 10.10.20.10), one recipe at a time, via the OpenAI
 endpoint from the devops workstation. Harness: `bench.py` (this directory holds the raw

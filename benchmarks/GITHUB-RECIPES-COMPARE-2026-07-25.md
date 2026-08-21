@@ -8,7 +8,7 @@ covers the same models, which version is best?
 Authenticated as **rehanpatwary** (via the workstation's API token) and swept
 all 26 repos plus a code search for "sparkrun": **zero hits**. The only
 DGX-related repo, `rehanpatwary/dgx-agent`, holds a LiteLLM config and a
-systemd unit — no recipes. Conclusion: the gb10-lab registry in
+systemd unit — no recipes. Conclusion: the spark-forge registry in
 `/home/devops/workspace/code` (this repo) is the only registry we author, and
 it lives solely on this workstation (no git remote configured). If it should
 be on GitHub, that's a one-command push once a remote is created.
@@ -31,7 +31,7 @@ community-recipe-registry** (three Qwen3.6-35B variants). Registries updated
 | Nemotron-3 | Nano-**Omni** NVFP4 (audio/video), **265 tok/s @ 8-way measured** | `nemotron-3-nano-nvfp4` / `-super-nvfp4` (text-only lines) | **Ours** — different model line; omni is the point. |
 | Qwen3.6-27B, Gemma-31B, Gemma-12B | ours (validated) | — none | **Ours by default.** |
 
-**Overall**: keep the gb10-lab registry as-is (every overlapping verdict went to
+**Overall**: keep the spark-forge registry as-is (every overlapping verdict went to
 our versions, all live-measured on this hardware); adopt three eugr techniques
 as experiments:
 
@@ -61,7 +61,7 @@ Found and resolved to a single canonical copy — `recipes/` in this repo:
 
 | Location | What | Action |
 |---|---|---|
-| `/home/devops/workspace/code/recipes/` (branch main) | pre-fix versions | fast-forwarded to the fixed branch — the sparkrun gb10-lab registry reads this path |
+| `/home/devops/workspace/code/recipes/` (branch main) | pre-fix versions | fast-forwarded to the fixed branch — the sparkrun spark-forge registry reads this path |
 | `/home/devops/workspace/llm/recipes/qwen36-27b-aeon-toolcall.yaml` | co-location + tool-call variant (2026-07-09) | ported into repo as `recipes/qwen36-27b-aeon-colocate.yaml` (digest pin, dead env dropped, parser standardized); original deleted |
 | `/home/devops/workspace/llm/recipes/qwen36-35b-a3b-heretic-nvfp4-toolcall.yaml` | 35B + parsers (2026-07-09) | redundant — base recipe now ships DFlash + parsers, batch variant ships drafterless + parsers; qwen3_xml evidence preserved here and in the colocate recipe; original deleted |
 | `/home/devops/spark-vllm-docker/`, `/home/devops/workspace/llm/spark-vllm-docker/` | clones of eugr's third-party repo | left alone — not ours, and sparkrun keeps its own registry caches |

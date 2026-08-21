@@ -33,8 +33,8 @@ Both nodes are GB10 with 121 GB unified memory.
 sparkrun run ./recipes/diffusiongemma-26b-a4b-nvfp4.yaml --cluster default --tp 1 --no-follow
 
 # or, after registering the registry, by name
-sparkrun registry update gb10-lab
-sparkrun run @gb10-lab/diffusiongemma-26b-a4b-nvfp4 --cluster default --tp 1
+sparkrun registry update spark-forge
+sparkrun run @spark-forge/diffusiongemma-26b-a4b-nvfp4 --cluster default --tp 1
 
 # stop (same flags as run)
 sparkrun stop ./recipes/<file>.yaml --cluster default --tp 1
@@ -45,7 +45,7 @@ sparkrun stop ./recipes/<file>.yaml --cluster default --tp 1
 
 ## Recipes
 
-11 recipes live in [`recipes/`](recipes), registered under the `gb10-lab` registry. Full details, current placement guidance, and every measured number are kept in [`INDEX.md`](INDEX.md) — the table below is a condensed pointer, not the source of truth.
+11 recipes live in [`recipes/`](recipes), registered under the `spark-forge` registry. Full details, current placement guidance, and every measured number are kept in [`INDEX.md`](INDEX.md) — the table below is a condensed pointer, not the source of truth.
 
 | Recipe | Model | c=1 tok/s | 8-way | Best for |
 |---|---|---:|---:|---|
