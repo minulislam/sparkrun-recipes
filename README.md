@@ -1,11 +1,19 @@
 # sparkrun-recipes
 
-Live-validated [sparkrun](https://sparkrun.dev) recipes for running NVFP4-quantized LLMs on an NVIDIA DGX Spark (GB10) cluster — plus the benchmark data behind every placement recommendation.
+Live-validated [sparkrun](https://sparkrun.dev) recipes for running NVFP4-quantized LLMs on an NVIDIA DGX Spark (GB10) cluster.
 
-Every number in this repo was measured on real hardware, not estimated. Each recipe has been launched, served, and load-tested end to end; the `benchmarks/` reports capture exactly how.
+Every number in this repo was measured on real hardware, not estimated. Each recipe has been launched, served, and load-tested end to end; the `benchmarks/` reports capture exactly how, and the fix history is public — nothing here shipped without a before/after.
 
 > [!NOTE]
-> This is a recipe and benchmark registry, not an application. There's nothing to build or install here — you consume it through the `sparkrun` CLI.
+> This is a recipe and benchmark registry, not an application. There's nothing to build or install — you consume it through the `sparkrun` CLI.
+
+## Features
+
+- **11 recipes** spanning DiffusionGemma, Gemma-4, Nemotron-3-Omni, Qwen3.6, and Step-3.7-Flash, all NVFP4-quantized for GB10's unified memory
+- **DFlash speculative decoding** wired correctly (BF16 KV, drafter pre-caching) — the single biggest lever in the fix history, worth up to 2.5× decode speed
+- **Every recipe launched and load-tested live** on a real two-node GB10 cluster, solo and at 8-way concurrency, not estimated from spec sheets
+- **Containers pinned by digest**, not `:latest` — reproducible pulls, no upstream tag drift
+- **Placement guidance per workload**: which recipe for interactive chat, agentic tool use, or fleet/batch throughput
 
 ## Cluster
 
