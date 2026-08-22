@@ -64,7 +64,7 @@ By registry name (after `sparkrun registry update spark-forge`):
 - `benchmarks/README.md` — index of all benchmark/validation reports + raw data
 - `benchmarks/GITHUB-RECIPES-COMPARE-2026-07-25.md` — how these recipes compare
   to the GitHub recipe repos (eugr, spark-arena) and what we adopted
-- `gemma4-26b-usage-note.md` — usage notes for the Gemma-26B endpoint
+- `benchmarks/gemma4-26b-usage-note.md` — usage notes for the Gemma-26B endpoint
 
 ## Open items
 

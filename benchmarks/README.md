@@ -12,6 +12,12 @@ later one corrects or extends the earlier ones.
 | 2026-07-25 | [VALIDATION-2026-07-25.md](VALIDATION-2026-07-25.md) | The fixes applied + live-validated: before/after table (27B 9.5→23.7, 35B 43→82, 31B unbootable→31.3 tok/s), new DiffusionGemma recipe (~358 tok/s c=1), operational finds (HF_HUB_OFFLINE drafter pre-cache, digest pins, DFlash's aggregate-throughput cost). |
 | 2026-07-25 | [GITHUB-RECIPES-COMPARE-2026-07-25.md](GITHUB-RECIPES-COMPARE-2026-07-25.md) | Survey of GitHub sparkrun-recipe repos covering the same models (eugr/spark-vllm-docker, spark-arena community); per-model best-version verdicts and techniques adopted. |
 
+## Usage notes
+
+- [gemma4-26b-usage-note.md](gemma4-26b-usage-note.md) — worked example of taking a
+  recipe from zero to a served endpoint: which of the two Gemma-4-26B recipes to pick
+  (`aeon` vs `stock`), why it runs on one Spark at `--tp 1`, and the exact commands.
+
 ## Raw data
 
 - `results_<label>.json` — harness output per model: streamed TTFT + decode

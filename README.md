@@ -99,4 +99,4 @@ All measurements were taken live on this cluster. [`benchmarks/README.md`](bench
 - Qwen-35B DFlash draft count sweep (n=11 → 15); Qwen-27B MTP-XS body A/B.
 - Nemotron tool/reasoning parser names are still unverified.
 
-See [`gemma4-26b-usage-note.md`](gemma4-26b-usage-note.md) for a worked example of taking a recipe from zero to a served endpoint.
+See [`benchmarks/gemma4-26b-usage-note.md`](benchmarks/gemma4-26b-usage-note.md) for a worked example of taking a recipe from zero to a served endpoint.
