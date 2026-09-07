@@ -9,8 +9,8 @@ Every number in this repo was measured on real hardware, not estimated. Each rec
 
 ## Features
 
-- **11 recipes** spanning DiffusionGemma, Gemma-4, Nemotron-3-Omni, Qwen3.6, and Step-3.7-Flash, all NVFP4-quantized for GB10's unified memory
-- **28 additional recipes** from [MiaAI-Lab](https://github.com/MiaAI-Lab) spanning Qwen3.8, GLM-5.3/5.2, DeepSeek-V4, Muse-Glimmer, Gemma-4, Nemotron, MiMo, Leanstral, Hy3, Inkling, and more — see [`INDEX.md`](INDEX.md) #12–39
+- **11 recipes** spanning DiffusionGemma, Gemma-4, Nemotron-3-Omni, Qwen3.6, and Step-3.7-Flash, all NVFP4-quantized for GB10's unified memory (live-validated with speed numbers)
+- **29 additional recipes** from [MiaAI-Lab](https://github.com/MiaAI-Lab) — see [`INDEX.md`](INDEX.md) rows #12–40. All ported to sparkrun v2 YAML format with `command` templates. **Unverified** — please run `--dry-run` and update with your cluster's measured facts.
 - **DFlash speculative decoding** wired correctly (BF16 KV, drafter pre-caching) — the single biggest lever in the fix history, worth up to 2.5× decode speed
 - **Every recipe launched and load-tested live** on a real two-node GB10 cluster, solo and at 8-way concurrency, not estimated from spec sheets
 - **Containers pinned by digest**, not `:latest` — reproducible pulls, no upstream tag drift
@@ -48,23 +48,21 @@ sparkrun stop ./recipes/<file>.yaml --cluster default --tp 1
 
 11 recipes live in [`recipes/`](recipes), registered under the `spark-forge` registry. Full details, current placement guidance, and every measured number are kept in [`INDEX.md`](INDEX.md) — the table below is a condensed pointer, not the source of truth.
 
-### Community Recipes (MiaAI-Lab)
+### MiaAI-Lab Community Recipes
 
-28 recipes ported from [github.com/MiaAI-Lab](https://github.com/MiaAI-Lab) inference kits for DGX Spark. **All are unverified** — please run `--dry-run` and update the INDEX header with your cluster facts.
+29 recipes ported from [github.com/MiaAI-Lab](https://github.com/MiaAI-Lab) DGX Spark inference kits. **All are unverified** — see [`INDEX.md`](INDEX.md) rows #12–40 for the full table with model, runtime, and notes. Run `--dry-run` before launching.
 
-See [`INDEX.md`](INDEX.md) rows #12–39 for the full table and placement guidance.
-|---|---|---:|---:|---|
-| `diffusiongemma-26b-a4b-nvfp4` | DiffusionGemma-26B-A4B (NVFP4) | **358** | 126 | Fastest interactive (diffusion decoding) |
-| `gemma4-26b-aeon-vllm` | Gemma-4-26B-A4B AEON NVFP4 + DFlash | 76.8 | 156 | Interactive agents / tools, clean strict-JSON |
-| `nemotron3-nano-omni-aeon-nvfp4` | Nemotron-3-Nano-Omni NVFP4 | 72.7 | **265** | Fleet / batch champion, only audio-capable model |
-| `qwen36-35b-a3b-heretic-nvfp4` | Qwen3.6-35B-A3B heretic NVFP4 + DFlash | **82** | 149 | Interactive mid-MoE, 262K context |
-| `qwen36-35b-a3b-heretic-nvfp4-batch` | same, drafterless batch twin | 43.4 | **224** | Batch/fleet lane of the 35B |
-| `qwen36-27b-aeon-ultimate-nvfp4` | Qwen3.6-27B AEON NVFP4 + DFlash | 23.7 | 88 | Flagship quality, 0/100 refusal |
-| `qwen36-27b-aeon-colocate` | same, 0.40 GPU co-location profile | — | — | Second endpoint beside the 27B (port 8001) |
-| `gemma4-31b-deckard-heretic-nvfp4` | Gemma-4-31B DECKARD NVFP4_AWQ + DFlash | 31.3 | 114 | Quality-critical dense (dedicated vLLM 0.20.1 container) |
-| `gemma4-12b-k4-nvfp4-fp8` | Gemma-4-12B K4 NVFP4-FP8 | 21.7 | 162 | Smallest footprint |
-| `step37-flash-aeon-abliterated-nvfp4-tp2` | Step-3.7-Flash abliterated NVFP4 (198B MoE) | untested | — | Frontier, requires 2 nodes (TP=2) |
-| `gemma4-26b-stock-vllm` | Gemma-26B on stock vLLM image | untested | — | No-DFlash fallback |
+Quick launch example:
+```bash
+# Single-node (TP=1)
+sparkrun run ./recipes/qwen3.8-flash-next-nvfp4-tp1.yaml --cluster default --tp 1 --dry-run
+# Multi-node (TP=2)
+sparkrun run ./recipes/deepseek-v4-flash-tp2.yaml --cluster default --tp 2 --dry-run
+# SGLang
+sparkrun run ./recipes/qwen3.8-27b-nvfp4-tp1-sglang.yaml --cluster default --tp 1 --dry-run
+```
+
+Full details for all 40 recipes are in [`INDEX.md`](INDEX.md).
 
 ### Two-node layout
 
@@ -73,6 +71,22 @@ Independent replicas beat TP=2 on GB10 for anything that fits on one node:
 - **Spark A (head):** `diffusiongemma` (interactive) or `qwen36-27b` (flagship quality)
 - **Spark B (worker):** `nemotron3-omni` or `qwen36-35b-…-batch` (fleet lane) — `--hosts 10.10.20.11`
 - **Or**, for the one model too large for a single node: both nodes → `step37` TP=2 (unvalidated)
+
+#### MiaAI-Lab multi-node recipes
+
+MiaAI-Lab provides several multi-node recipes (see [`INDEX.md`](INDEX.md) rows #12–40 for full details):
+
+| Recipe | Model | Nodes | Notes |
+|---|---|---|---|
+| `deepseek-v4-flash-tp2.yaml` | DeepSeek-V4-Flash | 2 | 1M context, FP8 KV |
+| `deepseek-v4-flash-vision-exp-tp2.yaml` | DeepSeek-V4-Flash Vision-Exp | 2 | Multimodal image |
+| `glm-5.3-flash-nvfp4-tp2.yaml` | GLM-5.3 Flash NVFP4 | 2 | Multimodal; Ray TP=2 |
+| `glm-5.3-flash-exl3-tp2.yaml` | GLM-5.3 Flash EXL3 | 2 | Multimodal; 850k ctx; Ray TP=2 |
+| `mimo-v2.5-tp2.yaml` | Xiaomi MiMo-V2.5 | 2 | Omni MTP1 |
+| `leanstral-1.5-119b-a6b-tp2.yaml` | Leanstral 1.5 119B | 2 | MoE |
+| `hy3-295b-nvfp4-tp2.yaml` | Hy3 295B | 2 | Tool calling; Ray TP=2 |
+| `inkling-small-nvfp4-tp2-sglang.yaml` | Inkling-Small NVFP4 | 2 | DSpark; SGLang |
+| `glm-5.2-nvfp4-aqlm-tp3.yaml` | GLM-5.2 NVFP4 | 3 | Multimodal; 380k ctx |
 
 ## Conventions
 
