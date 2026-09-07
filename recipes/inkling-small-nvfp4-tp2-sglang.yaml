@@ -1,28 +1,44 @@
-# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/
-# >>> Please test and run with --dry-run first, then update this header with your verified facts.
+# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/Inkling-Small-NVFP4-Dual-DGX-Sparks
+# >>> Please test and run --dry-run first, then update with your verified launch facts.
 
 # =============================================================================
-# sparkrun recipe — inkling-small-nvfp4-tp2-sglang
-# Model: thinkingmachines/Inkling-Small-NVFP4 | Runtime: sglang | Nodes: 2 | Max context: 262144
-# Container: runtime default
-# Source: MiaAI-Lab GitHub (https://github.com/MiaAI-Lab)
-# =============================================================================
-
-# sparkrun recipe: Inkling-Small NVFP4 via SGLang on 2x DGX Spark (TP=2)
+# sparkrun recipe — Inkling-Small NVFP4 via SGLang   [MiaAI-Lab]
+# TWO NODES (TP=2 / 2 GPUs) on DGX Spark GB10.
+# -----------------------------------------------------------------------------
+# Model: thinkingmachines/Inkling-Small-NVFP4
 # Source: https://github.com/MiaAI-Lab/Inkling-Small-NVFP4-Dual-DGX-Sparks
+# Container: local/sglang-inkling:gb10-kvquant (or build from thinkingmachines/SGLang-SM121-optimized)
+# Runtime: SGLang | Notes: DSpark, fp4_mx_block16 KV
+# =============================================================================
+
 model: thinkingmachines/Inkling-Small-NVFP4
 runtime: sglang
 min_nodes: 2
 max_nodes: 2
+
 metadata:
-  description: "Thinking Machines Inkling-Small NVFP4 via SGLang on 2x DGX Spark — DSpark speculative decoding, fp4_mx_block16 KV"
-  category: general
-  model_params: 7000000000
+  description: >-
+    Thinking Machines Inkling-Small NVFP4 via SGLang on 2x DGX Spark —
+    DSpark speculative decoding, fp4_mx_block16 KV.
+    Source-validated by MiaAI-Lab.
+  maintainer: MiaAI-Lab (https://github.com/MiaAI-Lab)
+  model_params: 7B
   model_dtype: nvfp4
   kv_dtype: fp4_mx_block16
   quantization: nvfp4
   quant_bits: 4
+
 defaults:
-  port: 8888
+  host: 0.0.0.0
+  port: 8000
   tensor_parallel: 2
-  gpu_memory_utilization: 0.9
+  gpu_memory_utilization: 0.90
+  served_model_name: inkling-small-nvfp4
+
+command: |
+  python3 -m sglang.launch_server \
+    --model-path {model} \
+    --host {host} \
+    --port {port} \
+    --tp {tensor_parallel} \
+    --trust-remote-code

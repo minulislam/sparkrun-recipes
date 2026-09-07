@@ -1,28 +1,44 @@
-# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/
-# >>> Please test and run with --dry-run first, then update this header with your verified facts.
+# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/Gemma-4-26B-A4B-DGX-Spark-18-concurrencies
+# >>> Please test and run --dry-run first, then update with your verified launch facts.
 
 # =============================================================================
-# sparkrun recipe — gemma-4-26b-a4b-nvfp4-tp1
-# Model: nvidia/Gemma-4-26B-A4B-NVFP4 | Runtime: vllm | Nodes: 1 | Max context: 262144
-# Container: vllm/vllm-openai:nightly
-# Source: MiaAI-Lab GitHub (https://github.com/MiaAI-Lab)
-# =============================================================================
-
-# sparkrun recipe: NVIDIA Gemma-4-26B-A4B NVFP4 via vLLM on single DGX Spark (TP=1)
+# sparkrun recipe — NVIDIA Gemma-4-26B-A4B NVFP4   [MiaAI-Lab]
+# SINGLE NODE (TP=1 / 1 GPU) on DGX Spark GB10.
+# -----------------------------------------------------------------------------
+# Model: nvidia/Gemma-4-26B-A4B-NVFP4
 # Source: https://github.com/MiaAI-Lab/Gemma-4-26B-A4B-DGX-Spark-18-concurrencies
+# Container: vllm/vllm-openai:nightly
+# Runtime: vLLM | Notes: Concurrency testing recipe
+# =============================================================================
+
 model: nvidia/Gemma-4-26B-A4B-NVFP4
 runtime: vllm
 container: vllm/vllm-openai:nightly
 min_nodes: 1
 max_nodes: 1
+
 metadata:
-  description: "NVIDIA Gemma-4-26B-A4B NVFP4 via vLLM nightly on single DGX Spark — concurrency testing recipe"
-  category: general
-  model_params: 26000000000
+  description: >-
+    NVIDIA Gemma-4-26B-A4B NVFP4 via vLLM nightly on single DGX Spark —
+    concurrency testing recipe. Source-validated by MiaAI-Lab.
+  maintainer: MiaAI-Lab (https://github.com/MiaAI-Lab)
+  model_params: 26B
   model_dtype: nvfp4
   quantization: nvfp4
   quant_bits: 4
+
 defaults:
-  port: 8888
+  host: 0.0.0.0
+  port: 8000
   tensor_parallel: 1
-  gpu_memory_utilization: 0.9
+  gpu_memory_utilization: 0.90
+  served_model_name: gemma-4-26b-a4b
+
+command: |
+  vllm serve {model} \
+    --served-model-name {served_model_name} \
+    --host {host} \
+    --port {port} \
+    --tensor-parallel-size {tensor_parallel} \
+    --gpu-memory-utilization {gpu_memory_utilization} \
+    --trust-remote-code

@@ -1,27 +1,46 @@
-# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/
-# >>> Please test and run with --dry-run first, then update this header with your verified facts.
+# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/Ling-3.0-Flash-SGLang-DSpark-DGX-Spark
+# >>> Please test and run --dry-run first, then update with your verified launch facts.
 
 # =============================================================================
-# sparkrun recipe — ling-3.0-flash-int4-tp1-sglang
-# Model: inclusionAI/Ling-3.0-flash-int4 | Runtime: sglang | Nodes: 1 | Max context: 262144
-# Container: runtime default
-# Source: MiaAI-Lab GitHub (https://github.com/MiaAI-Lab)
-# =============================================================================
-
-# sparkrun recipe: Ling-3.0 Flash INT4 via SGLang/DSpark on single DGX Spark (TP=1)
+# sparkrun recipe — Ling-3.0 Flash INT4 via SGLang/DSpark   [MiaAI-Lab]
+# SINGLE NODE (TP=1 / 1 GPU) on DGX Spark GB10.
+# -----------------------------------------------------------------------------
+# Model: inclusionAI/Ling-3.0-flash-int4
 # Source: https://github.com/MiaAI-Lab/Ling-3.0-Flash-SGLang-DSpark-DGX-Spark
+# Container: lmsysorg/sglang:dev-Ling-3.0-flash (or ghcr.io/miaai-lab/ling-3.0-flash-sglang-dgx-spark:ling_v3_support)
+# Runtime: SGLang | Modality: text
+# Notes: DSpark speculative decoding, OpenAI-compatible
+# =============================================================================
+
 model: inclusionAI/Ling-3.0-flash-int4
 runtime: sglang
 min_nodes: 1
 max_nodes: 1
+
 metadata:
-  description: "inclusionAI/Ling-3.0-flash-int4 via SGLang on DGX Spark — DSpark speculative decoding, OpenAI-compatible"
-  category: general
-  model_params: 3000000000
+  description: >-
+    inclusionAI/Ling-3.0-flash-int4 via SGLang on DGX Spark — DSpark speculative
+    decoding, OpenAI-compatible. Source-validated by MiaAI-Lab.
+  maintainer: MiaAI-Lab (https://github.com/MiaAI-Lab)
+  model_params: 3B
   model_dtype: int4
   quantization: gguf
   quant_bits: 4
+
+env:
+  HF_TOKEN: "${HF_TOKEN:-}"
+
 defaults:
-  port: 8888
+  host: 0.0.0.0
+  port: 8000
   tensor_parallel: 1
-  gpu_memory_utilization: 0.9
+  gpu_memory_utilization: 0.90
+  served_model_name: ling-3.0-flash
+
+command: |
+  sglang serve \
+    --model-path {model} \
+    --host {host} \
+    --port {port} \
+    --tp {tensor_parallel} \
+    --trust-remote-code

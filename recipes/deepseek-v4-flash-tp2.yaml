@@ -1,6 +1,5 @@
 # >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/DeepSeek-v4-Flash-0731-vLLM-Dual-DGX-Sparks
-# >>> Please test and update this header with your verified launch facts.
-# >>>   sparkrun run ./deepseek-v4-flash-tp2.yaml --cluster default --tp 2 --dry-run
+# >>> Please test and run --dry-run first, then update with your verified launch facts.
 
 # =============================================================================
 # sparkrun recipe — DeepSeek-V4-Flash   [MiaAI-Lab]
@@ -8,12 +7,11 @@
 # -----------------------------------------------------------------------------
 # Model: deepseek-ai/DeepSeek-V4-Flash — MoE reasoning model
 # Source: https://github.com/MiaAI-Lab/DeepSeek-v4-Flash-0731-vLLM-Dual-DGX-Sparks
-# Context: 1M tokens | Runtime: vLLM | Modality: text | KV dtype: FP8
+# Context: 1M tokens | Runtime: vLLM (vllm-distributed) | Modality: text | KV dtype: FP8
 # =============================================================================
 
 model: deepseek-ai/DeepSeek-V4-Flash
 runtime: vllm
-
 min_nodes: 2
 max_nodes: 2
 
@@ -37,3 +35,14 @@ defaults:
   tensor_parallel: 2
   gpu_memory_utilization: 0.90
   max_model_len: 1048576
+  served_model_name: deepseek-v4-flash
+
+command: |
+  vllm serve {model} \
+    --served-model-name {served_model_name} \
+    --host {host} \
+    --port {port} \
+    --tensor-parallel-size {tensor_parallel} \
+    --gpu-memory-utilization {gpu_memory_utilization} \
+    --max-model-len {max_model_len} \
+    --trust-remote-code

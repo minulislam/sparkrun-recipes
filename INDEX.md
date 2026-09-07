@@ -27,14 +27,16 @@ All speed numbers below are **measured on this cluster** (2026-07-18 baseline +
 
 ## MiaAI-Lab Recipes (ported from https://github.com/MiaAI-Lab)
 
-> **⚠️ Unverified** — these recipes were auto-generated from MiaAI-Lab's `start.sh` scripts.
+> **⚠️ Unverified** — these recipes were auto-generated from MiaAI-Lab's `start.sh` scripts
+> and ported to sparkrun v2 YAML format with `command` fields.
 > Please run `--dry-run` first, then launch, benchmark, and update this table with measured numbers.
 > Each file has a `>>>` header block — replace it with your verified facts.
+> **Ray-based recipes** (`vLLM-Ray`) need SSH mesh + Ray cluster ports open across all nodes.
 
 | # | Recipe file | Model | Runtime | Nodes | Quant | Context | Notes |
 |---|---|---|---|---|---|---|---|
 | 12 | `qwen3.8-flash-next-nvfp4-tp1.yaml` | Mia-AiLab/Qwen3.8-Flash-Next-NVFP4 | vLLM | 1 | NVFP4 | 256k | MTP draft; source-validated by MiaAI-Lab |
-| 13 | `glm-5.3-flash-nvfp4-tp2.yaml` | LibertAIDAI/GLM-5.3-Flash-NVFP4 | vLLM | 2 | NVFP4 | 262k | Multimodal MoE; Ray TP=2 |
+| 13 | `glm-5.3-flash-nvfp4-tp2.yaml` | LibertAIDAI/GLM-5.3-Flash-NVFP4 | vLLM-Ray | 2 | NVFP4 | 262k | Multimodal MoE; Ray TP=2 |
 | 14 | `deepseek-v4-flash-tp2.yaml` | deepseek-ai/DeepSeek-V4-Flash | vLLM | 2 | FP8 | 1M | MoE; FP8 KV cache |
 | 15 | `deepseek-v4-flash-vision-exp-tp2.yaml` | deepseek-ai/DeepSeek-V4-Flash-Vision-Exp | vLLM | 2 | NVFP4 | 1M | Multimodal image; DSpark; nvfp4_ds_mla KV |
 | 16 | `qwen3.6-27b-nvfp4-tp1.yaml` | nvidia/Qwen3.6-27B-NVFP4 | vLLM | 1 | NVFP4 | 256k | vLLM nightly aarch64 |
@@ -47,20 +49,21 @@ All speed numbers below are **measured on this cluster** (2026-07-18 baseline +
 | 23 | `laguna-s-2.1-nvfp4-tp1.yaml` | poolside/Laguna-S-2.1-NVFP4 | vLLM | 1 | NVFP4 | 256k | DFlash speculative decoding |
 | 24 | `ling-3.0-flash-int4-tp1-sglang.yaml` | inclusionAI/Ling-3.0-flash-int4 | SGLang | 1 | INT4 | — | DSpark speculative decoding |
 | 25 | `ornith-1.5-35b-a3b-nvfp4-tp1.yaml` | spark-ai/Ornith-1.5-35B-A3B-NVFP4 | vLLM | 1 | NVFP4 | 256k | In-checkpoint MTP; b12x |
-| 26 | `hy3-295b-nvfp4-tp2.yaml` | kodelow/Hy3-NVFP4-W4A16 | vLLM | 2 | NVFP4 | — | 295B MoE; tool calling |
+| 26 | `hy3-295b-nvfp4-tp2.yaml` | kodelow/Hy3-NVFP4-W4A16 | vLLM-Ray | 2 | NVFP4 | — | 295B MoE; tool calling |
 | 27 | `leanstral-1.5-119b-a6b-tp2.yaml` | mistralai/Leanstral-1.5-119B-A6B | vLLM | 2 | FP8 | 262k | MoE; enforce_eager |
-| 28 | `mimo-v2.5-tp2.yaml` | Xiaomi/MiMo-V2.5 | vLLM | 2 | FP8 | — | Omni MTP1; NVFP4-KV |
+| 28 | `mimo-v2.5-tp2.yaml` | Xiaomi/MiMo-V2.5 | vLLM-Ray | 2 | FP8 | — | Omni MTP1; NVFP4-KV |
 | 29 | `glm-5.2-nvfp4-aqlm-tp3.yaml` | Mia-AiLab/GLM-5.2-NVFP4-AQLM | vLLM | 3 | AQLM | 380k | Multimodal; 380k ctx with MTP |
 | 30 | `inkling-small-nvfp4-tp2-sglang.yaml` | thinkingmachines/Inkling-Small-NVFP4 | SGLang | 2 | NVFP4 | — | DSpark; fp4_mx_block16 KV |
 | 31 | `deepseek-v4-flash-0731-tp1.yaml` | 0xSero/deepseek-v4-flash-0731-spark | ExllamaV3 | 1 | EXL3 | 384k | Pinned rev 22f28d32 |
 | 32 | `qwen3.6-35b-a3b-ud-q8_k_xl-tp1.yaml` | Local GGUF | llama-cpp | 1 | Q8_K_XL | — | ⚠️ Requires local GGUF weights on NFS |
-| 33 | `glm-5.3-flash-exl3-tp2.yaml` | Mia-AiLab/GLM-5.3-Flash-EXL3-TR3-4bpw | vLLM | 2 | EXL3 | 850k | Multimodal; Ray TP=2 |
+| 33 | `glm-5.3-flash-exl3-tp2.yaml` | Mia-AiLab/GLM-5.3-Flash-EXL3-TR3-4bpw | vLLM-Ray | 2 | EXL3 | 850k | Multimodal; Ray TP=2 |
 | 34 | `qwen3.8-flash-next-nvfp4-tp2-sglang.yaml` | Mia-AiLab/Qwen3.8-Flash-Next-NVFP4 | SGLang | 2 | NVFP4 | 256k | FP8 dense; SGLang speculative |
 | 35 | `qwen3.8-27b-nvfp4-tp1-sglang.yaml` | RadixArk/Qwen3.8-27B-NVFP4 | SGLang | 1 | NVFP4 | 256k | DFlash; 8 concurrent |
 | 36 | `nemotron-3.5-lightning-30b-a3b-nvfp4-tp1-sglang.yaml` | nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4 | SGLang | 1 | NVFP4 | 256k | DSpark; RTX 5090/6000 PRO |
 | 37 | `qwen3.6-27b-nvfp4-dflash-tp1.yaml` | nvidia/Qwen3.6-27B-NVFP4 | vLLM | 1 | NVFP4 | 256k | DFlash speculative decoding |
 | 38 | `qwen3.6-35b-a3b-nvfp4-unofficial-tp1.yaml` | unsloth/Qwen3.6-35B-A3B-NVFP4 | vLLM | 1 | NVFP4 | 256k | b12x linear attention recipe |
 | 39 | `qwen3.8-27b-nvfp4-tp1-alt.yaml` | RadixArk/Qwen3.8-27B-NVFP4 | vLLM | 1 | NVFP4 | 256k | RTX 5090 variant |
+| 40 | `step-3.7-flash-nvfp4-tp2-miaai.yaml` | stepfun-ai/Step-3.7-Flash-NVFP4 | vLLM | 2 | NVFP4 | — | Custom container; MTP grafting support |
 
 ## Launch
 
@@ -103,6 +106,16 @@ By registry name (after `sparkrun registry update spark-forge`):
   to the GitHub recipe repos (eugr, spark-arena) and what we adopted
 - `benchmarks/gemma4-26b-usage-note.md` — usage notes for the Gemma-26B endpoint
 
+## MiaAI-Lab Conventions
+
+MiaAI-Lab recipes use several **custom container images** (not Spark Arena standard images).
+Before launching, check each recipe's `container:` field:
+- Pull or build the required image from the source repo.
+- **Ray-based recipes** (`vLLM-Ray`): GLM-5.3, MiMo, Hy3, GLM-5.3-EXL3 — need SSH mesh + Ray cluster ports open across all nodes.
+- Some recipes require **HuggingFace authentication** — set `HF_TOKEN` in your environment.
+- GB10 memory ceiling: `gpu_memory_utilization` in the **0.70–0.85** range is safe; 0.85+ risks NVRM OOM at boot.
+- All MiaAI-Lab recipes are **marked UNVERIFIED** — run `--dry-run` first, then launch and update the `>>>` header with your measured cluster facts.
+
 ## Open items
 
 - Step-3.7 TP=2 first boot (worker currently occupied by a long-running job);
@@ -112,3 +125,5 @@ By registry name (after `sparkrun registry update spark-forge`):
   compare report).
 - Qwen-35B DFlash n=11 → 15 sweep; Qwen-27B MTP-XS body A/B.
 - Nemotron tool/reasoning parser names still unverified.
+- MiaAI-Lab recipe validation: please run `--dry-run` and update recipe headers
+  with your cluster's measured facts (GPU memory, endpoint, throughput, tok/s).

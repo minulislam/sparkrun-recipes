@@ -1,30 +1,48 @@
-# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/
-# >>> Please test and run with --dry-run first, then update this header with your verified facts.
+# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/Leanstral-1.5-119B-A6B_2x_DGX_Sparks_vLLM
+# >>> Please test and run --dry-run first, then update with your verified launch facts.
 
 # =============================================================================
-# sparkrun recipe — leanstral-1.5-119b-a6b-tp2
-# Model: mistralai/Leanstral-1.5-119B-A6B | Runtime: vllm | Nodes: 2 | Max context: 262144
-# Container: vllm/vllm-openai:v0.24.0
-# Source: MiaAI-Lab GitHub (https://github.com/MiaAI-Lab)
-# =============================================================================
-
-# sparkrun recipe: Leanstral-1.5-119B-A6B via vLLM on 2x DGX Spark (TP=2)
+# sparkrun recipe — Mistral Leanstral-1.5-119B-A6B   [MiaAI-Lab]
+# TWO NODES (TP=2 / 2 GPUs) on DGX Spark GB10.
+# -----------------------------------------------------------------------------
+# Model: mistralai/Leanstral-1.5-119B-A6B
 # Source: https://github.com/MiaAI-Lab/Leanstral-1.5-119B-A6B_2x_DGX_Sparks_vLLM
+# Container: vllm/vllm-openai:v0.24.0
+# Runtime: vLLM | Context: 262k
+# Notes: MoE, enforce_eager, FP8
+# =============================================================================
+
 model: mistralai/Leanstral-1.5-119B-A6B
 runtime: vllm
 container: vllm/vllm-openai:v0.24.0
 min_nodes: 2
 max_nodes: 2
+
 metadata:
-  description: "Mistral Leanstral-1.5-119B-A6B MoE via vLLM on 2x DGX Spark — TP=2, FP8"
-  category: general
-  model_params: 119000000000
+  description: >-
+    Mistral Leanstral-1.5-119B-A6B MoE via vLLM on 2x DGX Spark — TP=2, FP8.
+    Source-validated by MiaAI-Lab.
+  maintainer: MiaAI-Lab (https://github.com/MiaAI-Lab)
+  model_params: 119B
   model_dtype: bfloat16
   quantization: fp8
   quant_bits: 8
+
 defaults:
-  port: 8888
+  host: 0.0.0.0
+  port: 8000
   tensor_parallel: 2
   gpu_memory_utilization: 0.85
   max_model_len: 262144
+  served_model_name: leanstral-1.5-119b
   enforce_eager: true
+
+command: |
+  vllm serve {model} \
+    --served-model-name {served_model_name} \
+    --host {host} \
+    --port {port} \
+    --tensor-parallel-size {tensor_parallel} \
+    --gpu-memory-utilization {gpu_memory_utilization} \
+    --max-model-len {max_model_len} \
+    --trust-remote-code

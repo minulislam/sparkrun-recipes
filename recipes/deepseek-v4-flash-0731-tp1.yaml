@@ -1,19 +1,47 @@
-# sparkrun recipe: DeepSeek-V4-Flash 0731 EXL3/ExllamaV3 on single DGX Spark (TP=1)
+# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/DeepSeek-v4-Flash-One-DGX-Spark
+# >>> Please test and run --dry-run first, then update with your verified launch facts.
+
+# =============================================================================
+# sparkrun recipe — DeepSeek-V4-Flash 0731 EXL3   [MiaAI-Lab]
+# SINGLE NODE (TP=1 / 1 GPU) on DGX Spark GB10.
+# -----------------------------------------------------------------------------
+# Model: 0xSero/deepseek-v4-flash-0731-spark (pinned rev: 22f28d32)
 # Source: https://github.com/MiaAI-Lab/DeepSeek-v4-Flash-One-DGX-Spark
+# Runtime: ExllamaV3 (EXL3 quantization)
+# Context: 384k tokens
+# =============================================================================
+
 model: 0xSero/deepseek-v4-flash-0731-spark
 model_revision: 22f28d32b9b29b4352eaa380ff8c2c170b2847ab
 runtime: exllamav3
 min_nodes: 1
 max_nodes: 1
+
 metadata:
-  description: "DeepSeek V4 Flash 0731 EXL3 via ExllamaV3 on single DGX Spark — 384k context"
-  category: general
-  model_params: 236000000000
+  description: >-
+    DeepSeek V4 Flash 0731 EXL3 via ExllamaV3 on single DGX Spark — 384k context.
+    Pinned to specific checkpoint. Source-validated by MiaAI-Lab.
+  maintainer: MiaAI-Lab (https://github.com/MiaAI-Lab)
+  model_params: 236B
   model_dtype: exl3
   quantization: exl3
   quant_bits: 4
+
+env:
+  HF_TOKEN: "${HF_TOKEN:-}"
+
 defaults:
-  port: 8888
+  host: 0.0.0.0
+  port: 8000
   tensor_parallel: 1
   gpu_memory_utilization: 0.94
   max_model_len: 384000
+  served_model_name: deepseek-v4-flash-0731
+
+command: |
+  exllamav3 \
+    -m {model} \
+    -c 384000 \
+    -cg \
+    --host {host} \
+    --port {port}

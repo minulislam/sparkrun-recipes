@@ -1,27 +1,31 @@
 # >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/Qwen3.8-Flash-Next-Single-DGX-Spark
-# >>> Please test and update this header with your verified launch facts.
-# >>>   sparkrun run ./qwen3.8-flash-next-nvfp4-tp1.yaml --cluster default --tp 1 --dry-run
-# >>> Then remove this block and fill in your verified facts.
+# >>> Please test and run --dry-run first, then update with your verified launch facts.
 
 # =============================================================================
 # sparkrun recipe — Qwen3.8-Flash-Next NVFP4   [MiaAI-Lab]
 # SINGLE NODE (TP=1 / 1 GPU) on DGX Spark GB10.
 # -----------------------------------------------------------------------------
-# Model: Mia-AiLab/Qwen3.8-Flash-Next-NVFP4 — NVFP4 checkpoint with MTP draft
+# Model: Mia-AiLab/Qwen3.8-Flash-Next-NVFP4 — NVFP4 + MTP draft + YaRN rope
 # Source: https://github.com/MiaAI-Lab/Qwen3.8-Flash-Next-Single-DGX-Spark
-# Context: 256k tokens | Speculative decoding: MTP draft | Modality: text
+# Container: Set IMAGE in .env (custom Mia-AiLab image with PLE patches)
+# Context: 256k native | up to 512k with YaRN (--yarn 1)
+# Notes: MTP speculative decoding, CUDA graph capture, PLE offload.
+#   Original start.sh applies extensive memory budgeting and kernel patches
+#   (patch_ple_layer.py, patch_modelopt_mxfp8.py, patch_qsa_fp8_kv.py,
+#   patch_mtp_draft_vocab.py). For sparkrun, use the defaults below and
+#   monitor GPU memory usage; adjust gpu_memory_utilization if needed.
 # =============================================================================
 
 model: Mia-AiLab/Qwen3.8-Flash-Next-NVFP4
 runtime: vllm
-
 min_nodes: 1
 max_nodes: 1
 
 metadata:
   description: >-
-    Qwen3.8-Flash-Next with Mia-AiLab NVFP4 checkpoint and MTP speculative draft.
-    Single DGX Spark. 256k context. Production-validated by MiaAI-Lab.
+    Qwen3.8-Flash-Next NVFP4 with MTP speculative draft and YaRN rope scaling
+    on single DGX Spark. 256k native context, up to 512k with YaRN.
+    Source-validated by MiaAI-Lab with extensive memory budgeting.
   maintainer: MiaAI-Lab (https://github.com/MiaAI-Lab)
   model_params: 8B
   model_dtype: nvfp4
@@ -31,11 +35,38 @@ metadata:
 
 env:
   HF_TOKEN: "${HF_TOKEN:-}"
+  # VLLM_CACHE_ROOT: "/cache/huggingface/.vllm_cache"  # uncomment to persist FlashInfer autotune
 
 defaults:
   host: 0.0.0.0
   port: 8000
   tensor_parallel: 1
-  gpu_memory_utilization: 0.90
-  max_model_len: 262144
+  gpu_memory_utilization: 0.80    # GB10 NVRM-safe range; raise to ~0.88 after verifying
+  max_model_len: 262144            # native; use --max-model-len 524288 --yarn 1 for YaRN
+  served_model_name: qwen3.8-flash-next
   enforce_eager: false
+  enable_chunked_prefill: true
+  load_format: safetensors
+  safetensors_load_strategy: lazy
+  reasoning_parser: qwen3
+  enable_auto_tool_choice: true
+  tool_call_parser: qwen3_coder
+  distributed_executor_backend: mp   # required for PLE offload worker
+  kv_cache_dtype: auto             # auto = bf16 for NVFP4; fp8 for more KV capacity
+
+command: |
+  vllm serve {model} \
+    --served-model-name {served_model_name} \
+    --host {host} \
+    --port {port} \
+    --tensor-parallel-size {tensor_parallel} \
+    --gpu-memory-utilization {gpu_memory_utilization} \
+    --max-model-len {max_model_len} \
+    --kv-cache-dtype {kv_cache_dtype} \
+    --load-format {load_format} \
+    --safetensors-load-strategy {safetensors_load_strategy} \
+    --enable-chunked-prefill \
+    --reasoning-parser {reasoning_parser} \
+    --enable-auto-tool-choice \
+    --tool-call-parser {tool_call_parser} \
+    --trust-remote-code

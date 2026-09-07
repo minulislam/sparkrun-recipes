@@ -1,19 +1,47 @@
-# sparkrun recipe: Qwen3.6-27B NVFP4 with DFlash on single DGX Spark (TP=1)
+# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/Qwen3.6-27B-NVFP4-DFlash-DGX-Spark
+# >>> Please test and run --dry-run first, then update with your verified launch facts.
+
+# =============================================================================
+# sparkrun recipe — Qwen3.6-27B NVFP4 with DFlash   [MiaAI-Lab]
+# SINGLE NODE (TP=1 / 1 GPU) on DGX Spark GB10.
+# -----------------------------------------------------------------------------
+# Model: nvidia/Qwen3.6-27B-NVFP4
 # Source: https://github.com/MiaAI-Lab/Qwen3.6-27B-NVFP4-DFlash-DGX-Spark
+# Container: vllm/vllm-openai:nightly-aarch64
+# Runtime: vLLM | Context: 256k
+# Notes: DFlash speculative decoding
+# =============================================================================
+
 model: nvidia/Qwen3.6-27B-NVFP4
 runtime: vllm
 container: vllm/vllm-openai:nightly-aarch64
 min_nodes: 1
 max_nodes: 1
+
 metadata:
-  description: "NVIDIA Qwen3.6-27B NVFP4 with DFlash speculative decoding on DGX Spark"
-  category: general
-  model_params: 27000000000
+  description: >-
+    NVIDIA Qwen3.6-27B NVFP4 with DFlash speculative decoding on DGX Spark.
+    256k context. Source-validated by MiaAI-Lab.
+  maintainer: MiaAI-Lab (https://github.com/MiaAI-Lab)
+  model_params: 27B
   model_dtype: nvfp4
   quantization: nvfp4
   quant_bits: 4
+
 defaults:
-  port: 8888
+  host: 0.0.0.0
+  port: 8000
   tensor_parallel: 1
-  gpu_memory_utilization: 0.9
+  gpu_memory_utilization: 0.90
   max_model_len: 262144
+  served_model_name: qwen3.6-27b-nvfp4-dflash
+
+command: |
+  vllm serve {model} \
+    --served-model-name {served_model_name} \
+    --host {host} \
+    --port {port} \
+    --tensor-parallel-size {tensor_parallel} \
+    --gpu-memory-utilization {gpu_memory_utilization} \
+    --max-model-len {max_model_len} \
+    --trust-remote-code

@@ -1,28 +1,49 @@
-# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/
-# >>> Please test and run with --dry-run first, then update this header with your verified facts.
+# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/Gemma-4-31B-IT-NVFP4-Recipe
+# >>> Please test and run --dry-run first, then update with your verified launch facts.
 
 # =============================================================================
-# sparkrun recipe — gemma-4-31b-it-nvfp4-tp1
-# Model: nvidia/Gemma-4-31B-IT-NVFP4 | Runtime: vllm | Nodes: 1 | Max context: 262144
-# Container: vllm/vllm-openai:v0.25.1
-# Source: MiaAI-Lab GitHub (https://github.com/MiaAI-Lab)
-# =============================================================================
-
-# sparkrun recipe: NVIDIA Gemma-4-31B-IT NVFP4 via vLLM on single DGX Spark (TP=1)
+# sparkrun recipe — NVIDIA Gemma-4-31B-IT NVFP4   [MiaAI-Lab]
+# SINGLE NODE (TP=1 / 1 GPU) on DGX Spark GB10.
+# -----------------------------------------------------------------------------
+# Model: nvidia/Gemma-4-31B-IT-NVFP4
 # Source: https://github.com/MiaAI-Lab/Gemma-4-31B-IT-NVFP4-Recipe
+# Container: vllm/vllm-openai:v0.25.1
+# Runtime: vLLM | Context: default
+# Notes: MTP speculative decoding, tool calling, thinking/reasoning support
+# =============================================================================
+
 model: nvidia/Gemma-4-31B-IT-NVFP4
 runtime: vllm
 container: vllm/vllm-openai:v0.25.1
 min_nodes: 1
 max_nodes: 1
+
 metadata:
-  description: "NVIDIA Gemma-4-31B-IT-NVFP4 via vLLM with MTP speculative decoding — tool calling, thinking/reasoning support"
-  category: general
-  model_params: 31000000000
+  description: >-
+    NVIDIA Gemma-4-31B-IT-NVFP4 via vLLM with MTP speculative decoding —
+    tool calling, thinking/reasoning support.
+    Source-validated by MiaAI-Lab.
+  maintainer: MiaAI-Lab (https://github.com/MiaAI-Lab)
+  model_params: 31B
   model_dtype: nvfp4
   quantization: nvfp4
   quant_bits: 4
+
+env:
+  HF_TOKEN: "${HF_TOKEN:-}"
+
 defaults:
-  port: 8888
+  host: 0.0.0.0
+  port: 8000
   tensor_parallel: 1
-  gpu_memory_utilization: 0.9
+  gpu_memory_utilization: 0.90
+  served_model_name: gemma-4-31b-it
+
+command: |
+  vllm serve {model} \
+    --served-model-name {served_model_name} \
+    --host {host} \
+    --port {port} \
+    --tensor-parallel-size {tensor_parallel} \
+    --gpu-memory-utilization {gpu_memory_utilization} \
+    --trust-remote-code

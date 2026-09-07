@@ -1,29 +1,51 @@
-# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/
-# >>> Please test and run with --dry-run first, then update this header with your verified facts.
+# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/Unsloth-Qwen3.6-35b-NVFP4-DGX-Spark
+# >>> Please test and run --dry-run first, then update with your verified launch facts.
 
 # =============================================================================
-# sparkrun recipe — qwen3.6-35b-a3b-nvfp4-unofficial-tp1
-# Model: unsloth/Qwen3.6-35B-A3B-NVFP4 | Runtime: vllm | Nodes: 1 | Max context: 262144
-# Container: ghcr.io/miaai-lab/mia-vllm-gb10-linear-b12x:latest
-# Source: MiaAI-Lab GitHub (https://github.com/MiaAI-Lab)
-# =============================================================================
-
-# sparkrun recipe: Qwen3.6-35B-A3B NVFP4 (Unsloth) on single DGX Spark (TP=1)
+# sparkrun recipe — Unsloth Qwen3.6-35B-A3B NVFP4 (b12x)   [MiaAI-Lab]
+# SINGLE NODE (TP=1 / 1 GPU) on DGX Spark GB10.
+# -----------------------------------------------------------------------------
+# Model: unsloth/Qwen3.6-35B-A3B-NVFP4
 # Source: https://github.com/MiaAI-Lab/Unsloth-Qwen3.6-35b-NVFP4-DGX-Spark
+# Container: ghcr.io/miaai-lab/mia-vllm-gb10-linear-b12x:latest
+# Runtime: vLLM | Context: 256k
+# Notes: b12x linear attention recipe for GB10
+# =============================================================================
+
 model: unsloth/Qwen3.6-35B-A3B-NVFP4
 runtime: vllm
 container: ghcr.io/miaai-lab/mia-vllm-gb10-linear-b12x:latest
 min_nodes: 1
 max_nodes: 1
+
 metadata:
-  description: "Unsloth Qwen3.6-35B-A3B-NVFP4-Fast on single DGX Spark — vLLM b12x linear attention recipe"
-  category: general
-  model_params: 35000000000
+  description: >-
+    Unsloth Qwen3.6-35B-A3B-NVFP4-Fast on single DGX Spark —
+    vLLM b12x linear attention recipe. 256k context.
+    Source-validated by MiaAI-Lab.
+  maintainer: MiaAI-Lab (https://github.com/MiaAI-Lab)
+  model_params: 35B
   model_dtype: nvfp4
   quantization: nvfp4
   quant_bits: 4
+
+env:
+  HF_TOKEN: "${HF_TOKEN:-}"
+
 defaults:
-  port: 8888
+  host: 0.0.0.0
+  port: 8000
   tensor_parallel: 1
-  gpu_memory_utilization: 0.9
+  gpu_memory_utilization: 0.90
   max_model_len: 262144
+  served_model_name: qwen3.6-35b-b12x
+
+command: |
+  vllm serve {model} \
+    --served-model-name {served_model_name} \
+    --host {host} \
+    --port {port} \
+    --tensor-parallel-size {tensor_parallel} \
+    --gpu-memory-utilization {gpu_memory_utilization} \
+    --max-model-len {max_model_len} \
+    --trust-remote-code

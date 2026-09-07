@@ -1,27 +1,46 @@
-# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/
-# >>> Please test and run with --dry-run first, then update this header with your verified facts.
+# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/MiMo-V2.5-vLLM-Dual-DGX-Sparks
+# >>> Please test and run --dry-run first, then update with your verified launch facts.
 
 # =============================================================================
-# sparkrun recipe — mimo-v2.5-tp2
-# Model: Xiaomi/MiMo-V2.5 | Runtime: vllm | Nodes: 2 | Max context: 262144
-# Container: ghcr.io/miaai-lab/mimo-v2.5-vllm-dual-dgx-sparks:base-20260620
-# Source: MiaAI-Lab GitHub (https://github.com/MiaAI-Lab)
-# =============================================================================
-
-# sparkrun recipe: MiMo-V2.5 via vLLM on 2x DGX Spark (TP=2)
+# sparkrun recipe — Xiaomi MiMo-V2.5 vLLM   [MiaAI-Lab]
+# TWO NODES (TP=2 / 2 GPUs) on DGX Spark GB10.
+# -----------------------------------------------------------------------------
+# Model: Xiaomi/MiMo-V2.5
 # Source: https://github.com/MiaAI-Lab/MiMo-V2.5-vLLM-Dual-DGX-Sparks
+# Container: ghcr.io/miaai-lab/mimo-v2.5-vllm-dual-dgx-sparks:base-20260620
+# Runtime: vLLM (Ray) | Notes: Omni MTP1, NVFP4-KV
+# =============================================================================
+
 model: Xiaomi/MiMo-V2.5
-runtime: vllm
+runtime: vllm-ray
 container: ghcr.io/miaai-lab/mimo-v2.5-vllm-dual-dgx-sparks:base-20260620
 min_nodes: 2
 max_nodes: 2
+
 metadata:
-  description: "Xiaomi MiMo-V2.5 vLLM on 2x DGX Spark — Omni MTP1 + NVFP4-KV, TP=2"
-  category: general
-  model_params: 72000000000
+  description: >-
+    Xiaomi MiMo-V2.5 vLLM on 2x DGX Spark — Omni MTP1 + NVFP4-KV, TP=2.
+    Source-validated by MiaAI-Lab.
+  maintainer: MiaAI-Lab (https://github.com/MiaAI-Lab)
+  model_params: 72B
   model_dtype: bfloat16
   kv_dtype: nvfp4
+
+env:
+  HF_TOKEN: "${HF_TOKEN:-}"
+
 defaults:
-  port: 8888
+  host: 0.0.0.0
+  port: 8000
   tensor_parallel: 2
-  gpu_memory_utilization: 0.9
+  gpu_memory_utilization: 0.90
+  served_model_name: mimo-v2.5
+
+command: |
+  vllm serve {model} \
+    --served-model-name {served_model_name} \
+    --host {host} \
+    --port {port} \
+    --tensor-parallel-size {tensor_parallel} \
+    --gpu-memory-utilization {gpu_memory_utilization} \
+    --trust-remote-code

@@ -1,6 +1,5 @@
 # >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/DeepSeek-v4-Flash-DSpark-2x-DGX-Spark
-# >>> Please test and update this header with your verified launch facts.
-# >>>   sparkrun run ./deepseek-v4-flash-vision-exp-tp2.yaml --cluster default --tp 2 --dry-run
+# >>> Please test and run --dry-run first, then update with your verified launch facts.
 
 # =============================================================================
 # sparkrun recipe — DeepSeek-V4-Flash Vision-Exp DSpark   [MiaAI-Lab]
@@ -16,7 +15,6 @@
 model: deepseek-ai/DeepSeek-V4-Flash-Vision-Exp
 runtime: vllm
 container: ghcr.io/anemll/dspark-vllm-gx10:0.1.1
-
 min_nodes: 2
 max_nodes: 2
 
@@ -41,3 +39,14 @@ defaults:
   tensor_parallel: 2
   gpu_memory_utilization: 0.90
   max_model_len: 1048576
+  served_model_name: deepseek-v4-flash-vision
+
+command: |
+  vllm serve {model} \
+    --served-model-name {served_model_name} \
+    --host {host} \
+    --port {port} \
+    --tensor-parallel-size {tensor_parallel} \
+    --gpu-memory-utilization {gpu_memory_utilization} \
+    --max-model-len {max_model_len} \
+    --trust-remote-code
