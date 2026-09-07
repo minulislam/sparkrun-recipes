@@ -1,0 +1,43 @@
+# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/DeepSeek-v4-Flash-DSpark-2x-DGX-Spark
+# >>> Please test and update this header with your verified launch facts.
+# >>>   sparkrun run ./deepseek-v4-flash-vision-exp-tp2.yaml --cluster default --tp 2 --dry-run
+
+# =============================================================================
+# sparkrun recipe — DeepSeek-V4-Flash Vision-Exp DSpark   [MiaAI-Lab]
+# TWO NODES (TP=2 / 2 GPUs) on DGX Spark GB10.
+# -----------------------------------------------------------------------------
+# Model: deepseek-ai/DeepSeek-V4-Flash-Vision-Exp — multimodal MoE with vision
+# Source: https://github.com/MiaAI-Lab/DeepSeek-v4-Flash-DSpark-2x-DGX-Spark
+# Container: ghcr.io/anemll/dspark-vllm-gx10:0.1.1
+# Context: 1M tokens | Runtime: vLLM + DSpark | Modality: text + image
+# Notes: nvfp4_ds_mla KV, DSpark speculative decoding, image_url support
+# =============================================================================
+
+model: deepseek-ai/DeepSeek-V4-Flash-Vision-Exp
+runtime: vllm
+container: ghcr.io/anemll/dspark-vllm-gx10:0.1.1
+
+min_nodes: 2
+max_nodes: 2
+
+metadata:
+  description: >-
+    DeepSeek-V4-Flash Vision-Exp with DSpark speculative decoding on 2x DGX Spark.
+    Multimodal image support, 1M context, nvfp4_ds_mla KV cache.
+    Source-validated by MiaAI-Lab.
+  maintainer: MiaAI-Lab (https://github.com/MiaAI-Lab)
+  model_params: 236B
+  model_dtype: nvfp4
+  kv_dtype: nvfp4_ds_mla
+  quantization: nvfp4
+  quant_bits: 4
+
+env:
+  HF_TOKEN: "${HF_TOKEN:-}"
+
+defaults:
+  host: 0.0.0.0
+  port: 8000
+  tensor_parallel: 2
+  gpu_memory_utilization: 0.90
+  max_model_len: 1048576

@@ -1,0 +1,44 @@
+# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/GLM-5.3-Flash-NVFP4-Dual-DGX-Spark
+# >>> Please test and update this header with your verified launch facts.
+# >>>   sparkrun run ./glm-5.3-flash-nvfp4-tp2.yaml --cluster default --tp 2 --dry-run
+# >>> Then remove this block and fill in your verified facts.
+
+# =============================================================================
+# sparkrun recipe — GLM-5.3 Flash NVFP4   [MiaAI-Lab]
+# TWO NODES (TP=2 / 2 GPUs) on DGX Spark GB10 via Ray.
+# -----------------------------------------------------------------------------
+# Model: LibertAIDAI/GLM-5.3-Flash-NVFP4 — multimodal MoE, NVFP4
+# Source: https://github.com/MiaAI-Lab/GLM-5.3-Flash-NVFP4-Dual-DGX-Spark
+# Context: 262k tokens | Runtime: Ray + vLLM | Modality: text + multimodal
+# Notes: enforce_eager=true skips CUDA-graph capture on GB10 UMA
+# =============================================================================
+
+model: LibertAIDAI/GLM-5.3-Flash-NVFP4
+runtime: vllm
+container: mia/glm53-flash-spark:mm-ray-v1
+
+min_nodes: 2
+max_nodes: 2
+
+metadata:
+  description: >-
+    GLM-5.3 Flash NVFP4 multimodal MoE on 2x DGX Spark — Ray TP=2, FP8 KV cache.
+    262k context. Source-validated by MiaAI-Lab.
+  maintainer: MiaAI-Lab (https://github.com/MiaAI-Lab)
+  model_params: 92B
+  model_dtype: nvfp4
+  kv_dtype: fp8_e5m2
+  quantization: nvfp4
+  quant_bits: 4
+
+env:
+  HF_TOKEN: "${HF_TOKEN:-}"
+  PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
+
+defaults:
+  host: 0.0.0.0
+  port: 8000
+  tensor_parallel: 2
+  gpu_memory_utilization: 0.90
+  max_model_len: 262144
+  enforce_eager: true      # skip CUDA-graph capture on GB10 UMA

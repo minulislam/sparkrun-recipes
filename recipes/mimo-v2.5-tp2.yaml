@@ -1,0 +1,27 @@
+# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/
+# >>> Please test and run with --dry-run first, then update this header with your verified facts.
+
+# =============================================================================
+# sparkrun recipe — mimo-v2.5-tp2
+# Model: Xiaomi/MiMo-V2.5 | Runtime: vllm | Nodes: 2 | Max context: 262144
+# Container: ghcr.io/miaai-lab/mimo-v2.5-vllm-dual-dgx-sparks:base-20260620
+# Source: MiaAI-Lab GitHub (https://github.com/MiaAI-Lab)
+# =============================================================================
+
+# sparkrun recipe: MiMo-V2.5 via vLLM on 2x DGX Spark (TP=2)
+# Source: https://github.com/MiaAI-Lab/MiMo-V2.5-vLLM-Dual-DGX-Sparks
+model: Xiaomi/MiMo-V2.5
+runtime: vllm
+container: ghcr.io/miaai-lab/mimo-v2.5-vllm-dual-dgx-sparks:base-20260620
+min_nodes: 2
+max_nodes: 2
+metadata:
+  description: "Xiaomi MiMo-V2.5 vLLM on 2x DGX Spark — Omni MTP1 + NVFP4-KV, TP=2"
+  category: general
+  model_params: 72000000000
+  model_dtype: bfloat16
+  kv_dtype: nvfp4
+defaults:
+  port: 8888
+  tensor_parallel: 2
+  gpu_memory_utilization: 0.9

@@ -1,0 +1,23 @@
+# sparkrun recipe: GLM-5.3 Flash EXL3 on 2x DGX Spark (TP=2)
+# Source: https://github.com/MiaAI-Lab/GLM-5.3-Flash-EXL3-2x-DGX-Sparks
+model: Mia-AiLab/GLM-5.3-Flash-EXL3-TR3-4bpw
+model_revision: 25a44fdbf16862a46b7cc9921142c6c81350af2f
+runtime: vllm
+container: ghcr.io/miaai-lab/glm-5.3-flash-2x-dgx-sparks:exl3
+min_nodes: 2
+max_nodes: 2
+metadata:
+  description: "GLM-5.3 Flash EXL3 (4bpw target) on 2x DGX Spark — multimodal, Ray TP=2"
+  category: multimodal
+  model_params: 92000000000
+  model_dtype: exl3
+  quantization: exl3
+  quant_bits: 4
+defaults:
+  port: 8888
+  tensor_parallel: 2
+  gpu_memory_utilization: 0.9
+  max_model_len: 850000
+  enforce_eager: false
+env:
+  HF_TOKEN: "${HF_TOKEN:-}"

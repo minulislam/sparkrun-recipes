@@ -1,0 +1,29 @@
+# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/
+# >>> Please test and run with --dry-run first, then update this header with your verified facts.
+
+# =============================================================================
+# sparkrun recipe — qwen3.6-35b-a3b-nvfp4-unofficial-tp1
+# Model: unsloth/Qwen3.6-35B-A3B-NVFP4 | Runtime: vllm | Nodes: 1 | Max context: 262144
+# Container: ghcr.io/miaai-lab/mia-vllm-gb10-linear-b12x:latest
+# Source: MiaAI-Lab GitHub (https://github.com/MiaAI-Lab)
+# =============================================================================
+
+# sparkrun recipe: Qwen3.6-35B-A3B NVFP4 (Unsloth) on single DGX Spark (TP=1)
+# Source: https://github.com/MiaAI-Lab/Unsloth-Qwen3.6-35b-NVFP4-DGX-Spark
+model: unsloth/Qwen3.6-35B-A3B-NVFP4
+runtime: vllm
+container: ghcr.io/miaai-lab/mia-vllm-gb10-linear-b12x:latest
+min_nodes: 1
+max_nodes: 1
+metadata:
+  description: "Unsloth Qwen3.6-35B-A3B-NVFP4-Fast on single DGX Spark — vLLM b12x linear attention recipe"
+  category: general
+  model_params: 35000000000
+  model_dtype: nvfp4
+  quantization: nvfp4
+  quant_bits: 4
+defaults:
+  port: 8888
+  tensor_parallel: 1
+  gpu_memory_utilization: 0.9
+  max_model_len: 262144

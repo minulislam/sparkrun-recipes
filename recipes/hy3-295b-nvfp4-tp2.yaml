@@ -1,0 +1,28 @@
+# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/
+# >>> Please test and run with --dry-run first, then update this header with your verified facts.
+
+# =============================================================================
+# sparkrun recipe — hy3-295b-nvfp4-tp2
+# Model: kodelow/Hy3-NVFP4-W4A16 | Runtime: vllm | Nodes: 2 | Max context: 262144
+# Container: ghcr.io/miaai-lab/hy3-dual-dgx-spark:vllm-probe-modded
+# Source: MiaAI-Lab GitHub (https://github.com/MiaAI-Lab)
+# =============================================================================
+
+# sparkrun recipe: Hy3-295B NVFP4 W4A16 via vLLM on 2x DGX Spark (TP=2)
+# Source: https://github.com/MiaAI-Lab/Hy3-Dual-DGX-Spark
+model: kodelow/Hy3-NVFP4-W4A16
+runtime: vllm
+container: ghcr.io/miaai-lab/hy3-dual-dgx-spark:vllm-probe-modded
+min_nodes: 2
+max_nodes: 2
+metadata:
+  description: "KodeloW Hy3-295B NVFP4 W4A16 via vLLM on 2x DGX Spark — TP=2, tool calling"
+  category: general
+  model_params: 295000000000
+  model_dtype: nvfp4
+  quantization: nvfp4
+  quant_bits: 4
+defaults:
+  port: 8888
+  tensor_parallel: 2
+  gpu_memory_utilization: 0.9

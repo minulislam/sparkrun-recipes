@@ -1,0 +1,31 @@
+# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/
+# >>> Please test and run with --dry-run first, then update this header with your verified facts.
+
+# =============================================================================
+# sparkrun recipe — glm-5.2-nvfp4-aqlm-tp3
+# Model: Mia-AiLab/GLM-5.2-NVFP4-AQLM | Runtime: vllm | Nodes: 3 | Max context: 380000
+# Container: ghcr.io/miaai-lab/glm-5.2-nvfp4-triple-dgx-sparks:latest
+# Source: MiaAI-Lab GitHub (https://github.com/MiaAI-Lab)
+# =============================================================================
+
+# sparkrun recipe: GLM-5.2 NVFP4+AQLM on 3x DGX Spark (TP=3)
+# Source: https://github.com/MiaAI-Lab/GLM-5.2-NVFP4-AQLM-Triple-DGX-Sparks
+model: Mia-AiLab/GLM-5.2-NVFP4-AQLM
+runtime: vllm
+container: ghcr.io/miaai-lab/glm-5.2-nvfp4-triple-dgx-sparks:latest
+min_nodes: 3
+max_nodes: 3
+metadata:
+  description: "GLM-5.2 NVFP4+AQLM on 3x DGX Spark — 380k context with MTP"
+  category: multimodal
+  model_params: 200000000000
+  model_dtype: nvfp4
+  quantization: aqlm
+  quant_bits: 4
+defaults:
+  port: 8888
+  tensor_parallel: 3
+  gpu_memory_utilization: 0.9
+  max_model_len: 380000
+env:
+  HF_TOKEN: "${HF_TOKEN:-}"

@@ -1,0 +1,28 @@
+# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/
+# >>> Please test and run with --dry-run first, then update this header with your verified facts.
+
+# =============================================================================
+# sparkrun recipe — inkling-small-nvfp4-tp2-sglang
+# Model: thinkingmachines/Inkling-Small-NVFP4 | Runtime: sglang | Nodes: 2 | Max context: 262144
+# Container: runtime default
+# Source: MiaAI-Lab GitHub (https://github.com/MiaAI-Lab)
+# =============================================================================
+
+# sparkrun recipe: Inkling-Small NVFP4 via SGLang on 2x DGX Spark (TP=2)
+# Source: https://github.com/MiaAI-Lab/Inkling-Small-NVFP4-Dual-DGX-Sparks
+model: thinkingmachines/Inkling-Small-NVFP4
+runtime: sglang
+min_nodes: 2
+max_nodes: 2
+metadata:
+  description: "Thinking Machines Inkling-Small NVFP4 via SGLang on 2x DGX Spark — DSpark speculative decoding, fp4_mx_block16 KV"
+  category: general
+  model_params: 7000000000
+  model_dtype: nvfp4
+  kv_dtype: fp4_mx_block16
+  quantization: nvfp4
+  quant_bits: 4
+defaults:
+  port: 8888
+  tensor_parallel: 2
+  gpu_memory_utilization: 0.9

@@ -1,0 +1,30 @@
+# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/
+# >>> Please test and run with --dry-run first, then update this header with your verified facts.
+
+# =============================================================================
+# sparkrun recipe — leanstral-1.5-119b-a6b-tp2
+# Model: mistralai/Leanstral-1.5-119B-A6B | Runtime: vllm | Nodes: 2 | Max context: 262144
+# Container: vllm/vllm-openai:v0.24.0
+# Source: MiaAI-Lab GitHub (https://github.com/MiaAI-Lab)
+# =============================================================================
+
+# sparkrun recipe: Leanstral-1.5-119B-A6B via vLLM on 2x DGX Spark (TP=2)
+# Source: https://github.com/MiaAI-Lab/Leanstral-1.5-119B-A6B_2x_DGX_Sparks_vLLM
+model: mistralai/Leanstral-1.5-119B-A6B
+runtime: vllm
+container: vllm/vllm-openai:v0.24.0
+min_nodes: 2
+max_nodes: 2
+metadata:
+  description: "Mistral Leanstral-1.5-119B-A6B MoE via vLLM on 2x DGX Spark — TP=2, FP8"
+  category: general
+  model_params: 119000000000
+  model_dtype: bfloat16
+  quantization: fp8
+  quant_bits: 8
+defaults:
+  port: 8888
+  tensor_parallel: 2
+  gpu_memory_utilization: 0.85
+  max_model_len: 262144
+  enforce_eager: true

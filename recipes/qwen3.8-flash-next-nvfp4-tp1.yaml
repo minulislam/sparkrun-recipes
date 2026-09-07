@@ -1,0 +1,41 @@
+# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/Qwen3.8-Flash-Next-Single-DGX-Spark
+# >>> Please test and update this header with your verified launch facts.
+# >>>   sparkrun run ./qwen3.8-flash-next-nvfp4-tp1.yaml --cluster default --tp 1 --dry-run
+# >>> Then remove this block and fill in your verified facts.
+
+# =============================================================================
+# sparkrun recipe — Qwen3.8-Flash-Next NVFP4   [MiaAI-Lab]
+# SINGLE NODE (TP=1 / 1 GPU) on DGX Spark GB10.
+# -----------------------------------------------------------------------------
+# Model: Mia-AiLab/Qwen3.8-Flash-Next-NVFP4 — NVFP4 checkpoint with MTP draft
+# Source: https://github.com/MiaAI-Lab/Qwen3.8-Flash-Next-Single-DGX-Spark
+# Context: 256k tokens | Speculative decoding: MTP draft | Modality: text
+# =============================================================================
+
+model: Mia-AiLab/Qwen3.8-Flash-Next-NVFP4
+runtime: vllm
+
+min_nodes: 1
+max_nodes: 1
+
+metadata:
+  description: >-
+    Qwen3.8-Flash-Next with Mia-AiLab NVFP4 checkpoint and MTP speculative draft.
+    Single DGX Spark. 256k context. Production-validated by MiaAI-Lab.
+  maintainer: MiaAI-Lab (https://github.com/MiaAI-Lab)
+  model_params: 8B
+  model_dtype: nvfp4
+  kv_dtype: fp8_e5m2
+  quantization: nvfp4
+  quant_bits: 4
+
+env:
+  HF_TOKEN: "${HF_TOKEN:-}"
+
+defaults:
+  host: 0.0.0.0
+  port: 8000
+  tensor_parallel: 1
+  gpu_memory_utilization: 0.90
+  max_model_len: 262144
+  enforce_eager: false

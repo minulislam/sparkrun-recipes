@@ -10,6 +10,7 @@ Every number in this repo was measured on real hardware, not estimated. Each rec
 ## Features
 
 - **11 recipes** spanning DiffusionGemma, Gemma-4, Nemotron-3-Omni, Qwen3.6, and Step-3.7-Flash, all NVFP4-quantized for GB10's unified memory
+- **28 additional recipes** from [MiaAI-Lab](https://github.com/MiaAI-Lab) spanning Qwen3.8, GLM-5.3/5.2, DeepSeek-V4, Muse-Glimmer, Gemma-4, Nemotron, MiMo, Leanstral, Hy3, Inkling, and more — see [`INDEX.md`](INDEX.md) #12–39
 - **DFlash speculative decoding** wired correctly (BF16 KV, drafter pre-caching) — the single biggest lever in the fix history, worth up to 2.5× decode speed
 - **Every recipe launched and load-tested live** on a real two-node GB10 cluster, solo and at 8-way concurrency, not estimated from spec sheets
 - **Containers pinned by digest**, not `:latest` — reproducible pulls, no upstream tag drift
@@ -47,7 +48,11 @@ sparkrun stop ./recipes/<file>.yaml --cluster default --tp 1
 
 11 recipes live in [`recipes/`](recipes), registered under the `spark-forge` registry. Full details, current placement guidance, and every measured number are kept in [`INDEX.md`](INDEX.md) — the table below is a condensed pointer, not the source of truth.
 
-| Recipe | Model | c=1 tok/s | 8-way | Best for |
+### Community Recipes (MiaAI-Lab)
+
+28 recipes ported from [github.com/MiaAI-Lab](https://github.com/MiaAI-Lab) inference kits for DGX Spark. **All are unverified** — please run `--dry-run` and update the INDEX header with your cluster facts.
+
+See [`INDEX.md`](INDEX.md) rows #12–39 for the full table and placement guidance.
 |---|---|---:|---:|---|
 | `diffusiongemma-26b-a4b-nvfp4` | DiffusionGemma-26B-A4B (NVFP4) | **358** | 126 | Fastest interactive (diffusion decoding) |
 | `gemma4-26b-aeon-vllm` | Gemma-4-26B-A4B AEON NVFP4 + DFlash | 76.8 | 156 | Interactive agents / tools, clean strict-JSON |
