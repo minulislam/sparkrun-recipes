@@ -10,7 +10,7 @@ Every number in this repo was measured on real hardware, not estimated. Each rec
 ## Features
 
 - **11 recipes** spanning DiffusionGemma, Gemma-4, Nemotron-3-Omni, Qwen3.6, and Step-3.7-Flash, all NVFP4-quantized for GB10's unified memory (live-validated with speed numbers)
-- **29 additional recipes** from [MiaAI-Lab](https://github.com/MiaAI-Lab) — see [`INDEX.md`](INDEX.md) rows #12–40. All ported to sparkrun v2 YAML format with `command` templates. **Unverified** — please run `--dry-run` and update with your cluster's measured facts.
+- **27 additional recipes** from [MiaAI-Lab](https://github.com/MiaAI-Lab) — see [`INDEX.md`](INDEX.md) rows #12–38. All ported to sparkrun v2 YAML format with `command` templates. **Unverified** — please run `--dry-run` and update with your cluster's measured facts.
 - **DFlash speculative decoding** wired correctly (BF16 KV, drafter pre-caching) — the single biggest lever in the fix history, worth up to 2.5× decode speed
 - **Every recipe launched and load-tested live** on a real two-node GB10 cluster, solo and at 8-way concurrency, not estimated from spec sheets
 - **Containers pinned by digest**, not `:latest` — reproducible pulls, no upstream tag drift
@@ -50,7 +50,7 @@ sparkrun stop ./recipes/<file>.yaml --cluster default --tp 1
 
 ### MiaAI-Lab Community Recipes
 
-29 recipes ported from [github.com/MiaAI-Lab](https://github.com/MiaAI-Lab) DGX Spark inference kits. **All are unverified** — see [`INDEX.md`](INDEX.md) rows #12–40 for the full table with model, runtime, and notes. Run `--dry-run` before launching.
+27 recipes ported from [github.com/MiaAI-Lab](https://github.com/MiaAI-Lab) DGX Spark inference kits. **All are unverified** — see [`INDEX.md`](INDEX.md) rows #12–38 for the full table with model, runtime, and notes. Run `--dry-run` before launching.
 
 Quick launch example:
 ```bash
@@ -62,7 +62,7 @@ sparkrun run ./recipes/deepseek-v4-flash-tp2.yaml --cluster default --tp 2 --dry
 sparkrun run ./recipes/qwen3.8-27b-nvfp4-tp1-sglang.yaml --cluster default --tp 1 --dry-run
 ```
 
-Full details for all 40 recipes are in [`INDEX.md`](INDEX.md).
+Full details for all 38 recipes are in [`INDEX.md`](INDEX.md).
 
 ### Two-node layout
 
@@ -74,7 +74,7 @@ Independent replicas beat TP=2 on GB10 for anything that fits on one node:
 
 #### MiaAI-Lab multi-node recipes
 
-MiaAI-Lab provides several multi-node recipes (see [`INDEX.md`](INDEX.md) rows #12–40 for full details):
+MiaAI-Lab provides several multi-node recipes (see [`INDEX.md`](INDEX.md) rows #12–38 for full details):
 
 | Recipe | Model | Nodes | Notes |
 |---|---|---|---|
