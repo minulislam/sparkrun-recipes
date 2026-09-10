@@ -63,6 +63,12 @@ All speed numbers below are **measured on this cluster** (2026-07-18 baseline +
 | 37 | `qwen3.8-27b-nvfp4-tp1-alt.yaml` | RadixArk/Qwen3.8-27B-NVFP4 | vLLM | 1 | NVFP4 | 256k | RTX 5090 variant |
 | 38 | `step-3.7-flash-nvfp4-tp2-miaai.yaml` | stepfun-ai/Step-3.7-Flash-NVFP4 | vLLM | 2 | NVFP4 | — | Custom container; MTP grafting support |
 
+## Third-party Recipes
+
+| # | Recipe file | Model | Runtime | Nodes | Quant | Context | Notes |
+|---|---|---|---|---|---|---|---|
+| 39 | `qwen38-27b-nvfp4-refusal-dial.yaml` | unsloth/Qwen3.8-27B-NVFP4 | vLLM | 1 | NVFP4 | 64k | Runtime rank-1 refusal projection; needs `pocharlies/vllm-qwen38-rank1` image; port 8101 |
+
 ## Launch
 
 ```bash
