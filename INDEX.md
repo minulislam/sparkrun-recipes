@@ -68,6 +68,7 @@ All speed numbers below are **measured on this cluster** (2026-07-18 baseline +
 | # | Recipe file | Model | Runtime | Nodes | Quant | Context | Notes |
 |---|---|---|---|---|---|---|---|
 | 39 | `qwen38-27b-nvfp4-refusal-dial.yaml` | unsloth/Qwen3.8-27B-NVFP4 | vLLM | 1 | NVFP4 | 64k | Runtime rank-1 refusal projection; needs `pocharlies/vllm-qwen38-rank1` image; port 8101 |
+| 40 | `minimax-m3-v0-nvfp4-reap25.yaml` | sparkarena/Minimax-M3-v0-NVFP4-REAP25 | SGLang | 2 | NVFP4 | 32k | REAP25-pruned MiniMax-M3; weights (175 GB) already staged on both nodes |
 
 ## Launch
 

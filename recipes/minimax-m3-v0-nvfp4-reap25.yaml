@@ -1,0 +1,118 @@
+# >>> UNVERIFIED on this cluster — source: @experimental/minimax-m3-v0-nvfp4-2x-reap25
+# >>>   (spark-arena/recipe-registry, experimental-recipes/minimax-m3, commit 3075780)
+# >>> Serve flags are carried over verbatim from the model author's release recipe.
+# >>> Launch it, then replace this banner with your measured facts.
+
+# =============================================================================
+# sparkrun recipe — MiniMax-M3 v0 NVFP4, REAP 25% pruned   [spark-arena]
+# TWO NODES (TP=2 / 2 GPUs) on DGX Spark GB10 via SGLang native multi-node.
+# -----------------------------------------------------------------------------
+# Model: sparkarena/Minimax-M3-v0-NVFP4-REAP25 (pinned revision; cached on
+#        both gb10-spark and gx10-spark)
+#        MiniMax-M3 (~428B / ~23B active) with 25% of routed experts pruned
+#        (REAP), NVFP4 group-16 experts, bf16 attention/embeddings/vision.
+#        Model card: "coherent, quality degradation from REAP25 not
+#        exhaustively tested" and "v0" calibration is a work in progress.
+# Container: scitrera/dgx-spark-sglang-mm:v0 (pinned by digest). The model
+#        card requires the NVFP4 w1/w3 scale-normalization SGLang patch
+#        (scitrera/sglang nvfp4-w13-scale-normalization or PR#27588); this
+#        image is the author's build for it. If output is garbage, check that
+#        first.
+# Context: 32k (author's value) | Runtime: SGLang | Modality: text+image+video
+#
+# MEMORY (measured from the checkpoint headers, not sparkrun's estimator —
+# the estimator counts 93.5B params x 0.5 B = 43.5 GB, which is wrong):
+#   checkpoint 174.2 GiB = routed experts 162.3 + embed/lm_head 4.6
+#                          + attention/indexer 3.5 + shared experts 1.7
+#                          + vision 1.6 (replicated per rank) + rest 0.5
+#   per rank ≈ 88 GiB weights; mem-fraction 0.81 x 121 GiB ≈ 98 GiB static
+#   => only ~9-10 GiB per rank is left for the KV pool. KV cost (bf16,
+#   TP2): main K+V 60 layers ~60 KB/token + MSA index-K 57 layers ~14 KB/token
+#   ≈ 74 KB/token/rank => a pool on the order of ~120k tokens.
+#   That tightness is why the author caps REAP25 at 32k (REAP50 gets 131k).
+#   --max-model-len 65536 should fit one long request plus headroom, but it is
+#   untested — try it only after the 32k default has booted cleanly.
+#   Do NOT raise gpu_memory_utilization: GB10 unified memory has no clean OOM;
+#   overcommit evicts page cache and can wedge the node.
+#
+# -----------------------------------------------------------------------------
+# LAUNCH (by file path: local files are auto-trusted; spark-forge is
+# trusted: false, so a by-name registry launch prompts every time)
+#
+#   sparkrun stop <any job holding the nodes>        # needs both Sparks free
+#   # drop page caches on BOTH nodes BEFORE launch, never during load
+#   # (instanttensor loading is fatal if the page cache is evicted mid-load):
+#   #   sync && echo 3 | sudo tee /proc/sys/vm/drop_caches
+#   sparkrun run ./recipes/minimax-m3-v0-nvfp4-reap25.yaml --cluster dgx-pair --dry-run
+#   sparkrun run ./recipes/minimax-m3-v0-nvfp4-reap25.yaml --cluster dgx-pair --no-follow
+#
+# First launch ships the 32 GB image to gx10-spark (it is on gb10-spark only).
+# Endpoint: http://10.10.20.10:8000/v1  model: minimax-m3-reap25
+# Sampling per MiniMax: temperature=1.0, top_p=0.95, top_k=40.
+# =============================================================================
+
+model: sparkarena/Minimax-M3-v0-NVFP4-REAP25
+model_revision: e9ee17fac5a7bef948df3f22d641d608c6c8f7a8
+runtime: sglang
+container: scitrera/dgx-spark-sglang-mm@sha256:9a6e7d7cd5fbc716db1fedef5dd820db40d060fcb8d58885b19d4a95dbae6dff
+min_nodes: 2
+max_nodes: 2
+
+metadata:
+  description: >-
+    MiniMax-M3 v0 NVFP4 with REAP 25% expert pruning via SGLang on 2x DGX Spark —
+    TP=2, bf16 KV, 32k context, CUDA graphs bs<=16, InstantTensor loading,
+    minimax-m3 reasoning + tool-call parsers.
+  maintainer: spark-arena (https://spark-arena.com) — adopted into spark-forge
+  category: agent
+  model_dtype: nvfp4
+  kv_dtype: bfloat16
+  quantization: nvfp4
+  quant_bits: 4
+  # Total checkpoint GiB (sparkrun divides by TP). Overrides the param-based
+  # estimate, which undercounts this checkpoint by ~4x.
+  model_vram: 174.2
+
+executor_config:
+  user: root
+
+env:
+  TORCH_NCCL_ASYNC_ERROR_HANDLING: "1"
+
+defaults:
+  host: 0.0.0.0
+  port: 8000
+  tensor_parallel: 2
+  gpu_memory_utilization: 0.81
+  max_model_len: 32768
+  max_num_batched_tokens: 8192
+  kv_cache_dtype: auto
+  served_model_name: minimax-m3-reap25
+  reasoning_parser: minimax-m3
+  tool_call_parser: minimax-m3
+  moe_runner_backend: triton
+  fp4_gemm_backend: cutlass
+  load_format: instanttensor
+  cuda_graph_max_bs: 16
+  cuda_graph_bs: "1 2 4 8 12 16"
+
+command: |
+  sglang serve \
+    --model-path {model} \
+    --revision {model_revision} \
+    --served-model-name {served_model_name} \
+    --mem-fraction-static {gpu_memory_utilization} \
+    --context-length {max_model_len} \
+    --tp {tensor_parallel} \
+    --chunked-prefill-size {max_num_batched_tokens} \
+    --fp4-gemm-backend {fp4_gemm_backend} \
+    --load-format {load_format} \
+    --kv-cache-dtype {kv_cache_dtype} \
+    --reasoning-parser {reasoning_parser} \
+    --tool-call-parser {tool_call_parser} \
+    --moe-runner-backend {moe_runner_backend} \
+    --trust-remote-code \
+    --cuda-graph-max-bs {cuda_graph_max_bs} \
+    --cuda-graph-bs {cuda_graph_bs} \
+    --host {host} \
+    --port {port}
