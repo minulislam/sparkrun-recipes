@@ -4,6 +4,14 @@
 # >>> Placement note: defaults are tuned for a SHARED node (gpu_mem 0.35 + 8 GiB KV ~= 32 GB).
 # >>> On dgx-pair, the co-tenant must be at <= 0.60 for this to fit alongside.
 # >>> Please test and run --dry-run first, then update with your verified launch facts.
+# >>> VERIFIED 2026-09-17 on 10.10.20.11 (image 20260815):
+# >>>   GLOBAL dial WORKS. lambda=0 refuses a low-harm trigger, lambda=1 complies.
+# >>>   VLLM_REFUSAL_LAMBDA_INIT is IGNORED - server always starts at 0.0. post_exec fixes it.
+# >>>   PER-REQUEST cache_salt "refusal:<x>" does NOT work: the tag 20260815 predates the
+# >>>   per-request feature (added upstream 2026-08-19). It is treated as a plain prefix-cache
+# >>>   key, so both arms follow the GLOBAL lambda. A newer image is needed for per-request.
+# >>>   Cold start needs --no-rm: the FP4 autotune outruns sparkrun's readiness probe, which
+# >>>   otherwise tears the container down and reports "head container is not running".
 # >>> LOCAL DIVERGENCE FROM UPSTREAM: lambda init is 1.0, not 0.0 — this pod comes up
 # >>> ABLATED and requests with no cache_salt get lambda=1. Upstream ships 0.0 so a restart
 # >>> never silently comes up uncensored; we opted out of that deliberately.
@@ -137,6 +145,12 @@ pre_exec:
 
 post_exec:
   - curl -s localhost:{port}/v1/models
+  # MEASURED 2026-09-17 on image 20260815: VLLM_REFUSAL_LAMBDA_INIT is NOT honoured.
+  # The var reaches every process incl. VLLM::EngineCore (verified via /proc/<pid>/environ)
+  # and refusal_projection.py:429 does read it at hook construction, yet the server comes up
+  # reporting lambda 0.0. So uncensored-by-default has to be set after readiness, here.
+  # Braces are DOUBLED - sparkrun's arg substitution is brace-blind; {{ }} renders as { }.
+  - curl -s -XPOST localhost:{port}/admin/refusal_lambda -H 'Content-Type: application/json' -d '{{"lambda": 1}}'
   - curl -s localhost:{port}/admin/refusal_lambda
 
 post_commands:
