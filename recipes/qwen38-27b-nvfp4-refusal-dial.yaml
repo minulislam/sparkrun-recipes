@@ -52,6 +52,15 @@ max_nodes: 1
 # upstream base, so it cross-builds to arm64 from an x86 host without QEMU (~3 min).
 container: docker.io/pocharlies/vllm-qwen38-rank1:20260815
 
+# LOCAL FIX (sparkrun 0.3.8): the image bakes ENTRYPOINT ["vllm","serve"], so sparkrun's
+# keep-alive (`bash -c "sleep infinity"`) is appended as ARGS to it, vLLM rejects them, the
+# container exits instantly, and pre_exec then fails with the misleading
+#   "Error response from daemon: No such container: sparkrun_<id>_solo"
+# Blanking the entrypoint restores sparkrun's run-then-exec model. Same guard the AEON
+# recipes in this registry carry. Upstream omits it; their sparkrun build did not need it.
+executor_config:
+  entrypoint: ""
+
 metadata:
   description: >-
     Qwen3.8-27B NVFP4 + native MTP with runtime rank-1 refusal projection.
