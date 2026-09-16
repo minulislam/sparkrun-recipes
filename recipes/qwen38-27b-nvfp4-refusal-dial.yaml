@@ -150,7 +150,10 @@ post_exec:
   # and refusal_projection.py:429 does read it at hook construction, yet the server comes up
   # reporting lambda 0.0. So uncensored-by-default has to be set after readiness, here.
   # Braces are DOUBLED - sparkrun's arg substitution is brace-blind; {{ }} renders as { }.
-  - curl -s -XPOST localhost:{port}/admin/refusal_lambda -H 'Content-Type: application/json' -d '{{"lambda": 1}}'
+  # Whole command is a SINGLE-QUOTED YAML scalar with '' escapes: the header's
+  # "Content-Type: application/json" contains a colon+space, which YAML reads as a
+  # mapping separator inside a plain scalar and refuses to parse.
+  - 'curl -s -XPOST localhost:{port}/admin/refusal_lambda -H ''Content-Type: application/json'' -d ''{{"lambda": 1}}'''
   - curl -s localhost:{port}/admin/refusal_lambda
 
 post_commands:
