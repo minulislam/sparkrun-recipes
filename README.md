@@ -62,7 +62,7 @@ sparkrun run ./recipes/deepseek-v4-flash-tp2.yaml --cluster default --tp 2 --dry
 sparkrun run ./recipes/qwen3.8-27b-nvfp4-tp1-sglang.yaml --cluster default --tp 1 --dry-run
 ```
 
-Full details for all 40 recipes are in [`INDEX.md`](INDEX.md).
+Full details for all 45 recipes are in [`INDEX.md`](INDEX.md).
 
 ### Two-node layout
 

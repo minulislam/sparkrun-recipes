@@ -1,0 +1,56 @@
+# >>> UNVERIFIED on this cluster — source: https://huggingface.co/orcarouter/Nex-N2.5-mini-Uncensored-NVFP4
+# >>>   (orcarouter collection: Nex-N2.5 Uncensored / Abliterated)
+# >>> GATED (auto-approve): open the model page above while logged in to the HF account
+# >>>   whose token sparkrun uses and click "Agree and access repository" — until then
+# >>>   every download returns 403.
+# >>> Container and serve flags are mirrored from qwen3.6-35b-a3b-nvfp4-tp1.yaml (the base-model
+# >>> recipe in this repo, itself UNVERIFIED). NOTHING in this file has been run yet.
+# >>> Launch it, then replace this banner with your measured facts.
+# >>> Fit: 23.9 GB of weights on one GB10; sparkrun dry-run estimates 75 GB left for KV at 0.82.
+# >>> gpu_memory_utilization 0.82 follows this repo's GB10 convention (the Deckard recipe runs
+# >>> here at 0.82; 0.85 has NVRM-OOMed at boot and 0.90 fails vLLM's free-memory check).
+
+# =============================================================================
+# sparkrun recipe — Nex-N2.5-mini-Uncensored-NVFP4
+# SINGLE NODE (TP=1) on DGX Spark GB10.
+# Model: orcarouter/Nex-N2.5-mini-Uncensored-NVFP4  (23.9 GB of weights)
+# Runtime: vllm | Container: vllm/vllm-openai:v0.24.0
+# =============================================================================
+
+model: orcarouter/Nex-N2.5-mini-Uncensored-NVFP4
+model_revision: 1bd4586761a8077d563ab96661838e583ef5887c   # HF commit as of 2026-09-15
+runtime: vllm
+container: vllm/vllm-openai:v0.24.0
+min_nodes: 1
+max_nodes: 1
+
+metadata:
+  description: >-
+    Nex-N2.5 mini uncensored/abliterated MoE, NVFP4 compressed-tensors,
+    vision-capable. Single DGX Spark.
+  maintainer: orcarouter (model) — recipe adapted for sparkrun
+  model_dtype: nvfp4
+  model_vram: 24
+
+env:
+  VLLM_ALLOW_LONG_MAX_MODEL_LEN: "1"
+  PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
+
+defaults:
+  host: 0.0.0.0
+  port: 8000
+  tensor_parallel: 1
+  gpu_memory_utilization: 0.82
+  max_model_len: 262144
+  served_model_name: nex-n2.5-mini-uncensored
+
+command: |
+  vllm serve {model} \
+    --revision {model_revision} \
+    --served-model-name {served_model_name} \
+    --host {host} \
+    --port {port} \
+    --tensor-parallel-size {tensor_parallel} \
+    --gpu-memory-utilization {gpu_memory_utilization} \
+    --max-model-len {max_model_len} \
+    --trust-remote-code

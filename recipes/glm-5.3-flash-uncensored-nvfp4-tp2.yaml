@@ -1,0 +1,62 @@
+# >>> UNVERIFIED on this cluster — source: https://huggingface.co/orcarouter/GLM-5.3-Flash-Uncensored-NVFP4
+# >>>   (orcarouter collection: GLM 5.3 Flash Uncensored / Abliterated)
+# >>> GATED (auto-approve): open the model page above while logged in to the HF account
+# >>>   whose token sparkrun uses and click "Agree and access repository" — until then
+# >>>   every download returns 403.
+# >>> Container and serve flags are mirrored from glm-5.3-flash-nvfp4-tp2.yaml (the base-model
+# >>> recipe in this repo, itself UNVERIFIED). NOTHING in this file has been run yet.
+# >>> Launch it, then replace this banner with your measured facts.
+# >>> Fit: DOES NOT COMFORTABLY FIT. 205.1 GB / 2 = ~103 GB per node; sparkrun's dry-run
+#   estimate leaves 1.6 GB/node for KV at 0.86, so a real context is not achievable.
+#   Expect OOM or a refusal to allocate KV blocks. This model wants 3+ nodes (compare
+#   glm-5.2-nvfp4-aqlm-tp3) or a smaller quant: orcarouter/GLM-5.3-Flash-Uncensored-GGUF
+#   Q3_K_M is 152.7 GB, but this repo has no multi-node llama-cpp recipe to host it yet.
+#   Provided for completeness with max_model_len pinned to 32k; do not expect it to
+#   serve on this 2-node pair.
+# >>> gpu_memory_utilization 0.86 is ABOVE this repo's 0.82 convention (0.85 has NVRM-OOMed
+# >>> at boot here). At 0.82 the weights alone exceed the budget, so there is no safer value.
+
+# =============================================================================
+# sparkrun recipe — GLM-5.3-Flash-Uncensored-NVFP4
+# TWO NODES (TP=2) on DGX Spark GB10.
+# Model: orcarouter/GLM-5.3-Flash-Uncensored-NVFP4  (205.1 GB of weights)
+# Runtime: vllm-ray | Container: mia/glm53-flash-spark:mm-ray-v1
+# =============================================================================
+
+model: orcarouter/GLM-5.3-Flash-Uncensored-NVFP4
+model_revision: ec0adf4f49c9570807cc11a5f650538c1893ae54   # HF commit as of 2026-09-07
+runtime: vllm-ray
+container: mia/glm53-flash-spark:mm-ray-v1
+min_nodes: 2
+max_nodes: 2
+
+metadata:
+  description: >-
+    GLM 5.3 Flash uncensored/abliterated, NVFP4, vision-capable. Ray-orchestrated
+    tensor-parallel over 2 Sparks. SEE THE FIT WARNING - this one is marginal.
+  maintainer: orcarouter (model) — recipe adapted for sparkrun
+  model_dtype: nvfp4
+  model_vram: 205
+
+env:
+  VLLM_ALLOW_LONG_MAX_MODEL_LEN: "1"
+  PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
+
+defaults:
+  host: 0.0.0.0
+  port: 8000
+  tensor_parallel: 2
+  gpu_memory_utilization: 0.86
+  max_model_len: 32768
+  served_model_name: glm-5.3-flash-uncensored
+
+command: |
+  vllm serve {model} \
+    --revision {model_revision} \
+    --served-model-name {served_model_name} \
+    --host {host} \
+    --port {port} \
+    --tensor-parallel-size {tensor_parallel} \
+    --gpu-memory-utilization {gpu_memory_utilization} \
+    --max-model-len {max_model_len} \
+    --trust-remote-code
