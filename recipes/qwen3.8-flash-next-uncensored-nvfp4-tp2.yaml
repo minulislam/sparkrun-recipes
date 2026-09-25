@@ -1,0 +1,88 @@
+# >>> UNVERIFIED on this cluster — source: https://huggingface.co/orcarouter/Qwen3.8-Flash-Next-Uncensored-NVFP4
+# >>> GATED (auto-approve): the saved HF token still gets HTTP 403 on this repo (checked 2026-09-20).
+# >>>   Open the model page while logged in as the token's account and click "Agree and access
+# >>>   repository", then: hf download orcarouter/Qwen3.8-Flash-Next-Uncensored-NVFP4   (~184 GB)
+# >>> 2026-09-20 rewrite: replaces qwen3.8-flash-next-uncensored-nvfp4-tp2-sglang.yaml, which had no
+# >>>   container at all. Now vLLM on the eugr b12x nightly cached on both nodes; env + flags mirror
+# >>>   @eugr/qwen3.8-flash-next-nvfp4-cluster (the config eugr runs for the base NVFP4 on 2 Sparks),
+# >>>   plus NCCL_IB_HCA pinned to the two CX7 ports that reach the peer (required for any tp2 here).
+# >>>   --quantization left to auto-detect (orcarouter ships compressed-tensors NVFP4, not
+# >>>   modelopt_mixed); if the b12x MoE/linear backends reject it: -o moe_backend=auto -o linear_backend=auto
+# >>> Fit: 183.5 GB / 2 = ~92 GB per node; 0.82 leaves ~7 GB/node for KV, so max_model_len is
+# >>>   capped at 65536 here (eugr's 262144 needs the smaller local-inference-lab build).
+
+model: orcarouter/Qwen3.8-Flash-Next-Uncensored-NVFP4
+model_revision: c1209bda15a6bbc4c68b585e93d40c0d85f50306   # HF commit as of 2026-08-29
+runtime: vllm
+container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly-b12x:latest
+min_nodes: 2
+max_nodes: 2
+
+metadata:
+  description: >-
+    Qwen3.8 Flash Next uncensored/abliterated (orcarouter), NVFP4, vision-capable.
+    vLLM tensor-parallel across both DGX Sparks, native MTP speculative decoding.
+  maintainer: orcarouter (model) — recipe adapted for sparkrun
+  model_dtype: nvfp4
+  kv_dtype: fp8
+  model_vram: 184
+
+env:
+  NCCL_IB_HCA: "rocep1s0f1,roceP2p1s0f1"
+  CUTE_DSL_ARCH: "sm_121a"
+  SAFETENSORS_FAST_GPU: "1"
+  VLLM_WORKER_MULTIPROC_METHOD: "spawn"
+  VLLM_SSM_CONV_STATE_LAYOUT: "DS"
+  VLLM_USE_AOT_COMPILE: "1"
+  VLLM_USE_MEGA_AOT_ARTIFACT: "1"
+  VLLM_USE_V2_MODEL_RUNNER: "1"
+  B12X_POLICY_MODE: "auto"
+  VLLM_ENABLE_ROCE_ALLREDUCE: "1"
+  VLLM_ROCE_ALLREDUCE_MAX_SIZE: "2MB"
+
+defaults:
+  host: 0.0.0.0
+  port: 8000
+  tensor_parallel: 2
+  pipeline_parallel: 1
+  gpu_memory_utilization: 0.82
+  max_model_len: 65536
+  max_num_seqs: 8
+  kv_cache_dtype: fp8
+  max_num_batched_tokens: 4096
+  block_size: 16
+  moe_backend: b12x
+  linear_backend: b12x
+  num_speculative_tokens: 4
+  served_model_name: qwen3.8-flash-next-uncensored
+
+command: |
+  vllm serve {model} \
+    --revision {model_revision} \
+    --served-model-name {served_model_name} \
+    --host {host} \
+    --port {port} \
+    --trust-remote-code \
+    --tensor-parallel-size {tensor_parallel} \
+    --pipeline-parallel-size {pipeline_parallel} \
+    --mamba-cache-mode align \
+    --enable-prefix-caching \
+    --enable-chunked-prefill \
+    --dtype bfloat16 \
+    --kv-cache-dtype {kv_cache_dtype} \
+    --block-size {block_size} \
+    --load-format b12x \
+    --max-model-len {max_model_len} \
+    --max-num-seqs {max_num_seqs} \
+    --max-num-batched-tokens {max_num_batched_tokens} \
+    --speculative-config '{{"method":"mtp","num_speculative_tokens":{num_speculative_tokens}}}' \
+    --gdn-decode-kernel b12x \
+    --linear-backend {linear_backend} \
+    --moe-backend {moe_backend} \
+    --no-enable-flashinfer-autotune \
+    --mm-encoder-tp-mode data \
+    --reasoning-parser qwen3 \
+    --tool-call-parser qwen3_xml \
+    --enable-auto-tool-choice \
+    --compilation-config '{{"pass_config":{{"fuse_act_quant":true}}}}' \
+    --gpu-memory-utilization {gpu_memory_utilization}

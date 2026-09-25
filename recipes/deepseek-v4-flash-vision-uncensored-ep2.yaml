@@ -1,0 +1,66 @@
+# >>> UNVERIFIED on this cluster — EP variant of deepseek-v4-flash-vision-uncensored-tp2.yaml
+# >>>   source: https://huggingface.co/orcarouter/DeepSeek-V4-Flash-Vision-Uncensored
+# >>> GATED: needs an HF account that has accepted the repo gate (asmminulislam has, 2026-09-26).
+# >>> Shape: tensor_parallel=2 across both Sparks PLUS --enable-expert-parallel, so each node holds
+# >>>   whole experts for half of the 256-expert set (EP=2 for the MoE layers) instead of half of
+# >>>   every expert. Attention stays TP2 (vLLM shards MLA q-heads, replicates the latent KV).
+# >>>   Same 84 GB/node of weights as the tp2 recipe; only the MoE comm/kernel pattern changes.
+# >>>   Precedent on 2 Sparks: @community qwen3.8-flash-next t4cmyk recipes (tp2 + EP).
+# >>> --enable-expert-parallel MUST live in this command template: sparkrun drops extra args
+# >>>   passed after `--`, and there is no -o key for it.
+# >>> all2all backend is left at vLLM's default (allgather_reducescatter, plain NCCL — no DeepEP
+# >>>   on GB10). If MoE dispatch misbehaves: -o all2all_backend=naive.
+# >>> kv_cache_dtype fp8: DeepSeek-V4 uses the fp8_ds_mla KV layout; NVIDIA's card marks
+# >>>   --kv-cache-dtype fp8 as required for vLLM. Override with -o kv_cache_dtype=auto if the
+# >>>   anemll build rejects it.
+# >>> ENTRYPOINT: ghcr.io/anemll/dspark-vllm-gx10:0.1.1 bakes ENTRYPOINT ["vllm","serve"], which
+# >>>   swallows sparkrun's launcher — cleared via executor_config (measured 2026-09-26).
+# >>> Fit: 167.8 GB / 2 = ~84 GB per node; ~15 GB/node left for KV at 0.82 (0.85 has NVRM-OOMed
+# >>>   at boot on these GB10s; 0.90 fails vLLM's free-memory check).
+
+model: orcarouter/DeepSeek-V4-Flash-Vision-Uncensored
+model_revision: 2ef3d5c2bb7d9ccba6ab66314ed9e63bd52ac2a6   # HF commit as of 2026-09-03
+runtime: vllm
+container: ghcr.io/anemll/dspark-vllm-gx10:0.1.1
+min_nodes: 2
+max_nodes: 2
+
+executor_config:
+  entrypoint: ""
+
+metadata:
+  description: >-
+    DeepSeek V4 Flash Vision uncensored/abliterated (orcarouter), native FP4 experts / FP8 rest.
+    Two DGX Sparks: tensor-parallel 2 with expert parallelism enabled (EP=2 for the MoE layers).
+  maintainer: orcarouter (model) — recipe adapted for sparkrun
+  model_dtype: fp4
+  kv_dtype: fp8
+  model_vram: 168
+
+env:
+  VLLM_ALLOW_LONG_MAX_MODEL_LEN: "1"
+  PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
+
+defaults:
+  host: 0.0.0.0
+  port: 8000
+  tensor_parallel: 2
+  gpu_memory_utilization: 0.82
+  max_model_len: 262144
+  kv_cache_dtype: fp8
+  all2all_backend: allgather_reducescatter
+  served_model_name: deepseek-v4-flash-vision-uncensored
+
+command: |
+  vllm serve {model} \
+    --revision {model_revision} \
+    --served-model-name {served_model_name} \
+    --host {host} \
+    --port {port} \
+    --tensor-parallel-size {tensor_parallel} \
+    --enable-expert-parallel \
+    --all2all-backend {all2all_backend} \
+    --gpu-memory-utilization {gpu_memory_utilization} \
+    --max-model-len {max_model_len} \
+    --kv-cache-dtype {kv_cache_dtype} \
+    --trust-remote-code

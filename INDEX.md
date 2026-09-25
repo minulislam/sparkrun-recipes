@@ -71,17 +71,20 @@ All speed numbers below are **measured on this cluster** (2026-07-18 baseline +
 | 40 | `minimax-m3-v0-nvfp4-reap25.yaml` | sparkarena/Minimax-M3-v0-NVFP4-REAP25 | SGLang | 2 | NVFP4 | 32k | REAP25-pruned MiniMax-M3; weights (175 GB) already staged on both nodes |
 | 41 | `qwen3.8-27b-uncensored-nvfp4-tp1.yaml` | orcarouter/Qwen3.8-27B-Uncensored-NVFP4 | vLLM | 1 | NVFP4 | 256k | Abliterated Qwen3.8-27B (25 GB); gated repo; UNVERIFIED |
 | 42 | `nex-n2.5-mini-uncensored-nvfp4-tp1.yaml` | orcarouter/Nex-N2.5-mini-Uncensored-NVFP4 | vLLM | 1 | NVFP4 | 256k | Abliterated Nex-N2.5 mini MoE (24 GB), vision; gated repo; UNVERIFIED |
-| 43 | `deepseek-v4-flash-vision-uncensored-tp2.yaml` | orcarouter/DeepSeek-V4-Flash-Vision-Uncensored | vLLM | 2 | FP4+FP8 | 256k | 168 GB weights, ~15 GB/node left for KV; gated repo; UNVERIFIED |
-| 44 | `qwen3.8-flash-next-uncensored-nvfp4-tp2-sglang.yaml` | orcarouter/Qwen3.8-Flash-Next-Uncensored-NVFP4 | SGLang | 2 | NVFP4 | 256k | 184 GB weights, only ~7 GB/node for KV — drop max_model_len if it won't allocate; gated repo; UNVERIFIED |
-| 45 | `glm-5.3-flash-uncensored-nvfp4-tp2.yaml` | orcarouter/GLM-5.3-Flash-Uncensored-NVFP4 | vLLM-Ray | 2 | NVFP4 | 32k | 205 GB weights — does NOT fit this 2-node pair (~1.6 GB/node for KV); listed for completeness; gated repo; UNVERIFIED |
+| 43 | `deepseek-v4-flash-vision-uncensored-tp2.yaml` | orcarouter/DeepSeek-V4-Flash-Vision-Uncensored | vLLM | 2 | FP4+FP8 | 256k | 168 GB weights, ~15 GB/node left for KV; container ENTRYPOINT cleared via `executor_config` (2026-09-26); gated repo; UNVERIFIED |
+| 44 | `qwen3.8-flash-next-uncensored-nvfp4-tp2.yaml` | orcarouter/Qwen3.8-Flash-Next-Uncensored-NVFP4 | vLLM | 2 | NVFP4 | 64k | 184 GB weights, ~7 GB/node for KV (max_model_len capped at 65536); eugr b12x nightly; replaces the container-less sglang draft; gated repo; UNVERIFIED |
+| 45 | `glm-5.3-flash-uncensored-nvfp4-tp2.yaml` | orcarouter/GLM-5.3-Flash-Uncensored-NVFP4 | vLLM | 2 | NVFP4 | 32k | 205 GB weights — marginal on this 2-node pair (~2.7 GB/node for KV at 0.87); eugr b12x nightly; gated repo; UNVERIFIED |
+| 46 | `deepseek-v4-flash-vision-uncensored-ep2.yaml` | orcarouter/DeepSeek-V4-Flash-Vision-Uncensored | vLLM | 2 | FP4+FP8 | 256k | #43 + `--enable-expert-parallel` (EP=2 for the MoE layers, attention stays TP2), FP8 KV; gated repo; UNVERIFIED |
 
-The five orcarouter recipes (#41-45) are abliterated/uncensored builds, one picked from
-each of the [orcarouter](https://huggingface.co/orcarouter/collections) collections. All
-five HuggingFace repos are **gated with auto-approval**: open each model page once with
-the account whose token sparkrun uses and click "Agree and access repository", or every
-download returns 403. Each recipe mirrors the container and serve flags of the matching
-base-model recipe already in this repo, pins the HF commit, and carries its own fit note
-from a `--dry-run` VRAM estimate. None has been launched yet.
+The orcarouter recipes (#41-46) are abliterated/uncensored builds, one picked from each
+of the [orcarouter](https://huggingface.co/orcarouter/collections) collections (#46 is an
+expert-parallel variant of #43). All five HuggingFace repos are **gated with
+auto-approval**: open each model page once with the account whose token sparkrun uses and
+click "Agree and access repository", or every download returns 403 (done for
+`asmminulislam` on 2026-09-26). Each recipe mirrors the container and serve flags of the
+matching base-model recipe already in this repo, pins the HF commit, and carries its own
+fit note from a `--dry-run` VRAM estimate. Only #43 has been launched so far (2026-09-26:
+reached the model download; not yet served).
 
 ## Launch
 

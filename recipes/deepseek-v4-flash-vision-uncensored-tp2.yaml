@@ -4,8 +4,12 @@
 # >>>   whose token sparkrun uses and click "Agree and access repository" — until then
 # >>>   every download returns 403.
 # >>> Container and serve flags are mirrored from deepseek-v4-flash-vision-exp-tp2.yaml (the base-model
-# >>> recipe in this repo, itself UNVERIFIED). NOTHING in this file has been run yet.
-# >>> Launch it, then replace this banner with your measured facts.
+# >>> recipe in this repo, itself UNVERIFIED).
+# >>> 2026-09-26 measured: ghcr.io/anemll/dspark-vllm-gx10:0.1.1 bakes ENTRYPOINT ["vllm","serve"],
+# >>>   which swallows sparkrun's launcher command as its own args and never starts the server.
+# >>>   Fixed below with executor_config.entrypoint: "". Launch then died on the actual model
+# >>>   download: HF returns 403 (gated repo) even with the sparkrun token — needs a human to open
+# >>>   the model page above while logged into that HF account and click "Agree and access repository".
 # >>> Fit: 167.8 GB / 2 = ~84 GB per node; sparkrun dry-run estimates 15 GB/node left for KV at 0.82.
 # >>> gpu_memory_utilization 0.82 follows this repo's GB10 convention (the Deckard recipe runs
 # >>> here at 0.82; 0.85 has NVRM-OOMed at boot and 0.90 fails vLLM's free-memory check).
@@ -23,6 +27,9 @@ runtime: vllm
 container: ghcr.io/anemll/dspark-vllm-gx10:0.1.1
 min_nodes: 2
 max_nodes: 2
+
+executor_config:
+  entrypoint: ""
 
 metadata:
   description: >-

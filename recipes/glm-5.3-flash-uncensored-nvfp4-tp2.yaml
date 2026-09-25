@@ -1,53 +1,69 @@
 # >>> UNVERIFIED on this cluster — source: https://huggingface.co/orcarouter/GLM-5.3-Flash-Uncensored-NVFP4
-# >>>   (orcarouter collection: GLM 5.3 Flash Uncensored / Abliterated)
-# >>> GATED (auto-approve): open the model page above while logged in to the HF account
-# >>>   whose token sparkrun uses and click "Agree and access repository" — until then
-# >>>   every download returns 403.
-# >>> Container and serve flags are mirrored from glm-5.3-flash-nvfp4-tp2.yaml (the base-model
-# >>> recipe in this repo, itself UNVERIFIED). NOTHING in this file has been run yet.
-# >>> Launch it, then replace this banner with your measured facts.
-# >>> Fit: DOES NOT COMFORTABLY FIT. 205.1 GB / 2 = ~103 GB per node; sparkrun's dry-run
-#   estimate leaves 1.6 GB/node for KV at 0.86, so a real context is not achievable.
-#   Expect OOM or a refusal to allocate KV blocks. This model wants 3+ nodes (compare
-#   glm-5.2-nvfp4-aqlm-tp3) or a smaller quant: orcarouter/GLM-5.3-Flash-Uncensored-GGUF
-#   Q3_K_M is 152.7 GB, but this repo has no multi-node llama-cpp recipe to host it yet.
-#   Provided for completeness with max_model_len pinned to 32k; do not expect it to
-#   serve on this 2-node pair.
-# >>> gpu_memory_utilization 0.86 is ABOVE this repo's 0.82 convention (0.85 has NVRM-OOMed
-# >>> at boot here). At 0.82 the weights alone exceed the budget, so there is no safer value.
-
-# =============================================================================
-# sparkrun recipe — GLM-5.3-Flash-Uncensored-NVFP4
-# TWO NODES (TP=2) on DGX Spark GB10.
-# Model: orcarouter/GLM-5.3-Flash-Uncensored-NVFP4  (205.1 GB of weights)
-# Runtime: vllm-ray | Container: mia/glm53-flash-spark:mm-ray-v1
-# =============================================================================
+# >>> GATED (auto-approve): the saved HF token still gets HTTP 403 on this repo (checked 2026-09-20).
+# >>>   Open the model page while logged in as the token's account and click "Agree and access
+# >>>   repository", then: hf download orcarouter/GLM-5.3-Flash-Uncensored-NVFP4   (~205 GB)
+# >>> 2026-09-20 rewrite: container switched from mia/glm53-flash-spark:mm-ray-v1 (never built here)
+# >>>   to the eugr b12x nightly cached on both nodes; runtime vllm-ray -> vllm (sparkrun's
+# >>>   vllm-distributed path); env + flags mirror @eugr/glm-5.3-flash, the config that boots
+# >>>   local-inference-lab/GLM-5.3-Flash-NVFP4-Spark on this pair. Two deliberate differences:
+# >>>   - NCCL_IB_HCA pins NCCL to the two CX7 ports that actually reach the peer node
+# >>>     (rocep1s0f1, roceP2p1s0f1). Without it every tp2 launch here dies at NCCL init.
+# >>>   - --quantization is left to auto-detect: the orcarouter checkpoints are compressed-tensors
+# >>>     NVFP4, not the modelopt_mixed format eugr's flag targets. If vLLM rejects the b12x
+# >>>     backends for this format, retry with -o moe_backend=auto -o linear_backend=auto.
+# >>> FIT WARNING: 205.1 GB / 2 = ~103 GB per node against a 0.87 budget of 105 GB — there is
+# >>>   almost no room for KV cache. The 175 GB "-Spark" NVFP4 build is the one that fits comfortably.
+# >>>   Expect this to fail at KV allocation unless max_model_len is tiny.
 
 model: orcarouter/GLM-5.3-Flash-Uncensored-NVFP4
 model_revision: ec0adf4f49c9570807cc11a5f650538c1893ae54   # HF commit as of 2026-09-07
-runtime: vllm-ray
-container: mia/glm53-flash-spark:mm-ray-v1
+runtime: vllm
+container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly-b12x:latest
 min_nodes: 2
 max_nodes: 2
 
 metadata:
   description: >-
-    GLM 5.3 Flash uncensored/abliterated, NVFP4, vision-capable. Ray-orchestrated
-    tensor-parallel over 2 Sparks. SEE THE FIT WARNING - this one is marginal.
+    GLM 5.3 Flash uncensored/abliterated (orcarouter), NVFP4, vision-capable.
+    Tensor-parallel across both DGX Sparks. SEE THE FIT WARNING - marginal.
   maintainer: orcarouter (model) — recipe adapted for sparkrun
   model_dtype: nvfp4
+  kv_dtype: fp8
   model_vram: 205
 
 env:
-  VLLM_ALLOW_LONG_MAX_MODEL_LEN: "1"
-  PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
+  NCCL_IB_HCA: "rocep1s0f1,roceP2p1s0f1"
+  CUTE_DSL_ARCH: "sm_121a"
+  SAFETENSORS_FAST_GPU: "1"
+  VLLM_ENABLE_ROCE_ALLREDUCE: "1"
+  VLLM_ROCE_ALLREDUCE_MAX_SIZE: "2MB"
+  VLLM_ENABLE_PCIE_ALLREDUCE: "0"
+  VLLM_WORKER_MULTIPROC_METHOD: "spawn"
+  VLLM_SSM_CONV_STATE_LAYOUT: "DS"
+  VLLM_USE_AOT_COMPILE: "1"
+  VLLM_USE_MEGA_AOT_ARTIFACT: "1"
+  VLLM_USE_V2_MODEL_RUNNER: "1"
+  B12X_POLICY_MODE: "auto"
+  INSTANTTENSOR_BACKEND: "BUFFERED"
+  INSTANTTENSOR_BUFFER_SIZE: "67108864"
+  INSTANTTENSOR_CHUNK_SIZE: "8388608"
+  INSTANTTENSOR_CONCURRENCY: "1"
+  INSTANTTENSOR_IO_DEPTH: "3"
 
 defaults:
   host: 0.0.0.0
   port: 8000
   tensor_parallel: 2
-  gpu_memory_utilization: 0.86
+  pipeline_parallel: 1
+  gpu_memory_utilization: 0.87
   max_model_len: 32768
+  max_num_seqs: 4
+  kv_cache_dtype: fp8
+  max_num_batched_tokens: 4096
+  block_size: 256
+  moe_backend: b12x
+  linear_backend: b12x
+  num_speculative_tokens: 5
   served_model_name: glm-5.3-flash-uncensored
 
 command: |
@@ -57,6 +73,24 @@ command: |
     --host {host} \
     --port {port} \
     --tensor-parallel-size {tensor_parallel} \
-    --gpu-memory-utilization {gpu_memory_utilization} \
+    --pipeline-parallel-size {pipeline_parallel} \
+    --mamba-cache-mode align \
+    --enable-prefix-caching \
+    --enable-chunked-prefill \
+    --dtype bfloat16 \
+    --kv-cache-dtype {kv_cache_dtype} \
+    --attention-backend B12X \
+    --block-size {block_size} \
+    --moe-backend {moe_backend} \
+    --linear-backend {linear_backend} \
+    --no-enable-flashinfer-autotune \
+    --load-format b12x \
     --max-model-len {max_model_len} \
+    --max-num-seqs {max_num_seqs} \
+    --max-num-batched-tokens {max_num_batched_tokens} \
+    --speculative-config '{{"method":"mtp","num_speculative_tokens":{num_speculative_tokens},"moe_backend":"humming","attention_backend":"B12X"}}' \
+    --reasoning-parser glm45 \
+    --tool-call-parser glm47 \
+    --enable-auto-tool-choice \
+    --gpu-memory-utilization {gpu_memory_utilization} \
     --trust-remote-code
