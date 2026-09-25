@@ -46,9 +46,11 @@
 
 recipe_version: "2"
 model: unsloth/Qwen3.8-27B-NVFP4
-# Pin to `main`, not a sha: Unsloth super-squashes their repos and old revisions
-# (a767244d… and everything before 2026-08-15) have been 404 since then.
-model_revision: main
+# Deliberately NOT pinned to a sha: Unsloth super-squashes their repos and old revisions
+# (a767244d… and everything before 2026-08-15) have been 404 since then. sparkrun tracks
+# `main` when no model_revision is set; a `model_revision: main` pin would make sparkrun
+# download by resolved SHA with no refs/main entry, and vLLM (HF_HUB_OFFLINE=1) then dies
+# with LocalEntryNotFoundError (validator: unpinned-model-revision).
 runtime: vllm
 min_nodes: 1
 max_nodes: 1
@@ -76,8 +78,9 @@ metadata:
     Stock weights, 2.6 MB of directions, lambda switchable without restart.
   model_params: 27B
   model_dtype: nvfp4
-  # ~22 GB of weights + 8 GiB KV at 64K. Comfortable on a single 128 GB GB10.
-  vram_gb: 32
+  kv_dtype: fp8
+  # ~22 GB of weights (+ 8 GiB KV at 64K via kv_cache_bytes). Comfortable on a single GB10.
+  model_vram: 22
 
 defaults:
   # NOT 8000. Reported from a real machine: something else already held 8000, so the
@@ -115,8 +118,9 @@ defaults:
   #   "Error: Server health check never passed"
   # Both places have to say triton_attn. This is what production runs.
   speculative_config: '{"method":"mtp","num_speculative_tokens":3,"attention_backend":"triton_attn"}'
-  refusal_dirs: /opt/refusal/refusal_dirs_qwen38.safetensors
-  refusal_lambda_init: "1.0"     # LOCAL CHANGE: starts ABLATED (upstream ships 0.0)
+  kv_cache_dtype: fp8
+  # The refusal hook is configured ONLY through the VLLM_REFUSAL_* env below — the patched
+  # vLLM reads env, not CLI flags, so there is nothing for defaults/command to carry.
   # MEASURED: with the drafter unprojected, acceptance is 3.00 on benign prompts but
   # 2.41 on refusal triggers at lambda=1 — a ~20% drop on exactly the topics you turn
   # the dial on for. The obvious explanation — target projected, drafter not, so it
@@ -127,7 +131,6 @@ defaults:
   # measured 2.94 vs 2.84, which is this bench's noise floor. `off` reproduces the source
   # ablation exactly and mean buys nothing measurable.
   # (last == mean here anyway: all 128 directions are the same vector, cos >= 0.9996.)
-  refusal_mtp_mode: "off"
 
 env:
   VLLM_ALLOW_LONG_MAX_MODEL_LEN: "1"
@@ -172,7 +175,7 @@ command: |
   vllm serve {model} \
     --served-model-name {served_model_name} \
     --max-model-len {max_model_len} \
-    --kv-cache-dtype fp8 \
+    --kv-cache-dtype {kv_cache_dtype} \
     --enable-prefix-caching \
     --enable-chunked-prefill \
     --enable-auto-tool-choice \

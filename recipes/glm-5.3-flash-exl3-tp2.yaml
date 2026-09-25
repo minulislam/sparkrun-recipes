@@ -27,8 +27,7 @@ metadata:
     Source-validated by MiaAI-Lab.
   maintainer: MiaAI-Lab (https://github.com/MiaAI-Lab)
   model_params: 92B
-  model_dtype: exl3
-  quantization: exl3
+  model_dtype: int4   # EXL3 4 bpw (exl3 is not a label the VRAM estimator knows)
   quant_bits: 4
 
 env:

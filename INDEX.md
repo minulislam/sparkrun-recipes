@@ -58,7 +58,6 @@ All speed numbers below are **measured on this cluster** (2026-07-18 baseline +
 | 28 | `mimo-v2.5-tp2.yaml` | Xiaomi/MiMo-V2.5 | vLLM-Ray | 2 | FP8 | — | Omni MTP1; NVFP4-KV |
 | 29 | `glm-5.2-nvfp4-aqlm-tp3.yaml` | Mia-AiLab/GLM-5.2-NVFP4-AQLM | vLLM | 3 | AQLM | 380k | Multimodal; 380k ctx with MTP |
 | 30 | `inkling-small-nvfp4-tp2-sglang.yaml` | thinkingmachines/Inkling-Small-NVFP4 | SGLang | 2 | NVFP4 | — | DSpark; fp4_mx_block16 KV |
-| 31 | `deepseek-v4-flash-0731-tp1.yaml` | 0xSero/deepseek-v4-flash-0731-spark | ExllamaV3 | 1 | EXL3 | 384k | Pinned rev 22f28d32 |
 | 32 | `glm-5.3-flash-exl3-tp2.yaml` | Mia-AiLab/GLM-5.3-Flash-EXL3-TR3-4bpw | vLLM-Ray | 2 | EXL3 | 850k | Multimodal; Ray TP=2 |
 | 33 | `qwen3.8-flash-next-nvfp4-tp2-sglang.yaml` | Mia-AiLab/Qwen3.8-Flash-Next-NVFP4 | SGLang | 2 | NVFP4 | 256k | FP8 dense; SGLang speculative |
 | 34 | `qwen3.8-27b-nvfp4-tp1-sglang.yaml` | RadixArk/Qwen3.8-27B-NVFP4 | SGLang | 1 | NVFP4 | 256k | DFlash; 8 concurrent |
@@ -66,6 +65,11 @@ All speed numbers below are **measured on this cluster** (2026-07-18 baseline +
 | 36 | `qwen3.6-35b-a3b-nvfp4-unofficial-tp1.yaml` | unsloth/Qwen3.6-35B-A3B-NVFP4 | vLLM | 1 | NVFP4 | 256k | b12x linear attention recipe |
 | 37 | `qwen3.8-27b-nvfp4-tp1-alt.yaml` | RadixArk/Qwen3.8-27B-NVFP4 | vLLM | 1 | NVFP4 | 256k | RTX 5090 variant |
 | 38 | `step-3.7-flash-nvfp4-tp2-miaai.yaml` | stepfun-ai/Step-3.7-Flash-NVFP4 | vLLM | 2 | NVFP4 | — | Custom container; MTP grafting support |
+
+Retired 2026-09-26: `deepseek-v4-flash-0731-tp1.yaml` (#31) declared `runtime: exllamav3`, which no
+sparkrun release knows, and had no container. Its upstream (MiaAI-Lab/DeepSeek-v4-Flash-One-DGX-Spark)
+actually serves the 0xSero EXL3 checkpoint through vLLM + sparkinfer in a docker-compose project with an
+image-provided serve script and a weight-coalescing pre-step — port it as a proper vLLM recipe if wanted.
 
 ## Third-party Recipes
 
