@@ -1,25 +1,14 @@
 # >>> UNVERIFIED on this cluster — source: https://huggingface.co/orcarouter/DeepSeek-V4-Flash-Vision-Uncensored
-# >>>   (orcarouter collection: DeepSeek V4 Flash Vision Uncensored / Abliterated)
-# >>> GATED (auto-approve): open the model page above while logged in to the HF account
-# >>>   whose token sparkrun uses and click "Agree and access repository" — until then
-# >>>   every download returns 403.
-# >>> Container and serve flags are mirrored from deepseek-v4-flash-vision-exp-tp2.yaml (the base-model
-# >>> recipe in this repo, itself UNVERIFIED).
-# >>> 2026-09-26 measured: ghcr.io/anemll/dspark-vllm-gx10:0.1.1 bakes ENTRYPOINT ["vllm","serve"],
-# >>>   which swallows sparkrun's launcher command as its own args and never starts the server.
-# >>>   Fixed below with executor_config.entrypoint: "". Launch then died on the actual model
-# >>>   download: HF returns 403 (gated repo) even with the sparkrun token — needs a human to open
-# >>>   the model page above while logged into that HF account and click "Agree and access repository".
-# >>> Fit: 167.8 GB / 2 = ~84 GB per node; sparkrun dry-run estimates 15 GB/node left for KV at 0.82.
-# >>> gpu_memory_utilization 0.82 follows this repo's GB10 convention (the Deckard recipe runs
-# >>> here at 0.82; 0.85 has NVRM-OOMed at boot and 0.90 fails vLLM's free-memory check).
-
-# =============================================================================
-# sparkrun recipe — DeepSeek-V4-Flash-Vision-Uncensored
-# TWO NODES (TP=2) on DGX Spark GB10.
-# Model: orcarouter/DeepSeek-V4-Flash-Vision-Uncensored  (167.8 GB of weights)
-# Runtime: vllm | Container: ghcr.io/anemll/dspark-vllm-gx10:0.1.1
-# =============================================================================
+# >>> GATED — the HF account behind the token must have accepted the repo gate (see INDEX.md, orcarouter note).
+# >>> Mirrors deepseek-v4-flash-vision-exp-tp2.yaml: this is a byte-for-byte drop-in for that base
+# >>>   checkpoint (native FP4 experts / block-FP8 rest), abliteration baked into the same shards.
+# >>> executor_config clears the image's baked ENTRYPOINT ["vllm","serve"], which otherwise swallows
+# >>>   sparkrun's launcher (same fix as gemma4-26b-stock-vllm.yaml).
+# >>> kv_cache_dtype fp8: DeepSeek-V4 uses the fp8_ds_mla KV layout; NVIDIA's model card marks
+# >>>   --kv-cache-dtype fp8 as required for vLLM. Override with -o kv_cache_dtype=auto if rejected.
+# >>> max_num_seqs / max_num_batched_tokens follow @official/deepseek-v4-flash-0731-b12x-dspark-vllm
+# >>>   so startup doesn't profile and graph-capture batch sizes the KV budget can never serve.
+# >>> Fit: 167.8 GB / 2 = ~84 GB per node, ~15 GB/node for KV at 0.82 (GB10 convention — see README).
 
 model: orcarouter/DeepSeek-V4-Flash-Vision-Uncensored
 model_revision: 2ef3d5c2bb7d9ccba6ab66314ed9e63bd52ac2a6   # HF commit as of 2026-09-03
@@ -49,6 +38,9 @@ defaults:
   tensor_parallel: 2
   gpu_memory_utilization: 0.82
   max_model_len: 262144
+  max_num_seqs: 8
+  max_num_batched_tokens: 8192
+  kv_cache_dtype: fp8
   served_model_name: deepseek-v4-flash-vision-uncensored
 
 command: |
@@ -60,4 +52,7 @@ command: |
     --tensor-parallel-size {tensor_parallel} \
     --gpu-memory-utilization {gpu_memory_utilization} \
     --max-model-len {max_model_len} \
+    --max-num-seqs {max_num_seqs} \
+    --max-num-batched-tokens {max_num_batched_tokens} \
+    --kv-cache-dtype {kv_cache_dtype} \
     --trust-remote-code

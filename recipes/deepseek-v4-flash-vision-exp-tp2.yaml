@@ -18,6 +18,11 @@ container: ghcr.io/anemll/dspark-vllm-gx10:0.1.1
 min_nodes: 2
 max_nodes: 2
 
+# The image bakes ENTRYPOINT ["vllm","serve"], which swallows sparkrun's
+# launcher command (same fix as gemma4-26b-stock-vllm.yaml).
+executor_config:
+  entrypoint: ""
+
 metadata:
   description: >-
     DeepSeek-V4-Flash Vision-Exp with DSpark speculative decoding on 2x DGX Spark.

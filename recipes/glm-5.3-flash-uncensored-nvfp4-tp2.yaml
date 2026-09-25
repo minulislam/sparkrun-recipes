@@ -1,19 +1,12 @@
 # >>> UNVERIFIED on this cluster — source: https://huggingface.co/orcarouter/GLM-5.3-Flash-Uncensored-NVFP4
-# >>> GATED (auto-approve): the saved HF token still gets HTTP 403 on this repo (checked 2026-09-20).
-# >>>   Open the model page while logged in as the token's account and click "Agree and access
-# >>>   repository", then: hf download orcarouter/GLM-5.3-Flash-Uncensored-NVFP4   (~205 GB)
-# >>> 2026-09-20 rewrite: container switched from mia/glm53-flash-spark:mm-ray-v1 (never built here)
-# >>>   to the eugr b12x nightly cached on both nodes; runtime vllm-ray -> vllm (sparkrun's
-# >>>   vllm-distributed path); env + flags mirror @eugr/glm-5.3-flash, the config that boots
-# >>>   local-inference-lab/GLM-5.3-Flash-NVFP4-Spark on this pair. Two deliberate differences:
-# >>>   - NCCL_IB_HCA pins NCCL to the two CX7 ports that actually reach the peer node
-# >>>     (rocep1s0f1, roceP2p1s0f1). Without it every tp2 launch here dies at NCCL init.
-# >>>   - --quantization is left to auto-detect: the orcarouter checkpoints are compressed-tensors
-# >>>     NVFP4, not the modelopt_mixed format eugr's flag targets. If vLLM rejects the b12x
-# >>>     backends for this format, retry with -o moe_backend=auto -o linear_backend=auto.
-# >>> FIT WARNING: 205.1 GB / 2 = ~103 GB per node against a 0.87 budget of 105 GB — there is
-# >>>   almost no room for KV cache. The 175 GB "-Spark" NVFP4 build is the one that fits comfortably.
-# >>>   Expect this to fail at KV allocation unless max_model_len is tiny.
+# >>> GATED — the HF account behind the token must have accepted the repo gate (see INDEX.md, orcarouter note).
+# >>> env + flags mirror @eugr/glm-5.3-flash (the config that boots the stock GLM-5.3-Flash NVFP4 Spark
+# >>>   build on this pair), except --quantization is left to auto-detect: orcarouter ships
+# >>>   compressed-tensors NVFP4, not the modelopt_mixed format eugr's flag targets. If the b12x
+# >>>   backends reject it: -o moe_backend=auto -o linear_backend=auto
+# >>> FIT WARNING: 205.1 GB / 2 = ~103 GB per node against a 0.87 budget of 105 GB — almost no room
+# >>>   for KV cache; expect KV allocation to fail unless max_model_len is tiny. The 175 GB "-Spark"
+# >>>   NVFP4 build is the one that fits comfortably.
 
 model: orcarouter/GLM-5.3-Flash-Uncensored-NVFP4
 model_revision: ec0adf4f49c9570807cc11a5f650538c1893ae54   # HF commit as of 2026-09-07
@@ -28,11 +21,9 @@ metadata:
     Tensor-parallel across both DGX Sparks. SEE THE FIT WARNING - marginal.
   maintainer: orcarouter (model) — recipe adapted for sparkrun
   model_dtype: nvfp4
-  kv_dtype: fp8
   model_vram: 205
 
 env:
-  NCCL_IB_HCA: "rocep1s0f1,roceP2p1s0f1"
   CUTE_DSL_ARCH: "sm_121a"
   SAFETENSORS_FAST_GPU: "1"
   VLLM_ENABLE_ROCE_ALLREDUCE: "1"
@@ -54,7 +45,6 @@ defaults:
   host: 0.0.0.0
   port: 8000
   tensor_parallel: 2
-  pipeline_parallel: 1
   gpu_memory_utilization: 0.87
   max_model_len: 32768
   max_num_seqs: 4
@@ -73,7 +63,6 @@ command: |
     --host {host} \
     --port {port} \
     --tensor-parallel-size {tensor_parallel} \
-    --pipeline-parallel-size {pipeline_parallel} \
     --mamba-cache-mode align \
     --enable-prefix-caching \
     --enable-chunked-prefill \
@@ -88,7 +77,7 @@ command: |
     --max-model-len {max_model_len} \
     --max-num-seqs {max_num_seqs} \
     --max-num-batched-tokens {max_num_batched_tokens} \
-    --speculative-config '{{"method":"mtp","num_speculative_tokens":{num_speculative_tokens},"moe_backend":"humming","attention_backend":"B12X"}}' \
+    --speculative-config '{"method":"mtp","num_speculative_tokens":{num_speculative_tokens},"moe_backend":"humming","attention_backend":"B12X"}' \
     --reasoning-parser glm45 \
     --tool-call-parser glm47 \
     --enable-auto-tool-choice \

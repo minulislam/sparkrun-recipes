@@ -1,14 +1,9 @@
 # >>> UNVERIFIED on this cluster — source: https://huggingface.co/orcarouter/Qwen3.8-27B-Uncensored-NVFP4
-# >>> GATED (auto-approve): the saved HF token still gets HTTP 403 on this repo (checked 2026-09-20).
-# >>>   Open the model page while logged in as the token's account and click "Agree and access
-# >>>   repository", then: hf download orcarouter/Qwen3.8-27B-Uncensored-NVFP4   (~25 GB)
-# >>> 2026-09-20 rewrite: container switched from vllm/vllm-openai:nightly-aarch64 (not present on
-# >>>   either node) to the eugr b12x nightly that IS cached on both nodes; serve flags mirror
-# >>>   @official/qwen3.8-27b-fp8-mtp-vllm (instanttensor load, fp8 KV, flashinfer, native MTP x3).
-# >>>   If the abliterated checkpoint lacks MTP heads, launch with: -o speculative_config='{}'
-# >>>   and drop --speculative-config from the command.
-# >>> Fit: ~25 GB weights on one GB10; 0.82 leaves ~74 GB for KV (this repo's GB10 convention;
-# >>>   0.85 has NVRM-OOMed at boot here, 0.90 fails vLLM's free-memory check).
+# >>> GATED — the HF account behind the token must have accepted the repo gate (see INDEX.md, orcarouter note).
+# >>> Serve flags mirror @official/qwen3.8-27b-fp8-mtp-vllm (instanttensor load, fp8 KV, flashinfer,
+# >>>   native MTP x3) on the eugr b12x nightly cached on both nodes. If the abliterated checkpoint
+# >>>   lacks MTP heads, remove --speculative-config from the command.
+# >>> Fit: ~25 GB weights on one GB10; 0.82 leaves ~74 GB for KV (GB10 convention — see README).
 
 model: orcarouter/Qwen3.8-27B-Uncensored-NVFP4
 model_revision: 69d21348b2d6c11439fb69368f40414c2256e44e   # HF commit as of 2026-08-27
@@ -24,13 +19,11 @@ metadata:
   maintainer: orcarouter (model) — recipe adapted for sparkrun
   model_params: 27B
   model_dtype: nvfp4
-  kv_dtype: fp8
   model_vram: 25
 
 env:
   VLLM_ALLOW_LONG_MAX_MODEL_LEN: "1"
   PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
-  SAFETENSORS_FAST_GPU: "1"
   VLLM_WORKER_MULTIPROC_METHOD: "spawn"
 
 defaults:
