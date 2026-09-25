@@ -8,6 +8,7 @@
 # >>>   for KV cache; expect KV allocation to fail unless max_model_len is tiny. The 175 GB "-Spark"
 # >>>   NVFP4 build is the one that fits comfortably.
 
+recipe_version: "2"
 model: orcarouter/GLM-5.3-Flash-Uncensored-NVFP4
 model_revision: ec0adf4f49c9570807cc11a5f650538c1893ae54   # HF commit as of 2026-09-07
 runtime: vllm

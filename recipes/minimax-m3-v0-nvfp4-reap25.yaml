@@ -51,6 +51,7 @@
 # Sampling per MiniMax: temperature=1.0, top_p=0.95, top_k=40.
 # =============================================================================
 
+recipe_version: "2"
 model: sparkarena/Minimax-M3-v0-NVFP4-REAP25
 model_revision: e9ee17fac5a7bef948df3f22d641d608c6c8f7a8
 runtime: sglang

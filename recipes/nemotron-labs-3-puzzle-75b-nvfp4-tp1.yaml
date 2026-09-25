@@ -12,6 +12,7 @@
 # Notes: Hybrid MoE (Mamba+MoE+Attention), MTP k=3, tool calling
 # =============================================================================
 
+recipe_version: "2"
 model: nvidia/NVIDIA-Nemotron-Labs-3-Puzzle-75B-A9B-NVFP4
 runtime: vllm
 container: vllm/vllm-openai:v0.24.0
@@ -31,7 +32,6 @@ metadata:
   quant_bits: 4
 
 env:
-  HF_TOKEN: "${HF_TOKEN:-}"
   PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
 
 defaults:

@@ -11,6 +11,7 @@
 # Runtime: vLLM (Ray) | Notes: 295B MoE, tool calling
 # =============================================================================
 
+recipe_version: "2"
 model: kodelow/Hy3-NVFP4-W4A16
 runtime: vllm-ray
 container: ghcr.io/miaai-lab/hy3-dual-dgx-spark:vllm-probe-modded

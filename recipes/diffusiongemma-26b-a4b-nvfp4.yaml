@@ -29,6 +29,7 @@
 #     under diffusion decoding are unverified. Add back once boot is clean.
 # =============================================================================
 
+recipe_version: "2"
 model: nvidia/diffusiongemma-26B-A4B-it-NVFP4
 runtime: vllm
 # Digest = :2026-07-08-v0.24.0-maxsafe (vllm 0.24.0+aeon.sm121a.dflash) — same
@@ -56,8 +57,6 @@ metadata:
 env:
   TORCH_MATMUL_PRECISION: "high"
   PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
-  VLLM_CACHE_ROOT: "/cache/huggingface/.vllm_cache"  # persists FlashInfer FP4 autotune across
-                                                     # containers (~13 min cold -> ~2 min warm)
 
 defaults:
   host: 0.0.0.0

@@ -24,6 +24,7 @@
 #    - Quality sibling: AEON-7/Gemma-4-12B-it-AEON-Abliterated-K4-FP8 (13 GB, near-lossless).
 # =============================================================================
 
+recipe_version: "2"
 model: AEON-7/Gemma-4-12B-it-AEON-Abliterated-K4-NVFP4-FP8
 runtime: vllm
 # Digest = :2026-07-08-v0.24.0-maxsafe (vllm 0.24.0+aeon.sm121a.dflash) — live-
@@ -54,8 +55,6 @@ env:
   VLLM_ALLOW_LONG_MAX_MODEL_LEN: "1"
   TORCH_MATMUL_PRECISION: "high"
   PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
-  VLLM_CACHE_ROOT: "/cache/huggingface/.vllm_cache"  # persists FlashInfer FP4 autotune across
-                                                     # containers (~13 min cold -> ~2 min warm)
 
 defaults:
   host: 0.0.0.0

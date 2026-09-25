@@ -12,6 +12,7 @@
 # Notes: In-checkpoint MTP, b12x recipe, CUDA-graph fixes
 # =============================================================================
 
+recipe_version: "2"
 model: spark-ai/Ornith-1.5-35B-A3B-NVFP4
 runtime: vllm
 container: eugr/spark-vllm-b12x:latest

@@ -11,6 +11,7 @@
 # Context: 384k tokens
 # =============================================================================
 
+recipe_version: "2"
 model: 0xSero/deepseek-v4-flash-0731-spark
 model_revision: 22f28d32b9b29b4352eaa380ff8c2c170b2847ab
 runtime: exllamav3
@@ -26,9 +27,6 @@ metadata:
   model_dtype: exl3
   quantization: exl3
   quant_bits: 4
-
-env:
-  HF_TOKEN: "${HF_TOKEN:-}"
 
 defaults:
   host: 0.0.0.0

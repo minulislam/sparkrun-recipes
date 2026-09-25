@@ -44,6 +44,7 @@
 #   MTP accept   2.80 median over 62 samples, max 4.00 at k=3
 #   tool-calling OK in both arms
 
+recipe_version: "2"
 model: unsloth/Qwen3.8-27B-NVFP4
 # Pin to `main`, not a sha: Unsloth super-squashes their repos and old revisions
 # (a767244d… and everything before 2026-08-15) have been 404 since then.

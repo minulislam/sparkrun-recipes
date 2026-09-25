@@ -10,6 +10,7 @@
 # Context: 1M tokens | Runtime: vLLM (vllm-distributed) | Modality: text | KV dtype: FP8
 # =============================================================================
 
+recipe_version: "2"
 model: deepseek-ai/DeepSeek-V4-Flash
 runtime: vllm
 min_nodes: 2
@@ -25,9 +26,6 @@ metadata:
   kv_dtype: fp8_e5m2
   quantization: fp8
   quant_bits: 8
-
-env:
-  HF_TOKEN: "${HF_TOKEN:-}"
 
 defaults:
   host: 0.0.0.0

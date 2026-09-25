@@ -17,6 +17,7 @@
 # Runtime: vllm | Container: vllm/vllm-openai:v0.24.0
 # =============================================================================
 
+recipe_version: "2"
 model: orcarouter/Nex-N2.5-mini-Uncensored-NVFP4
 model_revision: 1bd4586761a8077d563ab96661838e583ef5887c   # HF commit as of 2026-09-15
 runtime: vllm

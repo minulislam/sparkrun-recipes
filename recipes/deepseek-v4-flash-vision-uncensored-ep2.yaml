@@ -8,6 +8,7 @@
 # >>> vLLM's default all2all backend (allgather_reducescatter, plain NCCL — no DeepEP on GB10) is
 # >>>   used; if MoE dispatch misbehaves, add `--all2all-backend naive` to the command.
 
+recipe_version: "2"
 model: orcarouter/DeepSeek-V4-Flash-Vision-Uncensored
 model_revision: 2ef3d5c2bb7d9ccba6ab66314ed9e63bd52ac2a6   # HF commit as of 2026-09-03
 runtime: vllm

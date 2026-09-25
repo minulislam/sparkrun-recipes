@@ -12,6 +12,7 @@
 # Notes: Multimodal, 380k context with MTP
 # =============================================================================
 
+recipe_version: "2"
 model: Mia-AiLab/GLM-5.2-NVFP4-AQLM
 runtime: vllm
 container: ghcr.io/miaai-lab/glm-5.2-nvfp4-triple-dgx-sparks:latest
@@ -27,9 +28,6 @@ metadata:
   model_dtype: nvfp4
   quantization: aqlm
   quant_bits: 4
-
-env:
-  HF_TOKEN: "${HF_TOKEN:-}"
 
 defaults:
   host: 0.0.0.0

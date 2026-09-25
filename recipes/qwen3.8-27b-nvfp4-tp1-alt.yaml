@@ -10,6 +10,7 @@
 # Runtime: vLLM | Context: 256k | Notes: RTX 5090 variant
 # =============================================================================
 
+recipe_version: "2"
 model: RadixArk/Qwen3.8-27B-NVFP4
 runtime: vllm
 min_nodes: 1

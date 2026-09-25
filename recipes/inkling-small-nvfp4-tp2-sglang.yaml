@@ -11,6 +11,7 @@
 # Runtime: SGLang | Notes: DSpark, fp4_mx_block16 KV
 # =============================================================================
 
+recipe_version: "2"
 model: thinkingmachines/Inkling-Small-NVFP4
 runtime: sglang
 min_nodes: 2

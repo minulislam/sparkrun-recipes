@@ -7,6 +7,7 @@
 # >>> Fit: 183.5 GB / 2 = ~92 GB per node; 0.82 leaves ~7 GB/node for KV, so max_model_len is capped
 # >>>   at 65536 (eugr's 262144 needs the smaller local-inference-lab build).
 
+recipe_version: "2"
 model: orcarouter/Qwen3.8-Flash-Next-Uncensored-NVFP4
 model_revision: c1209bda15a6bbc4c68b585e93d40c0d85f50306   # HF commit as of 2026-08-29
 runtime: vllm

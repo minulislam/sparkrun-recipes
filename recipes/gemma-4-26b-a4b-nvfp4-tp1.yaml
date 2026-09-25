@@ -11,6 +11,7 @@
 # Runtime: vLLM | Notes: Concurrency testing recipe
 # =============================================================================
 
+recipe_version: "2"
 model: nvidia/Gemma-4-26B-A4B-NVFP4
 runtime: vllm
 container: vllm/vllm-openai:nightly

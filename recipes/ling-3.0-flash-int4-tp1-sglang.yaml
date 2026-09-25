@@ -12,6 +12,7 @@
 # Notes: DSpark speculative decoding, OpenAI-compatible
 # =============================================================================
 
+recipe_version: "2"
 model: inclusionAI/Ling-3.0-flash-int4
 runtime: sglang
 min_nodes: 1
@@ -26,9 +27,6 @@ metadata:
   model_dtype: int4
   quantization: gguf
   quant_bits: 4
-
-env:
-  HF_TOKEN: "${HF_TOKEN:-}"
 
 defaults:
   host: 0.0.0.0

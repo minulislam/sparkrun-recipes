@@ -10,6 +10,7 @@
 # >>>   so startup doesn't profile and graph-capture batch sizes the KV budget can never serve.
 # >>> Fit: 167.8 GB / 2 = ~84 GB per node, ~15 GB/node for KV at 0.82 (GB10 convention — see README).
 
+recipe_version: "2"
 model: orcarouter/DeepSeek-V4-Flash-Vision-Uncensored
 model_revision: 2ef3d5c2bb7d9ccba6ab66314ed9e63bd52ac2a6   # HF commit as of 2026-09-03
 runtime: vllm

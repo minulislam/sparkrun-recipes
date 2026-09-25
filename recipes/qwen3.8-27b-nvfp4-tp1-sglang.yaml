@@ -12,6 +12,7 @@
 # Notes: DFlash speculative decoding, 8 concurrent requests
 # =============================================================================
 
+recipe_version: "2"
 model: RadixArk/Qwen3.8-27B-NVFP4
 runtime: sglang
 container: lmsysorg/sglang:qwen38-27b
@@ -28,9 +29,6 @@ metadata:
   model_dtype: nvfp4
   quantization: nvfp4
   quant_bits: 4
-
-env:
-  HF_TOKEN: "${HF_TOKEN:-}"
 
 defaults:
   host: 0.0.0.0

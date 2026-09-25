@@ -12,6 +12,7 @@
 # Notes: MoE, enforce_eager, FP8
 # =============================================================================
 
+recipe_version: "2"
 model: mistralai/Leanstral-1.5-119B-A6B
 runtime: vllm
 container: vllm/vllm-openai:v0.24.0

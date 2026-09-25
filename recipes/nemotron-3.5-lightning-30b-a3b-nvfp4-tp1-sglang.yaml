@@ -12,6 +12,7 @@
 # Notes: DSpark speculative decoding, RTX 5090/6000 PRO variant
 # =============================================================================
 
+recipe_version: "2"
 model: nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4
 runtime: sglang
 container: lmsysorg/sglang:dev-nemotron3-5-lightning
@@ -28,9 +29,6 @@ metadata:
   model_dtype: nvfp4
   quantization: nvfp4
   quant_bits: 4
-
-env:
-  HF_TOKEN: "${HF_TOKEN:-}"
 
 defaults:
   host: 0.0.0.0

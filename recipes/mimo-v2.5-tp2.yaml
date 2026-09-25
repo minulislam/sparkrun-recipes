@@ -11,6 +11,7 @@
 # Runtime: vLLM (Ray) | Notes: Omni MTP1, NVFP4-KV
 # =============================================================================
 
+recipe_version: "2"
 model: Xiaomi/MiMo-V2.5
 runtime: vllm-ray
 container: ghcr.io/miaai-lab/mimo-v2.5-vllm-dual-dgx-sparks:base-20260620
@@ -25,9 +26,6 @@ metadata:
   model_params: 72B
   model_dtype: bfloat16
   kv_dtype: nvfp4
-
-env:
-  HF_TOKEN: "${HF_TOKEN:-}"
 
 defaults:
   host: 0.0.0.0

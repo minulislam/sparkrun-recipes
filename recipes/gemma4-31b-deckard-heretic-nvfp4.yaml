@@ -39,6 +39,7 @@
 #     be silently ignored -> silent quality corruption.
 # =============================================================================
 
+recipe_version: "2"
 model: AEON-7/Gemma-4-31B-it-DECKARD-HERETIC-Uncensored-NVFP4
 runtime: vllm
 # Digest = ':latest' as pulled + live-validated 2026-07-25 (31.3 tok/s c=1,
@@ -70,8 +71,6 @@ env:
   VLLM_ALLOW_LONG_MAX_MODEL_LEN: "1"
   TORCH_MATMUL_PRECISION: "high"
   PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
-  VLLM_CACHE_ROOT: "/cache/huggingface/.vllm_cache"  # persists FlashInfer FP4 autotune across
-                                                     # containers (~13 min cold -> ~2 min warm)
 
 defaults:
   host: 0.0.0.0

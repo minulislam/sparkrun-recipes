@@ -35,6 +35,7 @@
 #     ~18% better TPOT in their A/B than this heavy body.
 # =============================================================================
 
+recipe_version: "2"
 model: AEON-7/Qwen3.6-27B-AEON-Ultimate-Uncensored-NVFP4
 runtime: vllm
 # Digest = :2026-07-08-v0.24.0-maxsafe (vllm 0.24.0+aeon.sm121a.dflash), the build
@@ -66,9 +67,6 @@ env:
   TORCH_MATMUL_PRECISION: "high"
   PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
   VLLM_USE_FLASHINFER_SAMPLER: "1"                   # per AEON's DFlash repo serve config
-  VLLM_CACHE_ROOT: "/cache/huggingface/.vllm_cache"  # persists FlashInfer FP4 autotune across
-                                                     # containers (~13 min cold -> ~2 min warm);
-                                                     # lives inside sparkrun's HF cache mount
 
 defaults:
   host: 0.0.0.0

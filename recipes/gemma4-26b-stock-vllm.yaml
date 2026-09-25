@@ -19,6 +19,7 @@
 # Recipe schema: https://sparkrun.dev/recipes/format/
 # =============================================================================
 
+recipe_version: "2"
 model: AEON-7/Gemma-4-26B-A4B-it-Uncensored-NVFP4
 runtime: vllm
 # Pinned digest from the model card's verified baseline run (swap to :latest if preferred):

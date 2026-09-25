@@ -12,6 +12,7 @@
 # Notes: enforce_eager=true skips CUDA-graph capture on GB10 UMA.
 # =============================================================================
 
+recipe_version: "2"
 model: LibertAIDAI/GLM-5.3-Flash-NVFP4
 runtime: vllm-ray              # Ray-based orchestration for multi-node
 container: mia/glm53-flash-spark:mm-ray-v1
@@ -30,7 +31,6 @@ metadata:
   quant_bits: 4
 
 env:
-  HF_TOKEN: "${HF_TOKEN:-}"
   PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
 
 defaults:

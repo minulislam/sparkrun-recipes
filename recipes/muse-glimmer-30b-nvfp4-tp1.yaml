@@ -11,6 +11,7 @@
 # Notes: W4A4 variant, vision intact
 # =============================================================================
 
+recipe_version: "2"
 model: RedHatAI/Muse-Glimmer-30B-NVFP4
 runtime: vllm
 min_nodes: 1

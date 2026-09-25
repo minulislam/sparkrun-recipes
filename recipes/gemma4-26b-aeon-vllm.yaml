@@ -43,6 +43,7 @@
 #    model still serves fine without speculative decoding.
 # =============================================================================
 
+recipe_version: "2"
 model: AEON-7/Gemma-4-26B-A4B-it-Uncensored-NVFP4
 runtime: vllm
 # Digest = :2026-07-08-v0.24.0-maxsafe (vllm 0.24.0+aeon.sm121a.dflash), the build
@@ -81,8 +82,6 @@ env:
   PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
   VLLM_TEST_FORCE_FP8_MARLIN: "0"
   VLLM_USE_FLASHINFER_SAMPLER: "1"
-  VLLM_CACHE_ROOT: "/cache/huggingface/.vllm_cache"  # persists FlashInfer FP4 autotune across
-                                                     # containers (~13 min cold -> ~2 min warm)
 
 defaults:
   host: 0.0.0.0

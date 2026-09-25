@@ -5,6 +5,7 @@
 # >>>   lacks MTP heads, remove --speculative-config from the command.
 # >>> Fit: ~25 GB weights on one GB10; 0.82 leaves ~74 GB for KV (GB10 convention — see README).
 
+recipe_version: "2"
 model: orcarouter/Qwen3.8-27B-Uncensored-NVFP4
 model_revision: 69d21348b2d6c11439fb69368f40414c2256e44e   # HF commit as of 2026-08-27
 runtime: vllm

@@ -13,6 +13,7 @@
 #   before debugging MTP. Worker node needs ~124 GB weight transfer on first launch.
 # =============================================================================
 
+recipe_version: "2"
 model: stepfun-ai/Step-3.7-Flash-NVFP4
 runtime: vllm
 min_nodes: 2
@@ -28,9 +29,6 @@ metadata:
   model_dtype: nvfp4
   quantization: nvfp4
   quant_bits: 4
-
-env:
-  HF_TOKEN: "${HF_TOKEN:-}"
 
 defaults:
   host: 0.0.0.0
