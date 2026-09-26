@@ -1,45 +1,64 @@
 # >>> UNVERIFIED on this cluster — expert-parallel variant of deepseek-v4-flash-vision-uncensored-tp2.yaml.
-# >>>   See that file for the gate, entrypoint, KV-dtype, batch-cap and fit notes; everything here is
+# >>>   See that file for the gate, image choice, KV-dtype, DSpark and fit notes; everything here is
 # >>>   identical except --enable-expert-parallel: each node holds whole experts for half of the
 # >>>   256-expert set (EP=2 for the MoE layers) instead of half of every expert. Attention stays TP2
 # >>>   and the weights are still ~84 GB/node; only the MoE communication/kernel pattern changes.
 # >>> Separate file because sparkrun has no -o key for a bare boolean vLLM flag and drops arguments
 # >>>   passed after `--`. Precedent on 2 Sparks: the @community qwen3.8-flash-next t4cmyk recipes.
-# >>> vLLM's default all2all backend (allgather_reducescatter, plain NCCL — no DeepEP on GB10) is
-# >>>   used; if MoE dispatch misbehaves, add `--all2all-backend naive` to the command.
+# >>> STILL UNVERIFIED — tp2 is the proven path (verified 2026-09-26, full 1M context; see that file for
+# >>>   the fp8-KV requirement, the safetensors loader and the dedicated-node requirement, all of which
+# >>>   apply here identically).
+# >>> OPEN QUESTION: the b12x MoE backend shows no expert-parallel awareness in its source; if EP is
+# >>>   ignored or rejected with --moe-backend b12x, this variant has no benefit over tp2 on this image.
+# >>>   (The anemll image, whose stock MoE path does EP — EP init succeeded there — has no vision code
+# >>>   and cannot load this checkpoint.) Run tp2 unless you are specifically measuring EP.
 
 recipe_version: "2"
 model: orcarouter/DeepSeek-V4-Flash-Vision-Uncensored
 model_revision: 2ef3d5c2bb7d9ccba6ab66314ed9e63bd52ac2a6   # HF commit as of 2026-09-03
 runtime: vllm
-container: ghcr.io/anemll/dspark-vllm-gx10:0.1.1
+container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly-b12x:latest
 min_nodes: 2
 max_nodes: 2
-
-executor_config:
-  entrypoint: ""
 
 metadata:
   description: >-
     DeepSeek V4 Flash Vision uncensored/abliterated (orcarouter), native FP4 experts / FP8 rest.
-    Two DGX Sparks: tensor-parallel 2 with expert parallelism enabled (EP=2 for the MoE layers).
+    b12x stack, tensor-parallel 2 with expert parallelism enabled (EP=2 for the MoE layers).
   maintainer: orcarouter (model) — recipe adapted for sparkrun
   model_dtype: fp4
   model_vram: 168
 
 env:
-  VLLM_ALLOW_LONG_MAX_MODEL_LEN: "1"
-  PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
+  CUTE_DSL_ARCH: "sm_121a"
+  VLLM_USE_AOT_COMPILE: "1"
+  VLLM_USE_BREAKABLE_CUDAGRAPH: "0"
+  VLLM_USE_MEGA_AOT_ARTIFACT: "1"
+  VLLM_MEMORY_PROFILE_INCLUDE_ATTN: "1"
+  VLLM_USE_FLASHINFER_SAMPLER: "1"
+  VLLM_USE_B12X_WO_PROJECTION: "1"
+  VLLM_USE_B12X_MHC: "1"
+  VLLM_USE_B12X_FP8_GEMM: "1"
+  VLLM_USE_B12X_MOE: "1"
+  VLLM_USE_B12X_SPARSE_INDEXER: "1"
+  VLLM_USE_V2_MODEL_RUNNER: "1"
+  VLLM_MOE_SKIP_PADDING: "0"
+  B12X_MLA_SM120_UNIFIED: "1"
+  B12X_MOE_FORCE_A8: "1"
 
 defaults:
   host: 0.0.0.0
   port: 8000
   tensor_parallel: 2
   gpu_memory_utilization: 0.82
-  max_model_len: 262144
+  max_model_len: auto
+  block_size: 256
   max_num_seqs: 8
   max_num_batched_tokens: 8192
+  max_cudagraph_capture_size: 48
+  num_speculative_tokens: 6
   kv_cache_dtype: fp8
+  load_format: safetensors   # see tp2: b12x needs io_uring, blocked by Docker's default seccomp
   served_model_name: deepseek-v4-flash-vision-uncensored
 
 command: |
@@ -48,11 +67,27 @@ command: |
     --served-model-name {served_model_name} \
     --host {host} \
     --port {port} \
+    --trust-remote-code \
     --tensor-parallel-size {tensor_parallel} \
     --enable-expert-parallel \
-    --gpu-memory-utilization {gpu_memory_utilization} \
+    --kv-cache-dtype {kv_cache_dtype} \
+    --block-size {block_size} \
     --max-model-len {max_model_len} \
     --max-num-seqs {max_num_seqs} \
     --max-num-batched-tokens {max_num_batched_tokens} \
-    --kv-cache-dtype {kv_cache_dtype} \
-    --trust-remote-code
+    --gpu-memory-utilization {gpu_memory_utilization} \
+    --enable-prefix-caching \
+    --tokenizer-mode deepseek_v4 \
+    --tool-call-parser deepseek_v4 \
+    --enable-auto-tool-choice \
+    --reasoning-parser deepseek_v4 \
+    --reasoning-config '{"reasoning_parser":"deepseek_v4","reasoning_start_str":"","reasoning_end_str":""}' \
+    --default-chat-template-kwargs.thinking=true \
+    --default-chat-template-kwargs.reasoning_effort=high \
+    --load-format {load_format} \
+    --moe-backend b12x \
+    --linear-backend b12x \
+    --attention-backend B12X \
+    --max-cudagraph-capture-size {max_cudagraph_capture_size} \
+    --compilation-config '{"cudagraph_mode":"FULL_AND_PIECEWISE","custom_ops":["all"]}' \
+    --speculative-config '{"method":"dspark","num_speculative_tokens":{num_speculative_tokens},"draft_sample_method":"probabilistic","attention_backend":"B12X"}'

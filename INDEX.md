@@ -6,10 +6,15 @@
 > Always `--dry-run` first; always `--no-follow` for scripted launches.
 > **DFlash drafters must be pre-cached** — serve containers run
 > `HF_HUB_OFFLINE=1` (see `benchmarks/VALIDATION-2026-07-25.md` §Operational).
-> **Multi-node NCCL:** `NCCL_IB_HCA=rocep1s0f1,roceP2p1s0f1` is pinned in the
-> `dgx-pair` cluster definition (`~/.config/sparkrun/clusters/dgx-pair.yaml`
-> → `env:`), not in recipes — the f0 CX7 ports show link-up but have no path
-> to the peer, and sparkrun's live IB probe still lists them.
+> **Multi-node comm env:** pinned in the `dgx-pair` cluster definition
+> (`~/.config/sparkrun/clusters/dgx-pair.yaml` → `env:`), not in recipes:
+> `NCCL_IB_HCA=rocep1s0f1,roceP2p1s0f1`, `NCCL_SOCKET_IFNAME=enp1s0f1np1,enP2p1s0f1np1`,
+> `GLOO_SOCKET_IFNAME=enp1s0f1np1`, `TP_SOCKET_IFNAME=enp1s0f1np1`. The f0 CX7
+> ports show link-up but carry no IP and have no path to the peer; sparkrun's
+> live probe (still in 0.3.10) lists them first and hands them to both NCCL and
+> the Gloo/TCPStore socket groups (`Unable to find address for: enp1s0f0np0`).
+> Cluster env overrides the probe; recipe-level pins trigger the
+> `managed-comm-env` validator warning instead.
 
 All speed numbers below are **measured on this cluster** (2026-07-18 baseline +
 2026-07-25 post-fix validation, greedy decoding, stdlib harness —
@@ -79,7 +84,7 @@ image-provided serve script and a weight-coalescing pre-step — port it as a pr
 | 40 | `minimax-m3-v0-nvfp4-reap25.yaml` | sparkarena/Minimax-M3-v0-NVFP4-REAP25 | SGLang | 2 | NVFP4 | 32k | REAP25-pruned MiniMax-M3; weights (175 GB) already staged on both nodes |
 | 41 | `qwen3.8-27b-uncensored-nvfp4-tp1.yaml` | orcarouter/Qwen3.8-27B-Uncensored-NVFP4 | vLLM | 1 | NVFP4 | 256k | Abliterated Qwen3.8-27B (25 GB); gated repo; UNVERIFIED |
 | 42 | `nex-n2.5-mini-uncensored-nvfp4-tp1.yaml` | orcarouter/Nex-N2.5-mini-Uncensored-NVFP4 | vLLM | 1 | NVFP4 | 256k | Abliterated Nex-N2.5 mini MoE (24 GB), vision; gated repo; UNVERIFIED |
-| 43 | `deepseek-v4-flash-vision-uncensored-tp2.yaml` | orcarouter/DeepSeek-V4-Flash-Vision-Uncensored | vLLM | 2 | FP4+FP8 | 256k | 168 GB weights, ~15 GB/node left for KV, FP8 KV; gated repo; UNVERIFIED |
+| 43 | `deepseek-v4-flash-vision-uncensored-tp2.yaml` | orcarouter/DeepSeek-V4-Flash-Vision-Uncensored | vLLM | 2 | FP4+FP8 | **1M** | **VERIFIED 2026-09-26** — eugr b12x image (the anemll one cannot load the vision tower), fp8 KV mandatory, safetensors loader; ~57 tok/s; needs the pair to itself (a 33 GB co-tenant silently collapses the context to 576 tokens) |
 | 44 | `qwen3.8-flash-next-uncensored-nvfp4-tp2.yaml` | orcarouter/Qwen3.8-Flash-Next-Uncensored-NVFP4 | vLLM | 2 | NVFP4 | 64k | 184 GB weights, ~7 GB/node for KV (max_model_len capped at 65536); eugr b12x nightly; replaces the container-less sglang draft; gated repo; UNVERIFIED |
 | 45 | `glm-5.3-flash-uncensored-nvfp4-tp2.yaml` | orcarouter/GLM-5.3-Flash-Uncensored-NVFP4 | vLLM | 2 | NVFP4 | 32k | 205 GB weights — marginal on this 2-node pair (~2.7 GB/node for KV at 0.87); eugr b12x nightly; gated repo; UNVERIFIED |
 | 46 | `deepseek-v4-flash-vision-uncensored-ep2.yaml` | orcarouter/DeepSeek-V4-Flash-Vision-Uncensored | vLLM | 2 | FP4+FP8 | 256k | #43 + `--enable-expert-parallel` (EP=2 for the MoE layers, attention stays TP2), FP8 KV; gated repo; UNVERIFIED |
