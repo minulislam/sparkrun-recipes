@@ -86,6 +86,24 @@ executor_config:
 
 env:
   TORCH_NCCL_ASYNC_ERROR_HANDLING: "1"
+  # ADDED 2026-09-27 for the TP2 hang (both ranks silent after "CustomAllreduce is disabled…",
+  # port never opens, no I/O for 29 min). These are the exact fabric pins under which the OTHER
+  # SGLang TP2 recipe on this pair (inkling-small) initializes and serves; the upstream recipe
+  # carries none of them and NCCL is left to probe transports on its own (this pair's f0 RoCE
+  # ports are dead — see the dgx-pair cluster yaml). Community reports the same
+  # hang-after-NCCL-init on multi-node DGX Spark SGLang resolves with iface/fabric pinning.
+  NCCL_IB_DISABLE: "0"
+  NCCL_IB_ROCE_VERSION_NUM: "2"
+  NCCL_IB_GID_INDEX: "3"
+  NCCL_NET: "IB"
+  NCCL_NET_PLUGIN: "none"
+  NCCL_NVLS_ENABLE: "0"
+  NCCL_CUMEM_ENABLE: "0"
+  NCCL_CROSS_NIC: "0"
+  NCCL_IGNORE_CPU_AFFINITY: "1"
+  # Diagnostic for the retry; drop to WARN once it serves.
+  NCCL_DEBUG: "INFO"
+  NCCL_DEBUG_SUBSYS: "INIT,NET"
 
 defaults:
   host: 0.0.0.0
