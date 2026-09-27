@@ -1,0 +1,7 @@
+Atlas ghcr.io/atlas-inf/atlas-gb10:sha-bdcccc2 (2026-08-27), EP=2 tp=1, gpu_memory_utilization 0.80, ATLAS_MOE_TRANSPOSE_SAFETY_MB=50000, ATLAS_MOE_PREFILL_COPIES=0, --max-prefill-tokens 2048
+Fast-load pre-flight: 66.32 GB on-disk per rank (128 local experts of 256), shards 26/26 in ~35 s
+MoE transpose pass: cost 58.9 GB (full) / 39.2 GB (gate+up), free 47.0 GB -> SKIP (prefill uses uncoalesced fallback)
+KV cache: 121.7 GB total x 80% util = 97.4 GB budget; ~68.5 GB pre-KV + 0.5 GB reserve -> ~28.9 GB for KV (~125k tokens at bf16, 12k ctx)
+Server live and ready ~120 s after launch (weights already on both nodes)
+Real prefill: 7,284-token prompt -> TTFT 13,438 ms (~540 tok/s), decode 20.8 tok/s; 2,048-token prompt -> TTFT ~3,430 ms, decode 27.2 tok/s
+Trough during the 8-way cell: head 15 GB free, worker 19 GB free

@@ -1,0 +1,76 @@
+# >>> LOCAL FORK of @atlas/minimax-m2.7-nvfp4-ep2 (Atlas-Inf/sparkrun-recipes, fetched 2026-09-27).
+# >>> Why a fork (all measured live on dgx-pair, sparkrun 0.3.10, azeezish/atlas-gb10:latest 2026-09-23):
+# >>>   1. The registry recipe was validated on the May image ("3.0.0": 13,120 KV tokens left at 0.90).
+# >>>      The current image adds a "MoE transpose pass" (factory/m2_setup.rs) that takes ~39 GB per rank
+# >>>      after the 66 GB of local-expert weights, so 110.5 GB is committed before the KV pool and Atlas
+# >>>      aborts: "No memory left for KV cache: budget 109.5 GB, but 110.5 GB already consumed".
+# >>>      ATLAS_MOE_TRANSPOSE=0 is the engine's documented escape hatch ("for a box under external memory
+# >>>      pressure the free-memory probe cannot see"): prefill uses the uncoalesced grouped GEMM, decode
+# >>>      stays on the N-major warp-reduction kernels. sparkrun has no per-run env flag, hence this file.
+# >>>   2. `expert_parallel: 2` — sparkrun's fit planner derives ranks/memory from tensor_parallel and
+# >>>      expert_parallel, not from Atlas's `ep_size`; without it the recipe plans as ONE 110 GB rank.
+# >>>      Even then the planner's per-rank estimate (weights ÷ tp) exceeds the GB10 0.85 cap, so run it
+# >>>      on the `dgx-pair-ep` cluster (same hosts, planner cap 0.95):
+# >>>        sparkrun run ./recipes/minimax-m2.7-nvfp4-atlas-ep2.yaml --cluster dgx-pair-ep
+# >>>   3. Do NOT use --tp 2: the image lacks 5 TP-attention kernels for (minimax-m2-229b, sm_121, nvfp4)
+# >>>      and refuses to serve without --dangerously-allow-unresolved-kernel-lookups.
+# >>> Model lukealonso/MiniMax-M2.7-NVFP4 (134.5 GB, 25 shards) is on both nodes.
+
+recipe_version: "2"
+model: lukealonso/MiniMax-M2.7-NVFP4
+runtime: atlas
+# MEASURED 2026-09-27: azeezish/atlas-gb10:latest (2026-09-23) refuses to serve MiniMax — "5 unresolved
+# kernel lookup(s) for (minimax-m2-229b, sm_121, nvfp4)" (rms_norm_offset_warp_row, w4a16_gemv_dp4a
+# batch4 ×3, w8a16_gemm_n_m128) unless --dangerously-allow-unresolved-kernel-lookups. The oldest build
+# still published on ghcr (2026-08-27) predates those lookup sites and serves. Tag, not digest (a digest
+# pin never resolves on the worker after sparkrun's docker save|load).
+container: ghcr.io/atlas-inf/atlas-gb10:sha-bdcccc2
+min_nodes: 2
+max_nodes: 2
+
+metadata:
+  description: |
+    MiniMax M2.7 NVFP4 with expert parallelism across two GB10 nodes (Atlas engine).
+    Atlas's validated EP=2 configuration: KV cache stays BF16 (FP8/NVFP4 not yet stable
+    for MiniMax), no speculative decoding (checkpoint ships no MTP weights).
+    Local fork: MoE transpose pass disabled to leave room for the KV pool on the
+    2026-09 image.
+  maintainer: atlas-inf (recipe) — forked for dgx-pair
+  category: agent
+  model_params: 230B
+  model_dtype: nvfp4
+  quantization: nvfp4
+  kv_dtype: bf16
+
+env:
+  # Newer Atlas builds honor this switch outright (factory/m2_setup.rs on main).
+  ATLAS_MOE_TRANSPOSE: "0"
+  # The 2026-09-23 image ignores the switch (verified: env present in the process, pass still ran)
+  # but does honor the fit margin: with 50 GB of "safety" no transpose tier fits the 46 GB free after
+  # the weights, so the pass is skipped — the same state the recipe was validated in on the May image.
+  ATLAS_MOE_TRANSPOSE_SAFETY_MB: "50000"
+  # MEASURED 2026-09-27: with the transpose pass skipped, 2k-prompt requests serve fine but the first
+  # 8k-depth prefill killed both ranks in the same second (exit 137, no host OOM on either node) —
+  # Atlas's own OOM watchdog (2 GB threshold) tripping on the per-prefill MoE scratch copies. This is
+  # the engine's documented lever for that ("for a box under external memory pressure").
+  ATLAS_MOE_PREFILL_COPIES: "0"
+
+defaults:
+  port: 8888
+  host: 0.0.0.0
+  tensor_parallel: 1
+  expert_parallel: 2
+  ep_size: 2
+  max_model_len: 12288
+  max_batch_size: 1
+  max_num_batched_tokens: 2048   # --max-prefill-tokens: bound the per-chunk prefill transient (was 8192)
+  kv_cache_dtype: bf16
+  # MEASURED 2026-09-27: at 0.90 the engine served (27 tok/s/request) but the first 8k-depth prefill
+  # pushed the head into NVRM NV_ERR_NO_MEMORY + earlyoom — 109.5 GB budget + ~7 GB of head co-tenants
+  # (Spark Studio, Hermes, ollama embeddings) leaves ~4 GB. At 0.85 single-stream served but the 8-way
+  # cell (8 queued 2k sessions, max_batch_size 1) still tripped NVRM OOM + earlyoom on both nodes.
+  # 0.80 (97 GB budget, ~29 GB KV ≈ 125k tokens, 10× the 12k context) completed every cell with
+  # 15 GB (head) / 19 GB (worker) still free at the trough. VERIFIED 2026-09-27.
+  gpu_memory_utilization: 0.80
+  enable_prefix_caching: true
+  oom_guard_mb: 512

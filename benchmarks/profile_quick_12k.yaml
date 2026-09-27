@@ -1,0 +1,13 @@
+framework: llama-benchy
+metadata:
+  description: >-
+    Fleet quick profile capped for recipes whose max_model_len is 12,288
+    (@atlas/minimax-m2.7-nvfp4-ep2): the 32k depth cell would overflow the
+    context, so the ladder stops at 8k. Same pp/tg/concurrency as quick.yaml
+    for comparability.
+args:
+  depth: [ 0, 8192 ]
+  pp: [ 2048 ]
+  tg: [ 128 ]
+  concurrency: [ 1, 8 ]
+  prefix_caching: true
