@@ -1,27 +1,50 @@
-# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/Inkling-Small-NVFP4-Dual-DGX-Sparks
-# >>> Please test and run --dry-run first, then update with your verified launch facts.
+# >>> REWRITTEN 2026-09-27 from the model's official launch repo (fleet benchmark pass 1+2 failed in 7 s:
+# >>>   the recipe had no `container:` and sparkrun's SGLang default `scitrera/dgx-spark-sglang:latest`
+# >>>   is not a published tag — "manifest unknown"; the repo's champion image is what actually runs Inkling).
+# >>> Source: https://github.com/MiaAI-Lab/Inkling-Small-NVFP4-Dual-DGX-Sparks  (start_sglang.sh + README)
+# >>>   Champion image ghcr.io/drowzeys/inkling-sglang-gb10:kvquant = lmsysorg/sglang:dev + patches for
+# >>>   NVFP4 KV (fp4_mx_block16, triton lane), the DSpark conv-state commit fix for multi-node, a 64K
+# >>>   draft-context cap, and TORCH_CUDA_ARCH_LIST=12.1a. Upstream measured 1,142,712 KV tokens across
+# >>>   both nodes at 1M context with the DSpark draft (~5 GB) loaded.
+# >>> UNVERIFIED on this cluster — first TP=2 boot here is the experiment. `--dry-run` first.
+# >>> The draft model RadixArk/Inkling-Small-DSpark-Preview (1.8 GB) must be in the HF cache on the head;
+# >>>   sparkrun distributes `speculative_draft_model_path` to the worker like the main model.
 
 # =============================================================================
-# sparkrun recipe — Inkling-Small NVFP4 via SGLang   [MiaAI-Lab]
+# sparkrun recipe — Inkling-Small NVFP4 via SGLang + DSpark   [MiaAI-Lab champion config]
 # TWO NODES (TP=2 / 2 GPUs) on DGX Spark GB10.
 # -----------------------------------------------------------------------------
-# Model: thinkingmachines/Inkling-Small-NVFP4
-# Source: https://github.com/MiaAI-Lab/Inkling-Small-NVFP4-Dual-DGX-Sparks
-# Container: local/sglang-inkling:gb10-kvquant (or build from thinkingmachines/SGLang-SM121-optimized)
-# Runtime: SGLang | Notes: DSpark, fp4_mx_block16 KV
+# Model:     thinkingmachines/Inkling-Small-NVFP4   (170.7 GB on disk, 10 shards)
+# Draft:     RadixArk/Inkling-Small-DSpark-Preview  (DSpark speculative decoding, block size 7)
+# Container: ghcr.io/drowzeys/inkling-sglang-gb10:kvquant
+# Runtime:   SGLang | Context: 1,048,576 native | KV: fp4_mx_block16 | attention: triton, fp32 reduce
+# Upstream rationale (README "SGLang-champion tunables"): page-size 1 is mandatory for the triton DSpark
+# verify path; Marlin MoE + flashinfer_trtllm FP4 GEMM is the fastest known SM-121 combo for Inkling;
+# block-size 15 regresses throughput; bf16 attention accumulation hurts draft acceptance.
 # =============================================================================
 
 recipe_version: "2"
 model: thinkingmachines/Inkling-Small-NVFP4
 runtime: sglang
+container: ghcr.io/drowzeys/inkling-sglang-gb10:kvquant
+# MEASURED 2026-09-27: the champion image bakes an ENTRYPOINT (lmsysorg/sglang base), so sparkrun aborts
+# with "declares ENTRYPOINT" exactly like the vllm-openai images. Blank it (run-then-exec model).
+executor_config:
+  entrypoint: ""
 min_nodes: 2
 max_nodes: 2
+
+# Cold start: 1M-context KV allocation + DSpark draft load + CUDA graph capture for 12 batch sizes.
+readiness:
+  port_timeout_s: 1800
+  health_timeout_s: 1800
+  inference_timeout_s: 600
 
 metadata:
   description: >-
     Thinking Machines Inkling-Small NVFP4 via SGLang on 2x DGX Spark —
-    DSpark speculative decoding, fp4_mx_block16 KV.
-    Source-validated by MiaAI-Lab.
+    DSpark speculative decoding, fp4_mx_block16 KV, 1M context.
+    Champion config from MiaAI-Lab / drowzeys.
   maintainer: MiaAI-Lab (https://github.com/MiaAI-Lab)
   model_params: 7B
   model_dtype: nvfp4
@@ -29,17 +52,78 @@ metadata:
   quantization: nvfp4
   quant_bits: 4
 
+# Verbatim from upstream start_sglang.sh NCCL_ENV (RoCEv2 over ConnectX-7 on identical hardware).
+# The dgx-pair cluster yaml additionally pins NCCL_IB_HCA / *_SOCKET_IFNAME to the live f1 ports.
+env:
+  NCCL_IB_DISABLE: "0"
+  NCCL_IB_ROCE_VERSION_NUM: "2"
+  NCCL_IB_GID_INDEX: "3"
+  NCCL_NET: "IB"
+  NCCL_NET_PLUGIN: "none"
+  NCCL_NVLS_ENABLE: "0"
+  NCCL_CUMEM_ENABLE: "0"
+  NCCL_CROSS_NIC: "0"
+  NCCL_IGNORE_CPU_AFFINITY: "1"
+  NCCL_DEBUG: "WARN"
+  SGLANG_ENABLE_UNIFIED_RADIX_TREE: "1"
+  TORCH_CUDA_ARCH_LIST: "12.1a"
+  FLASHINFER_CUDA_ARCH_LIST: "12.1a"
+  PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
+  INKLING_TORCH_CONV_COMMIT: "1"
+  INKLING_COMMIT_STEP_BIAS: "1"
+  INKLING_NOOP_CONV_COMMIT: "0"
+  INKLING_DRAFT_CTX_CAP: "65536"
+
 defaults:
   host: 0.0.0.0
   port: 8000
   tensor_parallel: 2
-  gpu_memory_utilization: 0.90
-  served_model_name: inkling-small-nvfp4
+  gpu_memory_utilization: 0.85        # --mem-fraction-static (upstream default)
+  max_model_len: 1048576              # native 1M; upstream serves the full window at TP=2
+  max_num_seqs: 16                    # --max-running-requests
+  max_num_batched_tokens: 8192        # --chunked-prefill-size
+  kv_cache_dtype: fp4_mx_block16
+  page_size: 1
+  attention_backend: triton
+  fp4_gemm_backend: flashinfer_trtllm
+  moe_runner_backend: marlin
+  speculative_algorithm: DSPARK
+  speculative_draft_model_path: RadixArk/Inkling-Small-DSpark-Preview
+  speculative_dspark_block_size: 7
+  cuda_graph_bs: "1 2 3 4 5 6 7 8 10 12 14 16"
+  served_model_name: inkling-small
 
 command: |
   python3 -m sglang.launch_server \
     --model-path {model} \
-    --host {host} \
-    --port {port} \
+    --trust-remote-code \
+    --served-model-name {served_model_name} \
     --tp {tensor_parallel} \
-    --trust-remote-code
+    --context-length {max_model_len} \
+    --quantization modelopt_fp4 \
+    --attention-backend {attention_backend} \
+    --triton-attention-reduce-in-fp32 \
+    --page-size {page_size} \
+    --kv-cache-dtype {kv_cache_dtype} \
+    --fp4-gemm-backend {fp4_gemm_backend} \
+    --moe-runner-backend {moe_runner_backend} \
+    --mamba-radix-cache-strategy extra_buffer \
+    --mem-fraction-static {gpu_memory_utilization} \
+    --swa-full-tokens-ratio 0.1 \
+    --mamba-full-memory-ratio 0.1 \
+    --max-running-requests {max_num_seqs} \
+    --chunked-prefill-size {max_num_batched_tokens} \
+    --reasoning-parser inkling \
+    --tool-call-parser inkling \
+    --skip-server-warmup \
+    --disable-flashinfer-autotune \
+    --stream-interval 32 \
+    --speculative-algorithm {speculative_algorithm} \
+    --speculative-draft-model-path {speculative_draft_model_path} \
+    --speculative-draft-model-quantization unquant \
+    --speculative-dspark-block-size {speculative_dspark_block_size} \
+    --disable-prefill-cuda-graph \
+    --disable-piecewise-cuda-graph \
+    --cuda-graph-bs {cuda_graph_bs} \
+    --host {host} \
+    --port {port}

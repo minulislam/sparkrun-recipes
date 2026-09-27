@@ -1,0 +1,98 @@
+# >>> LOCAL COPY of @eugr/qwen3.8-flash-next-nvfp4-cluster (2026-09-27), carried here because the registry
+# >>>   recipe cannot be given the two things it needs on this cluster:
+# >>>   1. `--load-format b12x` dies in WorkerProc init — "io_uring bounce initialization failed:
+# >>>      Operation not permitted" (rootless Docker's default seccomp blocks io_uring; measured in the
+# >>>      fleet benchmark). The plain safetensors loader boots (same fix as the DeepSeek-V4 recipes).
+# >>>   2. a `readiness:` block for the slower safetensors cold load.
+# >>> Everything else (env, flags, backends, MTP) is eugr's dual-node config verbatim; only the model
+# >>> differs from qwen3.8-flash-next-uncensored-nvfp4-tp2.yaml (base local-inference-lab NVFP4,
+# >>> modelopt_mixed quantization, no revision pin).
+# >>> Fit: 105.8 GB / 2 = ~53 GB per node; native 262,144 context is ~1.6 GB/node of KV (hybrid
+# >>> attention, 12 of 48 layers cache) — sparkrun's --dry-run estimate overcounts KV ~4x.
+
+recipe_version: "2"
+model: local-inference-lab/Qwen3.8-Flash-Next-NVFP4
+runtime: vllm
+container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly-b12x:latest
+min_nodes: 2
+max_nodes: 2
+
+readiness:
+  port_timeout_s: 2400
+  health_timeout_s: 2400
+  inference_timeout_s: 600
+
+metadata:
+  description: >-
+    Qwen3.8 Flash Next (local-inference-lab NVFP4, modelopt_mixed), vision-capable.
+    vLLM tensor-parallel across both DGX Sparks, native MTP speculative decoding.
+    Local mirror of eugr's cluster recipe with the safetensors loader.
+  maintainer: eugr (recipe) / local-inference-lab (model) — adapted for this cluster
+  model_dtype: nvfp4
+  model_vram: 106
+
+env:
+  # MEASURED 2026-09-27: even with the safetensors loader the engine died in WorkerProc init —
+  # "io_uring initialization failed: Operation not permitted" from b12x/sequence/_shared/disk_table.py
+  # via qwen4_exp/nvidia/b12x_ple.py: the per-layer-embedding (PLE) table defaults to a disk-backed
+  # io_uring row cache, which rootless Docker's seccomp forbids. VLLM_PLE_TABLE_MEMORY selects
+  # device | ram | disk; "ram" = CUDA-mapped host memory (the same unified pool on GB10), no io_uring.
+  VLLM_PLE_TABLE_MEMORY: "ram"
+  CUTE_DSL_ARCH: "sm_121a"
+  SAFETENSORS_FAST_GPU: "1"
+  VLLM_WORKER_MULTIPROC_METHOD: "spawn"
+  VLLM_SSM_CONV_STATE_LAYOUT: "DS"
+  VLLM_USE_AOT_COMPILE: "1"
+  VLLM_USE_MEGA_AOT_ARTIFACT: "1"
+  VLLM_USE_V2_MODEL_RUNNER: "1"
+  B12X_POLICY_MODE: "auto"
+  VLLM_ENABLE_ROCE_ALLREDUCE: "1"
+  VLLM_ROCE_ALLREDUCE_MAX_SIZE: "2MB"
+
+defaults:
+  host: 0.0.0.0
+  port: 8000
+  tensor_parallel: 2
+  pipeline_parallel: 1
+  gpu_memory_utilization: 0.7
+  max_model_len: 262144
+  max_num_seqs: 16
+  kv_cache_dtype: fp8
+  max_num_batched_tokens: 4096
+  block_size: 16
+  moe_backend: b12x
+  linear_backend: b12x
+  load_format: safetensors
+  num_speculative_tokens: 4
+  served_model_name: qwen3.8-flash-next
+
+command: |
+  vllm serve {model} \
+    --served-model-name {served_model_name} \
+    --host {host} \
+    --port {port} \
+    --trust-remote-code \
+    --tensor-parallel-size {tensor_parallel} \
+    --pipeline-parallel-size {pipeline_parallel} \
+    --mamba-cache-mode align \
+    --enable-prefix-caching \
+    --enable-chunked-prefill \
+    --dtype bfloat16 \
+    --kv-cache-dtype {kv_cache_dtype} \
+    --quantization modelopt_mixed \
+    --block-size {block_size} \
+    --load-format {load_format} \
+    --max-model-len {max_model_len} \
+    --max-num-seqs {max_num_seqs} \
+    --max-num-batched-tokens {max_num_batched_tokens} \
+    --speculative-config '{"method":"mtp","num_speculative_tokens":{num_speculative_tokens}}' \
+    --gdn-decode-kernel b12x \
+    --linear-backend {linear_backend} \
+    --moe-backend {moe_backend} \
+    --no-enable-flashinfer-autotune \
+    --mm-encoder-tp-mode data \
+    --reasoning-parser qwen3 \
+    --tool-call-parser qwen3_xml \
+    --enable-auto-tool-choice \
+    --compilation-config '{"pass_config":{"fuse_act_quant":true}}' \
+    --gpu-memory-utilization {gpu_memory_utilization}

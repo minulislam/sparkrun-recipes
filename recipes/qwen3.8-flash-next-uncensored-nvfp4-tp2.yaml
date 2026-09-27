@@ -4,8 +4,14 @@
 # >>>   on 2 Sparks), except --quantization is left to auto-detect: orcarouter ships compressed-tensors
 # >>>   NVFP4, not modelopt_mixed. If the b12x MoE/linear backends reject it:
 # >>>   -o moe_backend=auto -o linear_backend=auto
-# >>> Fit: 183.5 GB / 2 = ~92 GB per node; 0.82 leaves ~7 GB/node for KV, so max_model_len is capped
-# >>>   at 65536 (eugr's 262144 needs the smaller local-inference-lab build).
+# >>> Fit (corrected 2026-09-26 from the on-disk config, not an estimate): 183.5 GB / 2 = ~92 GB per
+# >>>   node, and the FULL 262,144 native context costs only ~1.6 GB/node of KV — so it runs at native
+# >>>   length, no cap needed. The earlier "capped at 65536, ~7 GB/node for KV" note was wrong: this is
+# >>>   a hybrid model (12 qwen_sparse_attention + 36 linear_attention of 48 layers) and only the 12
+# >>>   sparse-attention layers hold per-token KV, giving 12.0 KB/token, not the 48.0 KB/token
+# >>>   sparkrun's estimator assumes by counting all 48 layers. Expect `--dry-run` to overstate KV ~4x
+# >>>   for every hybrid-attention model (Qwen3.8/3.6 Flash-Next family).
+# >>> 262,144 IS the native context (max_position_embeddings) — this model is not 1M; DeepSeek-V4 is.
 
 recipe_version: "2"
 model: orcarouter/Qwen3.8-Flash-Next-Uncensored-NVFP4
@@ -24,6 +30,12 @@ metadata:
   model_vram: 184
 
 env:
+  # MEASURED 2026-09-27: even with the safetensors loader the engine died in WorkerProc init —
+  # "io_uring initialization failed: Operation not permitted" from b12x/sequence/_shared/disk_table.py
+  # via qwen4_exp/nvidia/b12x_ple.py: the per-layer-embedding (PLE) table defaults to a disk-backed
+  # io_uring row cache, which rootless Docker's seccomp forbids. VLLM_PLE_TABLE_MEMORY selects
+  # device | ram | disk; "ram" = CUDA-mapped host memory (the same unified pool on GB10), no io_uring.
+  VLLM_PLE_TABLE_MEMORY: "ram"
   CUTE_DSL_ARCH: "sm_121a"
   SAFETENSORS_FAST_GPU: "1"
   VLLM_WORKER_MULTIPROC_METHOD: "spawn"
@@ -39,14 +51,23 @@ defaults:
   host: 0.0.0.0
   port: 8000
   tensor_parallel: 2
-  gpu_memory_utilization: 0.82
-  max_model_len: 65536
+  # MEASURED 2026-09-27: this checkpoint stores the per-layer-embedding table in bf16 (no
+  # ple_embedding_dtype in config.json; it is the 102 GB model-00002 shard). With
+  # VLLM_PLE_TABLE_MEMORY=ram vLLM maps 47.68 GiB per rank of HOST memory for it — outside vLLM's
+  # GPU budget but inside the same 121 GB unified pool. 0.82 × 121 GiB + 47.7 GiB does not fit;
+  # 0.50 leaves ~40 GB weights + ~20 GB KV (≈1.6M tokens at 12 KB/token) + the PLE table ≈ 108 GB.
+  gpu_memory_utilization: 0.50
+  max_model_len: 262144   # native; ~1.6 GB/node of KV (hybrid attn, 12 of 48 layers cache)
   max_num_seqs: 8
   kv_cache_dtype: fp8
   max_num_batched_tokens: 4096
   block_size: 16
   moe_backend: b12x
   linear_backend: b12x
+  # MEASURED 2026-09-27: `--load-format b12x` dies in WorkerProc init with "io_uring initialization
+  # failed: Operation not permitted" — rootless Docker's default seccomp blocks io_uring. Same fix as
+  # the DeepSeek-V4 recipes: the plain safetensors loader (slower cold load, identical serving).
+  load_format: safetensors
   num_speculative_tokens: 4
   served_model_name: qwen3.8-flash-next-uncensored
 
@@ -57,6 +78,7 @@ command: |
     --host {host} \
     --port {port} \
     --trust-remote-code \
+    --hf-overrides '{"text_config":{"layer_types":["linear_attention","linear_attention","linear_attention","full_attention","linear_attention","linear_attention","linear_attention","full_attention","linear_attention","linear_attention","linear_attention","full_attention","linear_attention","linear_attention","linear_attention","full_attention","linear_attention","linear_attention","linear_attention","full_attention","linear_attention","linear_attention","linear_attention","full_attention","linear_attention","linear_attention","linear_attention","full_attention","linear_attention","linear_attention","linear_attention","full_attention","linear_attention","linear_attention","linear_attention","full_attention","linear_attention","linear_attention","linear_attention","full_attention","linear_attention","linear_attention","linear_attention","full_attention","linear_attention","linear_attention","linear_attention","full_attention"]}}' \
     --tensor-parallel-size {tensor_parallel} \
     --mamba-cache-mode align \
     --enable-prefix-caching \
@@ -64,7 +86,7 @@ command: |
     --dtype bfloat16 \
     --kv-cache-dtype {kv_cache_dtype} \
     --block-size {block_size} \
-    --load-format b12x \
+    --load-format {load_format} \
     --max-model-len {max_model_len} \
     --max-num-seqs {max_num_seqs} \
     --max-num-batched-tokens {max_num_batched_tokens} \

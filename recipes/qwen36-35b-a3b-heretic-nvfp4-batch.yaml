@@ -34,6 +34,15 @@ executor_config:
 min_nodes: 1
 max_nodes: 1
 
+
+# AEON-7 image cold start: FlashInfer FP4 autotune costs ~13 min on a cold compile cache
+# (benchmarks/AEON-FINDINGS-2026-07-18.md). sparkrun's default readiness probe tears the
+# container down first — measured 2026-09-27 as "head container is not running". These
+# timeouts cover a cold autotune; warm restarts hit the managed cache and take ~2 min.
+readiness:
+  port_timeout_s: 1800
+  health_timeout_s: 1800
+  inference_timeout_s: 600
 metadata:
   description: >-
     Qwen3.6 35B-A3B MoE (~3B active), NVFP4 compressed-tensors — BATCH variant:

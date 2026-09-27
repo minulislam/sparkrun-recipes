@@ -55,7 +55,14 @@ recipe_version: "2"
 model: sparkarena/Minimax-M3-v0-NVFP4-REAP25
 model_revision: e9ee17fac5a7bef948df3f22d641d608c6c8f7a8
 runtime: sglang
-container: scitrera/dgx-spark-sglang-mm@sha256:9a6e7d7cd5fbc716db1fedef5dd820db40d060fcb8d58885b19d4a95dbae6dff
+# MEASURED 2026-09-27 (fleet benchmark, both passes + a --no-rm relaunch): with the image pinned by
+# digest, sparkrun 0.3.10 ships it to the worker via `docker save | docker load`, which strips the
+# RepoDigests — the worker ends up with an untagged image ID, `docker run <repo>@sha256:…` fails on
+# rank 1 with "No such image", no worker container is ever created (docker events: only "image load"),
+# and the head sits at "Init torch distributed begin" until readiness tears it down as
+# "head container is not running". A tag survives save/load. Pinned digest for the record:
+#   scitrera/dgx-spark-sglang-mm:v0 == sha256:9a6e7d7cd5fbc716db1fedef5dd820db40d060fcb8d58885b19d4a95dbae6dff
+container: scitrera/dgx-spark-sglang-mm:v0
 min_nodes: 2
 max_nodes: 2
 

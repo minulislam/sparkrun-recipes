@@ -1,0 +1,126 @@
+# >>> CLI-CODING-AGENT profile of deepseek-v4-flash-vision-uncensored-tp2.yaml. Same weights, same
+# >>>   image, same fp8 KV and safetensors loader (see that file for why each is mandatory). What
+# >>>   differs is tuned for an agent loop against a large codebase rather than for a 1M-token demo.
+# >>>
+# >>> WHY NOT JUST USE tp2: measured 2026-09-26 — the tp2 profile serves a 187,912-token prompt fine
+# >>>   (151 s, retrieved a needle at 62% depth), but the NEXT requests killed the engine:
+# >>>     TimeoutError: RPC call to sample_tokens timed out -> EngineDeadError -> 500, server exits.
+# >>>   earlyoom at that moment: "mem avail: 8525 of 124608 MiB (6.84%)". GB10 is UNIFIED MEMORY —
+# >>>   weights + KV come out of the same 124 GB the host OS uses, so a 0.82 budget plus a 1M-token
+# >>>   KV pool plus page cache leaves the host on the edge and the cross-node sampling RPC stalls.
+# >>>
+# >>> The three changes, all derived from measurement, not taste:
+# >>>   - max_model_len 262144, not auto/1M. KV costs ~10.8 KB/token here (11.79 GiB bought
+# >>>     1,144,794 tokens), so 262k needs only ~2.7 GiB. A 1M pool reserves 10.8 GiB to serve a
+# >>>     context no coding agent sends, and 262k already holds a very large repo slice.
+# >>>   - kv_cache_bytes 6 GiB, rather than letting the KV pool absorb all free memory. MEASURED
+# >>>     2026-09-26: lowering gpu_memory_utilization to 0.78 to buy host headroom does NOT work —
+# >>>     b12x primes its MoE kernels inside determine_available_memory(), BEFORE KV allocation, and
+# >>>     starved of working space it dies with "b12x failed moe.decode" -> "b12x preparation failed
+# >>>     on rank 0: SystemExit". So util stays at the proven 0.82 and the KV POOL is capped instead:
+# >>>     262k of context needs ~2.7 GiB at 10.8 KB/token, so 6 GiB still allows roughly 7 concurrent
+# >>>     80k sessions while handing ~5.8 GiB of unified memory back to the host, versus the
+# >>>     11.79 GiB the uncapped profile took.
+# >>>   - thinking off by default. With thinking on, mid-difficulty prompts spend the whole budget in
+# >>>     the reasoning block and return content:null with finish:length — an agent reads that as an
+# >>>     empty completion and breaks. Callers that want reasoning pass
+# >>>     chat_template_kwargs {"thinking": true} per request.
+# >>>
+# >>> Prefix caching is the single biggest win for an agent loop: the system prompt + repo context is
+# >>>   re-sent every turn, and prefill here is ~1,236 tok/s (a 100k-token context is ~80 s cold).
+# >>>   Cached turns skip that. Do not disable it.
+# >>>
+# >>> NEEDS THE PAIR TO ITSELF. A 33 GB co-tenant silently collapsed auto-fit to 576 tokens on the
+# >>>   tp2 profile. Always read max_model_len back from /v1/models after launch.
+
+recipe_version: "2"
+model: orcarouter/DeepSeek-V4-Flash-Vision-Uncensored
+model_revision: 2ef3d5c2bb7d9ccba6ab66314ed9e63bd52ac2a6   # HF commit as of 2026-09-03
+runtime: vllm
+container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly-b12x:latest
+min_nodes: 2
+max_nodes: 2
+
+# MEASURED 2026-09-27 (fleet benchmark, pass 2): sparkrun's default readiness probe gave up with
+# "TimeoutError: port" at ~1800 s while the b12x image was still priming — the safetensors loader
+# (io_uring is blocked by rootless seccomp) reads ~115 GB/node before the port opens. Same cold-start
+# class as the AEON recipes; these timeouts cover it. Warm restarts are much faster.
+readiness:
+  port_timeout_s: 3600
+  health_timeout_s: 3600
+  inference_timeout_s: 900
+
+metadata:
+  description: >-
+    DeepSeek V4 Flash Vision uncensored/abliterated (orcarouter), tuned for CLI coding agents:
+    262k context, thinking off by default, prefix caching, headroom for GB10 unified memory.
+  maintainer: orcarouter (model) — recipe adapted for sparkrun
+  model_dtype: fp4
+  model_vram: 168
+
+env:
+  CUTE_DSL_ARCH: "sm_121a"
+  VLLM_USE_AOT_COMPILE: "1"
+  VLLM_USE_BREAKABLE_CUDAGRAPH: "0"
+  VLLM_USE_MEGA_AOT_ARTIFACT: "1"
+  VLLM_MEMORY_PROFILE_INCLUDE_ATTN: "1"
+  VLLM_USE_FLASHINFER_SAMPLER: "1"
+  VLLM_USE_B12X_WO_PROJECTION: "1"
+  VLLM_USE_B12X_MHC: "1"
+  VLLM_USE_B12X_FP8_GEMM: "1"
+  VLLM_USE_B12X_MOE: "1"
+  VLLM_USE_B12X_SPARSE_INDEXER: "1"
+  VLLM_USE_V2_MODEL_RUNNER: "1"
+  VLLM_MOE_SKIP_PADDING: "0"
+  B12X_MLA_SM120_UNIFIED: "1"
+  B12X_MOE_FORCE_A8: "1"
+
+defaults:
+  host: 0.0.0.0
+  port: 8000
+  tensor_parallel: 2
+  gpu_memory_utilization: 0.82
+  kv_cache_bytes: 12884901888   # 12 GiB — MEASURED 2026-09-27: vLLM refuses to start with 6 GiB ("7.19 GiB KV cache is needed to serve one 262144-token request"); 12 GiB leaves ~97 GiB free at init   # 6 GiB — see banner; do NOT lower util instead, b12x needs the room
+  max_model_len: 262144
+  block_size: 256
+  max_num_seqs: 8
+  max_num_batched_tokens: 8192
+  max_cudagraph_capture_size: 48
+  num_speculative_tokens: 6
+  kv_cache_dtype: fp8
+  load_format: safetensors
+  thinking: "false"
+  reasoning_effort: low
+  served_model_name: deepseek-v4-coder
+
+command: |
+  vllm serve {model} \
+    --revision {model_revision} \
+    --served-model-name {served_model_name} \
+    --host {host} \
+    --port {port} \
+    --trust-remote-code \
+    --tensor-parallel-size {tensor_parallel} \
+    --kv-cache-dtype {kv_cache_dtype} \
+    --block-size {block_size} \
+    --max-model-len {max_model_len} \
+    --max-num-seqs {max_num_seqs} \
+    --max-num-batched-tokens {max_num_batched_tokens} \
+    --gpu-memory-utilization {gpu_memory_utilization} \
+    --kv-cache-memory-bytes {kv_cache_bytes} \
+    --enable-prefix-caching \
+    --enable-chunked-prefill \
+    --tokenizer-mode deepseek_v4 \
+    --tool-call-parser deepseek_v4 \
+    --enable-auto-tool-choice \
+    --reasoning-parser deepseek_v4 \
+    --reasoning-config '{"reasoning_parser":"deepseek_v4","reasoning_start_str":"","reasoning_end_str":""}' \
+    --default-chat-template-kwargs.thinking={thinking} \
+    --default-chat-template-kwargs.reasoning_effort={reasoning_effort} \
+    --load-format {load_format} \
+    --moe-backend b12x \
+    --linear-backend b12x \
+    --attention-backend B12X \
+    --max-cudagraph-capture-size {max_cudagraph_capture_size} \
+    --compilation-config '{"cudagraph_mode":"FULL_AND_PIECEWISE","custom_ops":["all"]}' \
+    --speculative-config '{"method":"dspark","num_speculative_tokens":{num_speculative_tokens},"draft_sample_method":"probabilistic","attention_backend":"B12X"}'

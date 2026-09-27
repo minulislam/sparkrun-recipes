@@ -16,6 +16,11 @@ recipe_version: "2"
 model: poolside/Laguna-S-2.1-NVFP4
 runtime: vllm
 container: vllm/vllm-openai:v0.25.1
+# MEASURED 2026-09-27 (fleet benchmark): this image bakes ENTRYPOINT ["vllm","serve"], so sparkrun's
+# launcher is appended as arguments and the launch aborts with "Container image ... declares ENTRYPOINT".
+# Blanking it restores sparkrun's run-then-exec model (same fix as qwen3.8-27b-nvfp4-tp1.yaml).
+executor_config:
+  entrypoint: ""
 min_nodes: 1
 max_nodes: 1
 
@@ -33,8 +38,15 @@ defaults:
   host: 0.0.0.0
   port: 8000
   tensor_parallel: 1
-  gpu_memory_utilization: 0.90
-  max_model_len: 262144
+  # MEASURED 2026-09-27: at 0.90 the node runs dry — "Model loading took 93.21 GiB", vLLM then grabs
+  # 13.37 GiB of KV, NVRM logs NV_ERR_NO_MEMORY and earlyoom SIGTERMs the engine at 1.98 % available.
+  # 0.85 × 121.69 GiB = 103.4 GiB: 93.2 weights + 1.6 CUDA graphs + ~8.6 KV (131072 needs 6.2).
+  gpu_memory_utilization: 0.85
+  # MEASURED 2026-09-27: the weights are 99.7 GB on disk (48-layer, 256-expert MoE — nothing like the
+  # card's "30B"). With 0.90 × 121.7 GiB that leaves 10.22 GiB for KV, and vLLM refuses 262144:
+  # "12.35 GiB KV cache is needed to serve one request at max seq len". 131072 needs ~6.2 GiB and
+  # boots; native max_position_embeddings is 1,048,576 but this node cannot hold it.
+  max_model_len: 131072
   served_model_name: laguna-s-2.1-nvfp4
 
 command: |

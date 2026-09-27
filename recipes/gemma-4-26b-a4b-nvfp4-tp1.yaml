@@ -15,6 +15,10 @@ recipe_version: "2"
 model: nvidia/Gemma-4-26B-A4B-NVFP4
 runtime: vllm
 container: vllm/vllm-openai:nightly
+# 2026-09-27: official vllm-openai images bake ENTRYPOINT ["vllm","serve"]; sparkrun aborts with
+# "declares ENTRYPOINT" (measured on v0.25.1 and nightly-aarch64 in the fleet benchmark). Blank it.
+executor_config:
+  entrypoint: ""
 min_nodes: 1
 max_nodes: 1
 

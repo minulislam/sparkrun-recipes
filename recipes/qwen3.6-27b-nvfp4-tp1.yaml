@@ -15,6 +15,10 @@ recipe_version: "2"
 model: nvidia/Qwen3.6-27B-NVFP4
 runtime: vllm
 container: vllm/vllm-openai:nightly-aarch64
+# 2026-09-27: official vllm-openai images bake ENTRYPOINT ["vllm","serve"]; sparkrun aborts with
+# "declares ENTRYPOINT" (measured on this exact tag in qwen3.8-27b-nvfp4-tp1.yaml). Blank it.
+executor_config:
+  entrypoint: ""
 min_nodes: 1
 max_nodes: 1
 

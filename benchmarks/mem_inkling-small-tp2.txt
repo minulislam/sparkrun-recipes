@@ -1,0 +1,5 @@
+[2026-09-27 03:21:15 TP0] Load weight end. elapsed=124.49 s, type=InklingForConditionalGeneration, quant=modelopt_fp4, quant_algo=NVFP4, avail mem=25.58 GB, mem usage=83.6 GB (per TP rank)
+[2026-09-27 03:21:27 TP0] Load weight end. elapsed=5.34 s, type=DSparkDraftModel, mem usage=1.14 GB
+[2026-09-27 03:24:09 TP0] Capture draft verify CUDA graph end. avail mem=8.06 GB
+Docker-start readiness (rank 0): TTR port 384.5 s; TTFT 407.7 s (cold)
+Note: SGLang --mem-fraction-static 0.85 leaves ~4 GB host headroom on the head; any co-tenant load triggers earlyoom.

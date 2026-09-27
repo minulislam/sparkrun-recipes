@@ -15,6 +15,12 @@ recipe_version: "2"
 model: unsloth/Qwen3.8-27B-NVFP4
 runtime: vllm
 container: vllm/vllm-openai:nightly-aarch64
+
+# MEASURED 2026-09-27: this image bakes ENTRYPOINT ["vllm","serve"], so sparkrun's launcher is
+# appended to it as arguments and the container exits immediately — the benchmark run failed with
+# "Container image ... declares ENTRYPOINT". Blanking it restores sparkrun's run-then-exec model.
+executor_config:
+  entrypoint: ""
 min_nodes: 1
 max_nodes: 1
 
