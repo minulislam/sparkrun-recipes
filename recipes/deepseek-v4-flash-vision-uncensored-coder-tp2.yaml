@@ -84,7 +84,12 @@ defaults:
   max_model_len: 262144
   block_size: 256
   max_num_seqs: 8
-  max_num_batched_tokens: 8192
+  # MEASURED 2026-09-27 (fleet passes 5-6): at 8192 the first 8k-depth prefill livelocked the worker
+  # NODE twice — NVRM NV_ERR_NO_MEMORY, earlyoom SIGTERM ineffective (rank stuck in the driver),
+  # mem-avail 70 MiB, userspace frozen ~50 min. At 2048 the full 6-cell sweep completed (30.2 tok/s
+  # c=1; TTFR cost: 5.3 s at 8k depth) and the memory profile even grew the KV pool to 1.24M tokens.
+  # Same bounded-prefill fix as MiniMax EP2. Do not raise without re-measuring the d=8192 cell.
+  max_num_batched_tokens: 2048
   max_cudagraph_capture_size: 48
   num_speculative_tokens: 6
   kv_cache_dtype: fp8
