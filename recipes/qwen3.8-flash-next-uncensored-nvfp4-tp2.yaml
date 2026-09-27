@@ -1,3 +1,17 @@
+# >>> UNFIT ON dgx-pair (MEASURED 2026-09-27, fleet passes 6-7) — DO NOT RUN with the current image.
+# >>>   Root cause: this checkpoint keeps the per-layer-embedding table in bf16 (the 102 GB shard);
+# >>>   with the mandatory VLLM_PLE_TABLE_MEMORY=ram (io_uring is blocked, see env:) that maps
+# >>>   47.68 GiB per rank of host memory, which on GB10 is the SAME unified pool vLLM's profiler
+# >>>   measures. Fixed non-KV cost per rank ≈ 93 GiB (39.4 weights + 47.7 PLE + runtime):
+# >>>     - util 0.40: both ranks load, profiler reports "Available KV cache memory: -44.5 GiB".
+# >>>     - util 0.50: worker rank host-OOMs during load (earlyoom, RSS 51 GiB, node livelocked 50 min).
+# >>>     - util 0.81 (needed for ~5 GiB of KV): worker rank dies in init before the gloo barrier.
+# >>>   There is no utilization that both survives startup and buys any KV.
+# >>>   Escape paths: (a) a checkpoint with the PLE table quantized to nvfp4 — the base
+# >>>   local-inference-lab model is exactly that and is VERIFIED at 51.4 GiB/node
+# >>>   (qwen3.8-flash-next-nvfp4-tp2.yaml); (b) run the container with io_uring allowed
+# >>>   (custom seccomp profile) so VLLM_PLE_TABLE_MEMORY=disk works; (c) TP>2.
+# >>> Original header follows.
 # >>> UNVERIFIED on this cluster — source: https://huggingface.co/orcarouter/Qwen3.8-Flash-Next-Uncensored-NVFP4
 # >>> GATED — the HF account behind the token must have accepted the repo gate (see INDEX.md, orcarouter note).
 # >>> env + flags mirror @eugr/qwen3.8-flash-next-nvfp4-cluster (the config eugr runs for the base NVFP4
