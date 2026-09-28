@@ -4,7 +4,7 @@ recipe_version: "2"
 model: openai/gpt-oss-120b
 runtime: vllm
 max_nodes: 1
-container: sparkarena/spark-vllm-docker:mxfp4
+container: sparkarena/spark-vllm-docker:mxfp4  # only tag upstream publishes besides :latest; no dated tags exist (checked 2026-09-28)
 
 metadata:
   description: OpenAI GPT-OSS 120B — MXFP4 quantization with FlashInfer (single node)

@@ -24,7 +24,7 @@ model: AEON-7/Qwen3.6-35B-A3B-heretic-NVFP4
 runtime: vllm
 # Digest = :2026-07-08-v0.24.0-maxsafe (vllm 0.24.0+aeon.sm121a.dflash); pin
 # avoids sparkrun's ':latest' re-pull hang and silent upstream tag drift.
-container: ghcr.io/aeon-7/aeon-vllm-ultimate@sha256:b47f2ce2e38ea7b8ff31714214344fdf40f693002b8e2ef2f534c3a3eaf9c996
+container: ghcr.io/aeon-7/aeon-vllm-ultimate:maxsafe-20260708  # tag == old digest pin; sparkrun 0.3.10 strips digests on worker ship
 
 # AEON image sets ENTRYPOINT ["/bin/bash"], which collides with sparkrun's
 # 'bash -c <serve cmd>' container command (exit 126, verified 2026-07-08).

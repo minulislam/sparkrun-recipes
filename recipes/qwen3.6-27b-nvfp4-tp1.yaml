@@ -7,14 +7,14 @@
 # -----------------------------------------------------------------------------
 # Model: nvidia/Qwen3.6-27B-NVFP4
 # Source: https://github.com/MiaAI-Lab/Qwen3.6-27B-NVFP4-vLLM
-# Container: vllm/vllm-openai:nightly-aarch64
+# Container: vllm/vllm-openai:nightly-ddd6fbca148a867aad1fcab7ec72f582b9977db4  # pinned 2026-09-28 — commit tag of local build; head/worker had diverged under the floating tag
 # Runtime: vLLM | Context: 256k
 # =============================================================================
 
 recipe_version: "2"
 model: nvidia/Qwen3.6-27B-NVFP4
 runtime: vllm
-container: vllm/vllm-openai:nightly-aarch64
+container: vllm/vllm-openai:nightly-ddd6fbca148a867aad1fcab7ec72f582b9977db4  # pinned 2026-09-28 — commit tag of local build; head/worker had diverged under the floating tag
 # 2026-09-27: official vllm-openai images bake ENTRYPOINT ["vllm","serve"]; sparkrun aborts with
 # "declares ENTRYPOINT" (measured on this exact tag in qwen3.8-27b-nvfp4-tp1.yaml). Blank it.
 executor_config:

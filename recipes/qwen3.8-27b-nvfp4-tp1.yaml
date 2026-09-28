@@ -7,14 +7,14 @@
 # -----------------------------------------------------------------------------
 # Model: unsloth/Qwen3.8-27B-NVFP4
 # Source: https://github.com/MiaAI-Lab/Qwen3.8-27B-DGX-Spark-RTX-6000
-# Container: vllm/vllm-openai:nightly-aarch64
+# Container: vllm/vllm-openai:nightly-ddd6fbca148a867aad1fcab7ec72f582b9977db4  # pinned 2026-09-28 — commit tag of local build; head/worker had diverged under the floating tag
 # Runtime: vLLM | Context: 256k | Notes: RTX 6000 PRO variant
 # =============================================================================
 
 recipe_version: "2"
 model: unsloth/Qwen3.8-27B-NVFP4
 runtime: vllm
-container: vllm/vllm-openai:nightly-aarch64
+container: vllm/vllm-openai:nightly-ddd6fbca148a867aad1fcab7ec72f582b9977db4  # pinned 2026-09-28 — commit tag of local build; head/worker had diverged under the floating tag
 
 # MEASURED 2026-09-27: this image bakes ENTRYPOINT ["vllm","serve"], so sparkrun's launcher is
 # appended to it as arguments and the container exits immediately — the benchmark run failed with

@@ -31,7 +31,7 @@ recipe_version: "2"
 model: orcarouter/Qwen3.8-Flash-Next-Uncensored-NVFP4
 model_revision: c1209bda15a6bbc4c68b585e93d40c0d85f50306   # HF commit as of 2026-08-29
 runtime: vllm
-container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly-b12x:latest
+container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly-b12x:20260926  # pinned from :latest 2026-09-28 — build already on disk (upstream latest moved past it)
 min_nodes: 2
 max_nodes: 2
 

@@ -4,7 +4,7 @@ recipe_version: "2"
 model: nvidia/MiniMax-M2.7-NVFP4
 runtime: vllm
 min_nodes: 2
-container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly:latest
+container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly:20260927  # pinned from :latest 2026-09-28 — build already on disk, verified live
 
 metadata:
   description: MiniMax-M2.7 NVFP4 (NVIDIA quant)

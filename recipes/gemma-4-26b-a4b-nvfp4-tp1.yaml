@@ -7,14 +7,14 @@
 # -----------------------------------------------------------------------------
 # Model: nvidia/Gemma-4-26B-A4B-NVFP4
 # Source: https://github.com/MiaAI-Lab/Gemma-4-26B-A4B-DGX-Spark-18-concurrencies
-# Container: vllm/vllm-openai:nightly
+# Container: vllm/vllm-openai:nightly-ddd6fbca148a867aad1fcab7ec72f582b9977db4  # pinned from :nightly 2026-09-28 — same commit tag as the aarch64 build on disk
 # Runtime: vLLM | Notes: Concurrency testing recipe
 # =============================================================================
 
 recipe_version: "2"
 model: nvidia/Gemma-4-26B-A4B-NVFP4
 runtime: vllm
-container: vllm/vllm-openai:nightly
+container: vllm/vllm-openai:nightly-ddd6fbca148a867aad1fcab7ec72f582b9977db4  # pinned from :nightly 2026-09-28 — same commit tag as the aarch64 build on disk
 # 2026-09-27: official vllm-openai images bake ENTRYPOINT ["vllm","serve"]; sparkrun aborts with
 # "declares ENTRYPOINT" (measured on v0.25.1 and nightly-aarch64 in the fleet benchmark). Blank it.
 executor_config:
