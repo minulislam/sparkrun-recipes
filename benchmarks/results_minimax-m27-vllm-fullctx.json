@@ -1,0 +1,66 @@
+{
+ "model": "nvidia/MiniMax-M2.7-NVFP4",
+ "max_model_len": 196608,
+ "rungs": [
+  {
+   "rung": 64,
+   "prompt_tokens": 93,
+   "ttft_s": 4.64,
+   "wall_s": 4.9,
+   "prefill_tok_s": 20.0,
+   "gen_tok_s": 548.68,
+   "recall_ok": true,
+   "answer": "AURORA-7431",
+   "mem_after": "head=3G worker=12G",
+   "error": null
+  },
+  {
+   "rung": 16384,
+   "prompt_tokens": 6781,
+   "ttft_s": null,
+   "wall_s": 5.2,
+   "prefill_tok_s": null,
+   "gen_tok_s": null,
+   "recall_ok": false,
+   "answer": "",
+   "mem_after": "head=3G worker=12G",
+   "error": null
+  },
+  {
+   "rung": 65536,
+   "prompt_tokens": 64949,
+   "ttft_s": 4.79,
+   "wall_s": 5.1,
+   "prefill_tok_s": 13565.5,
+   "gen_tok_s": 251.92,
+   "recall_ok": true,
+   "answer": "AURORA-7431",
+   "mem_after": "head=3G worker=12G",
+   "error": null
+  },
+  {
+   "rung": 131072,
+   "prompt_tokens": 131015,
+   "ttft_s": null,
+   "wall_s": 10.1,
+   "prefill_tok_s": null,
+   "gen_tok_s": null,
+   "recall_ok": false,
+   "answer": "",
+   "mem_after": "head=3G worker=12G",
+   "error": null
+  },
+  {
+   "rung": 184320,
+   "prompt_tokens": 184299,
+   "ttft_s": null,
+   "wall_s": 12.2,
+   "prefill_tok_s": null,
+   "gen_tok_s": null,
+   "recall_ok": false,
+   "answer": "",
+   "mem_after": "head=3G worker=12G",
+   "error": null
+  }
+ ]
+}

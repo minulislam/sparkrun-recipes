@@ -14,7 +14,11 @@ defaults:
   host: 0.0.0.0
   tensor_parallel: 2
   pipeline_parallel: 1
-  gpu_memory_utilization: 0.85
+  # MEASURED 2026-09-29: 0.85 sits at the edge of the head's unified pool — rank 0 aborted with
+  # "Free memory on device cuda:0 (102.81/121.69 GiB) < desired (0.85=103.43 GiB)" on a launch
+  # where only 102.81 GiB was free at profiler time. 0.82 (99.8 GiB) clears it with margin and
+  # still leaves ~23 GiB KV (0.85 measured 26.57 GiB), ample for the 184k-token rung.
+  gpu_memory_utilization: 0.82
   max_model_len: 196608
   # LOCAL ADDITION 2026-09-29: bound the per-chunk prefill transient for full-context runs.
   # Unbounded chunked prefill at depth is the measured node-killer on this pair (DeepSeek coder
@@ -41,6 +45,14 @@ env:
   # bulk transfers stay on NCCL_IB_HCA (RoCE, IPv6 link-local GIDs work).
   NCCL_SOCKET_IFNAME: "enP7s7"
   NCCL_DEBUG: "WARN"
+  # MEASURED 2026-09-29 (attempt 6, GID tables read from sysfs): the head's rocep1s0f1 has an
+  # extra IPv6-LL GID pair, so its IPv4 RoCEv2 GID is at index 5 while the worker's is at
+  # index 3. NCCL auto-selection pairs by index -> IPv6-LL vs IPv4 mismatch ->
+  # "ibv_modify_qp failed with 22". Forcing family (not index) lets each node pick its own
+  # IPv4 v2 GID. This is also why inkling's fixed GID_INDEX=3 works on the worker-style
+  # table but would break the head.
+  NCCL_IB_ADDR_FAMILY: "AF_INET"
+  NCCL_IB_ROCE_VERSION_NUM: "2"
   # MEASURED 2026-09-29 (attempts 3-5): while the head's f1 IPv4 is missing, the RDMA data
   # path is unfixable in software — RoCEv2 QP setup fails on BOTH nodes ("ibv_modify_qp
   # failed with 22 Invalid argument": no IPv4 GID on the head, IPv4-vs-IPv6-LL pairing
@@ -61,6 +73,7 @@ command: |
     -pp {pipeline_parallel} \
     --max-model-len {max_model_len} \
     --max-num-batched-tokens {max_num_batched_tokens} \
+    --no-enable-flashinfer-autotune \
     --load-format {load_format} \
     --enable-auto-tool-choice \
     --tool-call-parser {tool_call_parser} \
