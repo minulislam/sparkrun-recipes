@@ -16,12 +16,42 @@ defaults:
   pipeline_parallel: 1
   gpu_memory_utilization: 0.85
   max_model_len: 196608
+  # LOCAL ADDITION 2026-09-29: bound the per-chunk prefill transient for full-context runs.
+  # Unbounded chunked prefill at depth is the measured node-killer on this pair (DeepSeek coder
+  # livelocked the worker twice at 8192; 2048 is the value two recipes verified clean with).
+  max_num_batched_tokens: 2048
   load_format: instanttensor
   tool_call_parser: minimax_m2
   reasoning_parser: minimax_m2
 
 env:
   VLLM_MARLIN_USE_ATOMIC_ADD: "1"
+  # LOCAL ADDITION 2026-09-29 (MEASURED): worker rank died at init with
+  # "gloo/transport/tcp/device.cc:285 ss1.ss_family == ss2.ss_family. 2 vs 10" — the cluster
+  # yaml pins GLOO/TP to enp1s0f1np1, but the HEAD's f1 ports are ipv4.method=auto with no
+  # DHCP on the link, so their IPv4 vanishes on link events (worker's is static 10.99.10.11
+  # -> family mismatch, IPv4 vs IPv6). enP7s7 = 10.10.20.x mgmt NIC, static IPv4 on BOTH
+  # nodes and already the torch rendezvous interface. Control-plane only; NCCL data stays on
+  # the RoCE HCA pins. Root fix for the operator: make the head's f1 ports static.
+  GLOO_SOCKET_IFNAME: "enP7s7"
+  TP_SOCKET_IFNAME: "enP7s7"
+  # Same missing-IPv4 root cause one layer deeper (captured attempt 2): head rank dies at
+  # ncclGetUniqueId with "NCCL error: invalid usage" because the cluster's
+  # NCCL_SOCKET_IFNAME (f1 ports) has no IPv4 on the head. Bootstrap/OOB only —
+  # bulk transfers stay on NCCL_IB_HCA (RoCE, IPv6 link-local GIDs work).
+  NCCL_SOCKET_IFNAME: "enP7s7"
+  NCCL_DEBUG: "WARN"
+  # MEASURED 2026-09-29 (attempts 3-5): while the head's f1 IPv4 is missing, the RDMA data
+  # path is unfixable in software — RoCEv2 QP setup fails on BOTH nodes ("ibv_modify_qp
+  # failed with 22 Invalid argument": no IPv4 GID on the head, IPv4-vs-IPv6-LL pairing
+  # invalid) and TCP fallback is impossible because this image's NCCL routes all transport
+  # init through its net plugin ("Failed to initialize any NET plugin" with NCCL_IB_DISABLE=1,
+  # with or without NCCL_NET_PLUGIN=none). BLOCKED until the operator makes the head's f1
+  # ports static (mirror the worker):
+  #   sudo nmcli con modify "Wired connection 5" ipv4.method manual ipv4.addresses 10.99.10.10/24 && sudo nmcli con up "Wired connection 5"
+  #   sudo nmcli con modify "Wired connection 4" ipv4.method manual ipv4.addresses 10.99.11.10/24 && sudo nmcli con up "Wired connection 4"
+  # The three bootstrap pins above stay: they are correct either way and make rendezvous
+  # immune to future f1 IPv4 loss.
 
 command: |
   vllm serve {model} \
@@ -30,6 +60,7 @@ command: |
     -tp {tensor_parallel} \
     -pp {pipeline_parallel} \
     --max-model-len {max_model_len} \
+    --max-num-batched-tokens {max_num_batched_tokens} \
     --load-format {load_format} \
     --enable-auto-tool-choice \
     --tool-call-parser {tool_call_parser} \
