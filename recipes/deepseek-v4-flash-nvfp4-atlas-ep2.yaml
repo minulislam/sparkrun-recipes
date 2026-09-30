@@ -1,0 +1,57 @@
+# >>> LOCAL COPY of @atlas/deepseek-v4-flash-nvfp4-ep2 (Atlas-Inf/sparkrun-recipes, fetched 2026-10-01).
+# >>> Closes a gap from commit 379aa6f: nvidia/DeepSeek-V4-Flash-NVFP4 had weights on this pair but no
+# >>> recipe in any of the 8 registries as of 2026-09-27. Atlas published one since.
+# >>>
+# >>> LOCAL CHANGES (two, both to match this repo's conventions — engine settings untouched):
+# >>>   1. container pinned from azeezish/atlas-gb10:latest to ghcr.io/atlas-inf/atlas-gb10:sha-bdcccc2 —
+# >>>      the same immutable Atlas tag row 49 uses, present on BOTH nodes (commit 476f388 rule).
+# >>>   2. expert_parallel: 2 added. sparkrun's fit planner derives ranks from tensor_parallel and
+# >>>      expert_parallel, NOT from Atlas's ep_size; without it the recipe plans as ONE ~153 GB rank
+# >>>      and fails the GB10 cap. Same fix as row 49. Run it on the dgx-pair-ep cluster:
+# >>>        sparkrun run ./recipes/deepseek-v4-flash-nvfp4-atlas-ep2.yaml --cluster dgx-pair-ep
+# >>>      Do NOT pass --tp 2: DeepSeek-V4 is MQA (num_key_value_heads=1), so TP>1 is impossible.
+# >>>
+# >>> NOT YET RUNNABLE ON THIS PAIR: the ~153 GB checkpoint is on the HEAD ONLY. This is a 2-node
+# >>> EP recipe, so the worker needs the weights first (worker had 1.6 TB free on 2026-10-01).
+# >>> When syncing, hardlink the HF blobs — sparkrun 0.3.10's self-rsync destroys symlinked blobs.
+# >>> UNBENCHMARKED here. Atlas reports ~15.5 tok/s decode, all-reduce bound over RoCE.
+recipe_version: "2"
+model: nvidia/DeepSeek-V4-Flash-NVFP4
+runtime: atlas
+container: ghcr.io/atlas-inf/atlas-gb10:sha-bdcccc2  # pinned from azeezish/atlas-gb10:latest 2026-10-01 — on disk both nodes
+min_nodes: 2
+max_nodes: 2
+
+metadata:
+  description: |
+    DeepSeek-V4-Flash (NVFP4) served with pure expert parallelism across two
+    GB10 nodes over NCCL/RoCEv2. This model REQUIRES EP=2: the quantized
+    checkpoint is ~153 GB, larger than a single GB10's 119.7 GB, so a
+    single-node launch OOMs. It also cannot use tensor parallelism —
+    DeepSeek-V4 has num_key_value_heads=1 (MQA), so TP>1 is impossible and
+    the topology is fixed at tensor_parallel=1, ep_size=2.
+
+    KV cache is FP8: the MLA decode kernel's V=K rope reconstruction and
+    attention sink are only implemented on the FP8 path. CUDA graphs are
+    disabled under EP on GB10 (RoCE replay deadlocks) — Atlas defaults
+    ATLAS_EP_GRAPHS=0, so no override is needed here. --speculative is OFF:
+    the public checkpoint ships no usable MTP draft weights.
+  maintainer: atlas-inf (upstream); spark-forge local copy
+  category: agent
+  model_params: 280B
+  model_dtype: nvfp4
+  quantization: nvfp4
+  kv_dtype: fp8
+
+defaults:
+  port: 8888
+  host: 0.0.0.0
+  tensor_parallel: 1
+  expert_parallel: 2
+  ep_size: 2
+  max_model_len: 32768
+  max_batch_size: 1
+  kv_cache_dtype: fp8
+  gpu_memory_utilization: 0.90
+  enable_prefix_caching: true
+  oom_guard_mb: 512

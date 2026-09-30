@@ -93,6 +93,8 @@ image-provided serve script and a weight-coalescing pre-step — port it as a pr
 | 53 | `glm-4.7-flash-awq-tp1.yaml` | cyankiwi/GLM-4.7-Flash-AWQ-4bit | vLLM | 1 | AWQ4 | 202k | NEW 2026-09-27, copy of `@experimental/glm-4.7-flash-awq-vllm`. eugr's header warns the vLLM path is suboptimal (~40 tok/s expected, MLA patch no longer applies). **VERIFIED 2026-09-27**: 42.2 tok/s c=1, 110 aggregate 8-way, 17.7 GiB load — prediction matched |
 | 54 | `nemotron-3-nano-30b-nvfp4-tp1.yaml` | nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4 | vLLM | 1 | NVFP4 | 262k | NEW 2026-09-27, copy of `@experimental/nemotron-3-nano-nvfp4-vllm`. Upstream marks it single-node only. **VERIFIED 2026-09-27**: 58.4 tok/s c=1 / 154.6 aggregate 8-way, flat to 32k, 18.9M-token mamba KV (72×) — fastest single-node lane after heretic-35B; the `mods:` plugin launched fine from the registry |
 | 56 | `nemotron-3-super-120b-nvfp4-tp2.yaml` | nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4 | vLLM | 2 (TP2) | NVFP4 | 262k | NEW 2026-09-27, copy of `@experimental/nemotron-3-super-nvfp4-vllm` (TRITON_ATTN, fp8 KV, mamba cache fp32, trtllm allreduce). **VERIFIED 2026-09-27**: 24.7 tok/s c=1 (community's ~24 reproduced), 40.6 aggregate 8-way, 16.3M-token KV (62×); note an odd c=1 dip to 16.4 at 8k depth (22.6 at 32k) |
+| 57 | `north-mini-code-1.0-nvfp4-tp1.yaml` | XanuNetworks/North-Mini-Code-1.0-NVFP4 | vLLM | 1 | NVFP4 | 262k | NEW 2026-10-01, local copy of `@community/north-mini-code-1.0-nvfp4-vllm-XanuNetworks`. Closes one of the six gaps logged in `379aa6f` (no registry carried this model on 2026-09-27; the community registry published one since). Cohere 30B / 3B-active MoE agentic coder, fp8 KV, `cohere_command4` tool + reasoning parsers. Container pinned to `:20260927`. Upstream `pre_exec` pip-installs `cohere_melody` at launch, so the run needs egress; the validator flags this as an inline-script suggestion and it is retained deliberately to stay faithful to the verified upstream recipe. Weights on head only, which is fine for a single-node recipe. **UNBENCHMARKED** |
+| 58 | `deepseek-v4-flash-nvfp4-atlas-ep2.yaml` | nvidia/DeepSeek-V4-Flash-NVFP4 | **Atlas** | 2 (EP=2) | NVFP4 | 32k | NEW 2026-10-01, local copy of `@atlas/deepseek-v4-flash-nvfp4-ep2`. Closes another `379aa6f` gap. EP=2 is mandatory: the ~153 GB checkpoint exceeds one GB10's 119.7 GB, and DeepSeek-V4 is MQA (`num_key_value_heads=1`) so TP>1 is impossible — do **not** pass `--tp 2`. Needs `--cluster dgx-pair-ep`; `expert_parallel: 2` added locally so sparkrun's fit planner sizes two ranks (same fix as row 49). Container pinned to `ghcr.io/atlas-inf/atlas-gb10:sha-bdcccc2`. **NOT YET RUNNABLE**: weights are on the head only — sync to the worker first, hardlinking the HF blobs (sparkrun 0.3.10 self-rsync destroys symlinked blobs). Atlas reports ~15.5 tok/s decode. **UNBENCHMARKED** |
 | 48 | `qwen3.8-flash-next-nvfp4-tp2.yaml` | local-inference-lab/Qwen3.8-Flash-Next-NVFP4 | vLLM | 2 | NVFP4 | **256k** (native) | **VERIFIED 2026-09-27** — local copy of `@eugr/qwen3.8-flash-next-nvfp4-cluster` with the safetensors loader (b12x needs io_uring, blocked by rootless seccomp) and a readiness block: 46–55 tok/s c=1, ~92 at 8-way flat to 32k depth, 2.5M KV tokens, 51.4 GiB/node, ready in 859 s cold |
 
 The orcarouter recipes (#41-46) are abliterated/uncensored builds, one per
@@ -155,6 +157,12 @@ Before launching, check each recipe's `container:` field:
 - All MiaAI-Lab recipes are **marked UNVERIFIED** — run `--dry-run` first, then launch and update the `>>>` header with your measured cluster facts.
 
 ## Open items
+
+- Still recipe-less in all 8 registries (re-checked 2026-10-01): `openai/gpt-oss-20b`,
+  `sakamakismile/Huihui-Qwen3.6-27B-abliterated-NVFP4-MTP`, `google/gemma-4-E4B-it`.
+  These need custom recipes written and a launch window to verify. The other three from
+  `379aa6f` are closed: North-Mini-Code and DeepSeek-V4-Flash-NVFP4 became rows 57-58,
+  and Ornith-1.0-35B was deleted from both nodes on 2026-09-29.
 
 - `step-3.7-flash-nvfp4-tp2-miaai` (row 38, stepfun-ai build) has never been booted;
   when testing, try eugr-style `max_model_len 262144` and 0.8 utilization. The

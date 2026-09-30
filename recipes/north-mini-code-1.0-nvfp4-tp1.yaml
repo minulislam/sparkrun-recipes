@@ -1,0 +1,59 @@
+# >>> LOCAL COPY of @community/north-mini-code-1.0-nvfp4-vllm-XanuNetworks
+# >>> (spark-arena/community-recipes, fetched 2026-10-01). Submitted upstream by @XanuNetworks.
+# >>> Closes a long-standing gap: XanuNetworks/North-Mini-Code-1.0-NVFP4 has had weights on the
+# >>> head since before 2026-09-27 but no recipe existed in any of the 8 registries at that time
+# >>> (see commit 379aa6f). The community registry published one since; this is that recipe with
+# >>> one local change only.
+# >>> LOCAL CHANGE: container pinned from :latest to :20260927 — the same immutable tag the rest of
+# >>> this repo uses (commit 476f388), already on disk on BOTH nodes, so no re-pull and no tag drift.
+# >>> UNBENCHMARKED here. Weights are on the head only; this is a single-node recipe so that is fine.
+# >>> NOTE: pre_exec pip-installs cohere_melody inside the container, so the launch needs egress.
+# >>> `sparkrun recipe validate` raises an inline-script suggestion for it. Retained deliberately:
+# >>> a local `mods/` dir is not resolvable from this repo (see row 54), and keeping upstream's
+# >>> verified pre_exec is safer than substituting an untested mod. Suggestion does not block launch.
+recipe_version: "2"
+model: XanuNetworks/North-Mini-Code-1.0-NVFP4
+runtime: vllm
+container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly:20260927  # pinned from :latest 2026-10-01 — build already on disk both nodes
+
+min_nodes: 1
+max_nodes: 1
+
+metadata:
+  description: "North Mini Code 1.0 NVFP4 (4-bit) — Cohere 30B / 3B-active MoE agentic coding model, single node. Local copy of the @community XanuNetworks recipe."
+  maintainer: "XanuNetworks (upstream); spark-forge local copy"
+  category: agent
+  model_params: 30B
+  model_dtype: nvfp4
+  quantization: compressed-tensors
+  quant_bits: 4
+
+defaults:
+  port: 8000
+  host: 0.0.0.0
+  tensor_parallel: 1
+  gpu_memory_utilization: 0.7
+  max_model_len: 262144
+  kv_cache_dtype: fp8
+  served_model_name: north-mini-code-nvfp4
+  tool_call_parser: cohere_command4
+  reasoning_parser: cohere_command4
+
+pre_exec:
+  - "python3 -m pip install cohere_melody"
+
+command: |
+  vllm serve \
+      {model} \
+      --served-model-name {served_model_name} \
+      --gpu-memory-utilization {gpu_memory_utilization} \
+      -tp {tensor_parallel} \
+      --host {host} \
+      --port {port} \
+      --max-model-len {max_model_len} \
+      --enable-auto-tool-choice \
+      --tool-call-parser {tool_call_parser} \
+      --reasoning-parser {reasoning_parser} \
+      --kv-cache-dtype {kv_cache_dtype} \
+      --enable-prefix-caching \
+      --trust-remote-code
