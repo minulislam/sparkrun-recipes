@@ -31,7 +31,6 @@ All speed numbers below are **measured on this cluster** (2026-07-18 baseline +
 | 7 | `qwen36-27b-aeon-colocate.yaml` | same, 0.40 GPU co-location profile | ~30 GiB | 8.8 (fleet 2026-09-27) | 56.0 (→ **5.9** at 32k depth) | text + vision | shares 1 node | Second endpoint beside #2 (port 8001); interactive/short-context only — the 0.40 KV pool collapses at 8-way × 32k (TTFR 117 s) |
 | 8 | `gemma4-31b-deckard-heretic-nvfp4.yaml` | Gemma-4-31B DECKARD NVFP4_AWQ + DFlash k=15 | 22.5 GiB | 31.3 | 114 | text + vision | 1 node | Quality-critical dense (dedicated container, vLLM 0.20.1) |
 | 9 | `gemma4-12b-k4-nvfp4-fp8.yaml` | Gemma-4-12B K4 NVFP4-FP8 | 9.1 GiB | 21.7 | 162 | text + vision | 1 node | Smallest footprint; leaves room for a neighbor |
-| 10 | `step37-flash-aeon-abliterated-nvfp4-tp2.yaml` | Step-3.7-Flash abliterated NVFP4 (198B MoE) | 58.4 GiB/node, 160 s | **serves garbage** | — | text + vision | **2 nodes TP=2** | TP=2 boots (ready in 331 s, 1.74M KV tokens) but fails llama-benchy's coherence gate with CJK noise (fleet 2026-09-27); do not use until the quant/backend is fixed. 2026-09-28: retried as "variant A" (`VLLM_USE_FLASHINFER_MOE_FP4=0` + `VLLM_NVFP4_GEMM_BACKEND=cutlass`, prefix caching off) — still **no completed cells** (empty results table, "schedule did not complete"). Variant A did NOT produce a passing benchmark; the combined fix is unconfirmed (flags were not bisected). Still garbage-suspect. **2026-09-29 CONFIRMED still garbage**: after the head RoCE/GID fix + util 0.82, variant A serves cleanly (ready ~5min, zero comm errors) but a plain "name three primary colors" prompt returns incoherent noise (`" order  8  3 "`, finish=length). The FlashInfer-FP4-off + cutlass path does NOT fix it — the quant/backend problem is deeper. Do not use |
 | 11 | `gemma4-26b-stock-vllm.yaml` | Gemma-26B on stock vLLM image | — | untested | — | text + vision | 1 node | No-DFlash fallback for #2 |
 
 ## MiaAI-Lab Recipes (ported from https://github.com/MiaAI-Lab)
@@ -81,7 +80,6 @@ image-provided serve script and a weight-coalescing pre-step — port it as a pr
 | # | Recipe file | Model | Runtime | Nodes | Quant | Context | Notes |
 |---|---|---|---|---|---|---|---|
 | 39 | `qwen38-27b-nvfp4-refusal-dial.yaml` | unsloth/Qwen3.8-27B-NVFP4 | vLLM | 1 | NVFP4 | 64k | Runtime rank-1 refusal projection; needs `pocharlies/vllm-qwen38-rank1` image; port 8101. **MEASURED 2026-09-27**: 19.5 tok/s c=1, 47.4 at 8-way, but only 180k KV tokens — 8-way × 32k collapses to 3.8 tok/s (TTFR 169 s) |
-| 40 | `minimax-m3-v0-nvfp4-reap25.yaml` | sparkarena/Minimax-M3-v0-NVFP4-REAP25 | SGLang | 2 | NVFP4 | 32k | REAP25-pruned MiniMax-M3; weights (187 GB) staged on both nodes. 2026-09-27: image now referenced by tag (digest pins never resolve on the worker after save/load); both ranks pass NCCL init then hang silently — **open**. 2026-09-28: retried with the inkling fabric pins (`NCCL_IB_HCA`/GID/ROCE etc.) in the recipe `env:` — **still FAILS**, rank-0 `TimeoutError: port` after 1847 s, port never opens. The pins did not resolve the TP2 hang. **2026-09-29 UPDATE**: after the head RoCE/GID root-cause fix, the old silent NCCL hang is **GONE** (zero comm errors on retry). New blocker: SGLang rank-0 scheduler dies during init (exit -15/SIGTERM, not OOM) — a scheduler-init issue to chase next, no longer a comm problem. See `benchmarks/FLEET-2026-09-27.md` §7-9 |
 | 41 | `qwen3.8-27b-uncensored-nvfp4-tp1.yaml` | orcarouter/Qwen3.8-27B-Uncensored-NVFP4 | vLLM | 1 | NVFP4 | 256k | Abliterated Qwen3.8-27B (25 GB); gated repo; UNVERIFIED |
 | 42 | `nex-n2.5-mini-uncensored-nvfp4-tp1.yaml` | orcarouter/Nex-N2.5-mini-Uncensored-NVFP4 | vLLM | 1 | NVFP4 | 256k | Abliterated Nex-N2.5 mini MoE (24 GB), vision; gated repo; UNVERIFIED |
 | 43 | `deepseek-v4-flash-vision-uncensored-tp2.yaml` | orcarouter/DeepSeek-V4-Flash-Vision-Uncensored | vLLM | 2 | FP4+FP8 | **1M** | **VERIFIED 2026-09-26** — eugr b12x image (the anemll one cannot load the vision tower), fp8 KV mandatory, safetensors loader; ~57 tok/s; needs the pair to itself (a 33 GB co-tenant silently collapses the context to 576 tokens) |
@@ -94,7 +92,6 @@ image-provided serve script and a weight-coalescing pre-step — port it as a pr
 | 52 | `qwen3.8-27b-fp8-mtp-tp1.yaml` | Qwen/Qwen3.8-27B-FP8 | vLLM | 1 | FP8 | 262k | NEW 2026-09-27, copy of `@official/qwen3.8-27b-fp8-mtp-vllm` (MTP spec 3, fp8 KV, FlashInfer). Native-FP8 sibling of rows 39-42. **VERIFIED 2026-09-27**: 12.3 tok/s c=1 (flat to 32k), 73.4 aggregate 8-way — 30 % better batch lane than the NVFP4 build, same c=1 |
 | 53 | `glm-4.7-flash-awq-tp1.yaml` | cyankiwi/GLM-4.7-Flash-AWQ-4bit | vLLM | 1 | AWQ4 | 202k | NEW 2026-09-27, copy of `@experimental/glm-4.7-flash-awq-vllm`. eugr's header warns the vLLM path is suboptimal (~40 tok/s expected, MLA patch no longer applies). **VERIFIED 2026-09-27**: 42.2 tok/s c=1, 110 aggregate 8-way, 17.7 GiB load — prediction matched |
 | 54 | `nemotron-3-nano-30b-nvfp4-tp1.yaml` | nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4 | vLLM | 1 | NVFP4 | 262k | NEW 2026-09-27, copy of `@experimental/nemotron-3-nano-nvfp4-vllm`. Upstream marks it single-node only. **VERIFIED 2026-09-27**: 58.4 tok/s c=1 / 154.6 aggregate 8-way, flat to 32k, 18.9M-token mamba KV (72×) — fastest single-node lane after heretic-35B; the `mods:` plugin launched fine from the registry |
-| 55 | `gpt-oss-120b-mxfp4-tp1.yaml` | openai/gpt-oss-120b | vLLM | 1 | MXFP4 | default | NEW 2026-09-27, copy of `@experimental/openai-gpt-oss-120b-vllm` (CUTLASS MXFP4 + FlashInfer, fp8 KV). Community: 26-59 tok/s on one Spark; ~40 GiB host-RAM spike during load. **Pass-8 attempt FAILED 2026-09-27**: head container died in startup (~58 min incl. first image pull), log lost to auto-rm — rerun with `--no-rm` (FLEET §5) |
 | 56 | `nemotron-3-super-120b-nvfp4-tp2.yaml` | nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4 | vLLM | 2 (TP2) | NVFP4 | 262k | NEW 2026-09-27, copy of `@experimental/nemotron-3-super-nvfp4-vllm` (TRITON_ATTN, fp8 KV, mamba cache fp32, trtllm allreduce). **VERIFIED 2026-09-27**: 24.7 tok/s c=1 (community's ~24 reproduced), 40.6 aggregate 8-way, 16.3M-token KV (62×); note an odd c=1 dip to 16.4 at 8k depth (22.6 at 32k) |
 | 48 | `qwen3.8-flash-next-nvfp4-tp2.yaml` | local-inference-lab/Qwen3.8-Flash-Next-NVFP4 | vLLM | 2 | NVFP4 | **256k** (native) | **VERIFIED 2026-09-27** — local copy of `@eugr/qwen3.8-flash-next-nvfp4-cluster` with the safetensors loader (b12x needs io_uring, blocked by rootless seccomp) and a readiness block: 46–55 tok/s c=1, ~92 at 8-way flat to 32k depth, 2.5M KV tokens, 51.4 GiB/node, ready in 859 s cold |
 
@@ -124,7 +121,7 @@ By registry name (after `sparkrun registry update spark-forge`):
 
 - **Spark A (head):** `diffusiongemma` (interactive) or `qwen36-27b` (flagship quality)
 - **Spark B (worker):** `nemotron3-omni` or `qwen36-35b-…-batch` (fleet lane) — `--hosts 10.10.20.11`
-- **Or** both nodes → `step37` TP=2 (once validated)
+- **Or** both nodes → `minimax-m2.7-nvfp4-vllm-tp2` TP=2 (verified 2026-09-29 at full 196k context)
 
 ## Conventions (all live-verified)
 
@@ -159,8 +156,9 @@ Before launching, check each recipe's `container:` field:
 
 ## Open items
 
-- Step-3.7 TP=2 first boot (worker currently occupied by a long-running job);
-  when testing, try eugr-style `max_model_len 262144` and 0.8 utilization.
+- `step-3.7-flash-nvfp4-tp2-miaai` (row 38, stepfun-ai build) has never been booted;
+  when testing, try eugr-style `max_model_len 262144` and 0.8 utilization. The
+  AEON-abliterated Step-3.7 build was removed 2026-10-01 (incoherent output).
 - DiffusionGemma thinking toggle (`--default-chat-template-kwargs`) and
   `--diffusion-config canvas_length` experiments (adopted from eugr — see the
   compare report).

@@ -62,7 +62,7 @@ sparkrun run ./recipes/deepseek-v4-flash-tp2.yaml --cluster default --tp 2 --dry
 sparkrun run ./recipes/qwen3.8-27b-nvfp4-tp1-sglang.yaml --cluster default --tp 1 --dry-run
 ```
 
-Full details for all 45 recipes are in [`INDEX.md`](INDEX.md).
+Full details for all 51 recipes are in [`INDEX.md`](INDEX.md).
 
 ### Two-node layout
 
@@ -70,7 +70,7 @@ Independent replicas beat TP=2 on GB10 for anything that fits on one node:
 
 - **Spark A (head):** `diffusiongemma` (interactive) or `qwen36-27b` (flagship quality)
 - **Spark B (worker):** `nemotron3-omni` or `qwen36-35b-…-batch` (fleet lane) — `--hosts 10.10.20.11`
-- **Or**, for the one model too large for a single node: both nodes → `step37` TP=2 (unvalidated)
+- **Or**, for a model too large for a single node: both nodes → `minimax-m2.7-nvfp4-vllm-tp2` TP=2 (verified 2026-09-29 at full 196k context)
 
 #### MiaAI-Lab multi-node recipes
 
