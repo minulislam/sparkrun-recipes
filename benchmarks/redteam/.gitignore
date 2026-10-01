@@ -1,0 +1,4 @@
+# Raw model generations from the refusal eval stay local. The scorecard is the
+# artifact worth versioning; a corpus of harmful completions is not.
+*.jsonl
+results/

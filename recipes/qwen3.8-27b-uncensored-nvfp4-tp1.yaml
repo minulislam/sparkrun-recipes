@@ -1,22 +1,36 @@
-# >>> UNVERIFIED on this cluster — source: https://huggingface.co/orcarouter/Qwen3.8-27B-Uncensored-NVFP4
-# >>> GATED — the HF account behind the token must have accepted the repo gate (see INDEX.md, orcarouter note).
-# >>> Serve flags mirror @official/qwen3.8-27b-fp8-mtp-vllm (instanttensor load, fp8 KV, flashinfer,
-# >>>   native MTP x3) on the eugr b12x nightly cached on both nodes. If the abliterated checkpoint
-# >>>   lacks MTP heads, remove --speculative-config from the command.
-# >>> Fit: ~25 GB weights on one GB10; 0.82 leaves ~74 GB for KV (GB10 convention — see README).
+# >>> PREPPED FOR FIRST BOOT 2026-10-01 — source: https://huggingface.co/orcarouter/Qwen3.8-27B-Uncensored-NVFP4
+# >>> GATED (gate=auto) — the HF account behind the token must have accepted the repo gate.
+# >>> Serve flags mirror @official/qwen3.8-27b-fp8-mtp-vllm, which is VERIFIED here as row 52.
+# >>>
+# >>> THREE CHANGES made 2026-10-01 before the first launch, each from evidence already in this repo:
+# >>>   1. container b12x:20260926 -> dgx-vllm-eugr-nightly:20260927. `load_format: instanttensor`
+# >>>      is verified on this pair ONLY on the non-b12x nightly (rows 50 and 52). The b12x loader
+# >>>      needs io_uring, which rootless Docker's seccomp forbids here — that is precisely why
+# >>>      row 48 had to switch to `load_format: safetensors` (FLEET-2026-09-27 §5). The original
+# >>>      b12x + instanttensor pairing was the one combination known to fail. The standard nightly
+# >>>      is also the image the verified same-family sibling (row 52) uses. Both already on disk.
+# >>>   2. gpu_memory_utilization 0.82 -> 0.80, matching row 52 exactly rather than guessing.
+# >>>   3. REMOVED --speculative-config (was MTP x3). The checkpoint's config.json declares NO
+# >>>      `num_nextn_predict_layers` and ships no mtp/draft/eagle weights, so there are no MTP
+# >>>      heads to wire. The original banner flagged this as the thing to check; it is now checked.
+# >>>
+# >>> MODEL FACTS from the downloaded config.json: model_type qwen3_5,
+# >>> Qwen3_5ForConditionalGeneration, TEXT + VISION, 64 layers, 262,144 native context,
+# >>> NVFP4 weights. 24.7 GB over 6 safetensors shards.
+# >>> Fit: ~25 GB weights on one GB10; 0.80 leaves ample KV (GB10 convention — see README).
 
 recipe_version: "2"
 model: orcarouter/Qwen3.8-27B-Uncensored-NVFP4
 model_revision: 69d21348b2d6c11439fb69368f40414c2256e44e   # HF commit as of 2026-08-27
 runtime: vllm
-container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly-b12x:20260926  # pinned from :latest 2026-09-28 — build already on disk (upstream latest moved past it)
+container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly:20260927  # switched off b12x 2026-10-01: instanttensor needs the non-b12x loader here
 min_nodes: 1
 max_nodes: 1
 
 metadata:
   description: >-
     Qwen3.8 27B uncensored/abliterated (orcarouter), NVFP4, vision-capable.
-    Single DGX Spark, native MTP speculative decoding.
+    Single DGX Spark. No speculative decoding: the checkpoint declares no MTP heads.
   maintainer: orcarouter (model) — recipe adapted for sparkrun
   model_params: 27B
   model_dtype: nvfp4
@@ -31,7 +45,7 @@ defaults:
   host: 0.0.0.0
   port: 8000
   tensor_parallel: 1
-  gpu_memory_utilization: 0.82
+  gpu_memory_utilization: 0.80
   max_model_len: 262144
   max_num_batched_tokens: 16384
   load_format: instanttensor
@@ -40,7 +54,6 @@ defaults:
   tool_call_parser: qwen3_coder
   reasoning_parser: qwen3
   mm_encoder_tp_mode: data
-  speculative_config: '{"method": "mtp", "num_speculative_tokens": 3}'
   served_model_name: qwen3.8-27b-uncensored
 
 command: |
@@ -57,7 +70,6 @@ command: |
     --load-format {load_format} \
     --attention-backend {attention_backend} \
     --mm-encoder-tp-mode {mm_encoder_tp_mode} \
-    --speculative-config '{speculative_config}' \
     --enable-auto-tool-choice \
     --tool-call-parser {tool_call_parser} \
     --reasoning-parser {reasoning_parser} \
