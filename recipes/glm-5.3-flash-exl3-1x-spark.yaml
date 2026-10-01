@@ -1,0 +1,88 @@
+# >>> NOTED FROM UPSTREAM 2026-10-02, NOT YET RUNNABLE — read this before launching.
+# >>> Source: 0xSero's GLM-5.3-Flash-EXL3-1x-DGX-Spark repo, recipe supplied by the operator.
+# >>> Translated into this repo's schema; the upstream snippet will NOT load in sparkrun as written.
+# >>>
+# >>> WHAT WAS WRONG WITH THE UPSTREAM SNIPPET (all checked, not assumed):
+# >>>   1. `schema_version: "2"` -> sparkrun uses `recipe_version: "2"`. All 53 recipes here do.
+# >>>   2. Nested `runtime: {framework, container}` and a `config:` block -> this schema wants
+# >>>      top-level `runtime:`, `container:`, and `defaults:`. Rewritten accordingly.
+# >>>   3. `container: ghcr.io/miaai-lab/sglang-exl3:latest` DOES NOT EXIST — ghcr returns 403 for
+# >>>      that repo, so it is not merely private, it is not published. It is also a floating
+# >>>      `:latest`, which this repo's IMAGE-POLICY.md forbids. Left UNRESOLVED below rather than
+# >>>      guessed: a recipe with a wrong container is worse than one that refuses to start, and a
+# >>>      recipe with NO container silently validates clean (that is how row 38 sat dead for weeks).
+# >>>   4. `sparkrun run ... --solo` -> `--solo` is deprecated; use `--tp 1`.
+# >>>   5. `sparkrun bench` -> the subcommand is `sparkrun benchmark`.
+# >>>
+# >>> VERIFIED TRUE: the model repo `0xSero/GLM-5.3-Flash-EXL3-Spark` exists, is public, and is
+# >>> 96.1 GB over 27 files — so upstream's `model_vram: 96.1` is the real download size. NOT on
+# >>> disk here; it is a fresh 96 GB pull.
+# >>>
+# >>> METADATA THAT DOES NOT RECONCILE: upstream says 48B params at EXL3 2.0bpw, but 2 bits x 48B
+# >>> is ~12 GB, not 96.1 GB. 96.1 GB at 2.0bpw implies ~384B total params, so "48B" is most likely
+# >>> ACTIVE params of a MoE. Recorded as-is with this caveat rather than silently corrected.
+# >>>
+# >>> UTILIZATION IS A REAL TRADEOFF, NOT AN UPSTREAM MISTAKE. Measured with `sparkrun recipe vram`:
+# >>>   util 0.85 -> 102.8 GiB budget, 6.8 GiB left for KV = 157,286 max context tokens.
+# >>>              The planner WARNS: 262,144 does not fit, only 60% of it.
+# >>>   util 0.95 -> 18.8 GiB for KV = 439,236 max context tokens, so the advertised 262,144 fits
+# >>>              with 1.7x headroom. MEASURED, not estimated.
+# >>> So 0.95 is REQUIRED for the headline 262k feature; it is not padding. Kept at upstream's 0.95
+# >>> for that reason, but understand the risk: margin history on this pair is unforgiving — step37
+# >>> aborted pre-load at 0.88 (free 106.29 < 107.09 GiB) and 0.82 is the value two TP2 recipes
+# >>> verified clean. 0.95 with 96 GiB of weights leaves very little headroom for a co-tenant or a
+# >>> profiler spike. If it aborts at load, drop to 0.85 and accept ~157k context.
+# >>> Two planner warnings still apply: the MLA estimate counts only the compressed latent cache,
+# >>> excluding the RoPE tail and the sparse-indexer cache, so the real KV need is HIGHER than the
+# >>> 11.25 GiB modelled. The 1.7x headroom at 262k should absorb that, but read the achieved
+# >>> max_model_len back from the server on first launch rather than trusting this.
+# >>>
+# >>> Compare row 32 (`glm-5.3-flash-exl3-tp2.yaml`), which is the TWO-node EXL3 route whose weights
+# >>> ARE on disk (88.4 GB) and whose image is pullable. If you want GLM-5.3 EXL3 working today,
+# >>> that is the cheaper path; this file is the single-node alternative.
+# >>> STATUS: UNVERIFIED, never launched, container unresolved.
+recipe_version: "2"
+model: 0xSero/GLM-5.3-Flash-EXL3-Spark
+runtime: sglang
+# container: UNRESOLVED — upstream's ghcr.io/miaai-lab/sglang-exl3:latest does not exist (403).
+#   Candidates to try, both pullable and already used by row 32:
+#     ghcr.io/miaai-lab/glm-5.3-flash-2x-dgx-sparks:exl3
+#     ghcr.io/miaai-lab/glm-5.3-flash-2x-dgx-sparks:exl3-instanttensor
+#   Both are built for the 2x-Spark layout, so neither is known to work at tp=1. Resolve with the
+#   publisher, pin an immutable tag, then delete this comment and set `container:` below.
+container: ghcr.io/miaai-lab/glm-5.3-flash-2x-dgx-sparks:exl3  # PROVISIONAL — see note above
+min_nodes: 1
+max_nodes: 1
+
+metadata:
+  description: >-
+    GLM-5.3-Flash EXL3 on a single DGX Spark, 262k context, native MTP.
+    Upstream recipe by 0xSero; translated and annotated for this cluster.
+  maintainer: 0xSero (upstream); spark-forge translation
+  model_params: 48B      # upstream figure; see banner — likely ACTIVE params, not total
+  model_dtype: int4   # EXL3 ~2bpw; 'exl3' is not a dtype sparkrun recognises
+  quantization: exl3
+  model_vram: 96.1       # verified: actual HF repo size
+
+env:
+  HF_HUB_ENABLE_HF_TRANSFER: "1"
+  SGLANG_ENABLE_CUDA_GRAPH: "1"
+
+defaults:
+  host: 0.0.0.0
+  port: 8000
+  tensor_parallel: 1
+  gpu_memory_utilization: 0.95   # upstream value, REQUIRED for 262k context — see banner
+  max_model_len: 262144
+  served_model_name: GLM-5.3-Flash-EXL3
+
+command: |
+  python3 -m sglang.launch_server \
+    --model-path {model} \
+    --served-model-name {served_model_name} \
+    --host {host} \
+    --port {port} \
+    --tp {tensor_parallel} \
+    --mem-fraction-static {gpu_memory_utilization} \
+    --context-length {max_model_len} \
+    --trust-remote-code
