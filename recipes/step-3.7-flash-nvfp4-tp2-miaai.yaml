@@ -30,7 +30,51 @@
 # >>> here, so watch per-rank memory on the first load.
 # >>>
 # >>> Verify no-MTP mode (this file) before touching upstream's MTP grafting path.
-# >>> STATUS: weights downloading 2026-10-01, never launched, UNBENCHMARKED.
+# >>>   5. executor_config.entrypoint: "" — the image bakes ENTRYPOINT ["vllm","serve"], which
+# >>>      eats sparkrun's appended command. First launch attempt died on this; same fix five
+# >>>      other recipes here already carry (commit 52d342d).
+# >>>
+# >>> ===========================================================================
+# >>> LAUNCHED AND MEASURED 2026-10-01 — first boot ever. Two findings, one good, one blocking.
+# >>>
+# >>> FINDING 1 — COHERENT. This build answers correctly. The exact prompt that returned
+# >>> `" order 8 3 "` noise on step37-flash-aeon-abliterated (confirmed garbage three times,
+# >>> 2026-09-27/28/29) answered properly here: "Name three primary colors" produced correct
+# >>> colour-theory prose, and "capital of France" returned Paris. So the garbage was a property
+# >>> of the AEON ABLITERATED QUANT, not of Step-3.7, not of NVFP4, and not of this pair. That
+# >>> retires the open question the AEON recipe left behind.
+# >>> It is a REASONING model: it emits chain-of-thought and closes with a bare `</think>` before
+# >>> the answer. No reasoning parser is set, so the thinking leaks into message.content —
+# >>> add `--reasoning-parser` before exposing this to clients.
+# >>>
+# >>> FINDING 2 — UNSTABLE AT TP=2, THE BLOCKER. The engine died after 2 requests / 196 generated
+# >>> tokens. Sequence: decode ran at ~10 tok/s, then throughput fell to 0 with 1 request still
+# >>> resident, then five rounds of `shm_broadcast: No available shared memory broadcast block
+# >>> found in 60 seconds`, then `TimeoutError: RPC call to sample_tokens timed out` ->
+# >>> `EngineDeadError`. The worker rank stopped answering the sampler RPC. The API server went
+# >>> fully dead (connection refused) while BOTH containers still reported "Up" — a wedged zombie
+# >>> that `sparkrun stop` cleared normally.
+# >>> This is the SAME failure class the AEON build hit ("worker shm-broadcast TimeoutError, hung
+# >>> collective"). So the earlier conclusion that "the AEON image's TP=2 path is broken" is too
+# >>> narrow: the official vllm/vllm-openai:stepfun37 image hangs the same way. The Step-3.7 TP=2
+# >>> path is broken on this pair, independent of the quant. Note the image is from 2026-05-28
+# >>> (vllm 0.1.dev16944+ge9c8946e7) and upstream publishes no newer stepfun37 tag.
+# >>> Mitigations already spent on the AEON build and NOT worth repeating blind: --enforce-eager,
+# >>> bf16 KV, NCCL forced to TCP sockets. All three still hung.
+# >>>
+# >>> MEASURED (head rank, util 0.80, max_model_len 65536):
+# >>>   weights 58.4 GiB/rank — identical to the AEON build's 58.4 GiB/node
+# >>>   weight load 164.4 s; model load 172.0 s; init engine 82.35 s (compile 30.85 s)
+# >>>   CUDA graphs captured fine: 15 s, 1.74 GiB (so graphs are NOT the problem)
+# >>>   KV cache 30.65 GiB = 2,395,878 tokens, 36.56x concurrency at 65,536
+# >>>   decode ~10 tok/s single stream before the hang
+# >>>   launch wall 342.5 s including the 129 GB worker weight sync over cx7
+# >>>
+# >>> STATUS: serves coherently, then wedges. DO NOT put this in a serving rotation. Next
+# >>> experiment, if anyone wants it: a newer vLLM against this checkpoint, since the hang is in
+# >>> the TP=2 sampler RPC and the image predates six months of fixes. Weights are on BOTH nodes
+# >>> now (129.2 GB, blobs hardlinked), so a retry costs only the boot.
+# >>> ===========================================================================
 # =============================================================================
 # sparkrun recipe — Step-3.7-Flash NVFP4   [MiaAI-Lab, no-MTP]
 # TWO NODES (TP=2 / 2 GPUs) on DGX Spark GB10.
@@ -40,6 +84,11 @@ recipe_version: "2"
 model: stepfun-ai/Step-3.7-Flash-NVFP4
 runtime: vllm
 container: vllm/vllm-openai:stepfun37  # base image of upstream's wrapper Dockerfile; pulled both nodes 2026-10-01
+# The image declares ENTRYPOINT ["vllm","serve"], which consumes the command sparkrun appends
+# instead of running it, so the workload never starts. Clearing it lets sparkrun run its own
+# composed `vllm serve` directly. MEASURED 2026-10-01: first launch failed on exactly this.
+executor_config:
+  entrypoint: ""
 min_nodes: 2
 max_nodes: 2
 

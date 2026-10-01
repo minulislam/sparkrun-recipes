@@ -68,7 +68,7 @@ All speed numbers below are **measured on this cluster** (2026-07-18 baseline +
 | 35 | `nemotron-3.5-lightning-30b-a3b-nvfp4-tp1-sglang.yaml` | nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4 | SGLang | 1 | NVFP4 | 256k | DSpark; RTX 5090/6000 PRO |
 | 36 | `qwen3.6-35b-a3b-nvfp4-unofficial-tp1.yaml` | unsloth/Qwen3.6-35B-A3B-NVFP4 | vLLM | 1 | NVFP4 | 256k | b12x linear attention recipe |
 | 37 | `qwen3.8-27b-nvfp4-tp1-alt.yaml` | RadixArk/Qwen3.8-27B-NVFP4 | vLLM | 1 | NVFP4 | 256k | RTX 5090 variant |
-| 38 | `step-3.7-flash-nvfp4-tp2-miaai.yaml` | stepfun-ai/Step-3.7-Flash-NVFP4 | vLLM | 2 | NVFP4 | — | Custom container; MTP grafting support |
+| 38 | `step-3.7-flash-nvfp4-tp2-miaai.yaml` | stepfun-ai/Step-3.7-Flash-NVFP4 | vLLM | 2 (TP2) | NVFP4 | 65k | **LAUNCHED 2026-10-01, first boot ever — COHERENT BUT WEDGES.** The recipe shipped with no `container:` at all, so it could never have run; sparkrun validates it anyway because the field is optional. Now pinned to `vllm/vllm-openai:stepfun37` (the base image of upstream's wrapper Dockerfile) with `executor_config.entrypoint: ""`, since the image bakes `ENTRYPOINT ["vllm","serve"]` and ate sparkrun's command on the first attempt. **Good news:** this build answers correctly — the exact prompt that returned `" order 8 3 "` noise on the AEON abliterated build (row 10, now removed) produced correct prose here, so the garbage was the AEON quant, NOT Step-3.7, NVFP4, or this pair. It is a reasoning model and leaks chain-of-thought into `content` with a bare `</think>`; set `--reasoning-parser` before exposing it. **Blocker:** the engine died after 2 requests / 196 generated tokens — decode ~10 tok/s, then 5x `shm_broadcast: no available block in 60s`, then `TimeoutError: RPC call to sample_tokens timed out` -> `EngineDeadError`, API server refusing connections while both containers still read "Up". Same failure class as the AEON build, so **the Step-3.7 TP=2 path is broken on this pair regardless of quant** — the earlier "AEON image is broken" conclusion was too narrow. CUDA graphs captured clean (15 s, 1.74 GiB), so graphs are not the cause; `--enforce-eager`, bf16 KV and NCCL-over-TCP were all already spent on the AEON build and all still hung. Measured: 58.4 GiB/rank (same as AEON), weight load 164.4 s, init engine 82.35 s, KV 30.65 GiB = 2,395,878 tokens (36.56x at 65k), launch wall 342.5 s including the 129 GB worker sync over cx7. Image is from 2026-05-28 (vllm 0.1.dev16944) and no newer `stepfun37` tag exists; a newer vLLM is the only untried lever. Weights now on BOTH nodes, blobs hardlinked, so a retry costs only the boot. **Do not put in a serving rotation** |
 
 Retired 2026-09-26: `deepseek-v4-flash-0731-tp1.yaml` (#31) declared `runtime: exllamav3`, which no
 sparkrun release knows, and had no container. Its upstream (MiaAI-Lab/DeepSeek-v4-Flash-One-DGX-Spark)
@@ -164,9 +164,14 @@ Before launching, check each recipe's `container:` field:
   `379aa6f` are closed: North-Mini-Code and DeepSeek-V4-Flash-NVFP4 became rows 57-58,
   and Ornith-1.0-35B was deleted from both nodes on 2026-09-29.
 
-- `step-3.7-flash-nvfp4-tp2-miaai` (row 38, stepfun-ai build) has never been booted;
-  when testing, try eugr-style `max_model_len 262144` and 0.8 utilization. The
-  AEON-abliterated Step-3.7 build was removed 2026-10-01 (incoherent output).
+- Step-3.7 TP=2 hangs on this pair for BOTH quants. Row 38 booted 2026-10-01 and
+  served coherent output, then wedged on a `sample_tokens` RPC timeout after 2
+  requests. Only untried lever is a newer vLLM than the 2026-05-28 `stepfun37`
+  image; `--enforce-eager`, bf16 KV and NCCL-over-TCP are already spent. Weights
+  are staged on both nodes, so a retry costs only the boot. 262144 context is
+  untested and pointless until the hang is fixed.
+- Row 38 needs a `--reasoning-parser` before it is exposed to clients: it emits
+  chain-of-thought into `message.content` and closes with a bare `</think>`.
 - DiffusionGemma thinking toggle (`--default-chat-template-kwargs`) and
   `--diffusion-config canvas_length` experiments (adopted from eugr — see the
   compare report).
