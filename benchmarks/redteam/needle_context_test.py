@@ -39,17 +39,22 @@ def chat(base, model, prompt, max_tokens, timeout):
     with urllib.request.urlopen(req, timeout=timeout) as r:
         d = json.load(r)
     el = time.time() - t0
-    txt = d["choices"][0]["message"]["content"]
+    msg = d["choices"][0]["message"]
+    # vLLM's reasoning parser can leave content None and put everything in
+    # `reasoning`, especially when max_tokens truncates mid-thought. Search both.
+    txt = msg.get("content") or ""
+    reasoning = msg.get("reasoning") or msg.get("reasoning_content") or ""
     if "</think>" in txt:
         txt = txt.split("</think>")[-1]
-    return txt.strip(), d.get("usage", {}), el, d["choices"][0].get("finish_reason")
+    return (txt.strip(), reasoning, d.get("usage", {}), el,
+            d["choices"][0].get("finish_reason"))
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--base", required=True); ap.add_argument("--model", required=True)
     ap.add_argument("--depths", default="2048,8192,32768,131072")
     ap.add_argument("--positions", default="0.1,0.5,0.9")
-    ap.add_argument("--max-tokens", type=int, default=256)
+    ap.add_argument("--max-tokens", type=int, default=512)
     ap.add_argument("--timeout", type=int, default=1800)
     ap.add_argument("--out", default="needle_records.jsonl")
     a = ap.parse_args()
@@ -64,12 +69,13 @@ def main():
             code = "".join(rng.choice("ABCDEFGHJKLMNPQRSTUVWXYZ23456789") for _ in range(8))
             prompt = build(d, p, bay, code) + "\n\n" + QUESTION.format(n=bay)
             try:
-                txt, usage, el, fin = chat(a.base, a.model, prompt, a.max_tokens, a.timeout)
-                hit = code.lower() in txt.lower()
+                txt, reasoning, usage, el, fin = chat(a.base, a.model, prompt, a.max_tokens, a.timeout)
+                hit = code.lower() in (txt + " " + reasoning).lower()
                 pt = usage.get("prompt_tokens", 0)
                 print(f"{d}\t{p}\t{'YES' if hit else 'no'}\t{pt}\t{el:.1f}\t{pt/el if el else 0:.0f}\t{fin}")
                 recs.append(dict(depth=d, pos=p, hit=hit, prompt_tokens=pt, wall_s=round(el,2),
-                                 finish=fin, expected=code, got=txt[:200]))
+                                 finish=fin, expected=code, got=txt[:200],
+                                 reasoning_chars=len(reasoning)))
             except Exception as e:
                 print(f"{d}\t{p}\tERR\t-\t-\t-\t{type(e).__name__}")
                 recs.append(dict(depth=d, pos=p, hit=None, error=f"{type(e).__name__}: {e}"))
