@@ -69,3 +69,18 @@ uncommitted local modifications.
 
 Pullability at audit time: 22 of 23 recipe images were local or pullable; the one
 exception is finding 1.
+
+## Implementation status (2026-10-01)
+
+| # | Finding | Status |
+|---|---|---|
+| 1 | row 13 image dead | **Documented, not patched.** Blocked on two counts, not one: the image was a local-only tag never published, AND `LibertAIDAI/GLM-5.3-Flash-NVFP4` is a 7.8 KB stub with no weights. The pullable MiaAI tags are all EXL3 builds, which serve row 32's quant, not this NVFP4 Ray build, so there is no like-for-like swap. Recipe now carries an UNRUNNABLE banner pointing at row 32. Fixing it properly needs an NVFP4-Ray image from the publisher plus a ~200 GB download. |
+| 2 | `sparkarena/spark-vllm-docker:mxfp4` on vLLM 0.1.dev from February | **Done.** Deleted. Unreferenced since the gpt-oss-120b recipe was dropped, and re-pullable from Docker Hub, so reversible. Docker layer sharing meant little disk came back. |
+| 3 | b12x line on untagged main | **Partly done.** `qwen3.8-27b-uncensored-nvfp4-tp1` moved to the non-b12x `:20260927` at vLLM 0.30.1rc1 and is now verified on it. Remaining b12x recipes need per-recipe testing, since some genuinely need the b12x loader. |
+| 4 | floating `:latest` tag | **Done.** `qwen3.6-35b-a3b-nvfp4-unofficial-tp1` now pins `ghcr.io/miaai-lab/mia-vllm-gb10-linear-b12x@sha256:19627342…`. The ghcr tag list confirms upstream publishes only `latest`, so a digest is the only immutable handle. Safe because the recipe is single-node, so sparkrun 0.3.10's digest-ship defect on workers does not apply. |
+| 5 | mirror vendor images into spark-arena | **BLOCKED — needs credentials.** `~/.docker/config.json` has auth for `nvcr.io` only; there is no GHCR push credential on this box, so nothing can be mirrored. Supply a GHCR token with `write:packages` for the target org and this becomes a scripted job. |
+
+### Note on reclaiming disk by deleting images
+Docker shares layers, so the sizes in `docker images` are not additive and
+deleting a 24 GB image often returns almost nothing. Measure with `df`, not with
+the image list.

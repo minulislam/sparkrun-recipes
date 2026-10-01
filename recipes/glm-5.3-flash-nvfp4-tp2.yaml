@@ -1,3 +1,15 @@
+# >>> UNRUNNABLE 2026-10-01 — BLOCKED ON TWO COUNTS, do not launch:
+# >>>   1. IMAGE DEAD: `mia/glm53-flash-spark:mm-ray-v1` is neither on disk nor pullable from any
+# >>>      registry. It was a local-only tag that was never published. The MiaAI-Lab GHCR repo
+# >>>      `ghcr.io/miaai-lab/glm-5.3-flash-2x-dgx-sparks` is pullable and carries tags
+# >>>      20260828-dflash2, exl3, exl3-e3-20260907, exl3-instanttensor, exl3-e3-20260907-itensor,
+# >>>      but all the exl3* ones serve the EXL3 quant (row 32), NOT this NVFP4 Ray build, so there
+# >>>      is no like-for-like replacement to drop in. Not guessed at deliberately.
+# >>>   2. NO WEIGHTS: LibertAIDAI/GLM-5.3-Flash-NVFP4 is a 7.8 KB metadata stub on the head and
+# >>>      absent on the worker. The checkpoint has never been downloaded.
+# >>> Use row 32 (`glm-5.3-flash-exl3-tp2.yaml`) instead: its EXL3 weights ARE on disk (83 GB) and
+# >>> its image is pullable. Fixing this row needs an NVFP4-Ray image from the publisher plus a
+# >>> 200 GB download, so it is a deliberate decision, not a maintenance task.
 # >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/GLM-5.3-Flash-NVFP4-Dual-DGX-Spark
 # >>> Please test and run --dry-run first, then update with your verified launch facts.
 

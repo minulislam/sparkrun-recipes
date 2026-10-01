@@ -89,8 +89,21 @@ def chat(base, model, prompt, max_tokens, timeout, no_think):
                                  data=json.dumps(body).encode(),
                                  headers={"Content-Type": "application/json"})
     t0 = time.time()
-    with urllib.request.urlopen(req, timeout=timeout) as r:
-        d = json.load(r)
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as r:
+            d = json.load(r)
+    except urllib.error.HTTPError as e:
+        # Only Qwen3-style templates accept enable_thinking. Gemma / Nemotron /
+        # DeepSeek templates 400 on it, so drop the kwarg and retry once.
+        if e.code == 400 and "chat_template_kwargs" in json.dumps(body):
+            body.pop("chat_template_kwargs", None)
+            req2 = urllib.request.Request(base.rstrip("/") + "/chat/completions",
+                                          data=json.dumps(body).encode(),
+                                          headers={"Content-Type": "application/json"})
+            with urllib.request.urlopen(req2, timeout=timeout) as r:
+                d = json.load(r)
+        else:
+            raise
     msg = d["choices"][0]["message"]
     txt = msg.get("content") or ""
     think = msg.get("reasoning") or msg.get("reasoning_content") or ""

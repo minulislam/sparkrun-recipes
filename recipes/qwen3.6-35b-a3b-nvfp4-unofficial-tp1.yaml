@@ -15,7 +15,7 @@
 recipe_version: "2"
 model: unsloth/Qwen3.6-35B-A3B-NVFP4
 runtime: vllm
-container: ghcr.io/miaai-lab/mia-vllm-gb10-linear-b12x:latest  # TODO: upstream publishes only :latest — no fixed tag exists (checked 2026-09-28)
+container: ghcr.io/miaai-lab/mia-vllm-gb10-linear-b12x@sha256:19627342e1da2607f4db50745dca30e57d7dd0ebff06062f03fd69b43a252931  # pinned by digest 2026-10-01 — upstream publishes ONLY :latest (ghcr tag list confirms). Safe here: single-node recipe, so sparkrun 0.3.10's digest-ship defect on workers does not apply. Mirror to spark-arena when push creds exist.
 min_nodes: 1
 max_nodes: 1
 
