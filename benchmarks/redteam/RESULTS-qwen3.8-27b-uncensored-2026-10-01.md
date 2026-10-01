@@ -90,7 +90,35 @@ over 1,205 characters. Answer quality holds at depth (median 1,715 / 1,694
 chars). So behaviour at ~58k context is indistinguishable from short context.
 No evidence of safety drift with depth, and no safety present to drift.
 
-## 4. Deployment caveat worth more than the rates
+## 4. Correctness — does it actually answer right?
+
+The refusal eval only shows it *will* answer. These two are auto-graded against
+gold labels, so they show whether the answer is *right*. This is the number that
+decides usefulness, and the one abliteration usually damages.
+
+| Benchmark | Score | Condition | Unparsed |
+|---|---|---|---|
+| GSM8K (grade-school math) | **144/150 = 96.0%** | reasoning ON, 1536 tok | 1 |
+| MMLU (57-subject knowledge) | **125/150 = 83.3%** | reasoning OFF, 768 tok | 0 |
+
+Both land squarely in the expected band for a healthy Qwen3-class 27B, so
+**abliteration cost little or no capability here**. Combined with 100% compliance
+on the benign split, the checkpoint is uncensored *and* intact — the failure mode
+where abliteration lobotomises a model is not present.
+
+### A measurement trap this exposed, twice
+
+A first MMLU pass scored 67.3% with **38/150 unparsed**. Every one of those had
+`finish_reason: length`: the model wrote ~2,400 characters of explanation and was
+cut off before reaching the answer tag. Asking for the letter FIRST instead of
+last took unparsed from 38 to 0 and the score from 67.3% to 83.3%. The 16-point
+"gap" was entirely prompt design, not model ability.
+
+That is the same root cause as the 68% truncation in the refusal eval: **this
+model is verbose, and any measurement with a tight token budget silently
+under-reports it.** Put the gradeable token first, or pay for a large budget.
+
+## 5. Deployment caveat worth more than the rates
 
 **With the default chat template this model reasons past any modest token budget
 and returns an empty answer.** At `max_tokens: 512` with thinking on, 68% of
@@ -100,7 +128,7 @@ field. Callers need either a large `max_tokens` or
 behaviour and must not be mistaken for one; an early version of this eval scored
 those empty responses separately as `truncated` for exactly that reason.
 
-## 5. Reproducing
+## 6. Reproducing
 
 ```
 ./needle_context_test.py --base http://10.10.20.10:8000/v1 \
@@ -110,6 +138,14 @@ those empty responses separately as `truncated` for exactly that reason.
 ./run_refusal_eval.py --base http://10.10.20.10:8000/v1 \
     --model qwen3.8-27b-uncensored --data <jbb>/data --split both \
     --no-think --concurrency 12 --max-tokens 400 --out results/refusal.jsonl
+
+# correctness (needs pyarrow; a venv is fine)
+./run_correctness_eval.py --base http://10.10.20.10:8000/v1 \
+    --model qwen3.8-27b-uncensored --gsm8k <gsm8k>/main/test-*.parquet \
+    -n 150 --max-tokens 1536 --out results/gsm8k.jsonl
+./run_correctness_eval.py --base http://10.10.20.10:8000/v1 \
+    --model qwen3.8-27b-uncensored --mmlu <mmlu>/all/test-*.parquet \
+    -n 150 --max-tokens 768 --no-think --out results/mmlu.jsonl
 ```
 
 Raw generations are gitignored. Note the filler in both harnesses averages
