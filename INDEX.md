@@ -35,11 +35,18 @@ All speed numbers below are **measured on this cluster** (2026-07-18 baseline +
 
 ## MiaAI-Lab Recipes (ported from https://github.com/MiaAI-Lab)
 
-> **⚠️ Unverified** — these recipes were auto-generated from MiaAI-Lab's `start.sh` scripts
-> and ported to sparkrun v2 YAML format with `command` fields.
-> Please run `--dry-run` first, then launch, benchmark, and update this table with measured numbers.
+> **⚠️ Unverified by default — but check the row.** These recipes were
+> auto-generated from MiaAI-Lab's `start.sh` scripts and ported to sparkrun v2
+> YAML format with `command` fields. Many have since been launched and measured:
+> **any row whose Notes say `VERIFIED <date>` carries live numbers from this
+> cluster** and is no longer unverified. The banner applies only to rows without
+> such a note. Run `--dry-run` first on those, then launch, benchmark, and fill
+> in the Notes.
 > Each file has a `>>>` header block — replace it with your verified facts.
 > **Ray-based recipes** (`vLLM-Ray`) need SSH mesh + Ray cluster ports open across all nodes.
+> **Weights are a separate question from the recipe**: a row can be correct and
+> still unrunnable because its checkpoint is a metadata stub or a partial
+> download. `MODELS.md` is the measured inventory of what is actually on each node.
 
 | # | Recipe file | Model | Runtime | Nodes | Quant | Context | Notes |
 |---|---|---|---|---|---|---|---|
@@ -60,9 +67,8 @@ All speed numbers below are **measured on this cluster** (2026-07-18 baseline +
 | 26 | `hy3-295b-nvfp4-tp2.yaml` | kodelow/Hy3-NVFP4-W4A16 | vLLM-Ray | 2 | NVFP4 | — | 295B MoE; tool calling |
 | 27 | `leanstral-1.5-119b-a6b-tp2.yaml` | mistralai/Leanstral-1.5-119B-A6B | vLLM | 2 | FP8 | 262k | MoE; enforce_eager |
 | 28 | `mimo-v2.5-tp2.yaml` | Xiaomi/MiMo-V2.5 | vLLM-Ray | 2 | FP8 | — | Omni MTP1; NVFP4-KV |
-| 29 | `glm-5.2-nvfp4-aqlm-tp3.yaml` | Mia-AiLab/GLM-5.2-NVFP4-AQLM | vLLM | 3 | AQLM | 380k | Multimodal; 380k ctx with MTP |
 | 30 | `inkling-small-nvfp4-tp2-sglang.yaml` | thinkingmachines/Inkling-Small-NVFP4 | SGLang | 2 | NVFP4 | **1M** | **VERIFIED 2026-09-27** on the MiaAI-Lab champion image (`ghcr.io/drowzeys/inkling-sglang-gb10:kvquant`) + DSpark draft: 32.3 tok/s c=1, 66.9 at 8-way, coherence OK, ready in 385 s; 83.6 GB/rank; only ~4 GB host headroom at mem-fraction 0.85 |
-| 32 | `glm-5.3-flash-exl3-tp2.yaml` | Mia-AiLab/GLM-5.3-Flash-EXL3-TR3-4bpw | vLLM-Ray | 2 | EXL3 | 850k | Multimodal; Ray TP=2 |
+| 32 | `glm-5.3-flash-exl3-tp2.yaml` | Mia-AiLab/GLM-5.3-Flash-EXL3-TR3-4bpw | vLLM-Ray | 2 | EXL3 | 850k | Multimodal; Ray TP=2. **BLOCKED 2026-10-06 — partial weights.** The checkpoint is **half downloaded on the head and absent on the worker**: 59 of 120 shards, 81.6 GiB of the 163.7 GiB that `MANIFEST.json` declares (328 files). A tp2 recipe needs it complete on both nodes, so this cannot launch and has never been benchmarked. Finish the download, then stage to the worker with blobs **hardlinked** (sparkrun 0.3.10 self-rsync destroys symlinked blobs — `benchmarks/FLEET-2026-09-27.md` §3). Note `du -sh` on the cache dir is misleading here; see `MODELS.md`. **UNBENCHMARKED** |
 | 33 | `qwen3.8-flash-next-nvfp4-tp2-sglang.yaml` | Mia-AiLab/Qwen3.8-Flash-Next-NVFP4 | SGLang | 2 | NVFP4 | 256k | FP8 dense; SGLang speculative |
 | 34 | `qwen3.8-27b-nvfp4-tp1-sglang.yaml` | RadixArk/Qwen3.8-27B-NVFP4 | SGLang | 1 | NVFP4 | 256k | DFlash; 8 concurrent |
 | 35 | `nemotron-3.5-lightning-30b-a3b-nvfp4-tp1-sglang.yaml` | nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4 | SGLang | 1 | NVFP4 | 256k | DSpark; RTX 5090/6000 PRO |
@@ -141,6 +147,10 @@ By registry name (after `sparkrun registry update spark-forge`):
 
 ## Documents
 
+- `MODELS.md` — measured inventory of checkpoints on each node (complete /
+  partial / metadata-stub), which recipes use each one, and the orphans no
+  recipe references. Check this before launching: a correct recipe still fails
+  if its weights are a stub.
 - `benchmarks/README.md` — index of all benchmark/validation reports + raw data
 - `benchmarks/GITHUB-RECIPES-COMPARE-2026-07-25.md` — how these recipes compare
   to the GitHub recipe repos (eugr, spark-arena) and what we adopted

@@ -1,5 +1,10 @@
-# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/Qwen3.8-27B-DGX-Spark-RTX-6000
-# >>> Please test and run --dry-run first, then update with your verified launch facts.
+# >>> VERIFIED 2026-09-27 (fleet sweep) — source: https://github.com/MiaAI-Lab/Qwen3.8-27B-DGX-Spark-RTX-6000
+# >>> Measured on this cluster: 11.2 tok/s c=1 (11.1 at 8k, 10.6 at 32k depth) and 56.7 aggregate
+# >>> 8-way (48.4 at 8k, 32.6 at 32k) — the dense 27B baseline, and it does scale to 8-way.
+# >>> 21.2 GiB loaded in 128 s; KV 1.21M tokens; TTFR 1.18 s.
+# >>> Evidence: benchmarks/results_qwen38-27b-unsloth.json, mem_qwen38-27b-unsloth.txt,
+# >>> FLEET-2026-09-27.md. Note the results/mem files use the label "qwen38-27b-unsloth".
+# >>> Weights: unsloth/Qwen3.8-27B-NVFP4, 21.8 GiB complete on BOTH nodes. See MODELS.md.
 
 # =============================================================================
 # sparkrun recipe — Qwen3.8-27B NVFP4 via vLLM   [MiaAI-Lab]

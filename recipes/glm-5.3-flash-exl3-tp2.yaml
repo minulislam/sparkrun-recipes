@@ -1,4 +1,12 @@
 # >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/GLM-5.3-Flash-EXL3-2x-DGX-Sparks
+# >>> BLOCKED 2026-10-06 — PARTIAL WEIGHTS, cannot launch. Mia-AiLab/GLM-5.3-Flash-EXL3-TR3-4bpw
+# >>> is half downloaded on the head (59 of 120 shards, 81.6 GiB of the 163.7 GiB that its
+# >>> MANIFEST.json declares across 328 files) and ABSENT on the worker. TP=2 needs it complete
+# >>> on both nodes. Finish the download, then stage to the worker with the blobs HARDLINKED —
+# >>> sparkrun 0.3.10's self-rsync destroys symlinked HF blobs (FLEET-2026-09-27.md §3).
+# >>> Do not judge this by `du -sh` on the cache dir: this repo has two snapshot revisions and
+# >>> only one holds weights. See MODELS.md for the measured per-node inventory.
+# >>> Note the worker currently has NO GLM checkpoint of any kind.
 # >>> Please test and run --dry-run first, then update with your verified launch facts.
 
 # =============================================================================

@@ -1,9 +1,18 @@
-# >>> UNVERIFIED — source: https://huggingface.co/pocharlies/qwen38-27b-uncensored-abliterated-refusal-directions
-# >>> Requires container docker.io/pocharlies/vllm-qwen38-rank1:20260815 — NOT yet pulled on this
-# >>> cluster, and the recipe cannot run without it (the vLLM refusal patch ships only in that image).
+# >>> VERIFIED 2026-09-27 (fleet sweep) — source: https://huggingface.co/pocharlies/qwen38-27b-uncensored-abliterated-refusal-directions
+# >>> Runtime abliteration works. Measured on this cluster: 19.5 tok/s c=1 (14.8 at 8k, 14.4 at
+# >>> 32k depth), 47.4 aggregate 8-way; 22.0 GiB loaded in 157 s; TTFR 1.04 s.
+# >>> CAVEAT — KV is only 0.18M tokens (180k), by far the smallest pool of any verified recipe
+# >>> here, and 8-way throughput COLLAPSES to 3.8 tok/s at 32k depth. Interactive/shallow only.
+# >>> Quality 2026-10-01: GSM8K 96.0%, MMLU 86.0%, 0 unparsed; 100/100 harmful-split compliance.
+# >>> Container docker.io/pocharlies/vllm-qwen38-rank1:20260815 HAS been pulled here (the earlier
+# >>> "NOT yet pulled" note in this header was stale — the recipe has since served and benchmarked).
+# >>> The vLLM refusal patch ships only in that image; the ablation itself is 2.6 MB of rank-1
+# >>> refusal directions applied to the STOCK unsloth NVFP4 checkpoint, so this never comes up
+# >>> uncensored by accident.
 # >>> Placement note: defaults are tuned for a SHARED node (gpu_mem 0.35 + 8 GiB KV ~= 32 GB).
 # >>> On dgx-pair, the co-tenant must be at <= 0.60 for this to fit alongside.
-# >>> Please test and run --dry-run first, then update with your verified launch facts.
+# >>> Evidence: benchmarks/results_qwen38-27b-refusal-dial.json, mem_qwen38-27b-refusal-dial.txt,
+# >>> FLEET-2026-09-27.md, redteam/results/SWEEP.tsv.
 # >>> VERIFIED 2026-09-17 on 10.10.20.11 (image 20260815):
 # >>>   GLOBAL dial WORKS. lambda=0 refuses a low-harm trigger, lambda=1 complies.
 # >>>   VLLM_REFUSAL_LAMBDA_INIT is IGNORED - server always starts at 0.0. post_exec fixes it.

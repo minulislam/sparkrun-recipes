@@ -1,5 +1,11 @@
-# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/Laguna-S-2.1-DGX-Spark-RTX-6000-PRO
-# >>> Please test and run --dry-run first, then update with your verified launch facts.
+# >>> VERIFIED 2026-09-27 (fleet pass 5) — source: https://github.com/MiaAI-Lab/Laguna-S-2.1-DGX-Spark-RTX-6000-PRO
+# >>> Measured on this cluster: 16.9 tok/s c=1 (16.5 at 8k, 15.0 at 32k depth), 46.5 aggregate
+# >>> 8-way at depth 0; loads 92.9 GiB in 605 s; KV 0.18M tokens at 131k ctx (1.34x).
+# >>> Context is 131072, NOT 262144: at 262k the KV need exceeds the node, and util 0.90 trips
+# >>> earlyoom — now 0.85 / 131072. Needs a co-tenant-free node (pass 3 died to ollama's gemma4:31b).
+# >>> The 0.18M KV pool queues under 8-way load at depth (TTFR 85 s @ 32k) — single-stream lane.
+# >>> Evidence: benchmarks/results_laguna-s-2.1.json, mem_laguna-s-2.1.txt, FLEET-2026-09-27.md.
+# >>> Weights: head only (92.9 GiB, complete) — fine for TP=1. See MODELS.md.
 
 # =============================================================================
 # sparkrun recipe — Poolside Laguna-S-2.1 NVFP4   [MiaAI-Lab]

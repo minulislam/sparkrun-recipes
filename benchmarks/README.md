@@ -12,6 +12,19 @@ later one corrects or extends the earlier ones.
 | 2026-09-27 | [FLEET-2026-09-27.md](FLEET-2026-09-27.md) | Fleet sweep of every on-disk recipe (quick.yaml, c=1/8 × depth 0/8k/32k): heretic-35B batch lane 193→107 tok/s 8-way, both 27B recipes collapse at 8-way × 32k; two sparkrun 0.3.10 defects (self-rsync deletes symlinked HF blobs — 290 GB recovered by hardlinking; digest-pinned images never resolve on the worker); real engine tracebacks recovered from Spark Studio's ring buffers; the memory gateway's ollama co-tenant; step37 serves garbage. |
 | 2026-07-25 | [VALIDATION-2026-07-25.md](VALIDATION-2026-07-25.md) | The fixes applied + live-validated: before/after table (27B 9.5→23.7, 35B 43→82, 31B unbootable→31.3 tok/s), new DiffusionGemma recipe (~358 tok/s c=1), operational finds (HF_HUB_OFFLINE drafter pre-cache, digest pins, DFlash's aggregate-throughput cost). |
 | 2026-07-25 | [GITHUB-RECIPES-COMPARE-2026-07-25.md](GITHUB-RECIPES-COMPARE-2026-07-25.md) | Survey of GitHub sparkrun-recipe repos covering the same models (eugr/spark-vllm-docker, spark-arena community); per-model best-version verdicts and techniques adopted. |
+| 2026-10-01 | [redteam/RESULTS-qwen3.8-27b-uncensored-2026-10-01.md](redteam/RESULTS-qwen3.8-27b-uncensored-2026-10-01.md) | Qwen3.8-27B-Uncensored first boot: full 262k context proven by needle-in-haystack (21/21), a 13× prefill cliff between 148k and 204k tokens, 0 refusals on both JBB splits, GSM8K 96.0% / MMLU 83.3%. |
+
+> Rows above are ordered by the date in each filename, which is **not** the order
+> they were written — FLEET-2026-09-27 post-dates the two 2026-07-25 reports and
+> supersedes them where they disagree. Read the latest date first.
+
+### Quality / refusal sweep
+
+`redteam/results/SWEEP.tsv` is the per-recipe table (harmful + benign completion
+rates, GSM8K, MMLU) covering 9 recipes: 8 completed and
+`deepseek-v4-flash-vision-uncensored-tp2` crashed mid-run. The harness scripts
+are `redteam/run_refusal_eval.py`, `run_correctness_eval.py`, and
+`needle_context_test.py`.
 
 ## Usage notes
 

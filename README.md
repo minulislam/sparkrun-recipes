@@ -86,7 +86,6 @@ MiaAI-Lab provides several multi-node recipes (see [`INDEX.md`](INDEX.md) rows #
 | `leanstral-1.5-119b-a6b-tp2.yaml` | Leanstral 1.5 119B | 2 | MoE |
 | `hy3-295b-nvfp4-tp2.yaml` | Hy3 295B | 2 | Tool calling; Ray TP=2 |
 | `inkling-small-nvfp4-tp2-sglang.yaml` | Inkling-Small NVFP4 | 2 | DSpark; SGLang |
-| `glm-5.2-nvfp4-aqlm-tp3.yaml` | GLM-5.2 NVFP4 | 3 | Multimodal; 380k ctx |
 
 ## Conventions
 
@@ -110,6 +109,12 @@ All measurements were taken live on this cluster. [`benchmarks/README.md`](bench
 | 2026-07-18 | [AEON-FINDINGS-2026-07-18.md](benchmarks/AEON-FINDINGS-2026-07-18.md) | Root-cause analysis from the AEON-7 GitHub repos, with a per-recipe fix table |
 | 2026-07-25 | [VALIDATION-2026-07-25.md](benchmarks/VALIDATION-2026-07-25.md) | Fixes applied and re-validated (27B 9.5→23.7 tok/s, 35B 43→82, 31B unbootable→31.3), plus the new DiffusionGemma recipe |
 | 2026-07-25 | [GITHUB-RECIPES-COMPARE-2026-07-25.md](benchmarks/GITHUB-RECIPES-COMPARE-2026-07-25.md) | Comparison against community recipe repos (eugr, spark-arena) and what was adopted from each |
+| 2026-09-27 | [FLEET-2026-09-27.md](benchmarks/FLEET-2026-09-27.md) | Fleet sweep of every on-disk recipe (c=1/8 × depth 0/8k/32k), two sparkrun 0.3.10 defects, and the recipes that serve but fail coherence |
+| 2026-10-01 | [redteam/RESULTS-qwen3.8-27b-uncensored-2026-10-01.md](benchmarks/redteam/RESULTS-qwen3.8-27b-uncensored-2026-10-01.md) | Refusal + correctness writeup for Qwen3.8-27B-Uncensored (GSM8K 96.0%, MMLU 83.3%, 0 refusals); `redteam/results/SWEEP.tsv` holds the per-recipe quality sweep |
+
+Model weights are tracked separately in [`MODELS.md`](MODELS.md) — what is
+complete, partial, or a metadata stub on each node, and which recipes use each
+checkpoint.
 
 ## Open items
 
