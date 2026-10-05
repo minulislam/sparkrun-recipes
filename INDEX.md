@@ -147,6 +147,9 @@ By registry name (after `sparkrun registry update spark-forge`):
 
 ## Documents
 
+- `CONTEXT.md` — the glossary. What *verified* means here versus *benchmarked*,
+  *serves*, *promoted* and *unfit*, and what *complete* / *partial* / *stub*
+  mean for a checkpoint. Read it before reporting any coverage number.
 - `MODELS.md` — measured inventory of checkpoints on each node (complete /
   partial / metadata-stub), which recipes use each one, and the orphans no
   recipe references. Check this before launching: a correct recipe still fails
