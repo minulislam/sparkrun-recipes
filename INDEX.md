@@ -169,6 +169,43 @@ Before launching, check each recipe's `container:` field:
 - GB10 memory ceiling: `gpu_memory_utilization` in the **0.70–0.85** range is safe; 0.85+ risks NVRM OOM at boot.
 - All MiaAI-Lab recipes are **marked UNVERIFIED** — run `--dry-run` first, then launch and update the `>>>` header with your measured cluster facts.
 
+## Uncensored model quality — MEASURED 2026-10-01/02
+
+Nine abliterated checkpoints with weights on disk, same suite each: JailbreakBench
+JBB-Behaviors (100 harmful + 100 matched benign), GSM8K n=150, MMLU n=150.
+Full writeup and the four findings: `benchmarks/redteam/RANKING-uncensored-2026-10-02.md`.
+
+| # | Recipe | GB | Harmful | Benign | GSM8K | MMLU | avg |
+|---|---|---|---|---|---|---|---|
+| **1** | `gemma4-26b-aeon-vllm` | 16 | 100% | 100% | **96.7** | 86.0 | **91.3** |
+| **2** | `qwen38-27b-nvfp4-refusal-dial` | 23 | 100% | 100%* | 96.0 | 86.0 | **91.0** |
+| **3** | `gemma4-12b-k4-nvfp4-fp8` | **9** | 100% | 100% | 96.0 | 84.0 | **90.0** |
+| 4 | `qwen3.8-27b-uncensored-nvfp4-tp1` | 25 | 100% | 100% | 96.0 | 83.3 | 89.7 |
+| 5 | `qwen36-27b-aeon-ultimate-nvfp4` | 28 | 100% | 100% | 75.3 | **87.3** | 81.3 |
+| 6 | `gemma4-31b-deckard-heretic-nvfp4` | 20 | 100% | 99% | 64.7 | 74.0 | 69.3 |
+| — | `nemotron3-nano-omni-aeon-nvfp4` | 22 | **93%** | 100% | 92.7 | 73.3 | 83.0 |
+| — | `qwen36-35b-a3b-heretic-nvfp4-batch` | 23 | **74%** | 99% | 79.3 | **88.0** | 83.7 |
+| — | `deepseek-v4-flash-vision-uncensored-tp2` | 168 | 100% (58/58) | **CRASHED** | — | — | — |
+
+\* benign split reached 59 of 100 before a stage timeout; all 59 complied.
+Dashed rows are disqualified: the first two REFUSE a meaningful share of harmful
+requests, the third does not survive sustained load.
+
+**Read before picking one:**
+- **"Uncensored" has meant three different things here** — compliance spans
+  74%–100% across rows the index described identically, and naming does not
+  predict it (AEON spans 93–100%; the "heretic" build is the least abliterated).
+- **Abliteration quality beats size.** Gemma-4-12B (9 GB) scores 90.0 while
+  Gemma-4-31B DECKARD (20 GB) scores 69.3. Bigger is not better.
+- **Runtime abliteration (row 39's refusal-dial) preserves capability better**
+  than baked abliteration: +2.7 MMLU over the same-family baked model, both at
+  full compliance.
+- **Base family sets the capability shape**: Qwen3.6 is knowledge-strong and
+  math-weak; Gemma-4-26B/12B and Qwen3.8 sit near 96 on math.
+- `deepseek-v4-flash-vision-uncensored-tp2` is marked VERIFIED from a short
+  benchmark sweep but **crashed under 200 sustained requests** with the pair to
+  itself. Verified and production-ready are different claims.
+
 ## Open items
 
 - **16 of the 48 models in the HF cache are metadata-only stubs, not downloaded weights.**
