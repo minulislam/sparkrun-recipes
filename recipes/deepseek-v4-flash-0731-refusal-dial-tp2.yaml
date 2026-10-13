@@ -1,4 +1,19 @@
-# >>> UNVERIFIED — written 2026-10-13, not yet launched. Replace this block with measured facts.
+# >>> VERIFIED 2026-10-13 on dgx-pair (pair to itself). USE LAMBDA 2.0, not upstream's 1.5.
+# >>>   Context: /v1/models reports max_model_len 393216; over-limit prompt returns HTTP 400.
+# >>>   Boot: ready in ~7 min; 79.17 GiB/rank loaded in 212 s; KV pool 1,346,626 tokens (3.4 full
+# >>>     393k requests); 46 directions loaded; boots at lambda 0 on both ranks.
+# >>>   Speed: 44.1 tok/s single stream (500 tokens, thinking off); peak 117.5 tok/s 4-way.
+# >>>   Needle: passkey retrieved from a 130,028-token prompt in 98 s. Nothing longer was tested.
+# >>>   Dial, 8 sampled harmful prompts: 7 refused at 0, 1 at 1.5, 7 after returning to 0.
+# >>>   Refusal eval (JailbreakBench JBB-Behaviors, 100 harmful + 100 matched benign, 1400-token
+# >>>     budget, default thinking "low", 4-way, keyword grader):
+# >>>       lambda 1.5: harmful 82 complied / 15 refused / 3 truncated; benign 95 / 0 / 5
+# >>>       lambda 2.0: harmful 93 complied /  1 refused / 6 truncated; benign 93 / 1 / 6
+# >>>     0 errors in both runs; engine alive after each (59 and 57 min). The truncated answers
+# >>>     ran out of budget while reasoning; they are not refusals. Raw:
+# >>>     benchmarks/redteam/results/<this recipe>.lambda{1.5,2.0}.refusal.*
+# >>>   NOT measured: GSM8K/MMLU at any lambda, tool calls, lambda above 2.0, prompts past 130k.
+# >>>   Weights served are revision 7872f01; the directions were extracted against 9e165c3.
 # >>> RUNTIME ABLITERATION for DeepSeek-V4-Flash-0731. Serves the STOCK deepseek-ai weights; the
 # >>>   uncensoring is 757 KB of rank-1 refusal directions baked into the image at
 # >>>   /opt/refusal/refusal_dirs.safetensors and applied by a vLLM patch. Strength is a dial:

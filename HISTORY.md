@@ -509,3 +509,21 @@ nothing committed:
 - Not done: GLM NVFP4-KV long-context recipe (mod and topk copy prepared, image not
   pulled), stock DeepSeek verification, full `MODELS.md` re-measure, weight deletions,
   restoring `vllm-reranker` (worker) and `nemoclaw-vllm` (head), row 48's RoCE setting.
+
+### 2026-10-13 20:55 update
+
+- `deepseek-v4-flash-0731-refusal-dial-tp2` VERIFIED (INDEX row 61). JBB at lambda 2.0:
+  harmful 93 complied / 1 refused / 6 truncated, benign 93 / 1 / 6; at 1.5: 82 / 15 / 3
+  and 95 / 0 / 5. Zero errors, alive after both hour-long runs, passkey at 130k tokens.
+  Use lambda 2.0.
+- `deepseek-v4-flash-0731-tp2` VERIFIED with a short test (row 60): 262k, 44.6 tok/s c=1,
+  137 tok/s 8-way, KV 360k tokens, passkey at 60k. No soak.
+- `glm-5.3-flash-abliterated-nvfp4kv-long-tp2` is UNFIT here. It boots at 524k and at
+  368k and answers short and 40k prompts, but the head's earlyoom (`-m 2`) killed the
+  vLLM worker on a 40k prompt at the 3 GiB pin and on a 250k prompt at the 2 GiB pin.
+  The second kill also took an unrelated `llama-server` process on the head (pid 952844,
+  26 MiB RSS). Details in the recipe header. Not in INDEX; not committed at this time.
+- The 262k GLM recipe was never tested past 40k tokens either; its head low-water at
+  40k was 5.6 GiB, about 3 GiB above the earlyoom line.
+- sparkrun's planner rejects launches whose own KV estimate overshoots; `--no-auto-detect`
+  skips the estimate.
