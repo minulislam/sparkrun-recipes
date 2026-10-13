@@ -263,8 +263,8 @@ Qwen3.6-35B heretic (74%), DeepSeek (crashed). Full table in `INDEX.md` and
 - A port of the refusal dial from Qwen3.8 to GLM-5.3-Flash was scoped, not
   started.
 
-**2026-10-13** — Live recheck, SSH fix, cleanup. Not yet committed when this
-file was written.
+**2026-10-13** — Live recheck, SSH fix, cleanup (`4e12ab5`, pushed; registry
+updated to 48 recipes).
 - Inventory re-measured on both nodes: nothing lost since 10-06. New:
   `nvidia/Qwen3.6-35B-A3B-NVFP4` on the head, and a second stub on the worker.
 - Five recipes removed because their Hugging Face repos return "not found":
@@ -386,7 +386,11 @@ These disagree across sessions and were not resolved by this compilation.
    `/etc/netplan/90-NM-422c4968-….yaml` and `90-NM-9d5a63e4-….yaml` on the
    worker (root only) before choosing a fix. Also run one two-node launch to
    confirm the fabric end to end.
-2. Commit the 10-13 changes and run `sparkrun registry update spark-forge`.
+2. Done 2026-10-13: the 10-13 changes were committed as `4e12ab5`, pushed,
+   and the registry updated. Cause of item 1, seen in the two netplan files:
+   each defines the port under its own name but carries `match: {}`, which
+   matches any device. Proposed fix: delete that line in both files, then
+   `sudo netplan generate && sudo nmcli connection reload`.
 3. Decide whether `nemoclaw-vllm` keeps head port 8000, and what the proxy
    alias `default` should point at.
 4. Rotate the Hugging Face token: it was printed in session transcripts on
