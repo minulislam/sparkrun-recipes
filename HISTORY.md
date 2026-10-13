@@ -282,11 +282,24 @@ updated to 48 recipes).
   profiles were still unbound at that point. Corrected the same day, about
   10:55: the binding was made permanent by editing the two netplan files
   (open item 1 has the detail).
+- Two-node test launch at 11:17, after the binding fix:
+  `nemotron-3-super-120b-nvfp4-tp2` on `dgx-pair` with
+  `-o gpu_memory_utilization=0.5` (recipe default is 0.7; lowered because the
+  head had about 72 GB free outside page cache). Served 4 minutes after
+  launch at 262,144 context; 36.63 GiB per rank, KV 18.39 GiB. Answered
+  correctly, 24.6 tok/s single-stream, 8 of 8 concurrent requests at 89 tok/s
+  aggregate. `ethtool -S` RDMA counters went from 0 to about 25 GB on
+  `enp1s0f1np1` and 24 GB on `enP2p1s0f1np1` on each node (head tx equal to
+  worker rx) and stayed 0 on both f0 ports, so the traffic ran over the two
+  pinned links. No NCCL or engine errors in either rank's log; the worker
+  answered SSH straight after teardown. `nemoclaw-vllm` was stopped for the
+  test at the user's request and left stopped.
 - `ssh 10.10.20.11` had been failing because an NVIDIA Sync block in the head's
   `~/.ssh/config` redirected it to `10.99.10.11`. The redirect was disabled;
   `sparkrun setup check` reaches both nodes again.
-- Found, not changed: a `nemoclaw-vllm` container outside sparkrun holds head
-  port 8000 and 46 GB while serving `nvidia/Qwen3.6-35B-A3B-NVFP4`; the proxy
+- Found: a `nemoclaw-vllm` container outside sparkrun held head port 8000 and
+  46 GB while serving `nvidia/Qwen3.6-35B-A3B-NVFP4` (stopped later that day,
+  restart with `docker start nemoclaw-vllm`). Found, not changed: the proxy
   alias `default` points at `qwen3.8-27b-uncensored`, which nothing serves;
   the docs' `--cluster default` no longer names a cluster.
 - A four-voice review of how far to prune agreed: move or remove recipes
@@ -386,9 +399,9 @@ These disagree across sessions and were not resolved by this compilation.
    `90-NM-9d5a63e4-….yaml`, then ran `netplan generate` and
    `nmcli connection reload`. All four worker profiles now report their own
    interface and no unbound ethernet profile is left (backup of the old files
-   in `/root/netplan.bak-2026-10-13` on the worker). Still to do: confirm it
-   holds across a real worker reboot, and run one two-node launch to prove the
-   fabric end to end.
+   in `/root/netplan.bak-2026-10-13` on the worker). A two-node launch then
+   proved the fabric end to end (see the 10-13 entry). Still to do: confirm
+   the binding holds across a real worker reboot.
 2. Done 2026-10-13: the 10-13 changes were committed as `4e12ab5`, pushed,
    and the registry updated. Cause of item 1, seen in the two netplan files:
    each defines the port under its own name but carries `match: {}`, which
