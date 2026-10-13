@@ -399,9 +399,10 @@ These disagree across sessions and were not resolved by this compilation.
    `90-NM-9d5a63e4-….yaml`, then ran `netplan generate` and
    `nmcli connection reload`. All four worker profiles now report their own
    interface and no unbound ethernet profile is left (backup of the old files
-   in `/root/netplan.bak-2026-10-13` on the worker). A two-node launch then
-   proved the fabric end to end (see the 10-13 entry). Still to do: confirm
-   the binding holds across a real worker reboot.
+   in `/root/netplan.bak-2026-10-13` on the worker). Closed: the user
+   rebooted the worker at 11:15:58 the same day; all four ConnectX-7 profiles
+   activated on their own ports at boot with no failures, and the two-node
+   test launch at 11:17 (see the 10-13 entry) ran on that fresh boot.
 2. Done 2026-10-13: the 10-13 changes were committed as `4e12ab5`, pushed,
    and the registry updated. Cause of item 1, seen in the two netplan files:
    each defines the port under its own name but carries `match: {}`, which
