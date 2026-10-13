@@ -37,9 +37,10 @@
 # >>> 11.25 GiB modelled. The 1.7x headroom at 262k should absorb that, but read the achieved
 # >>> max_model_len back from the server on first launch rather than trusting this.
 # >>>
-# >>> Compare row 32 (`glm-5.3-flash-exl3-tp2.yaml`), which is the TWO-node EXL3 route whose weights
-# >>> ARE on disk (88.4 GB) and whose image is pullable. If you want GLM-5.3 EXL3 working today,
-# >>> that is the cheaper path; this file is the single-node alternative.
+# >>> The TWO-node EXL3 route (row 32, `glm-5.3-flash-exl3-tp2.yaml`) was REMOVED 2026-10-13: its
+# >>> HF repo `Mia-AiLab/GLM-5.3-Flash-EXL3-TR3-4bpw` now returns "repository not found", and the
+# >>> copy on the head is only 59 of 120 shards, so it can never be completed from that source.
+# >>> This file is the only GLM-5.3 EXL3 recipe left.
 # >>> STATUS: UNVERIFIED, never launched, container unresolved.
 recipe_version: "2"
 model: 0xSero/GLM-5.3-Flash-EXL3-Spark

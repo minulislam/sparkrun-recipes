@@ -1,7 +1,9 @@
 # spark-forge sparkrun recipes — index (DGX Spark: head gb10-spark 10.10.20.10 / worker gx10-spark 10.10.20.11)
 
-> **Launch basics (re-verified live 2026-07-25):** cluster is **`default`**
-> (`dgxlab` does not exist), global `ssh.user=devops`, single node =
+> **Launch basics (cluster names re-checked 2026-10-13):** the cluster is
+> **`dgx-pair`** (the sparkrun default; `default` and `dgxlab` do not exist),
+> with `dgx-pair-ep`, `gb10-solo` and `gx10-solo` beside it. Global
+> `ssh.user=devops`, single node =
 > `--tp 1` (`--solo` is deprecated). Endpoint: `http://10.10.20.10:8000/v1`.
 > Always `--dry-run` first; always `--no-follow` for scripted launches.
 > **DFlash drafters must be pre-cached** — serve containers run
@@ -9,10 +11,11 @@
 > **Multi-node comm env:** pinned in the `dgx-pair` cluster definition
 > (`~/.config/sparkrun/clusters/dgx-pair.yaml` → `env:`), not in recipes:
 > `NCCL_IB_HCA=rocep1s0f1,roceP2p1s0f1`, `NCCL_SOCKET_IFNAME=enp1s0f1np1,enP2p1s0f1np1`,
-> `GLOO_SOCKET_IFNAME=enp1s0f1np1`, `TP_SOCKET_IFNAME=enp1s0f1np1`. The f0 CX7
-> ports show link-up but carry no IP and have no path to the peer; sparkrun's
-> live probe (still in 0.3.10) lists them first and hands them to both NCCL and
-> the Gloo/TCPStore socket groups (`Unable to find address for: enp1s0f0np0`).
+> `GLOO_SOCKET_IFNAME=enp1s0f1np1`, `TP_SOCKET_IFNAME=enp1s0f1np1`. Since
+> 2026-09-29 each f0 CX7 port carries the same IPv4 as its f1 twin at a lower
+> route metric (intentional, user-confirmed); sparkrun's live probe (still in
+> 0.3.10) lists the f0 ports first and hands them to both NCCL and the
+> Gloo/TCPStore socket groups, so the pins to f1 stay required.
 > Cluster env overrides the probe; recipe-level pins trigger the
 > `managed-comm-env` validator warning instead.
 
@@ -50,7 +53,6 @@ All speed numbers below are **measured on this cluster** (2026-07-18 baseline +
 
 | # | Recipe file | Model | Runtime | Nodes | Quant | Context | Notes |
 |---|---|---|---|---|---|---|---|
-| 12 | `qwen3.8-flash-next-nvfp4-tp1.yaml` | Mia-AiLab/Qwen3.8-Flash-Next-NVFP4 | vLLM | 1 | NVFP4 | 256k | MTP draft; source-validated by MiaAI-Lab |
 | 13 | `glm-5.3-flash-nvfp4-tp2.yaml` | LibertAIDAI/GLM-5.3-Flash-NVFP4 | vLLM-Ray | 2 | NVFP4 | 262k | Multimodal MoE; Ray TP=2 |
 | 14 | `deepseek-v4-flash-tp2.yaml` | deepseek-ai/DeepSeek-V4-Flash | vLLM | 2 | FP8 | 1M | MoE; FP8 KV cache |
 | 15 | `deepseek-v4-flash-vision-exp-tp2.yaml` | deepseek-ai/DeepSeek-V4-Flash-Vision-Exp | vLLM | 2 | NVFP4 | 1M | Multimodal image; DSpark; nvfp4_ds_mla KV |
@@ -63,13 +65,9 @@ All speed numbers below are **measured on this cluster** (2026-07-18 baseline +
 | 22 | `muse-glimmer-30b-nvfp4-tp1.yaml` | RedHatAI/Muse-Glimmer-30B-NVFP4 | vLLM | 1 | NVFP4 | 256k | W4A4 variant |
 | 23 | `laguna-s-2.1-nvfp4-tp1.yaml` | poolside/Laguna-S-2.1-NVFP4 | vLLM | 1 | NVFP4 | **128k** | 99.7 GB on disk (48-layer/256-expert MoE, not "30B"): loads 93.2 GiB in 605 s; 262k needs more KV than the node has and 0.90 util trips earlyoom — now 0.85 / 131072. **VERIFIED 2026-09-27**: 16.9 tok/s c=1 (15.0 at 32k depth), 46.5 aggregate 8-way at depth 0; the 0.18M-token KV pool (1.34× of 131k) queues 8-way at depth (TTFR 85 s @ 32k) — single-stream/low-concurrency lane |
 | 24 | `ling-3.0-flash-int4-tp1-sglang.yaml` | inclusionAI/Ling-3.0-flash-int4 | SGLang | 1 | INT4 | — | DSpark speculative decoding |
-| 25 | `ornith-1.5-35b-a3b-nvfp4-tp1.yaml` | spark-ai/Ornith-1.5-35B-A3B-NVFP4 | vLLM | 1 | NVFP4 | 256k | In-checkpoint MTP; b12x |
 | 26 | `hy3-295b-nvfp4-tp2.yaml` | kodelow/Hy3-NVFP4-W4A16 | vLLM-Ray | 2 | NVFP4 | — | 295B MoE; tool calling |
 | 27 | `leanstral-1.5-119b-a6b-tp2.yaml` | mistralai/Leanstral-1.5-119B-A6B | vLLM | 2 | FP8 | 262k | MoE; enforce_eager |
-| 28 | `mimo-v2.5-tp2.yaml` | Xiaomi/MiMo-V2.5 | vLLM-Ray | 2 | FP8 | — | Omni MTP1; NVFP4-KV |
 | 30 | `inkling-small-nvfp4-tp2-sglang.yaml` | thinkingmachines/Inkling-Small-NVFP4 | SGLang | 2 | NVFP4 | **1M** | **VERIFIED 2026-09-27** on the MiaAI-Lab champion image (`ghcr.io/drowzeys/inkling-sglang-gb10:kvquant`) + DSpark draft: 32.3 tok/s c=1, 66.9 at 8-way, coherence OK, ready in 385 s; 83.6 GB/rank; only ~4 GB host headroom at mem-fraction 0.85 |
-| 32 | `glm-5.3-flash-exl3-tp2.yaml` | Mia-AiLab/GLM-5.3-Flash-EXL3-TR3-4bpw | vLLM-Ray | 2 | EXL3 | 850k | Multimodal; Ray TP=2. **BLOCKED 2026-10-06 — partial weights.** The checkpoint is **half downloaded on the head and absent on the worker**: 59 of 120 shards, 81.6 GiB of the 163.7 GiB that `MANIFEST.json` declares (328 files). A tp2 recipe needs it complete on both nodes, so this cannot launch and has never been benchmarked. Finish the download, then stage to the worker with blobs **hardlinked** (sparkrun 0.3.10 self-rsync destroys symlinked blobs — `benchmarks/FLEET-2026-09-27.md` §3). Note `du -sh` on the cache dir is misleading here; see `MODELS.md`. **UNBENCHMARKED** |
-| 33 | `qwen3.8-flash-next-nvfp4-tp2-sglang.yaml` | Mia-AiLab/Qwen3.8-Flash-Next-NVFP4 | SGLang | 2 | NVFP4 | 256k | FP8 dense; SGLang speculative |
 | 34 | `qwen3.8-27b-nvfp4-tp1-sglang.yaml` | RadixArk/Qwen3.8-27B-NVFP4 | SGLang | 1 | NVFP4 | 256k | DFlash; 8 concurrent |
 | 35 | `nemotron-3.5-lightning-30b-a3b-nvfp4-tp1-sglang.yaml` | nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4 | SGLang | 1 | NVFP4 | 256k | DSpark; RTX 5090/6000 PRO |
 | 36 | `qwen3.6-35b-a3b-nvfp4-unofficial-tp1.yaml` | unsloth/Qwen3.6-35B-A3B-NVFP4 | vLLM | 1 | NVFP4 | 256k | b12x linear attention recipe |
@@ -115,15 +113,15 @@ the `@eugr`/`@official` registries.
 
 ```bash
 # interactive default
-sparkrun run ./recipes/diffusiongemma-26b-a4b-nvfp4.yaml --cluster default --tp 1 --no-follow
+sparkrun run ./recipes/diffusiongemma-26b-a4b-nvfp4.yaml --cluster dgx-pair --tp 1 --no-follow
 # fleet default
-sparkrun run ./recipes/nemotron3-nano-omni-aeon-nvfp4.yaml --cluster default --tp 1 --no-follow
+sparkrun run ./recipes/nemotron3-nano-omni-aeon-nvfp4.yaml --cluster dgx-pair --tp 1 --no-follow
 # stop (same flags as run)
-sparkrun stop ./recipes/<file>.yaml --cluster default --tp 1
+sparkrun stop ./recipes/<file>.yaml --cluster dgx-pair --tp 1
 ```
 
 By registry name (after `sparkrun registry update spark-forge`):
-`sparkrun run @spark-forge/<recipe-name> --cluster default --tp 1`
+`sparkrun run @spark-forge/<recipe-name> --cluster dgx-pair --tp 1`
 
 ## Two-node layout (independent replicas beat TP=2 on GB10)
 
@@ -147,6 +145,10 @@ By registry name (after `sparkrun registry update spark-forge`):
 
 ## Documents
 
+- `HISTORY.md` — dated record of all work on this repo from 2026-07-08 on, the
+  user's standing rules, known contradictions and the open-items list. Append
+  to it after each block of work.
+- `CLAUDE.md` — short project instructions loaded by Claude Code sessions.
 - `CONTEXT.md` — the glossary. What *verified* means here versus *benchmarked*,
   *serves*, *promoted* and *unfit*, and what *complete* / *partial* / *stub*
   mean for a checkpoint. Read it before reporting any coverage number.
@@ -207,6 +209,14 @@ requests, the third does not survive sustained load.
   itself. Verified and production-ready are different claims.
 
 ## Open items
+
+- **Five recipes removed 2026-10-13 — checkpoint source gone.** Rows 12, 25, 28, 32
+  and 33 (`qwen3.8-flash-next-nvfp4-tp1`, `ornith-1.5-35b-a3b-nvfp4-tp1`,
+  `mimo-v2.5-tp2`, `glm-5.3-flash-exl3-tp2`, `qwen3.8-flash-next-nvfp4-tp2-sglang`)
+  pointed at Hugging Face repos that now return "repository not found" with a valid
+  token, and none had usable weights on either node. The row numbers are not reused.
+  `MODELS.md` lists them with their checkpoints; the 81.6 GiB partial GLM-5.3 EXL3
+  download is still on the head.
 
 - **16 of the 48 models in the HF cache are metadata-only stubs, not downloaded weights.**
   A stub holds config.json and friends and reads as a present model to any `ls` of

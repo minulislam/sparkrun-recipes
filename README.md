@@ -31,14 +31,14 @@ Both nodes are GB10 with 121 GB unified memory.
 
 ```bash
 # from a local recipe file
-sparkrun run ./recipes/diffusiongemma-26b-a4b-nvfp4.yaml --cluster default --tp 1 --no-follow
+sparkrun run ./recipes/diffusiongemma-26b-a4b-nvfp4.yaml --cluster dgx-pair --tp 1 --no-follow
 
 # or, after registering the registry, by name
 sparkrun registry update spark-forge
-sparkrun run @spark-forge/diffusiongemma-26b-a4b-nvfp4 --cluster default --tp 1
+sparkrun run @spark-forge/diffusiongemma-26b-a4b-nvfp4 --cluster dgx-pair --tp 1
 
 # stop (same flags as run)
-sparkrun stop ./recipes/<file>.yaml --cluster default --tp 1
+sparkrun stop ./recipes/<file>.yaml --cluster dgx-pair --tp 1
 ```
 
 > [!TIP]
@@ -55,14 +55,14 @@ sparkrun stop ./recipes/<file>.yaml --cluster default --tp 1
 Quick launch example:
 ```bash
 # Single-node (TP=1)
-sparkrun run ./recipes/qwen3.8-flash-next-nvfp4-tp1.yaml --cluster default --tp 1 --dry-run
+sparkrun run ./recipes/qwen3.8-27b-nvfp4-tp1.yaml --cluster dgx-pair --tp 1 --dry-run
 # Multi-node (TP=2)
-sparkrun run ./recipes/deepseek-v4-flash-tp2.yaml --cluster default --tp 2 --dry-run
+sparkrun run ./recipes/deepseek-v4-flash-tp2.yaml --cluster dgx-pair --tp 2 --dry-run
 # SGLang
-sparkrun run ./recipes/qwen3.8-27b-nvfp4-tp1-sglang.yaml --cluster default --tp 1 --dry-run
+sparkrun run ./recipes/qwen3.8-27b-nvfp4-tp1-sglang.yaml --cluster dgx-pair --tp 1 --dry-run
 ```
 
-Full details for all 53 recipes are in [`INDEX.md`](INDEX.md).
+Full details for all 48 recipes are in [`INDEX.md`](INDEX.md).
 
 ### Two-node layout
 
@@ -81,8 +81,6 @@ MiaAI-Lab provides several multi-node recipes (see [`INDEX.md`](INDEX.md) rows #
 | `deepseek-v4-flash-tp2.yaml` | DeepSeek-V4-Flash | 2 | 1M context, FP8 KV |
 | `deepseek-v4-flash-vision-exp-tp2.yaml` | DeepSeek-V4-Flash Vision-Exp | 2 | Multimodal image |
 | `glm-5.3-flash-nvfp4-tp2.yaml` | GLM-5.3 Flash NVFP4 | 2 | Multimodal; Ray TP=2 |
-| `glm-5.3-flash-exl3-tp2.yaml` | GLM-5.3 Flash EXL3 | 2 | Multimodal; 850k ctx; Ray TP=2 |
-| `mimo-v2.5-tp2.yaml` | Xiaomi MiMo-V2.5 | 2 | Omni MTP1 |
 | `leanstral-1.5-119b-a6b-tp2.yaml` | Leanstral 1.5 119B | 2 | MoE |
 | `hy3-295b-nvfp4-tp2.yaml` | Hy3 295B | 2 | Tool calling; Ray TP=2 |
 | `inkling-small-nvfp4-tp2-sglang.yaml` | Inkling-Small NVFP4 | 2 | DSpark; SGLang |
@@ -115,6 +113,9 @@ All measurements were taken live on this cluster. [`benchmarks/README.md`](bench
 Model weights are tracked separately in [`MODELS.md`](MODELS.md) — what is
 complete, partial, or a metadata stub on each node, and which recipes use each
 checkpoint.
+
+The dated record of all work on this repo, the standing rules and the open
+items are in [`HISTORY.md`](HISTORY.md).
 
 ## Open items
 

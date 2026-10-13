@@ -1,7 +1,10 @@
 # Model inventory — what is actually on disk, and which recipes use it
 
-Measured live on both nodes **2026-10-06**: head `gb10-spark` (10.10.20.10) and
-worker `gx10-spark` (10.10.20.11), both GB10 / 121 GB unified memory.
+Measured live on both nodes **2026-10-13** (previous pass 2026-10-06): head
+`gb10-spark` (10.10.20.10) and worker `gx10-spark` (10.10.20.11), both GB10 /
+121 GB unified memory. Nothing recorded on 2026-10-06 has gone missing; the
+changes since then are one new head checkpoint, one new worker stub, and four
+upstream repos that no longer exist (only one of them had data on disk).
 
 A repo counts as **complete** only when every shard named in
 `model.safetensors.index.json` resolves to a real file *and* the byte sum reaches
@@ -69,12 +72,14 @@ ablation, not a checkpoint.
 
 ## Downloaded but no recipe uses them
 
-Nothing in `recipes/` references these. **~226 GiB** in total.
+Nothing in `recipes/` references these. **~256 GiB** in total (sum of the rows
+below, measured 2026-10-13).
 
 | Model | Nodes | GiB | Note |
 |---|---|---|---|
 | `dealignai/Qwen3.8-Flash-Next-ABLITERATED-NVFP4` | W | 125.9 | **Worker-only, largest orphan.** 206 shards, complete. No recipe, and absent from the head, so unusable as-is |
 | `openai/gpt-oss-20b` | H | 38.4 | The tp1 `gpt-oss-120b` attempts in `FLEET-2026-09-27.md` are a different, larger checkpoint |
+| `nvidia/Qwen3.6-35B-A3B-NVFP4` | H | 21.8 | **NEW since 2026-10-06.** Complete. Not launched by sparkrun: on 2026-10-13 it was being served on head port 8000 by a separate `nemoclaw-vllm` container (`nvcr.io/nvidia/vllm`). The two `qwen3.6-35b-a3b-nvfp4*` recipes point at `unsloth/Qwen3.6-35B-A3B-NVFP4`, which is not cached on either node |
 | `nvidia/Qwen3.8-27B-NVFP4` | H | 20.4 | Complete, but every Qwen3.8-27B recipe points at the `unsloth` or `orcarouter` repo instead |
 | `sakamakismile/Huihui-Qwen3.6-27B-abliterated-NVFP4-MTP` | H | 19.1 | Complete; no recipe was ever written for it |
 | `google/gemma-4-E4B-it` | H | 14.9 | Base BF16, not a serving target here |
@@ -84,15 +89,53 @@ Nothing in `recipes/` references these. **~226 GiB** in total.
 | `BAAI/bge-reranker-v2-m3` | W | 2.1 | Used by `benchmarks/redteam/RESTORE-vllm-reranker.sh`, not by a recipe |
 | `Qwen/Qwen3-Embedding-0.6B` | H | 1.1 | Gateway embedding model, not a recipe target |
 
-## Partial download — blocks a recipe
+## Partial download — source gone, cannot be completed
 
-| Model | Nodes | On disk | Expected | Blocks |
+| Model | Nodes | On disk | Expected | Recipe |
 |---|---|---|---|---|
-| `Mia-AiLab/GLM-5.3-Flash-EXL3-TR3-4bpw` | H | **81.6 GiB / 59 of 120 shards** | 163.7 GiB (`MANIFEST.json`, 328 files) | `glm-5.3-flash-exl3-tp2` |
+| `Mia-AiLab/GLM-5.3-Flash-EXL3-TR3-4bpw` | H | **81.6 GiB / 59 of 120 shards** | 163.7 GiB (`MANIFEST.json`, 328 files; 67 present) | none — `glm-5.3-flash-exl3-tp2` removed 2026-10-13 |
 
 This is the only sizeable GLM-5.3 checkpoint present anywhere, it is **half
-downloaded**, and it is on the head only — a tp2 recipe needs both nodes. That
-is why row 32 has never been benchmarked.
+downloaded**, and it is on the head only. On 2026-10-13 the Hugging Face repo
+returned "repository not found" with a valid token, so it is deleted, renamed
+or private and the remaining 61 shards cannot be fetched from it. The 81.6 GiB
+is unusable as it stands; it was left on disk. This repo has no
+`model.safetensors.index.json`, so the script under *Regenerate* reports it as
+COMPLETE — count shards against `MANIFEST.json` instead.
+
+## Recipes removed because the checkpoint source is gone
+
+Five recipes were deleted on 2026-10-13. Each pointed at a Hugging Face repo
+that returned "repository not found" with a valid token, and none had usable
+weights on either node.
+
+| Removed recipe | Checkpoint | On disk |
+|---|---|---|
+| `glm-5.3-flash-exl3-tp2` | `Mia-AiLab/GLM-5.3-Flash-EXL3-TR3-4bpw` | partial, head only (above) |
+| `qwen3.8-flash-next-nvfp4-tp1` | `Mia-AiLab/Qwen3.8-Flash-Next-NVFP4` | nothing |
+| `qwen3.8-flash-next-nvfp4-tp2-sglang` | `Mia-AiLab/Qwen3.8-Flash-Next-NVFP4` | nothing |
+| `mimo-v2.5-tp2` | `Xiaomi/MiMo-V2.5` (a wrong id; research on 2026-10-05 named `XiaomiMiMo/MiMo-V2.5` and `lukealonso/MiMo-V2.5-NVFP4`, 170.9 GiB, as the real repos — not re-checked) | nothing |
+| `ornith-1.5-35b-a3b-nvfp4-tp1` | `spark-ai/Ornith-1.5-35B-A3B-NVFP4` | nothing |
+
+## Recipes whose checkpoint is not downloaded
+
+48 recipes remain. 27 have complete weights on every node they need (the table
+at the top). The other 21 point at repos that still exist upstream but are a
+stub here or not cached at all:
+
+- **Stub on the head (10 recipes):** `deepseek-v4-flash-nvfp4-atlas-ep2`,
+  `deepseek-v4-flash-vision-exp-tp2`, `glm-5.3-flash-exl3-1x-spark`,
+  `glm-5.3-flash-nvfp4-tp2`, `glm-5.3-flash-uncensored-nvfp4-tp2`,
+  `hy3-295b-nvfp4-tp2`, `ling-3.0-flash-int4-tp1-sglang`,
+  `north-mini-code-1.0-nvfp4-tp1`, `qwen3.8-27b-nvfp4-tp1-alt`,
+  `qwen3.8-27b-nvfp4-tp1-sglang`.
+- **Not cached on either node (11 recipes):** `deepseek-v4-flash-tp2`,
+  `gemma-4-26b-a4b-nvfp4-tp1`, `gemma-4-31b-it-nvfp4-tp1`,
+  `leanstral-1.5-119b-a6b-tp2`, `muse-glimmer-30b-nvfp4-tp1`,
+  `nemotron-3.5-lightning-30b-a3b-nvfp4-tp1-sglang`,
+  `nemotron-labs-3-puzzle-75b-nvfp4-tp1`, `nex-n2.5-mini-uncensored-nvfp4-tp1`,
+  `qwen3.6-27b-nvfp4-tp1`, `qwen3.6-35b-a3b-nvfp4-tp1`,
+  `qwen3.6-35b-a3b-nvfp4-unofficial-tp1`.
 
 ## Stubs — config only, no weights
 
@@ -108,7 +151,8 @@ Metadata-only caches. Each needs a full download before its recipe can run.
 `nvidia/Qwen3.8-Flash-Next-NVFP4` · `orcarouter/GLM-5.3-Flash-Uncensored-NVFP4` ·
 `turboderp/GLM-5.3-Flash-exl3`
 
-**Worker (1):** `unsloth/Qwen3.8-Flash-Next-GGUF`
+**Worker (2):** `unsloth/Qwen3.8-Flash-Next-GGUF` ·
+`local-inference-lab/GLM-5.3-Flash-NVFP4-Spark` (new since 2026-10-06)
 
 ## By family, as asked
 
