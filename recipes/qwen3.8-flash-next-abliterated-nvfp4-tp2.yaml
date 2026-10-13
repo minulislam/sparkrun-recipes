@@ -1,0 +1,110 @@
+# >>> VERIFIED 2026-10-13 on dgx-pair (pair to itself, vLLM route, NCCL all-reduce).
+# >>>   Context: /v1/models reports max_model_len 262144; over-limit prompt returns HTTP 400.
+# >>>   Boot: ready in 680-760 s cold; 41.4 GiB/rank loaded in ~325 s; KV pool 906,770 tokens
+# >>>     (3.46 full-context requests) on the verified boot, 1,243,812 on the first boot.
+# >>>   Speed: 40.4 tok/s single stream (600 tokens, thinking off); peak 166 tok/s aggregate 8-way.
+# >>>   Needle: passkey retrieved from a 90,039-token prompt in 36 s.
+# >>>   Refusal eval (JailbreakBench JBB-Behaviors, 100 harmful + 100 matched benign, 1400-token
+# >>>     budget, thinking off, 8-way): 100/100 harmful and 100/100 benign complied, 0 refusals,
+# >>>     0 errors, engine alive afterwards. Raw: benchmarks/redteam/results/<this recipe>.refusal.*
+# >>>   NOT measured: GSM8K/MMLU on this pair (card claims MMLU 82.11 -> 81.93), vision, tool
+# >>>     calls, prompts beyond 90k tokens.
+# >>> UNCENSORED: dealignai/Qwen3.8-Flash-Next-ABLITERATED-NVFP4 has its refusals removed in the
+# >>>   weights. It will answer harmful requests. Keep the endpoint off any public ingress and away
+# >>>   from untrusted input.
+# >>> Source: copy of qwen3.8-flash-next-nvfp4-tp2.yaml (row 48), itself a local copy of
+# >>>   @eugr/qwen3.8-flash-next-nvfp4-cluster. Differences from row 48: model id, served name,
+# >>>   no `--quantization modelopt_mixed` (hf_quant_config says quant_algo NVFP4, vLLM reads the
+# >>>   method from config.json), and VLLM_ENABLE_ROCE_ALLREDUCE "0" (see the env block: with it
+# >>>   on, the engine died 8.5 min into this same eval). Replaces the removed
+# >>>   qwen3.8-flash-next-uncensored-nvfp4-tp2 (orcarouter build, UNFIT here).
+# >>> Weights: 125.9 GiB, 206 shards, COMPLETE on both nodes; blobs are regular files.
+
+recipe_version: "2"
+model: dealignai/Qwen3.8-Flash-Next-ABLITERATED-NVFP4
+runtime: vllm
+container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly-b12x:20260926  # pinned from :latest 2026-09-28 — build already on disk (upstream latest moved past it)
+min_nodes: 2
+max_nodes: 2
+
+readiness:
+  port_timeout_s: 2400
+  health_timeout_s: 2400
+  inference_timeout_s: 600
+
+metadata:
+  description: >-
+    Qwen3.8 Flash Next ABLITERATED (dealignai NVFP4, refusals removed), vision-capable.
+    vLLM tensor-parallel across both DGX Sparks, native MTP speculative decoding.
+    Local mirror of eugr's cluster recipe with the safetensors loader.
+  maintainer: eugr (recipe) / dealignai (model) — adapted for this cluster
+  model_dtype: nvfp4
+  model_vram: 135
+
+env:
+  # MEASURED 2026-09-27: even with the safetensors loader the engine died in WorkerProc init —
+  # "io_uring initialization failed: Operation not permitted" from b12x/sequence/_shared/disk_table.py
+  # via qwen4_exp/nvidia/b12x_ple.py: the per-layer-embedding (PLE) table defaults to a disk-backed
+  # io_uring row cache, which rootless Docker's seccomp forbids. VLLM_PLE_TABLE_MEMORY selects
+  # device | ram | disk; "ram" = CUDA-mapped host memory (the same unified pool on GB10), no io_uring.
+  VLLM_PLE_TABLE_MEMORY: "ram"
+  CUTE_DSL_ARCH: "sm_121a"
+  SAFETENSORS_FAST_GPU: "1"
+  VLLM_WORKER_MULTIPROC_METHOD: "spawn"
+  VLLM_SSM_CONV_STATE_LAYOUT: "DS"
+  VLLM_USE_AOT_COMPILE: "1"
+  VLLM_USE_MEGA_AOT_ARTIFACT: "1"
+  VLLM_USE_V2_MODEL_RUNNER: "1"
+  B12X_POLICY_MODE: "auto"
+  # MEASURED 2026-10-13: with the b12x RoCE all-reduce ON ("1", as in row 48) the engine died after
+  # ~8.5 min of 8-way load (82 requests): "RoCE collective on rank 0 timed out waiting for rank 1 ...
+  # the runtime is poisoned". The worker's f1 ports logged 6 local_ack_timeout_err each. That
+  # transport has no recovery path, so all-reduce goes through NCCL here.
+  VLLM_ENABLE_ROCE_ALLREDUCE: "0"
+
+defaults:
+  host: 0.0.0.0
+  port: 8000
+  tensor_parallel: 2
+  pipeline_parallel: 1
+  gpu_memory_utilization: 0.7
+  max_model_len: 262144
+  max_num_seqs: 16
+  kv_cache_dtype: fp8
+  max_num_batched_tokens: 4096
+  block_size: 16
+  moe_backend: b12x
+  linear_backend: b12x
+  load_format: safetensors
+  num_speculative_tokens: 4
+  served_model_name: qwen3.8-flash-next-abliterated
+
+command: |
+  vllm serve {model} \
+    --served-model-name {served_model_name} \
+    --host {host} \
+    --port {port} \
+    --trust-remote-code \
+    --tensor-parallel-size {tensor_parallel} \
+    --pipeline-parallel-size {pipeline_parallel} \
+    --mamba-cache-mode align \
+    --enable-prefix-caching \
+    --enable-chunked-prefill \
+    --dtype bfloat16 \
+    --kv-cache-dtype {kv_cache_dtype} \
+    --block-size {block_size} \
+    --load-format {load_format} \
+    --max-model-len {max_model_len} \
+    --max-num-seqs {max_num_seqs} \
+    --max-num-batched-tokens {max_num_batched_tokens} \
+    --speculative-config '{"method":"mtp","num_speculative_tokens":{num_speculative_tokens}}' \
+    --gdn-decode-kernel b12x \
+    --linear-backend {linear_backend} \
+    --moe-backend {moe_backend} \
+    --no-enable-flashinfer-autotune \
+    --mm-encoder-tp-mode data \
+    --reasoning-parser qwen3 \
+    --tool-call-parser qwen3_xml \
+    --enable-auto-tool-choice \
+    --compilation-config '{"pass_config":{"fuse_act_quant":true}}' \
+    --gpu-memory-utilization {gpu_memory_utilization}

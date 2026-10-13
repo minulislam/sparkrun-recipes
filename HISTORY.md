@@ -431,3 +431,81 @@ These disagree across sessions and were not resolved by this compilation.
     path `/home/devops/workspace/code`.
 12. Image mirroring into spark-arena waits on a GHCR token with
     `write:packages`.
+
+## 2026-10-13 (afternoon): Flash-class uncensored recipes, in progress
+
+Spec `docs/superpowers/specs/2026-10-13-flash-uncensored-recipes-design.md`, plan
+`docs/superpowers/plans/2026-10-13-flash-uncensored-recipes.md`. State at 13:20,
+nothing committed:
+
+- Removed six recipes (`git rm`, staged): `qwen3.8-flash-next-uncensored-nvfp4-tp2`,
+  `glm-5.3-flash-nvfp4-tp2`, `glm-5.3-flash-exl3-1x-spark`,
+  `glm-5.3-flash-uncensored-nvfp4-tp2`, `deepseek-v4-flash-tp2`,
+  `deepseek-v4-flash-vision-exp-tp2`. 42 recipes remained before the additions.
+- Deleted nine config-only stubs on the head and one on the worker (largest 33 MB).
+  Left alone: `nvidia/DeepSeek-V4-Flash-NVFP4` stub, the 81.6 GiB partial GLM EXL3
+  download, the orcarouter Flash-Next weights (all three await the user), and the
+  worker's 1.7 GiB partial `unsloth/Qwen3.8-Flash-Next-GGUF`.
+- Added four recipes, all UNVERIFIED (lint and dry run only):
+  `qwen3.8-flash-next-abliterated-nvfp4-tp2`, `deepseek-v4-flash-0731-tp2`,
+  `deepseek-v4-flash-0731-refusal-dial-tp2`, `glm-5.3-flash-abliterated-nvfp4-tp2`,
+  plus `recipes/mods/glm53-sm121-topk`.
+- `dealignai/Qwen3.8-Flash-Next-ABLITERATED-NVFP4` copied worker to head: 206 shards,
+  125.9 GiB, blobs are regular files on both nodes.
+- Built `spark-forge/vllm-dsv4-rank1:20261013` (image ID `976974ad7fd3`) and loaded it
+  on both nodes; provenance in `images/deepseek-rank1/README.md`.
+- Downloads running on the head at about 12 MiB/s: `deepseek-ai/DeepSeek-V4-Flash-0731`
+  (155 GiB), then `drowzeys/keys-GLM-5.3-Flash-NVFP4-ablit-l15-43-mtp-l45` (184 GiB)
+  and its DFlash2 drafter. Logs in `~/.cache/sparkrun-jobs/`. Each needs an rsync to
+  the worker afterwards.
+- Blocked: no launch has been attempted. `nemoclaw-vllm` was started on the head at
+  12:55 (restart policy `unless-stopped`), holds port 8000 and 52 GiB, and answered
+  requests at 12:59. Every TP2 launch needs it stopped.
+
+### 2026-10-13 15:25 update
+
+- `qwen3.8-flash-next-abliterated-nvfp4-tp2` VERIFIED (INDEX row 59): 262,144 context,
+  40.4 tok/s c=1, peak 166 tok/s 8-way, JBB 100/100 harmful and 100/100 benign, engine
+  alive after 200 requests, passkey at 90k tokens. The first boot, with the b12x RoCE
+  all-reduce on, died 8.5 min into the same eval (`RoCE collective on rank 0 timed out
+  waiting for rank 1`); the verified boot used `VLLM_ENABLE_ROCE_ALLREDUCE=0`.
+- `glm-5.3-flash-abliterated-nvfp4-tp2` booted and reported 262,144 context but answered
+  nothing: the first request hung and the engine died on a `sample_tokens` RPC timeout.
+  Each rank held 105.2 GiB (86 % of the node); details in the recipe header.
+- **Worker management NIC is unstable.** `enP7s7` (r8127) on `gx10-spark` logged link-down
+  at 12:06:56, 12:08:21, 12:09:04, 12:09:14, 14:06:55, 14:08:13, 14:09:52, 14:10:59,
+  14:11:36, 14:12:29, 14:14:23, 14:14:59, 14:20:04, 14:25:12, 14:29:11, 14:30:45, 14:32:39,
+  14:45:42, 14:46:31, 14:48:01 and 15:11:38, and has stayed down since the last one
+  (`carrier=0`, 43 carrier changes since the 11:16 boot; the head's NIC shows 2). The
+  14:06-14:08 drops bracket the first Qwen engine death at 14:07:35 and the 15:11:38 drop
+  coincides with the GLM hang. The worker stays reachable at `gx10-spark.local`
+  (10.99.10.11, ConnectX-7). Cause not established; it may also bear on the Step-3.7 and
+  orcarouter DeepSeek sustained-load failures. Root is needed to bounce the interface.
+- `nemoclaw-vllm` (head) and `vllm-reranker` (worker) are stopped at the user's word and
+  not yet restored.
+- DeepSeek 0731 download restarted twice (a transfer setting stalled it, then it was paused
+  to relieve head memory during the GLM boot); running again at 15:25. GLM checkpoint and
+  drafter are complete on both nodes, blobs hardlinked on the head.
+- sparkrun's planner compares `metadata.model_vram` against the node's 121 GiB, so the
+  value must be GiB of weights; a decimal-GB figure made it refuse a launch that fits.
+
+### 2026-10-13 19:05 update
+
+- `glm-5.3-flash-abliterated-nvfp4-tp2` VERIFIED on its second boot (INDEX row 62): 3 GiB
+  KV pin, 262,144 context, 21.9 tok/s c=1, JBB 100/100 and 100/100, alive after 81 min,
+  about 102 GiB per rank. The management NIC dropped 12 times during that run with no
+  effect, so the first boot's hang is more likely memory pressure than the NIC.
+- `deepseek-v4-flash-0731-refusal-dial-tp2` serves at 393,216 context with a 1.35M-token
+  KV pool, boots at lambda 0, and switches live: 7/8 sampled harmful prompts refused at 0,
+  1/8 at 1.5, 7/8 after returning to 0; 44.1 tok/s c=1. Full JBB at lambda 1.5 with
+  default thinking: 82/100 harmful (15 refusals, 3 truncated), 95/100 benign (5
+  truncated), 0 errors, alive after 59 min, peak 117.5 tok/s 4-way. A lambda 2.0 run was
+  in progress at commit time. The weights are revision `7872f01`; the directions were
+  extracted against `9e165c3` and work regardless.
+- `deepseek-v4-flash-0731-tp2` (stock) is lint and dry-run only.
+- The worker was rebooted at 15:33 and 15:51 by the user. Its management NIC kept
+  flapping (34 drops by 18:35) and failed one launch with an SSH timeout; the user
+  reported fixing the port at 18:58 and no drop was logged after 18:35:11.
+- Not done: GLM NVFP4-KV long-context recipe (mod and topk copy prepared, image not
+  pulled), stock DeepSeek verification, full `MODELS.md` re-measure, weight deletions,
+  restoring `vllm-reranker` (worker) and `nemoclaw-vllm` (head), row 48's RoCE setting.

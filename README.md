@@ -57,7 +57,7 @@ Quick launch example:
 # Single-node (TP=1)
 sparkrun run ./recipes/qwen3.8-27b-nvfp4-tp1.yaml --cluster dgx-pair --tp 1 --dry-run
 # Multi-node (TP=2)
-sparkrun run ./recipes/deepseek-v4-flash-tp2.yaml --cluster dgx-pair --tp 2 --dry-run
+sparkrun run ./recipes/deepseek-v4-flash-0731-tp2.yaml --cluster dgx-pair --tp 2 --dry-run
 # SGLang
 sparkrun run ./recipes/qwen3.8-27b-nvfp4-tp1-sglang.yaml --cluster dgx-pair --tp 1 --dry-run
 ```
@@ -78,9 +78,10 @@ MiaAI-Lab provides several multi-node recipes (see [`INDEX.md`](INDEX.md) rows #
 
 | Recipe | Model | Nodes | Notes |
 |---|---|---|---|
-| `deepseek-v4-flash-tp2.yaml` | DeepSeek-V4-Flash | 2 | 1M context, FP8 KV |
-| `deepseek-v4-flash-vision-exp-tp2.yaml` | DeepSeek-V4-Flash Vision-Exp | 2 | Multimodal image |
-| `glm-5.3-flash-nvfp4-tp2.yaml` | GLM-5.3 Flash NVFP4 | 2 | Multimodal; Ray TP=2 |
+| `deepseek-v4-flash-0731-tp2.yaml` | DeepSeek-V4-Flash 0731 (stock) | 2 | 262k context, FP8 KV; unverified |
+| `deepseek-v4-flash-0731-refusal-dial-tp2.yaml` | DeepSeek-V4-Flash 0731 + runtime refusal dial | 2 | 393k context; uncensoring switchable over HTTP |
+| `glm-5.3-flash-abliterated-nvfp4-tp2.yaml` | GLM-5.3 Flash NVFP4, abliterated | 2 | 262k context, DFlash2; verified 2026-10-13 |
+| `qwen3.8-flash-next-abliterated-nvfp4-tp2.yaml` | Qwen3.8 Flash-Next NVFP4, abliterated | 2 | 262k context; verified 2026-10-13 |
 | `leanstral-1.5-119b-a6b-tp2.yaml` | Leanstral 1.5 119B | 2 | MoE |
 | `hy3-295b-nvfp4-tp2.yaml` | Hy3 295B | 2 | Tool calling; Ray TP=2 |
 | `inkling-small-nvfp4-tp2-sglang.yaml` | Inkling-Small NVFP4 | 2 | DSpark; SGLang |

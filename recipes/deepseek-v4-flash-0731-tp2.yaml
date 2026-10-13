@@ -1,0 +1,97 @@
+# >>> UNVERIFIED — written 2026-10-13, not yet launched. Replace this block with measured facts.
+# >>> STOCK (censored) DeepSeek-V4-Flash-0731. The uncensored route for this checkpoint is the
+# >>>   runtime dial in deepseek-v4-flash-0731-refusal-dial-tp2.yaml, which serves these same weights.
+# >>> Source: local copy of @official/deepseek-v4-flash-0731-b12x-dspark-vllm (2026-10-13), changed
+# >>>   only where this pair needs it:
+# >>>   1. container pinned to the dated b12x build already on disk (upstream uses :latest).
+# >>>   2. `--load-format safetensors` instead of instanttensor and no `mods:` — the b12x loaders need
+# >>>      io_uring, which rootless Docker's seccomp blocks here (same fix as rows 43 and 48).
+# >>>   3. gpu_memory_utilization 0.82 (upstream 0.85 has caused NVRM OOM at boot on this pair).
+# >>>   4. max_model_len 262144 stated explicitly instead of `auto`, so a collapsed context shows up
+# >>>      as a boot failure rather than a silently tiny window.
+# >>>   5. a readiness block for the ~93 GiB/node safetensors cold load.
+# >>> num_speculative_tokens stays 5: the checkpoint declares dspark_block_size 5.
+# >>> Needs the pair to itself. Weights: 155.4 GiB, must be COMPLETE on both nodes.
+
+recipe_version: "2"
+model: deepseek-ai/DeepSeek-V4-Flash-0731
+runtime: vllm
+container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly-b12x:20260926
+min_nodes: 2
+max_nodes: 2
+
+readiness:
+  port_timeout_s: 3600
+  health_timeout_s: 3600
+  inference_timeout_s: 600
+
+metadata:
+  description: >-
+    DeepSeek V4 Flash 0731 (stock, FP4 experts / FP8 rest, in-checkpoint DSpark drafter).
+    b12x serving stack, tensor-parallel over 2 Sparks. Local copy of the official recipe.
+  maintainer: spark-arena official (recipe) / deepseek-ai (model) — adapted for this cluster
+  model_dtype: fp4
+  model_vram: 167
+
+env:
+  CUTE_DSL_ARCH: "sm_121a"
+  VLLM_USE_AOT_COMPILE: "1"
+  VLLM_USE_BREAKABLE_CUDAGRAPH: "0"
+  VLLM_USE_MEGA_AOT_ARTIFACT: "1"
+  VLLM_MEMORY_PROFILE_INCLUDE_ATTN: "1"
+  VLLM_USE_FLASHINFER_SAMPLER: "1"
+  VLLM_USE_B12X_WO_PROJECTION: "1"
+  VLLM_USE_B12X_MHC: "1"
+  VLLM_USE_B12X_FP8_GEMM: "1"
+  VLLM_USE_B12X_MOE: "1"
+  VLLM_USE_B12X_SPARSE_INDEXER: "1"
+  VLLM_MOE_SKIP_PADDING: "0"
+  VLLM_USE_V2_MODEL_RUNNER: "1"
+  B12X_MLA_SM120_UNIFIED: "1"
+  B12X_MOE_FORCE_A8: "1"
+
+defaults:
+  host: 0.0.0.0
+  port: 8000
+  tensor_parallel: 2
+  gpu_memory_utilization: 0.82
+  kv_cache_dtype: fp8
+  max_model_len: 262144
+  block_size: 256
+  max_num_seqs: 8
+  max_num_batched_tokens: 8192
+  max_cudagraph_capture_size: 48
+  num_speculative_tokens: 5
+  load_format: safetensors
+  thinking: "true"
+  reasoning_effort: "high"
+  served_model_name: deepseek-v4-flash-0731
+
+command: |
+  vllm serve {model} \
+    --served-model-name {served_model_name} \
+    --host {host} \
+    --port {port} \
+    --trust-remote-code \
+    --tensor-parallel-size {tensor_parallel} \
+    --kv-cache-dtype {kv_cache_dtype} \
+    --block-size {block_size} \
+    --max-model-len {max_model_len} \
+    --max-num-seqs {max_num_seqs} \
+    --max-num-batched-tokens {max_num_batched_tokens} \
+    --gpu-memory-utilization {gpu_memory_utilization} \
+    --enable-prefix-caching \
+    --tokenizer-mode deepseek_v4 \
+    --tool-call-parser deepseek_v4 \
+    --enable-auto-tool-choice \
+    --reasoning-parser deepseek_v4 \
+    --reasoning-config '{"reasoning_parser":"deepseek_v4","reasoning_start_str":"","reasoning_end_str":""}' \
+    --default-chat-template-kwargs.thinking={thinking} \
+    --default-chat-template-kwargs.reasoning_effort={reasoning_effort} \
+    --load-format {load_format} \
+    --moe-backend b12x \
+    --linear-backend b12x \
+    --attention-backend B12X \
+    --max-cudagraph-capture-size {max_cudagraph_capture_size} \
+    --compilation-config '{"cudagraph_mode":"FULL_AND_PIECEWISE","custom_ops":["all"]}' \
+    --speculative-config '{"method":"dspark","num_speculative_tokens":{num_speculative_tokens},"draft_sample_method":"probabilistic","attention_backend":"B12X"}'

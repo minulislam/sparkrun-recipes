@@ -1,0 +1,118 @@
+# >>> UNVERIFIED — written 2026-10-13, not yet launched. Replace this block with measured facts.
+# >>> RUNTIME ABLITERATION for DeepSeek-V4-Flash-0731. Serves the STOCK deepseek-ai weights; the
+# >>>   uncensoring is 757 KB of rank-1 refusal directions baked into the image at
+# >>>   /opt/refusal/refusal_dirs.safetensors and applied by a vLLM patch. Strength is a dial:
+# >>>     curl -XPOST 10.10.20.10:8000/admin/refusal_lambda -d '{"lambda": 1.5}'   # uncensored
+# >>>     curl -XPOST 10.10.20.10:8000/admin/refusal_lambda -d '{"lambda": 0}'     # stock, bit-exact
+# >>>   Boots at lambda 0 (upstream default) so a restart never comes up uncensored by accident.
+# >>>   Upstream measured 9/10 refusals at 0 and 0/10 at 1.5 with no loss in DSpark acceptance.
+# >>> lambda>0 also lowers resistance to PROMPT INJECTION — keep this endpoint off any public
+# >>>   ingress and do not point it at untrusted input. /admin/refusal_lambda has no auth.
+# >>> A lambda change invalidates the prefix cache: the first request after a switch re-prefills
+# >>>   (upstream: 76 s for a 137k-token prompt).
+# >>> Source: https://github.com/pocharlies/deepseek-v4-flash-rank1-refusal-projection at commit
+# >>>   2e90d82 and https://huggingface.co/pocharlies/deepseek-v4-flash-0731-uncensored-abliterated-refusal-directions.
+# >>>   Upstream publishes no image. `spark-forge/vllm-dsv4-rank1:20261013` was built here from
+# >>>   their deploy/Dockerfile on ghcr.io/anemll/dspark-vllm-gx10:0.1.1 (vLLM 0.25.2.dev0); its
+# >>>   in-build tests passed. Provenance: images/deepseek-rank1/README.md. The image exists only
+# >>>   on these two nodes; rebuild from that README if it is lost.
+# >>> Serve flags follow the anemll two-Spark launcher (drowzeys/keys-Enhanced-Abliterated-
+# >>>   DeepSeekv4-Flash-DSpark-0731-1M-Context-on-Two-DGX-Sparks, docker-compose.dspark.yml) with
+# >>>   pocharlies' measured settings: 393,216 context, 4 sequences, 8192 batched tokens, DSpark k=5,
+# >>>   nvfp4_ds_mla KV. Local change: gpu_memory_utilization 0.82 (pocharlies ran 0.85).
+# >>>   NOT carried over: that launcher's ~15 runtime hotfix scripts. If long-context KV misbehaves,
+# >>>   its patches/fix-nvfp4-ds-mla-long-context.patch is the first thing to try.
+# >>> The anemll base has no DeepSeek-V4 vision code; fine here, 0731 is text-only.
+# >>> Needs the pair to itself. Weights: 155.4 GiB, must be COMPLETE on both nodes.
+
+recipe_version: "2"
+model: deepseek-ai/DeepSeek-V4-Flash-0731
+runtime: vllm
+container: spark-forge/vllm-dsv4-rank1:20261013
+min_nodes: 2
+max_nodes: 2
+
+executor_config:
+  entrypoint: ""
+
+readiness:
+  port_timeout_s: 3600
+  health_timeout_s: 3600
+  inference_timeout_s: 600
+
+metadata:
+  description: >-
+    DeepSeek V4 Flash 0731, stock weights, with a runtime rank-1 refusal projection.
+    Lambda is switchable over HTTP without a restart; 0 is bit-exact to the stock model.
+    Tensor-parallel over 2 Sparks, in-checkpoint DSpark drafter, nvfp4_ds_mla KV.
+  maintainer: pocharlies (method, patch) / deepseek-ai (model) — image built and recipe written for this cluster
+  model_dtype: fp4
+  kv_dtype: nvfp4_ds_mla
+  model_vram: 167
+
+env:
+  VLLM_REFUSAL_DIRS: /opt/refusal/refusal_dirs.safetensors
+  VLLM_ALLOW_LONG_MAX_MODEL_LEN: "1"
+  VLLM_SPARSE_INDEXER_MAX_LOGITS_MB: "256"
+  VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS: "0"
+  VLLM_USE_FLASHINFER_SAMPLER: "1"
+  VLLM_USE_BREAKABLE_CUDAGRAPH: "0"
+  VLLM_EXECUTE_MODEL_TIMEOUT_SECONDS: "1800"
+  VLLM_USE_B12X_MOE: "1"
+  TORCH_CUDA_ARCH_LIST: "12.1a"
+  FLASHINFER_CUDA_ARCH_LIST: "12.1a"
+  CUTE_DSL_ARCH: "sm_121a"
+  FLASHINFER_DISABLE_VERSION_CHECK: "1"
+  DG_JIT_USE_NVRTC: "0"
+  DG_JIT_NVCC_COMPILER: /usr/local/cuda/bin/nvcc
+  PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
+
+defaults:
+  host: 0.0.0.0
+  port: 8000
+  tensor_parallel: 2
+  gpu_memory_utilization: 0.82
+  kv_cache_dtype: nvfp4_ds_mla
+  max_model_len: 393216
+  block_size: 256
+  max_num_seqs: 4
+  max_num_batched_tokens: 8192
+  long_prefill_token_threshold: 1024
+  max_cudagraph_capture_size: 24
+  num_speculative_tokens: 5
+  served_model_name: deepseek-v4-flash-0731-dial
+
+post_commands:
+  - 'echo "ablation on:  curl -XPOST {head_host}:{port}/admin/refusal_lambda -d ''{{\"lambda\": 1.5}}''"'
+  - 'echo "ablation off: curl -XPOST {head_host}:{port}/admin/refusal_lambda -d ''{{\"lambda\": 0}}''"'
+
+command: |
+  vllm serve {model} \
+    --served-model-name {served_model_name} \
+    --host {host} \
+    --port {port} \
+    --trust-remote-code \
+    --tensor-parallel-size {tensor_parallel} \
+    --pipeline-parallel-size 1 \
+    --kv-cache-dtype {kv_cache_dtype} \
+    --block-size {block_size} \
+    --max-model-len {max_model_len} \
+    --max-num-seqs {max_num_seqs} \
+    --max-num-batched-tokens {max_num_batched_tokens} \
+    --long-prefill-token-threshold {long_prefill_token_threshold} \
+    --max-cudagraph-capture-size {max_cudagraph_capture_size} \
+    --gpu-memory-utilization {gpu_memory_utilization} \
+    --enable-prefix-caching \
+    --enable-prompt-tokens-details \
+    --async-scheduling \
+    --enable-chunked-prefill \
+    --speculative-config '{"method":"dspark","num_speculative_tokens":{num_speculative_tokens},"draft_sample_method":"probabilistic"}' \
+    --tokenizer-mode deepseek_v4 \
+    --moe-backend flashinfer_b12x \
+    --tool-call-parser deepseek_v4 \
+    --enable-auto-tool-choice \
+    --reasoning-parser deepseek_v4 \
+    --reasoning-config '{"reasoning_parser":"deepseek_v4","reasoning_start_str":"<think>","reasoning_end_str":"</think>"}' \
+    --default-chat-template-kwargs '{"thinking":true,"reasoning_effort":"low"}' \
+    --generation-config vllm \
+    --enable-flashinfer-autotune

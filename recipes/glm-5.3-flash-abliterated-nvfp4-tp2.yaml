@@ -1,0 +1,147 @@
+# >>> VERIFIED 2026-10-13 on dgx-pair (pair to itself), second boot, 3 GiB KV pin.
+# >>>   Context: /v1/models reports max_model_len 262144; over-limit prompt returns HTTP 400.
+# >>>   Boot: ready in ~9.5 min with warm JIT caches (~16 min cold); 90.77 GiB/rank in 468 s;
+# >>>     KV pool 295,230 tokens = 1.13 full-context requests. ONE long request at a time.
+# >>>   Speed: 21.9 tok/s single stream (500 tokens); peak 64 tok/s aggregate at 2-way.
+# >>>   Needle: passkey retrieved from a 40,031-token prompt in 22.6 s (past the ~24K point where
+# >>>     the unpatched image dies). Nothing longer than 40k tokens was tested.
+# >>>   Thinking stays off: no <think> text in content.
+# >>>   Refusal eval (JailbreakBench JBB-Behaviors, 100 harmful + 100 matched benign, 1400-token
+# >>>     budget, 2-way): 100/100 harmful and 100/100 benign complied, 0 refusals, 0 errors, engine
+# >>>     alive after 81 min. Raw: benchmarks/redteam/results/<this recipe>.refusal.*
+# >>>   NOT measured: GSM8K/MMLU, vision, tool calls, prompts beyond 40k tokens.
+# >>> MEMORY IS OVER THE REPO CEILING AND CANNOT BE BROUGHT UNDER IT AT 262K. Non-KV cost is 99.2
+# >>>   GiB per rank, so with the 3 GiB pin each rank holds ~102 GiB, 84 % of the node; the head
+# >>>   ran at 4.7-6.2 GiB available with swap in use for the whole run. Nothing else can share
+# >>>   either node, and a heavier host load could tip it into OOM.
+# >>> FIRST BOOT (6 GiB pin, 4 seqs) FAILED: 105.2 GiB/rank, head at 3.5 GiB available with swap
+# >>>   full, first request hung 302 s, engine died on `RPC call to sample_tokens timed out`.
+# >>>   The worker's management NIC dropped link in the same second, but it also dropped 12 times
+# >>>   during the verified run with no effect, so memory pressure is the likelier cause.
+# >>> UNCENSORED: drowzeys/keys-GLM-5.3-Flash-NVFP4-ablit-l15-43-mtp-l45 has its refusals removed
+# >>>   in the weights (card: 32/32 bypass, 0 refuse, 0 garble). It will answer harmful requests.
+# >>>   Keep the endpoint off any public ingress and away from untrusted input. Gated repo with
+# >>>   automatic approval; the account behind sparkrun's HF token has accepted the terms.
+# >>> Source: flags from github.com/tonyd2wild/GLM-5.3-Flash-NVFP4-DFlash2-2x-DGX-Spark at commit
+# >>>   d061f26, launch-glm53-vllm-tp2-dflash2.sh, which the model card names as its serving recipe.
+# >>>   Carried over verbatim: marlin MoE, DFlash2 k=7, fp8_e4m3 KV, --block-size 2304,
+# >>>   --enforce-eager, 8192 batched tokens, glm47/glm45 parsers, image limit 2 / video 0,
+# >>>   JIT throttles (MAX_JOBS=2, FLASHINFER_NVCC_THREADS=1).
+# >>>   Local changes:
+# >>>   1. gpu_memory_utilization 0.82 (upstream 0.85 is over this pair's ceiling).
+# >>>   2. --kv-cache-memory 6 GiB instead of 8: this is the RedHat-layout body, 92 GiB per node,
+# >>>      heavier than the nvidia build the launcher defaults to. With the pin, vLLM does not
+# >>>      subtract its profile from the budget, so the pin is what bounds memory, not the util.
+# >>>   3. chat template is the checkpoint's own chat_template.thinking-off.jinja (card: the stock
+# >>>      template ignores enable_thinking and leaks reasoning into content).
+# >>>   4. max_num_seqs 4 (upstream 6) to match the smaller KV pool.
+# >>>   5. NCCL/Gloo interface pins and the RoCE all-reduce bundle are NOT set here; comm env comes
+# >>>      from the dgx-pair cluster definition.
+# >>>   6. No --quantization flag: config.json says compressed-tensors and must be honored.
+# >>> mods/glm53-sm121-topk replaces a decode-time top-k kernel that kills the engine past ~24K
+# >>>   context on GB10. Without it this recipe will die on the first long prompt.
+# >>> The DFlash2 drafter (incoai/GLM-5.3-Flash-DFlash2, CC BY-NC-ND 4.0) must be pre-cached on
+# >>>   both nodes; containers run offline.
+# >>> Fit is tight: 197.8 GB of weights. If the engine cannot hold 262144, drop max_model_len to
+# >>>   131072 and record it. The long-context route for this checkpoint is the NVFP4-KV recipe
+# >>>   (glm-5.3-flash-abliterated-nvfp4kv-long-tp2), not this one.
+# >>> Needs the pair to itself. Drop page cache on both nodes before launch if memory is tight.
+
+recipe_version: "2"
+model: drowzeys/keys-GLM-5.3-Flash-NVFP4-ablit-l15-43-mtp-l45
+model_revision: cecebc0ff0bbce8eefaa19667290a79d0216cd0e
+runtime: vllm
+container: ghcr.io/tonyd2wild/vllm-glm53-flash:sm121-v11-dflash2
+min_nodes: 2
+max_nodes: 2
+
+executor_config:
+  entrypoint: ""
+  user: root
+  shm_size: 32gb
+
+mods:
+  - mods/glm53-sm121-topk
+
+readiness:
+  port_timeout_s: 3600
+  health_timeout_s: 3600
+  inference_timeout_s: 600
+
+metadata:
+  description: >-
+    GLM-5.3-Flash abliterated (Keys anchor-safe transplant on the RedHat NVFP4 body),
+    vision-capable. vLLM tensor-parallel over 2 Sparks, DFlash2 speculative decoding k=7,
+    fp8 KV, thinking off by template.
+  maintainer: tonyd2wild (serving recipe, image) / drowzeys (model) — adapted for this cluster
+  model_params: 320B
+  model_dtype: nvfp4
+  kv_dtype: fp8
+  # 184 = GiB of weight files (197.8 GB decimal). sparkrun's planner compares this against the
+  # node's 121 GiB, so the decimal figure (198) made it reject a launch that fits: 92 GiB/rank.
+  model_vram: 184
+
+distribution_config:
+  models:
+    entries:
+      - name: "{model}"
+        revision: cecebc0ff0bbce8eefaa19667290a79d0216cd0e
+      - name: incoai/GLM-5.3-Flash-DFlash2
+        revision: bf582e4eacc1810f76656d1811693ff6c6737d2a
+
+env:
+  VLLM_ENGINE_READY_TIMEOUT_S: "3600"
+  MAX_JOBS: "2"
+  FLASHINFER_NVCC_THREADS: "1"
+  PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
+  TORCH_CUDA_ARCH_LIST: "12.1a"
+  FLASHINFER_CUDA_ARCH_LIST: "12.1a"
+  FLASHINFER_DISABLE_VERSION_CHECK: "1"
+  TORCH_NCCL_ASYNC_ERROR_HANDLING: "1"
+  TILELANG_CACHE_DIR: /cache/huggingface/.glm53-cache/tilelang
+  TRITON_CACHE_DIR: /cache/huggingface/.glm53-cache/triton
+
+defaults:
+  host: 0.0.0.0
+  port: 8000
+  tensor_parallel: 2
+  gpu_memory_utilization: 0.82
+  max_model_len: 262144
+  max_num_seqs: 2
+  max_num_batched_tokens: 8192
+  block_size: 2304
+  kv_cache_dtype: fp8_e4m3
+  # 3 GiB = ~296k tokens (measured 10.1 KiB/token: 6 GiB gave 593,005). Non-KV cost is 99.2 GiB
+  # per rank, so this lands near 102 GiB, 84 % of the node. 6 GiB put it at 105.2 GiB with swap full.
+  kv_cache_memory: 3221225472
+  num_speculative_tokens: 7
+  model_rev: cecebc0ff0bbce8eefaa19667290a79d0216cd0e
+  draft_path: /cache/huggingface/hub/models--incoai--GLM-5.3-Flash-DFlash2/snapshots/bf582e4eacc1810f76656d1811693ff6c6737d2a
+  chat_template: /cache/huggingface/hub/models--drowzeys--keys-GLM-5.3-Flash-NVFP4-ablit-l15-43-mtp-l45/snapshots/cecebc0ff0bbce8eefaa19667290a79d0216cd0e/chat_template.thinking-off.jinja
+  served_model_name: glm-5.3-flash-abliterated
+
+command: |
+  vllm serve {model} \
+    --revision {model_rev} \
+    --served-model-name {served_model_name} \
+    --host {host} \
+    --port {port} \
+    --trust-remote-code \
+    --tensor-parallel-size {tensor_parallel} \
+    --gpu-memory-utilization {gpu_memory_utilization} \
+    --max-model-len {max_model_len} \
+    --max-num-seqs {max_num_seqs} \
+    --block-size {block_size} \
+    --moe-backend marlin \
+    --speculative-config '{"method":"dflash","model":"{draft_path}","num_speculative_tokens":{num_speculative_tokens}}' \
+    --kv-cache-dtype {kv_cache_dtype} \
+    --kv-cache-memory {kv_cache_memory} \
+    --enforce-eager \
+    --max-num-batched-tokens {max_num_batched_tokens} \
+    --tool-call-parser glm47 \
+    --enable-auto-tool-choice \
+    --reasoning-parser glm45 \
+    --default-chat-template-kwargs '{"enable_thinking":false}' \
+    --chat-template {chat_template} \
+    --limit-mm-per-prompt '{"image":2,"video":0}' \
+    --distributed-executor-backend mp

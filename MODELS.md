@@ -6,6 +6,36 @@ Measured live on both nodes **2026-10-13** (previous pass 2026-10-06): head
 changes since then are one new head checkpoint, one new worker stub, and four
 upstream repos that no longer exist (only one of them had data on disk).
 
+> **Update 2026-10-13 evening — read this before the tables below.** The tables were
+> measured on the morning of 2026-10-13 and have NOT been re-measured since. Changes made
+> that afternoon, each checked on both nodes at the time:
+>
+> | Checkpoint | Nodes | GiB | Recipe |
+> |---|---|---|---|
+> | `dealignai/Qwen3.8-Flash-Next-ABLITERATED-NVFP4` | H W (was W only) | 125.9 | `qwen3.8-flash-next-abliterated-nvfp4-tp2` (verified) |
+> | `drowzeys/keys-GLM-5.3-Flash-NVFP4-ablit-l15-43-mtp-l45` | H W (new) | 184.3 | `glm-5.3-flash-abliterated-nvfp4-tp2` (verified) |
+> | `incoai/GLM-5.3-Flash-DFlash2` (drafter) | H W (new) | 2.2 | same |
+> | `deepseek-ai/DeepSeek-V4-Flash-0731` | H W (was a head stub) | 155.4 | `deepseek-v4-flash-0731-tp2`, `deepseek-v4-flash-0731-refusal-dial-tp2` |
+>
+> - Six recipes were removed (see `INDEX.md` open items), so the recipe counts and the
+>   "not downloaded" lists below are out of date for the GLM-5.3, Qwen3.8 Flash-Next and
+>   DeepSeek-V4 families.
+> - Ten config-only stubs were deleted: on the head `0xSero/deepseek-v4-flash-0731-spark`,
+>   `0xSero/GLM-5.3-Flash-EXL3-Spark`, `deepseek-ai/DeepSeek-V4-Flash-Vision-Exp`,
+>   `LibertAIDAI/GLM-5.3-Flash-NVFP4`, `local-inference-lab/GLM-5.3-Flash-NVFP4-Spark`,
+>   `nvidia/Qwen3.8-Flash-Next-NVFP4`, `orcarouter/GLM-5.3-Flash-Uncensored-NVFP4`,
+>   `RadixArk/Qwen3.8-Flash-Next-NVFP4`, `turboderp/GLM-5.3-Flash-exl3`; on the worker
+>   `local-inference-lab/GLM-5.3-Flash-NVFP4-Spark`.
+> - Still on disk and awaiting the user's decision: `orcarouter/Qwen3.8-Flash-Next-Uncensored-NVFP4`
+>   (170.9 GiB per node, its recipe is gone), the 81.6 GiB partial
+>   `Mia-AiLab/GLM-5.3-Flash-EXL3-TR3-4bpw` (confirmed not resumable: none of its 59 large
+>   blobs match the successor repo), and the `nvidia/DeepSeek-V4-Flash-NVFP4` stub.
+> - `~/.cache/huggingface/spark-forge-local/glm53-flash-ablit-topk2044` on both nodes is a
+>   hardlinked copy of the GLM checkpoint with `index_topk` 2044 in `config.json`. It takes
+>   no extra space and is for the planned NVFP4-KV long-context recipe.
+> - The DeepSeek 0731 cache directory on the head also holds 16 leftover `.incomplete`
+>   files (about 6.5 GiB) from a stalled download attempt.
+
 A repo counts as **complete** only when every shard named in
 `model.safetensors.index.json` resolves to a real file *and* the byte sum reaches
 `metadata.total_size`. Repos with no weight files at all are **stubs** — HF
