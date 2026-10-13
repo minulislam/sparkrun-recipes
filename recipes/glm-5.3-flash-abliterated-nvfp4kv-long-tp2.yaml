@@ -1,0 +1,134 @@
+# >>> UNFIT ON dgx-pair AS OF 2026-10-13 — boots and answers, but long prompts get the engine killed.
+# >>>   It loads: the overlays apply to the re-published 10-shard checkpoint, B12X_MLA_SPARSE comes
+# >>>   up with kv_gmem_stride=368 / nvfp4_ds_mla, 92.91 GiB/rank loads in ~505 s, ready in ~12 min.
+# >>>   Launch needs `--no-auto-detect`: sparkrun's planner does not know this KV format and its
+# >>>   estimate tips the fit check over.
+# >>>   Three boots, same outcome:
+# >>>     3 GiB pin, 524,288 ctx: KV 580,461 tokens. 103.3 GiB/rank, head at 2.7 GiB available.
+# >>>       Short prompt ok, 23.4 tok/s (500 tokens). A 40k-token prompt: head earlyoom
+# >>>       (`-m 2`, kills at 2 % = 2.49 GiB available) SIGTERMed VLLM::Worker_TP.
+# >>>     2 GiB pin, 384,000 ctx: refused at boot (2 GiB holds 372,736 tokens).
+# >>>     2 GiB pin, 368,640 ctx: KV 368,640 tokens (1.00x). 101.8 GiB/rank, head at 3.9 GiB.
+# >>>       40,031-token needle answered in 22.5 s (low-water 3.6 GiB). A 250k-token prompt ran
+# >>>       130 s, drove the head to 2.4 GiB and earlyoom killed the worker again (and, before it,
+# >>>       an unrelated llama-server process on the head).
+# >>>   So the extra context cannot be used here: prefill needs transient memory the head does not
+# >>>   have. It would need ~3 GiB more free on the head (fewer host processes or a lower earlyoom
+# >>>   floor, both the operator's call). The 262k recipe is the working GLM route.
+# >>> LONG-CONTEXT profile of the abliterated GLM-5.3-Flash checkpoint: an NVFP4 (nvfp4_ds_mla)
+# >>>   KV cache roughly halves the bytes per cached token, so the same memory that gives the
+# >>>   262k recipe (glm-5.3-flash-abliterated-nvfp4-tp2) one request can hold a 524k one.
+# >>>   Trade-offs against that recipe: no DFlash2 drafter (in-checkpoint MTP k=2, which upstream
+# >>>   found decode-neutral), --enforce-eager, prefix caching off. Upstream: ~22 tok/s.
+# >>> UNCENSORED: same weights as the 262k recipe; refusals are removed. Keep it off any public
+# >>>   ingress and away from untrusted input.
+# >>> Source: github.com/drowzeys/keys-vLLm.0.27.1-GLM-5.3-Flash-NVFP4-NVFP4KV-1M-Context-Abliterated
+# >>>   at commit b4e7547 (Apache-2.0), launcher/launch.sh with ENGINE=official. Upstream reports
+# >>>   1,048,576 context on 2x GB10 at utilization 0.85 with 1.24 GB free at the peak.
+# >>>   Carried over: image, the 15 vLLM overlay files (as mods/glm53-nvfp4kv-overlays; upstream
+# >>>   bind-mounts them), B12X_MLA_SPARSE attention, nvfp4_ds_mla KV with KV_FP8_ROPE=1,
+# >>>   --block-size 7168, 4096 batched tokens, 2 sequences, marlin MoE, --enforce-eager,
+# >>>   --disable-custom-all-reduce, MTP k=2, glm47/glm45 parsers.
+# >>>   Local changes:
+# >>>   1. max_model_len 524288, not 1M, and a 3 GiB KV pin (upstream pins 5.9 GiB for 1M). On this
+# >>>      pair the model alone costs ~99 GiB per rank; the 262k recipe died at 105 GiB per rank and
+# >>>      ran at 102. Raise both only after measuring headroom.
+# >>>   2. gpu_memory_utilization 0.82 nominal. The KV pin bypasses it, as in the 262k recipe.
+# >>>   3. Comm pins come from the dgx-pair cluster definition, not from here.
+# >>>   4. Image retagged with a date; same digest as upstream's
+# >>>      sha256:f722ec19d8260833e948d5bf46949d9ac574841860060caa24213cf550d1a41b.
+# >>>   5. Chat template is the checkpoint's chat_template.thinking-off.jinja.
+# >>> SERVES FROM A LOCAL DIRECTORY, not the HF cache layout: upstream needs `index_topk` 2044 in
+# >>>   config.json (the SM120/b12x kernels are fixed at a 2048-wide index and GLM adds a tail), and
+# >>>   --hf-config-path breaks vLLM's sparse-backend detection. So
+# >>>   ~/.cache/huggingface/spark-forge-local/glm53-flash-ablit-topk2044 on BOTH nodes is a
+# >>>   hardlinked copy of snapshot cecebc0 with only config.json changed (zero extra space).
+# >>>   sparkrun does not manage or sync that directory. Recreate it on each node with
+# >>>   mods/glm53-nvfp4kv-overlays/make_topk2044_dir.py if the checkpoint is re-downloaded.
+# >>> Upstream predates the checkpoint's 2026-09-27 re-publish (RedHat-layout body). Whether the
+# >>>   overlays still load this layout is exactly what the first boot tests.
+# >>> Needs the pair to itself.
+
+recipe_version: "2"
+model: drowzeys/keys-GLM-5.3-Flash-NVFP4-ablit-l15-43-mtp-l45
+model_revision: cecebc0ff0bbce8eefaa19667290a79d0216cd0e
+runtime: vllm
+container: ghcr.io/drowzeys/keys-vllm-glm53-flash-nvfp4-ablit:b12x-cu130-20261013
+min_nodes: 2
+max_nodes: 2
+
+executor_config:
+  entrypoint: ""
+  user: root
+  shm_size: 32gb
+
+mods:
+  - mods/glm53-nvfp4kv-overlays
+
+readiness:
+  port_timeout_s: 3600
+  health_timeout_s: 3600
+  inference_timeout_s: 900
+
+metadata:
+  description: >-
+    GLM-5.3-Flash abliterated, long-context profile: NVFP4 KV cache (nvfp4_ds_mla) via the
+    B12X sparse-MLA backend, 524k context on 2 Sparks, in-checkpoint MTP k=2, eager mode.
+  maintainer: drowzeys (serving recipe, image, overlays, model) — adapted for this cluster
+  model_params: 320B
+  model_dtype: nvfp4
+  kv_dtype: nvfp4_ds_mla
+  # GiB of weight files; sparkrun's planner compares this against the node's 121 GiB.
+  model_vram: 184
+
+env:
+  GLM53_PAD_ROPE: "auto"
+  KV_FP8_ROPE: "1"
+  VLLM_PLUGINS: ""
+  VLLM_ENABLE_CUDA_COMPATIBILITY: "0"
+  VLLM_ENGINE_READY_TIMEOUT_S: "3600"
+  VLLM_ALLOW_LONG_MAX_MODEL_LEN: "1"
+  TORCH_CUDA_ARCH_LIST: "9.0;10.0;12.0"
+  PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
+
+defaults:
+  host: 0.0.0.0
+  port: 8000
+  tensor_parallel: 2
+  gpu_memory_utilization: 0.82
+  max_model_len: 368640
+  max_num_seqs: 2
+  max_num_batched_tokens: 4096
+  block_size: 7168
+  kv_cache_dtype: nvfp4_ds_mla
+  kv_cache_memory: 2147483648
+  num_speculative_tokens: 2
+  model_path: /cache/huggingface/spark-forge-local/glm53-flash-ablit-topk2044
+  served_model_name: glm-5.3-flash-abliterated-long
+
+command: |
+  vllm serve {model_path} \
+    --served-model-name {served_model_name} \
+    --host {host} \
+    --port {port} \
+    --trust-remote-code \
+    --tensor-parallel-size {tensor_parallel} \
+    --distributed-executor-backend mp \
+    --kv-cache-dtype {kv_cache_dtype} \
+    --speculative-config '{"method":"mtp","num_speculative_tokens":{num_speculative_tokens}}' \
+    --tool-call-parser glm47 \
+    --reasoning-parser glm45 \
+    --enable-auto-tool-choice \
+    --default-chat-template-kwargs '{"enable_thinking":false}' \
+    --chat-template {model_path}/chat_template.thinking-off.jinja \
+    --max-model-len {max_model_len} \
+    --max-num-seqs {max_num_seqs} \
+    --block-size {block_size} \
+    --no-enable-prefix-caching \
+    --kv-cache-memory {kv_cache_memory} \
+    --max-num-batched-tokens {max_num_batched_tokens} \
+    --gpu-memory-utilization {gpu_memory_utilization} \
+    --disable-custom-all-reduce \
+    --moe-backend marlin \
+    --enforce-eager \
+    --attention-backend B12X_MLA_SPARSE

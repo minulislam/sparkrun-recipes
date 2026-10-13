@@ -26,15 +26,16 @@ upstream repos that no longer exist (only one of them had data on disk).
 >   `nvidia/Qwen3.8-Flash-Next-NVFP4`, `orcarouter/GLM-5.3-Flash-Uncensored-NVFP4`,
 >   `RadixArk/Qwen3.8-Flash-Next-NVFP4`, `turboderp/GLM-5.3-Flash-exl3`; on the worker
 >   `local-inference-lab/GLM-5.3-Flash-NVFP4-Spark`.
-> - Still on disk and awaiting the user's decision: `orcarouter/Qwen3.8-Flash-Next-Uncensored-NVFP4`
->   (170.9 GiB per node, its recipe is gone), the 81.6 GiB partial
->   `Mia-AiLab/GLM-5.3-Flash-EXL3-TR3-4bpw` (confirmed not resumable: none of its 59 large
->   blobs match the successor repo), and the `nvidia/DeepSeek-V4-Flash-NVFP4` stub.
+> - Deleted 2026-10-14 at the user's word, with no backup (`/mnt/nas` was not mounted):
+>   `orcarouter/Qwen3.8-Flash-Next-Uncensored-NVFP4` on both nodes (170.9 GiB each, plus its
+>   20 hardlinked copies in the head's shared blob store; still published upstream, so it
+>   can be re-downloaded) and the 82.3 GiB partial `Mia-AiLab/GLM-5.3-Flash-EXL3-TR3-4bpw`
+>   on the head (source gone, not resumable). The `nvidia/DeepSeek-V4-Flash-NVFP4` stub and
+>   its `deepseek-v4-flash-nvfp4-atlas-ep2` recipe were left in place.
 > - `~/.cache/huggingface/spark-forge-local/glm53-flash-ablit-topk2044` on both nodes is a
 >   hardlinked copy of the GLM checkpoint with `index_topk` 2044 in `config.json`. It takes
 >   no extra space and is for the planned NVFP4-KV long-context recipe.
-> - The DeepSeek 0731 cache directory on the head also holds 16 leftover `.incomplete`
->   files (about 6.5 GiB) from a stalled download attempt.
+> - Free space after the deletions: head 852 GiB, worker 1.3 TiB.
 
 A repo counts as **complete** only when every shard named in
 `model.safetensors.index.json` resolves to a real file *and* the byte sum reaches

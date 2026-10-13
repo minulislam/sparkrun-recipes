@@ -215,7 +215,7 @@ requests, the third does not survive sustained load.
   `glm-5.3-flash-uncensored-nvfp4-tp2`) plus the unlisted `glm-5.3-flash-exl3-1x-spark`.
   Reasons and replacements: `docs/superpowers/specs/2026-10-13-flash-uncensored-recipes-design.md`.
   Row numbers are not reused. The orcarouter Flash-Next weights (171 GiB per node) and the
-  81.6 GiB partial GLM-5.3 EXL3 download are still on disk pending the user's decision.
+  partial GLM-5.3 EXL3 download were deleted on 2026-10-14.
 
 - **Five recipes removed 2026-10-13 — checkpoint source gone.** Rows 12, 25, 28, 32
   and 33 (`qwen3.8-flash-next-nvfp4-tp1`, `ornith-1.5-35b-a3b-nvfp4-tp1`,

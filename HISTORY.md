@@ -527,3 +527,33 @@ nothing committed:
   40k was 5.6 GiB, about 3 GiB above the earlyoom line.
 - sparkrun's planner rejects launches whose own KV estimate overshoots; `--no-auto-detect`
   skips the estimate.
+
+## 2026-10-14: weight cleanup
+
+- Deleted at the user's word ("Delete Orcarouter Flash-Next … And also delete which you
+  must have to"): `orcarouter/Qwen3.8-Flash-Next-Uncensored-NVFP4` on both nodes (170.9 GiB
+  each, plus 20 hardlinked shared-store copies on the head), the 82.3 GiB partial
+  `Mia-AiLab/GLM-5.3-Flash-EXL3-TR3-4bpw` on the head, and 16 leftover `.incomplete` files
+  (6.4 GiB) from the stalled DeepSeek download. No backup was taken: `/mnt/nas` was not a
+  mountpoint. The orcarouter repo is still published and can be re-downloaded.
+- A dry run first confirmed no recipe referenced either model and no file was shared with
+  another checkpoint. Afterwards the five kept Flash-family checkpoints on the head had
+  zero broken shards. Free space: head 852 GiB, worker 1.3 TiB.
+- Not deleted: the `nvidia/DeepSeek-V4-Flash-NVFP4` stub and `deepseek-v4-flash-nvfp4-atlas-ep2`
+  (a runnable-in-principle stock route that only lacks its download), and the worker's
+  1.7 GiB partial `unsloth/Qwen3.8-Flash-Next-GGUF`.
+- `glm-5.3-flash-abliterated-nvfp4kv-long-tp2` and `mods/glm53-nvfp4kv-overlays` committed
+  as UNFIT so the work is not lost; the recipe is deliberately absent from the INDEX tables.
+
+### Open items carried forward
+
+1. Worker management NIC `enP7s7` still dropped link at 19:45:29 and 19:55:31 on 10-13
+   after the user's fix.
+2. Head earlyoom (`-m 2`) killed an unrelated Hermes `llama-server` during the GLM
+   long-context test on 10-13; it was not restarted.
+3. `nemoclaw-vllm` on the head is still stopped (stopped 10-13 at the user's word).
+4. Row 48 still sets `VLLM_ENABLE_ROCE_ALLREDUCE=1`, the transport that killed the first
+   abliterated Flash-Next boot; not changed, not soak-tested.
+5. The 262k GLM recipe was tested only to 40k-token prompts.
+6. `MODELS.md` tables need a full re-measure; only its dated update block is current.
+7. GSM8K/MMLU were not run on any of the four new recipes.
