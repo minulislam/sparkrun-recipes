@@ -279,8 +279,9 @@ updated to 48 recipes).
   was clean on both nodes. No two-node launch was run to confirm.
   The accompanying `nmcli con mod … connection.interface-name` did not
   survive the netplan round-trip (the field read back empty), so the two
-  profiles are still unbound and the fault can return at the next worker
-  reboot.
+  profiles were still unbound at that point. Corrected the same day, about
+  10:55: the binding was made permanent by editing the two netplan files
+  (open item 1 has the detail).
 - `ssh 10.10.20.11` had been failing because an NVIDIA Sync block in the head's
   `~/.ssh/config` redirected it to `10.99.10.11`. The redirect was disabled;
   `sparkrun setup check` reaches both nodes again.
@@ -380,12 +381,14 @@ These disagree across sessions and were not resolved by this compilation.
 
 ## Open items as of 2026-10-13
 
-1. Make the worker's ConnectX-7 profile binding permanent. The runtime repair
-   on 10-13 holds until the next reboot; `netplan-enp1s0f1np1` and
-   `netplan-enP2p1s0f1np1` still have no interface binding. Read
-   `/etc/netplan/90-NM-422c4968-….yaml` and `90-NM-9d5a63e4-….yaml` on the
-   worker (root only) before choosing a fix. Also run one two-node launch to
-   confirm the fabric end to end.
+1. Worker ConnectX-7 binding: fixed 2026-10-13 about 10:55. The user deleted
+   the `match: {}` line from `/etc/netplan/90-NM-422c4968-….yaml` and
+   `90-NM-9d5a63e4-….yaml`, then ran `netplan generate` and
+   `nmcli connection reload`. All four worker profiles now report their own
+   interface and no unbound ethernet profile is left (backup of the old files
+   in `/root/netplan.bak-2026-10-13` on the worker). Still to do: confirm it
+   holds across a real worker reboot, and run one two-node launch to prove the
+   fabric end to end.
 2. Done 2026-10-13: the 10-13 changes were committed as `4e12ab5`, pushed,
    and the registry updated. Cause of item 1, seen in the two netplan files:
    each defines the port under its own name but carries `match: {}`, which
