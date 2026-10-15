@@ -557,3 +557,14 @@ nothing committed:
 5. The 262k GLM recipe was tested only to 40k-token prompts.
 6. `MODELS.md` tables need a full re-measure; only its dated update block is current.
 7. GSM8K/MMLU were not run on any of the four new recipes.
+
+### 2026-10-14: vLLM #54150 exposure check
+
+- #54150 (silent U+FFFD from ModelOpt NVFP4 MoE checkpoints) is caused by vLLM's marlin repack
+  using the gate global scale for both halves of the fused gate/up GEMM. Only checkpoints whose
+  per-expert gate and up `weight_scale_2` differ are affected.
+- `dealignai/Qwen3.8-Flash-Next-ABLITERATED-NVFP4` is ModelOpt 0.46.0, but all 24,576 expert
+  gate/up scale pairs are equal (plain safetensors header read), so it is not exposed.
+  `drowzeys/keys-GLM-5.3-Flash-NVFP4-ablit-l15-43-mtp-l45` is compressed-tensors (immune).
+  DeepSeek 0731 is the official FP8 checkpoint with the runtime refusal dial.
+- Recheck any new ModelOpt NVFP4 MoE checkpoint the same way before adopting it.
