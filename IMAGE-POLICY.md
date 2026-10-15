@@ -46,8 +46,8 @@ Read out of the images, not inferred from their names.
 `ghcr.io/spark-arena/dgx-vllm-eugr-nightly:20260927` | 0.30.1rc1.dev220+g24c9772d1 | 2026-09-27 | **best available** — full label chain, real rc tag |
 `ghcr.io/spark-arena/...-b12x:20260926` | 0.1.dev21510+g1794dcf18 | 2026-09-26 | full labels but vLLM is untagged main, so no CVE baseline |
 
-The genuine build sources are `~/workspace/llm/spark-vllm-docker` (eugr fork) and
-`~/workspace/projects/spark-vllm-docker` (a3refaat fork). Both currently carry
+The genuine build sources are `~/workspace/llm/serving/spark-vllm-docker` (eugr fork) and
+`~/workspace/llm/serving/spark-vllm-docker-a3refaat` (a3refaat fork). Both currently carry
 uncommitted local modifications.
 
 ## Findings, worst first
