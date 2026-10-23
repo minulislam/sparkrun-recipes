@@ -568,3 +568,96 @@ nothing committed:
   `drowzeys/keys-GLM-5.3-Flash-NVFP4-ablit-l15-43-mtp-l45` is compressed-tensors (immune).
   DeepSeek 0731 is the official FP8 checkpoint with the runtime refusal dial.
 - Recheck any new ModelOpt NVFP4 MoE checkpoint the same way before adopting it.
+
+### 2026-10-16: NAS mount check
+
+- `/mnt/nas/dgx-spark` is an fstab `x-systemd.automount` with `idle-timeout=600`; it unmounts
+  after 10 idle minutes and remounts on first access. Check with `ls` on the path, not
+  `mountpoint` alone, before concluding it is down.
+- Mounted on both nodes (NFSv4, 29T free), but not writable for backups: new files land as
+  uid 1000, so "Map all users to admin" squash is no longer in effect, and `model-backup/` is
+  `r-x` for uid 1024. Weight deletions stay blocked until the export squash is restored in DSM.
+- Later the same day: squash was restored in DSM, and writes now land as uid 1024. `model-backup/`
+  is still not writable because the directories have mode `r-x`.
+- Decision: move `model-backup/` (2.3T) and `nodes/` (51G) to the new `ai-models` share
+  (`/volume1/ai-models`, exported to 10.10.20.0/24), copying server-side in DSM. Proxmox,
+  chaindata, template and dump stay in `dgx-spark`. Pre-move inventory:
+  `~/nas-move-baseline-2026-10-16/` (model-backup: 2050 files, 1216 symlinks, 2,522,101,640,426 B;
+  nodes: 138,761 files, 136 symlinks, 54,733,409,615 B).
+
+## 2026-10-16: retry of the crashed / OOM-killed / unverified uncensored recipes
+
+- `deepseek-v4-flash-vision-uncensored-tp2` RE-VERIFIED: full 1,048,576 context (6.4 GiB
+  `vllm-reranker` co-tenant on the worker absorbed), 80/80 requests at 8-way over 5 min
+  (~108 tok/s aggregate, 0 errors) — the 10-02 sustained-load crash does not reproduce —
+  passkey at 66.5k, vision answers correctly. One caveat: on the first boot, the first
+  vision request after a cold start killed the engine (RuntimeError: cancelled →
+  EngineDead); a relaunch warmed with text served the identical request fine. Warm with a
+  text request before the first image.
+- `deepseek-v4-flash-vision-uncensored-ep2` UNFIT: b12x MoE kernel rejects EP at load —
+  "Mxfp4 MoE backend 'B12X_MXFP4_BF16' does not support ... ep_size=2". Two identical
+  deaths; crashed sparkrun containers auto-remove, so logs were captured by snapshotting
+  /tmp/sparkrun_serve.log during boot.
+- `glm-5.3-flash-abliterated-nvfp4kv-long-tp2` VERIFIED (new INDEX row 63): 368,640 ctx,
+  passkey PASS up to 266k prompt tokens, 20.5 tok/s c=1, oversized prompt 400s correctly.
+  Head low-water 3.3 GiB vs 2.49 GiB earlyoom line — the 10-13 kills were ~3 GiB of extra
+  head residents, and the margin is still only ~0.8 GiB. 262k recipe remains the default.
+- `nex-n2.5-mini-uncensored-nvfp4-tp1` still blocked: the HF account behind the token has
+  not accepted the orcarouter/Nex-N2.5-mini-Uncensored-NVFP4 gate (403 on files). Also
+  needs `-o entrypoint=''`. User action: accept the gate on the model page, then relaunch.
+- The auto-mode classifier declined stopping `vllm-reranker` (worker co-tenant, up via
+  restart policy after a ~35 h-ago reboot); all tests ran with it up. It did not matter.
+
+### 2026-10-16 (later): Nex verification and the two-Qwen colocation experiment
+
+- `nex-n2.5-mini-uncensored-nvfp4-tp1` UNFIT: gate accepted, 23.9 GiB downloaded, boots and
+  serves 262k on `vllm/vllm-openai:v0.24.0` with `-o entrypoint=''` — but every completion
+  is a run of `!` at temp 0 and 0.7. Stock image's NVFP4 path misfires on SM121; retest on
+  a GB10-tuned image (eugr nightly) before any further use.
+- Running Qwen3.8 Flash ablit (tp2) and a Qwen3.8-27B at the same time **does not work**:
+  (1) 27B-vision (orcarouter) beside Flash on the head dies after its multi-modal warmup —
+  at util ≤0.22 nothing is left for KV, at 0.24 vLLM's free-memory check fails (28.0 free
+  < 29.2 asked); (2) the refusal-dial 27B booting on the worker memory-spiked Flash's rank1
+  to death (executor shutdown; same cascade as the GLM earlyoom story); (3) the text-only
+  dial DID boot beside Flash on the head at 0.22/16k, but Flash's tp2 job died during that
+  boot window; (4) with the dial resident first, sparkrun's placement refuses to put a tp2
+  rank on an occupied host (`only placed 1 of 2 ranks`), with or without --no-auto-detect.
+  Flash itself needs gpu-mem 0.64 at 131k (0.58 and 0.60 leave no KV: fixed overhead is
+  ~9-10 GiB/rank over the 63 GiB of weights).
+- **What does work concurrently: one solo model per node.** Verified live: refusal-dial 27B
+  on the head (16k) + Nex on the worker answered simultaneous requests (27B: 144 in 0.3 s).
+  sparkrun places two tp1 jobs happily; only multi-node jobs demand exclusive hosts.
+- End state: test jobs stopped; `qwen3.8-flash-next-abliterated-nvfp4-tp2` relaunched at
+  its recipe defaults (0.7, 262k). A `sovereign-qdrant` container appeared on the worker at
+  ~09:00 (not sparkrun's, left alone).
+
+### 2026-10-24: ai-models move status
+
+- Not yet verifiable: `/mnt/nas/ai-models` is not in the head's fstab or mounted, and the worker
+  (10.10.20.11) does not answer ping or SSH.
+- `model-backup/` grew after the 10-16 baseline (now 63 models). Current inventory:
+  `~/nas-move-baseline-2026-10-24/` (model-backup: 3142 files, 2361 symlinks,
+  3,401,563,523,114 B; nodes unchanged). Verify the copy against this one.
+
+### 2026-10-24 (later): Flash-abliterated full benchmark + 214k context verification
+
+- Worker mgmt outage root-caused: `enP7s7` (the wired mgmt NIC that holds 10.10.20.11) has
+  NO-CARRIER — physical link down; the host itself was up 5 days. Temp fix (user-run, root):
+  wifi `wlP9s9` joined "Rayan's Mesh" (same 10.10.20.0/24 L2, DHCP gave 10.10.20.197), then
+  `ip addr add 10.10.20.11/24 dev wlP9s9`. **NON-PERSISTENT** — redo after any worker reboot,
+  or promote to an nmcli profile. The wired NIC still needs a physical fix (cable/switch port).
+- The 2026-10-22 ladder wedge (3/6 cells, stuck entering d8192×c8 for ~66 min) is explained by
+  that NIC drop mid-run, not a recipe fault: the full ladder completed clean on 2026-10-24 over
+  the wifi mgmt path. The stale wedged node_1 container (Up 45 h) was torn down once the worker
+  was reachable again.
+- `qwen3.8-flash-next-abliterated-nvfp4-tp2` benchmarked on the canonical quick ladder (profile
+  reconstructed to match FLEET-2026-09-27 and the existing results_*.json: depth 0/8k/32k ×
+  c=1/8, pp2048/tg128, 3 runs/cell): 39.1 tok/s c=1 / 78.5 8-way at d0; 35.2 / 76.0 at 8k;
+  36.9 / 71.1 at 32k — within a few percent of row 48 across the ladder. Raw:
+  `benchmarks/results_qwen38-flash-next-abliterated-tp2.{json,csv}` + mem file (model load
+  41.41 GiB/rank in 344 s; KV 14.96 GiB; pool 1,015,984 tokens = 3.88× at 262k).
+- Full-context needle: PASS at 329 / 35,553 / 133,670 / 214,568 prompt tokens (101 s at 214k,
+  temp 0, thinking off), head low-water ≥21.3 GiB, no OOM — extends the 2026-10-13 "90k only"
+  bar to ~214k. Large-codebase full-context use is proven near the 262k ceiling.
+- Instance stopped afterwards; both nodes idle. INDEX row 59 and the recipe header updated to
+  BENCHMARKED 2026-10-24. Not committed (commit only when asked).

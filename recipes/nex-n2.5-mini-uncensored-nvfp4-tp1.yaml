@@ -1,3 +1,9 @@
+# >>> UNFIT ON dgx-pair AS OF 2026-10-16 — boots and serves (262,144 ctx, worker, --gpu-mem 0.70,
+# >>>   -o entrypoint='' required: the image bakes ENTRYPOINT ["vllm","serve"]) but output is pure
+# >>>   garbage: every completion is a run of '!' at temperature 0 and 0.7. Same family of symptom as
+# >>>   the SM12x NVFP4 kernel failures in vLLM #54150's side table (CUTLASS collapse). The stock
+# >>>   vllm/vllm-openai:v0.24.0 image has no GB10 tuning; retest on the eugr nightly before trusting it.
+# >>>   Weights are complete on the head (23.9 GiB, gate accepted 2026-10-16).
 # >>> UNVERIFIED on this cluster — source: https://huggingface.co/orcarouter/Nex-N2.5-mini-Uncensored-NVFP4
 # >>>   (orcarouter collection: Nex-N2.5 Uncensored / Abliterated)
 # >>> GATED (auto-approve): open the model page above while logged in to the HF account

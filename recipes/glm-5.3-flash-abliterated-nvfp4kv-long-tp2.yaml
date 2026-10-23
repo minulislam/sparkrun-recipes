@@ -1,3 +1,9 @@
+# >>> VERIFIED 2026-10-16 (INDEX row 63) — the 10-13 earlyoom kills do not reproduce with a quieter head.
+# >>>   368,640 ctx served; passkey PASS at 321/35k/132k/264k/266k prompt tokens; 20.5 tok/s c=1; 264k
+# >>>   prefill 159-160 s. Head low-water 3.3 GiB vs the 2.49 GiB earlyoom line: only ~0.8 GiB margin.
+# >>>   The 10-13 failures were ~3 GiB of extra head residents (nemoclaw era); any sizeable head co-tenant
+# >>>   will re-kill long prefills. Launch with --no-auto-detect. 262k recipe stays the default GLM route.
+# >>> Superseded banner (2026-10-13), kept for the memory math:
 # >>> UNFIT ON dgx-pair AS OF 2026-10-13 — boots and answers, but long prompts get the engine killed.
 # >>>   It loads: the overlays apply to the re-published 10-shard checkpoint, B12X_MLA_SPARSE comes
 # >>>   up with kv_gmem_stride=368 / nvfp4_ds_mla, 92.91 GiB/rank loads in ~505 s, ready in ~12 min.

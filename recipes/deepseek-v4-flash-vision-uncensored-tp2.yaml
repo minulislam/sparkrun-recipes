@@ -2,6 +2,10 @@
 # >>>   full 1,048,576-token context, vision (image_url -> correct answer), tool calling (deepseek_v4
 # >>>   parser), DSpark speculative decoding. ~57 tok/s single stream, weights load in 193 s, ready
 # >>>   ~13 min after launch. Endpoint http://10.10.20.10:8000/v1.
+# >>> RE-VERIFIED 2026-10-16: full 1,048,576 ctx (with a 6.4 GiB worker co-tenant), 80-request 8-way soak
+# >>>   ~108 tok/s aggregate / 0 errors, passkey at 66.5k, vision OK. CAVEAT: on a cold boot the FIRST vision
+# >>>   request killed the engine once (RuntimeError: cancelled -> EngineDead, containers auto-removed);
+# >>>   after a text warm-up the same request succeeds. Send a text request before the first image.
 # >>> GATED — the HF account behind the token must have accepted the repo gate (see INDEX.md).
 # >>> Mirrors @eugr/deepseek-v4-flash-vision-exp: this checkpoint is a byte-for-byte drop-in for
 # >>>   deepseek-ai/DeepSeek-V4-Flash-Vision-Exp (FP4 experts / block-FP8 rest, ViT + aligner + 3 DSpark

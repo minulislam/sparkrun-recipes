@@ -1,3 +1,9 @@
+# >>> UNFIT ON dgx-pair AS OF 2026-10-16 — the b12x MoE kernel rejects expert parallelism at model load:
+# >>>   ValueError: Mxfp4 MoE backend 'B12X_MXFP4_BF16' does not support the deployment configuration
+# >>>   since kernel does not support parallel config FusedMoEParallelConfig(tp_size=1, ... ep_size=2 ...).
+# >>>   Two boots on image :20260926, identical death during load_model; the OPEN QUESTION below is answered: EP
+# >>>   is rejected, so this variant has no working path on this image. Use the tp2 recipe.
+# >>> (original banner follows)
 # >>> UNVERIFIED on this cluster — expert-parallel variant of deepseek-v4-flash-vision-uncensored-tp2.yaml.
 # >>>   See that file for the gate, image choice, KV-dtype, DSpark and fit notes; everything here is
 # >>>   identical except --enable-expert-parallel: each node holds whole experts for half of the

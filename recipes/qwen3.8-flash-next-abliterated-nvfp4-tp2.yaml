@@ -8,7 +8,16 @@
 # >>>     budget, thinking off, 8-way): 100/100 harmful and 100/100 benign complied, 0 refusals,
 # >>>     0 errors, engine alive afterwards. Raw: benchmarks/redteam/results/<this recipe>.refusal.*
 # >>>   NOT measured: GSM8K/MMLU on this pair (card claims MMLU 82.11 -> 81.93), vision, tool
-# >>>     calls, prompts beyond 90k tokens.
+# >>>     calls, prompts beyond 214k tokens.
+# >>> BENCHMARKED 2026-10-24 on dgx-pair (llama-benchy quick ladder, pp2048/tg128, 3 runs/cell):
+# >>>   c=1: 39.1 tok/s (d0), 35.2 (d8k), 36.9 (d32k); 8-way aggregate: 78.5 (d0), 76.0 (d8k),
+# >>>     71.1 (d32k) — within a few percent of row 48 across the ladder. Raw:
+# >>>     benchmarks/results_qwen38-flash-next-abliterated-tp2.{json,csv} and
+# >>>     benchmarks/mem_qwen38-flash-next-abliterated-tp2.txt (KV pool 1,015,984 tokens, 3.88x).
+# >>>   Full context: passkey PASS at 329 / 35,553 / 133,670 / 214,568 prompt tokens (101 s at
+# >>>     214k, temp 0, thinking off); head low-water >= 21.3 GiB, no OOM.
+# >>>   A 2026-10-22 ladder attempt wedged at 3/6 cells when the worker's wired mgmt NIC
+# >>>     (enP7s7) lost carrier mid-run — infra, not recipe; rerun completed clean.
 # >>> UNCENSORED: dealignai/Qwen3.8-Flash-Next-ABLITERATED-NVFP4 has its refusals removed in the
 # >>>   weights. It will answer harmful requests. Keep the endpoint off any public ingress and away
 # >>>   from untrusted input.
