@@ -4,12 +4,21 @@
 # >>>     KV pool 295,230 tokens = 1.13 full-context requests. ONE long request at a time.
 # >>>   Speed: 21.9 tok/s single stream (500 tokens); peak 64 tok/s aggregate at 2-way.
 # >>>   Needle: passkey retrieved from a 40,031-token prompt in 22.6 s (past the ~24K point where
-# >>>     the unpatched image dies). Nothing longer than 40k tokens was tested.
+# >>>     the unpatched image dies). 40k was the bar until 2026-10-24 — see BENCHMARKED below.
 # >>>   Thinking stays off: no <think> text in content.
 # >>>   Refusal eval (JailbreakBench JBB-Behaviors, 100 harmful + 100 matched benign, 1400-token
 # >>>     budget, 2-way): 100/100 harmful and 100/100 benign complied, 0 refusals, 0 errors, engine
 # >>>     alive after 81 min. Raw: benchmarks/redteam/results/<this recipe>.refusal.*
-# >>>   NOT measured: GSM8K/MMLU, vision, tool calls, prompts beyond 40k tokens.
+# >>>   NOT measured: GSM8K/MMLU, vision, tool calls, prompts beyond 211k tokens.
+# >>> BENCHMARKED 2026-10-24 on dgx-pair (llama-benchy quick ladder, pp2048/tg128, 3 runs/cell):
+# >>>   c=1: 28.0 tok/s (d0), 31.1 (d8k), 19.7 (d32k). 8-way queues hard against the 295k KV
+# >>>     pool: 19.8 aggregate (d0), 13.2 (d8k), 5.4 (d32k) with ttfr up to 112 s — the ladder
+# >>>     completes but 8-way at depth is effectively serialized. Raw:
+# >>>     benchmarks/results_glm53-flash-abliterated-tp2.{json,csv} + mem_glm53-flash-abliterated-tp2.txt.
+# >>>   Full context: passkey PASS at 321 / 35,035 / 131,722 / 211,012 prompt tokens (148 s at
+# >>>     211k, temp 0); head low-water 6.1 GiB vs the 2.49 GiB earlyoom line — the row-63
+# >>>     long-prefill kills did NOT reproduce on this fp8-KV profile with a quiet head.
+# >>>     Engine alive after. ONE long request at a time still applies (KV 1.13x).
 # >>> MEMORY IS OVER THE REPO CEILING AND CANNOT BE BROUGHT UNDER IT AT 262K. Non-KV cost is 99.2
 # >>>   GiB per rank, so with the 3 GiB pin each rank holds ~102 GiB, 84 % of the node; the head
 # >>>   ran at 4.7-6.2 GiB available with swap in use for the whole run. Nothing else can share

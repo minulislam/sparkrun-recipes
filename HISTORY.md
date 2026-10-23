@@ -661,3 +661,18 @@ nothing committed:
   bar to ~214k. Large-codebase full-context use is proven near the 262k ceiling.
 - Instance stopped afterwards; both nodes idle. INDEX row 59 and the recipe header updated to
   BENCHMARKED 2026-10-24. Not committed (commit only when asked).
+
+### 2026-10-24 (later still): GLM-5.3-Flash-abliterated (row 62) benchmarked; context bar 40k → 211k
+
+- Quick ladder complete (same profile as the collection): c=1 28.0 / 31.1 / 19.7 tok/s at
+  d0/8k/32k; 8-way aggregate 19.8 / 13.2 / 5.4 with ttfr to 112 s — queuing against the 295k
+  KV pool (1.13×) serializes 8-way at depth, confirming "one long request at a time" in
+  practice. Boot 573 s; model load 90.77 GiB/rank in 432 s. Raw:
+  `benchmarks/results_glm53-flash-abliterated-tp2.{json,csv}` + mem file.
+- Full-context needle: PASS at 321 / 35,035 / 131,722 / 211,012 prompt tokens (148 s at 211k),
+  head low-water 6.1 GiB vs the 2.49 GiB earlyoom line. The row-63 long-prefill earlyoom kills
+  do not reproduce on row 62's fp8-KV profile with a quiet head (co-tenants: sparkrun-ui,
+  searxng, worker qdrant — ~1-2 GiB total, tolerated). Engine alive; instance stopped after.
+- Abliterated-fleet queue (user-requested): next DeepSeek vision-uncensored tp2 (1M, deep
+  needle), DeepSeek 0731 refusal-dial (393k), DeepSeek coder tune (256k), Qwen3.8-27B-uncensored
+  (ladder only; context already proven 2026-10-01).
