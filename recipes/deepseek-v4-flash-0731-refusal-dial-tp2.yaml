@@ -3,7 +3,15 @@
 # >>>   Boot: ready in ~7 min; 79.17 GiB/rank loaded in 212 s; KV pool 1,346,626 tokens (3.4 full
 # >>>     393k requests); 46 directions loaded; boots at lambda 0 on both ranks.
 # >>>   Speed: 44.1 tok/s single stream (500 tokens, thinking off); peak 117.5 tok/s 4-way.
-# >>>   Needle: passkey retrieved from a 130,028-token prompt in 98 s. Nothing longer was tested.
+# >>>   Needle: passkey retrieved from a 130,028-token prompt in 98 s (bar moved 2026-10-24, below).
+# >>> BENCHMARKED 2026-10-24 on dgx-pair (llama-benchy quick ladder, pp2048/tg128, 3 runs/cell):
+# >>>   c=1: 46.2 tok/s (d0), 43.3 (d8k), 30.9 (d32k); 8-way aggregate 57.5 (d0), 42.8 (d8k),
+# >>>     29.5 (d32k) — best 8-way-at-depth of the abliterated fleet. Raw:
+# >>>     benchmarks/results_deepseek-v4-flash-0731-refusal-dial-tp2.{json,csv} + mem file
+# >>>     (KV pool 1,368,481 tokens).
+# >>>   Full context: needle PASS at 319 / 34,911 / 130,992 / 210,222 / 315,767 prompt tokens
+# >>>     (182 s at 316k, temp 0); head low-water 7.6 GiB; engine alive after. Run at lambda 0
+# >>>     (boot default) — the dial does not affect retrieval mechanics.
 # >>>   Dial, 8 sampled harmful prompts: 7 refused at 0, 1 at 1.5, 7 after returning to 0.
 # >>>   Refusal eval (JailbreakBench JBB-Behaviors, 100 harmful + 100 matched benign, 1400-token
 # >>>     budget, default thinking "low", 4-way, keyword grader):

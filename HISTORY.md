@@ -692,3 +692,13 @@ nothing committed:
   at-depth ladder cells suggest, so full-context large-codebase use is practical single-stream.
   Head low-water 7.0 GiB; engine alive; text-only throughout (vision cold-boot caveat respected).
 - Instance stopped. Next in queue: deepseek-v4-flash-0731-refusal-dial-tp2 (393k).
+
+### 2026-10-24 (sweep, cont.): DeepSeek-0731 refusal-dial benchmarked; context bar 130k → 316k
+
+- Row 61 quick ladder: 46.2 c=1 / 57.5 agg at d0, holding 30.9 / 29.5 at 32k depth — the best
+  8-way-at-depth behavior of the abliterated fleet (KV pool 1,368,481 tokens; load 79.17
+  GiB/rank in 212 s). Raw: `benchmarks/results_deepseek-v4-flash-0731-refusal-dial-tp2.{json,csv}`
+  + mem file.
+- Needle all PASS: 319 / 34,911 / 130,992 / 210,222 / 315,767 prompt tokens (182 s at 316k),
+  head low-water 7.6 GiB, engine alive. Run at boot lambda 0. Instance stopped.
+- Next: deepseek-v4-flash-vision-uncensored-coder-tp2 (256k), then qwen3.8-27b-uncensored ladder.
