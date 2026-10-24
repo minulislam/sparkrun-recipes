@@ -1,6 +1,12 @@
 # >>> PREPPED FOR FIRST BOOT 2026-10-01 — source: https://huggingface.co/orcarouter/Qwen3.8-27B-Uncensored-NVFP4
 # >>> GATED (gate=auto) — the HF account behind the token must have accepted the repo gate.
 # >>> Serve flags mirror @official/qwen3.8-27b-fp8-mtp-vllm, which is VERIFIED here as row 52.
+# >>> BENCHMARKED 2026-10-24 on gb10-solo-style tp1 (llama-benchy quick ladder, pp2048/tg128):
+# >>>   c=1: 10.1 tok/s (d0), 10.0 (d8k), 9.6 (d32k) — dense 27B single-stream, use as a batch
+# >>>     lane; 8-way aggregate 67.1 (d0), 58.0 (d8k), 43.7 (d32k). pp 2692 -> 2019 -> 869.
+# >>>   Raw: benchmarks/results_qwen38-27b-uncensored-tp1.{json,csv} + mem file (KV pool
+# >>>     2,038,395 tokens, 7.78x at 262,144). Full-context needle was already proven
+# >>>     2026-10-01 (21/21 to 247,670 tokens; 13x prefill cliff past ~148k still applies).
 # >>>
 # >>> THREE CHANGES made 2026-10-01 before the first launch, each from evidence already in this repo:
 # >>>   1. container b12x:20260926 -> dgx-vllm-eugr-nightly:20260927. `load_format: instanttensor`

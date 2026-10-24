@@ -712,3 +712,18 @@ nothing committed:
   low-water 11.1 GiB — the roomiest margin of the fleet, vindicating the 12 GiB KV pin: the
   09-26 post-long-prompt `sample_tokens` RPC engine death did not recur. Instance stopped.
 - Last in queue: qwen3.8-27b-uncensored-nvfp4-tp1 ladder (context already proven 2026-10-01).
+
+### 2026-10-24 (sweep complete): Qwen3.8-27B-uncensored ladder; abliterated fleet fully benchmarked
+
+- Row 41 quick ladder (tp1, head): 10.1 tok/s c=1 (9.6 at 32k depth) / 67.1 agg 8-way at d0
+  holding 43.7 at 32k — batch lane, consistent with the documented prefill cliff. pp
+  2692 → 2019 → 869. KV pool 2,038,395 tokens (7.78×); instanttensor load 22.36 GiB in 7 s.
+  Raw: `benchmarks/results_qwen38-27b-uncensored-tp1.{json,csv}` + mem. Needle skipped —
+  full context proven 2026-10-01 (21/21 to 247,670 tokens).
+- **Abliterated-fleet sweep summary (all on the canonical quick ladder + needle, one day):**
+  Qwen Flash-ablit 39.1 c=1 / needle 214k; GLM-5.3-Flash-ablit 28.0 c=1 / needle 211k (8-way
+  serializes, KV 1.13×); DeepSeek vision-uncensored 38.7 c=1 / needle **791k** of 1M; DeepSeek
+  0731 refusal-dial 46.2 c=1 / needle 316k (best 8-way-at-depth); DeepSeek coder tune 33.0 c=1
+  / needle 210k (11.1 GiB head margin); Qwen 27B-uncensored 10.1 c=1 / 67.1 agg (ladder only).
+  Every needle cell PASSed; no engine deaths anywhere in the sweep. All instances stopped;
+  worker mgmt still on the temporary wifi path (enP7s7 wired NIC awaits physical fix).
