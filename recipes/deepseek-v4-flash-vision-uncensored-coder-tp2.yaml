@@ -1,6 +1,14 @@
 # >>> CLI-CODING-AGENT profile of deepseek-v4-flash-vision-uncensored-tp2.yaml. Same weights, same
 # >>>   image, same fp8 KV and safetensors loader (see that file for why each is mandatory). What
 # >>>   differs is tuned for an agent loop against a large codebase rather than for a 1M-token demo.
+# >>> BENCHMARKED 2026-10-24 on dgx-pair (llama-benchy quick ladder, pp2048/tg128, 3 runs/cell):
+# >>>   c=1: 33.0 tok/s (d0), 32.9 (d8k), 30.5 (d32k); 8-way aggregate 47.7 (d0), 20.5 (d8k),
+# >>>     6.8 (d32k). Prefill pp 1947 -> 386 -> 110 tok/s at d0/8k/32k. Raw:
+# >>>     benchmarks/results_deepseek-v4-flash-vision-uncensored-coder-tp2.{json,csv} + mem file
+# >>>     (KV pool 1,241,755 tokens, 4.74x at 262,144; load 80.98 GiB/rank in 187 s).
+# >>>   Full context: needle PASS at 319 / 34,911 / 130,992 / 210,222 prompt tokens (115 s at
+# >>>     210k); head low-water 11.1 GiB — roomiest of the fleet; engine alive after the full
+# >>>     ladder + needle (the 09-26 sample_tokens RPC death did not recur on this profile).
 # >>>
 # >>> WHY NOT JUST USE tp2: measured 2026-09-26 — the tp2 profile serves a 187,912-token prompt fine
 # >>>   (151 s, retrieved a needle at 62% depth), but the NEXT requests killed the engine:

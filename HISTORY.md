@@ -702,3 +702,13 @@ nothing committed:
 - Needle all PASS: 319 / 34,911 / 130,992 / 210,222 / 315,767 prompt tokens (182 s at 316k),
   head low-water 7.6 GiB, engine alive. Run at boot lambda 0. Instance stopped.
 - Next: deepseek-v4-flash-vision-uncensored-coder-tp2 (256k), then qwen3.8-27b-uncensored ladder.
+
+### 2026-10-24 (sweep, cont.): DeepSeek coder tune benchmarked; 210k needle PASS, engine stays alive
+
+- Row 47 quick ladder: 33.0 c=1 / 47.7 agg at d0; 30.5 / 6.8 at 32k depth (prefill pp
+  1947 → 386 → 110 at d0/8k/32k). KV pool 1,241,755 tokens (4.74×); load 80.98 GiB/rank in
+  187 s. Raw: `benchmarks/results_deepseek-v4-flash-vision-uncensored-coder-tp2.{json,csv}` + mem.
+- Needle all PASS: 319 / 34,911 / 130,992 / 210,222 prompt tokens (115 s at 210k). Head
+  low-water 11.1 GiB — the roomiest margin of the fleet, vindicating the 12 GiB KV pin: the
+  09-26 post-long-prompt `sample_tokens` RPC engine death did not recur. Instance stopped.
+- Last in queue: qwen3.8-27b-uncensored-nvfp4-tp1 ladder (context already proven 2026-10-01).
