@@ -676,3 +676,19 @@ nothing committed:
 - Abliterated-fleet queue (user-requested): next DeepSeek vision-uncensored tp2 (1M, deep
   needle), DeepSeek 0731 refusal-dial (393k), DeepSeek coder tune (256k), Qwen3.8-27B-uncensored
   (ladder only; context already proven 2026-10-01).
+- 05:33: the NAS-side rsync stopped at 2,299,595,538,352 B (no growth for 15 min). Missing:
+  about 1.0 TiB of model-backup blobs across 22 models, and every file under `nodes/` (only
+  root-owned `700` directory stubs exist). The copy must be re-run on the NAS before any
+  verification or deletion.
+
+### 2026-10-24 (abliterated-fleet sweep, cont.): DeepSeek-V4-Flash-Vision-Uncensored benchmarked; context bar 66.5k → 791k
+
+- Row 43 quick ladder: 38.7 tok/s c=1 / 56.4 agg 8-way at d0; prefill-at-depth is the limiter
+  (pp 2011 → 445 → 130 tok/s at d0/8k/32k; 32k×8 lands at 9.8 agg, ttfr 67 s). KV pool
+  1,142,264 tokens (1.09× at 1M). Raw: `benchmarks/results_deepseek-v4-flash-vision-uncensored-tp2.{json,csv}`
+  + mem file. Model load 81.19 GiB/rank in 190 s.
+- Deep needle, all PASS: 398 / 34,990 / 131,071 / 210,301 / 438,966 / 790,846 prompt tokens.
+  791k retrieved in 571 s — a long sequential prefill runs ~1.4k tok/s, much faster than the
+  at-depth ladder cells suggest, so full-context large-codebase use is practical single-stream.
+  Head low-water 7.0 GiB; engine alive; text-only throughout (vision cold-boot caveat respected).
+- Instance stopped. Next in queue: deepseek-v4-flash-0731-refusal-dial-tp2 (393k).

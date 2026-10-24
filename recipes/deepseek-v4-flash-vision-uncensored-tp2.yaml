@@ -6,6 +6,14 @@
 # >>>   ~108 tok/s aggregate / 0 errors, passkey at 66.5k, vision OK. CAVEAT: on a cold boot the FIRST vision
 # >>>   request killed the engine once (RuntimeError: cancelled -> EngineDead, containers auto-removed);
 # >>>   after a text warm-up the same request succeeds. Send a text request before the first image.
+# >>> BENCHMARKED 2026-10-24 on dgx-pair (llama-benchy quick ladder, pp2048/tg128, 3 runs/cell):
+# >>>   c=1: 38.7 tok/s (d0), 45.8 (d8k), 44.9 (d32k); 8-way aggregate 56.4 (d0), 25.1 (d8k),
+# >>>     9.8 (d32k). Prefill-at-depth is the limiter: pp 2011 -> 445 -> 130 tok/s at d0/8k/32k.
+# >>>     Raw: benchmarks/results_deepseek-v4-flash-vision-uncensored-tp2.{json,csv} + mem file
+# >>>     (KV pool 1,142,264 tokens, 1.09x at 1,048,576).
+# >>>   Full context: needle PASS at 398 / 34,990 / 131,071 / 210,301 / 438,966 / 790,846 prompt
+# >>>     tokens; 791k in 571 s (effective sequential prefill ~1.4k tok/s, far above the at-depth
+# >>>     ladder cells). Head low-water 7.0 GiB; engine alive after. Extends the 66.5k passkey bar.
 # >>> GATED — the HF account behind the token must have accepted the repo gate (see INDEX.md).
 # >>> Mirrors @eugr/deepseek-v4-flash-vision-exp: this checkpoint is a byte-for-byte drop-in for
 # >>>   deepseek-ai/DeepSeek-V4-Flash-Vision-Exp (FP4 experts / block-FP8 rest, ViT + aligner + 3 DSpark
