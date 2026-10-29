@@ -727,3 +727,36 @@ nothing committed:
   / needle 210k (11.1 GiB head margin); Qwen 27B-uncensored 10.1 c=1 / 67.1 agg (ladder only).
   Every needle cell PASSed; no engine deaths anywhere in the sweep. All instances stopped;
   worker mgmt still on the temporary wifi path (enP7s7 wired NIC awaits physical fix).
+
+## 2026-10-29: GLM-5.3-Flash EXL3 abliterated adopted from the MiaAI-Lab set (row 64)
+
+- The Antigravity agent's 2026-10-16 session left a validated 27-recipe set in
+  `~/.config/sparkrun/recipes/miaai-lab/` (its RESULTS.md: 3 PASS serve-only, 4 blocked).
+  `glm-5.3-flash-exl3-tp2` (bullerwins/GLM-5.3-Flash-exl3-4bpw-ablit, 850k ctx, weights already
+  on both nodes) was the one worth promoting; benchmarked today and committed as
+  `recipes/glm-5.3-flash-exl3-abliterated-tp2.yaml`.
+- First ladder run died at the first 32k cell: `persistent_topk would oversubscribe ... requires
+  >=128KB smem` → EngineDead. The prebuilt `:exl3` image (2026-09-07) lacks upstream's own
+  overlay edit that disables GB10 persistent_topk. New `recipes/mods/glm53-exl3-gb10-topk/`
+  applies the identical one-line edit pre-serve; full ladder then completed clean.
+- Quick ladder (canonical profile): c=1 13.5 / 13.3 / 13.2 tok/s at d0/8k/32k; 8-way 20.5 /
+  15.8 / 11.2. Slowest two-node GLM (row 62 does 28.0 c=1) but the flattest at-depth decode.
+  Raw: `benchmarks/results_glm53-flash-exl3-tp2.{json,csv}` (no mem file — engine was already
+  up from verification when the ladder ran).
+- Evals, engine alive throughout (~3.5 h): needle 12/12 PASS to 495,234 actual prompt tokens
+  (the script's 800k depth setting; chars-per-token underestimates on this tokenizer), 226 s at
+  495k, sequential prefill ~2.1-2.7k tok/s; JBB 100/100 harmful + 100/100 benign, thinking off;
+  HumanEval pass@1 87.2% (143/164), generated code executed in a --network none container.
+  Head low-water 7 GiB, worker 10 GiB.
+- Launched over CX7 addresses (`--hosts 10.99.10.10,10.99.10.11` + `HF_HUB_OFFLINE=1`, not
+  committed) because the worker's enP7s7 mgmt link is physically down again (ARP INCOMPLETE
+  from the head; worker can't reach head/router on 10.10.20.0/24 despite link-up at 10 Gb/s;
+  the 10-24 wifi workaround is not active — wlP9s9 DOWN). Switch port / cable needs a look
+  before `--cluster dgx-pair` works again.
+- Same session, head cleanup at the user's word: spark-studio removed entirely (service,
+  ~/spark-studio 8.9G, spark-searxng container+image; salvaged only
+  docs/glm-5.3-flash-spark.yaml), sparkDash repo+container+image removed, kimi-k2.6 NIM image
+  (34.5G) removed, nvpair-headless stopped+disabled, LM Studio user-side leftovers removed
+  (root-owned lmstudio/nvpair-lmstudio-forward unit files handed to the user to rm).
+  23G of parked LM Studio weights in ~/models-parked/lmstudio-2026-10-13 kept pending decision.
+- GB10 Recipe Throughput artifact now at v5 with the EXL3 row (28 recipes).

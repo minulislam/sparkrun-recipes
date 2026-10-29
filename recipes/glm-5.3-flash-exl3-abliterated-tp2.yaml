@@ -1,0 +1,122 @@
+# >>> VERIFIED + BENCHMARKED 2026-10-29 on dgx-pair (launched over CX7 addresses 10.99.10.10/.11
+# >>>   because the worker's enP7s7 mgmt link was down; recipe itself is address-agnostic).
+# >>>   Context: /v1/models reports max_model_len 850000. Boot ~8 min warm (466-541 s).
+# >>>   Ladder (llama-benchy quick, pp2048/tg128, 3 runs/cell):
+# >>>     c=1: 13.5 tok/s (d0), 13.3 (d8k), 13.2 (d32k) — flattest at-depth decode in the fleet.
+# >>>     8-way aggregate: 20.5 (d0), 15.8 (d8k), 11.2 (d32k).
+# >>>     Prefill c=1: 984 (d0), 535 (d8k), 419 (d32k) tok/s.
+# >>>     Raw: benchmarks/results_glm53-flash-exl3-tp2.{json,csv}.
+# >>>   Needle: 12/12 PASS — all 3 positions at 2k/32k/131k, centre at 262k/524k/800k *requested*
+# >>>     depths = 162,315 / 324,573 / 495,234 actual prompt tokens (225.8 s at 495k; sequential
+# >>>     prefill ~2.1-2.7k tok/s at depth). Proven bar: 495k of the 850k window.
+# >>>   Refusal eval (JBB-Behaviors, 100 harmful + 100 benign, thinking off, c=4): 100/100 harmful
+# >>>     and 100/100 benign complied, 0 refusals, 0 errors. Keyword grader.
+# >>>   Coding: HumanEval pass@1 87.2% (143/164), thinking off, sandboxed exec (--network none).
+# >>>   Engine alive after the full suite; head low-water 7 GiB, worker 10 GiB available.
+# >>>   NOT measured: vision, tool calls, GSM8K/MMLU, prompts beyond 495k, soak beyond ~3.5 h.
+# >>> REQUIRES mods/glm53-exl3-gb10-topk. The prebuilt :exl3 image (2026-09-07) lacks upstream's
+# >>>   overlay edit that disables GB10 persistent_topk; without the mod the engine dies on the
+# >>>   first ~32k-token decode: "persistent_topk would oversubscribe and the FilteredTopK
+# >>>   fallback requires >=128KB smem" (libtorch_stable/topk.cu). The mod makes the same one-line
+# >>>   edit as upstream overlay/patch_glm_video_placeholders.py::_disable_gb10_persistent_topk.
+# >>> UNCENSORED: bullerwins/GLM-5.3-Flash-exl3-4bpw-ablit (EXL3 4bpw quant of the abliterated
+# >>>   model). It will answer harmful requests. Keep the endpoint off any public ingress.
+# >>> Slowest two-node GLM (NVFP4 row 62 does 28 tok/s c=1) but the deepest proven GLM context on
+# >>>   this pair and the only 850k window; enforce-eager and MP backend are upstream's choices.
+# >>> Source: recipe body from the MiaAI-Lab set validated 2026-10-16 (~/.config/sparkrun/recipes/
+# >>>   miaai-lab/, RESULTS.md) for github.com/MiaAI-Lab/GLM-5.3-Flash-EXL3-2x-DGX-Sparks;
+# >>>   weights 164 GB/node, already cached on both nodes.
+# sparkrun recipe: GLM-5.3 Flash EXL3 (Abliterated) on 2x DGX Spark (TP=2)
+# Source: https://github.com/MiaAI-Lab/GLM-5.3-Flash-EXL3-2x-DGX-Sparks
+recipe_version: "2"
+model: bullerwins/GLM-5.3-Flash-exl3-4bpw-ablit
+runtime: vllm
+container: ghcr.io/miaai-lab/glm-5.3-flash-2x-dgx-sparks:exl3
+min_nodes: 2
+max_nodes: 2
+
+mods:
+  - mods/glm53-exl3-gb10-topk
+
+executor_config:
+  entrypoint: ""
+  user: root
+  shm_size: 32gb
+
+readiness:
+  port_timeout_s: 3600
+  health_timeout_s: 3600
+  inference_timeout_s: 600
+
+metadata:
+  description: "GLM-5.3 Flash EXL3 4bpw Abliterated on 2x DGX Spark — multimodal, MP TP=2, uncensored o_proj"
+  category: multimodal
+  model_params: 92000000000
+  model_dtype: exl3
+  quantization: exl3
+  quant_bits: 4
+  kv_dtype: fp8
+
+env:
+  HF_TOKEN: "${HF_TOKEN:-}"
+  GLM53_MODEL_PRESET: "abliterated"
+  ABLIT: "0"
+  QUANTIZATION: "exl3"
+  KV_CACHE_DTYPE: "fp8"
+  EXL3_FUSED_MOE: "1"
+  EXL3_FAT_KERNEL: "1"
+  EXL3_FAT_GROUPED: "1"
+  GLM53_DENSE_FP8: "all"
+  GLM53_KDA_BF16_LARGE_M: "1"
+  GLM53_INDEXER_WORKSPACE: "rightsize"
+  TORCH_CUDA_ARCH_LIST: "12.1a"
+  FLASHINFER_CUDA_ARCH_LIST: "12.1a"
+  FLASHINFER_DISABLE_VERSION_CHECK: "1"
+  PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
+  VLLM_ENGINE_READY_TIMEOUT_S: "3600"
+  VLLM_NO_USAGE_STATS: "1"
+  DO_NOT_TRACK: "1"
+
+defaults:
+  port: 8888
+  tensor_parallel: 2
+  gpu_memory_utilization: 0.85
+  max_model_len: 850000
+  max_num_seqs: 4
+  max_num_batched_tokens: 7168
+  kv_cache_dtype: fp8
+  kv_cache_memory_bytes: 15032385536
+  quantization: exl3
+  distributed_executor_backend: mp
+  enforce_eager: true
+  chat_template: /opt/glm53/chat_template.jinja
+  served_model_name: bullerwins/GLM-5.3-Flash-exl3-4bpw-ablit
+
+command: |
+  vllm serve {model} \
+    --served-model-name {served_model_name} \
+    --host 0.0.0.0 \
+    --port {port} \
+    --trust-remote-code \
+    --tensor-parallel-size {tensor_parallel} \
+    --distributed-executor-backend {distributed_executor_backend} \
+    --quantization {quantization} \
+    --kv-cache-dtype {kv_cache_dtype} \
+    --kv-cache-memory-bytes {kv_cache_memory_bytes} \
+    --gpu-memory-utilization {gpu_memory_utilization} \
+    --max-model-len {max_model_len} \
+    --max-num-seqs {max_num_seqs} \
+    --max-num-batched-tokens {max_num_batched_tokens} \
+    --tool-call-parser glm47 \
+    --enable-auto-tool-choice \
+    --reasoning-parser glm45 \
+    --enable-prefix-caching \
+    --no-enable-flashinfer-autotune \
+    --enable-prompt-tokens-details \
+    --chat-template {chat_template} \
+    --limit-mm-per-prompt '{"image":48,"video":1}' \
+    --mm-processor-kwargs '{"max_image_tokens":2048}' \
+    --mm-processor-cache-gb 1 \
+    --skip-mm-profiling \
+    --enforce-eager
+
