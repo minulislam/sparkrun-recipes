@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:2a7fd2f30f9a4bc8036647315b6f3c2306730fb56629d534a5753d1afe19d6c4",
+  "claims": [
+    {
+      "id": "claim_ce0c18a017eb45eb8fdbb33390dc963a",
+      "statement": "On a GB10 node weights, KV cache, page cache, and the host OS all draw from the same ~121 GiB of unified memory, so most launch failures on the pair are memory/placement problems rather than model problems.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L55-L58",
+          "version": "repo-lines-v1:sha256:3b7735f7ef16fac9ac2613ac6d4f2fcf715e50bc4653dceeac8dabbf67be0aa8:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdkNTU0NzgzYjEyMGMzZDU4OWU0YWZjZmVhZDdlYTFhNGViZTAyYWQzZTVjZTc5YjdjZDhmZDQ4MmRhZDdlZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTYwN2EzOTM0ODU1YWQzYzJmNWY5MWI0MWNlODE4MWNlMmE5YTIwYTFkMDliMTU0NWUwZjE0MTg0MjVkYzUxNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2NmMTI4ZmJlZjI5NTg4MWYyMGY2YjJlOTNmNmFhMzIxNDk3OTQxYjc5MTYzZTRkMTRmNTE4Y2E4NDhiMGQ2MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTAwZjY3NjgwYjE1NzMwNGUwNzI3NjhlM2NkNTVjZGE0N2ExODg5MDIyOGU4MzUyODIxMWE4NmNiOTA5YmY5ZCJ9"
+        },
+        {
+          "resource": "repo://HISTORY.md#L603-L605",
+          "version": "repo-lines-v1:sha256:450a37438069527dbf8458d4a9a941ddc5ee2c87cba22d932437338595a78aa4:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTkzYWZmYjFmY2Y0NzM5ZDgyYjMyM2Q5NWEwY2JlOTE4NzhjZDc5MmUzMTU4YmRmZjg1YmI4M2MyYTk5NWZlNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjI4NDYzMGNmYmI4Zjk1NDdiNzZmMzhjYjQ2YTRlNjFkMTBmNjc4NWY0MGI3OWJhMzZjNDRmMzY0YTgwODhiYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDFjY2M2NDQ1MGM1NDRjNTAzNmUwNmY3MTBhNDQzYWJlMWYwOTc4ZjdiYzE4NGVjNGRlMjZlNzFhZGZmNzQxYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjBhNTMwZWJjM2RlODk4Yzk0MDAxMWVkMzY5ZjVhNThmNWEzNjZiNmM4NjhhMTJkMjc2NDdhNzQ1MWZjMzAyZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c80f7994a394422d80d8abd604dc77c2",
+      "statement": "The working gpu_memory_utilization range is 0.70-0.82 and 0.85 has caused NVRM OOM at boot; individual recipes may have their own floor (a large Flash checkpoint needed >=0.64 to leave room for any KV).",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L55-L55",
+          "version": "repo-lines-v1:sha256:67d554783b120c3d589e4afcfead7ea1a4ebe02ad3e5ce79b7cd8fd482dad7ed:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdkNTU0NzgzYjEyMGMzZDU4OWU0YWZjZmVhZDdlYTFhNGViZTAyYWQzZTVjZTc5YjdjZDhmZDQ4MmRhZDdlZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdkNTU0NzgzYjEyMGMzZDU4OWU0YWZjZmVhZDdlYTFhNGViZTAyYWQzZTVjZTc5YjdjZDhmZDQ4MmRhZDdlZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2NmMTI4ZmJlZjI5NTg4MWYyMGY2YjJlOTNmNmFhMzIxNDk3OTQxYjc5MTYzZTRkMTRmNTE4Y2E4NDhiMGQ2MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2Q2NWEyMGYyMDc3Yzk0N2ZlNjg1N2I5YzkyMDY4MGQyOGZkZjA2OTgwMDlhZDcxZmY3OWQzYWI5MGIyMTU0OCJ9"
+        },
+        {
+          "resource": "repo://CLAUDE.md#L79-L79",
+          "version": "repo-lines-v1:sha256:a737d396969f64d5eb04498ebd8ad747b45d7382f0d170005145aec8db3a9de0:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTczN2QzOTY5NjlmNjRkNWViMDQ0OThlYmQ4YWQ3NDdiNDVkNzM4MmYwZDE3MDAwNTE0NWFlYzhkYjNhOWRlMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTczN2QzOTY5NjlmNjRkNWViMDQ0OThlYmQ4YWQ3NDdiNDVkNzM4MmYwZDE3MDAwNTE0NWFlYzhkYjNhOWRlMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzlmMWRhNmZhYzc4NGQ0M2Q2OTIyMDE2ODI0ODY1YTJmNjQ3N2U1YmI4M2ZiZDdlMTEyZGJhZTM2MDNkMjdiOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTViOWUxMGEyMWI3ZjcyOTY2MmQ4MDdhZjNmY2RkNWE1MzczYTQ3NWMzYWNmZGE1ZTA4MzkzMGJkZjIwNDY2MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_a3bc5489095942079f555c3c6b51bf89",
+      "statement": "The head node runs earlyoom with an aggressive trigger (~2.49 GiB available) that can SIGTERM the vLLM worker or unrelated processes during a long-context prefill, so a recipe that serves short prompts can still be killed by a very long prompt and a quiet head is a precondition for long-context work.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md#L522-L527",
+          "version": "repo-lines-v1:sha256:bd3a761c261e2d2fd44af24a62e04ac38574629bd4835c36a164bd1cded9f034:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGQyNWFlNTRkNGNiOThmYmQ5YmI5Yzk3NTVhMWEwZWMyMTlmMjJmMDZkZjMxOWY4N2QwNWNhNzQ4OTczNDM2MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDc4MTQ4M2ViYWNhNDRmYmEyNWQ5MTlkNmI1NjdiODY5YjczNGRjMzgwZThiMmEzMjY2NmJlNjAzYmNkYzUyNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzI1YmM2YWQ4ZTM1ZTFhMDA1NGEwYTdmZTk5ZTE1NTljMjRmZTk5NTVlODc3MWM2YzZhNzAwZTQ2YjM0ZDE4YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2ZmMWQwNzRiN2MzNGVhYmFlYzZhODg4Yzk4NTFiNmQ1NWY1NjI5M2U3MmRmODc5NDg1NTI5YjE1NWZmNmFkYiJ9"
+        },
+        {
+          "resource": "repo://HISTORY.md#L603-L605",
+          "version": "repo-lines-v1:sha256:450a37438069527dbf8458d4a9a941ddc5ee2c87cba22d932437338595a78aa4:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTkzYWZmYjFmY2Y0NzM5ZDgyYjMyM2Q5NWEwY2JlOTE4NzhjZDc5MmUzMTU4YmRmZjg1YmI4M2MyYTk5NWZlNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjI4NDYzMGNmYmI4Zjk1NDdiNzZmMzhjYjQ2YTRlNjFkMTBmNjc4NWY0MGI3OWJhMzZjNDRmMzY0YTgwODhiYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDFjY2M2NDQ1MGM1NDRjNTAzNmUwNmY3MTBhNDQzYWJlMWYwOTc4ZjdiYzE4NGVjNGRlMjZlNzFhZGZmNzQxYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjBhNTMwZWJjM2RlODk4Yzk0MDAxMWVkMzY5ZjVhNThmNWEzNjZiNmM4NjhhMTJkMjc2NDdhNzQ1MWZjMzAyZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_19ec6e9fefd14b119e4a6548810793fa",
+      "statement": "sparkrun only sees its own containers, so any other container on a node consumes unified memory and silently shrinks an auto-sized context; docker ps and memory should be checked on both nodes before a large launch.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L56-L58",
+          "version": "repo-lines-v1:sha256:cd65a20f2077c947fe6857b9c920680d28fdf0698009ad71ff79d3ab90b21548:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2Y5YWU5NGJmNzUyNGJmZDVlYjk2NTYzYTdkODA3YzBlMTRiYmIwY2QwMTNhNmY2M2QzZTgyYmJhOTZhYzlmOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTYwN2EzOTM0ODU1YWQzYzJmNWY5MWI0MWNlODE4MWNlMmE5YTIwYTFkMDliMTU0NWUwZjE0MTg0MjVkYzUxNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2IyNjdhYjk4NzMxYTIzNzY5NWZjZTZiMjJhNmUwYTIzY2QyN2RjMTMzZDUwODAwMGY0ZWVkZjY1MjY1NGRhYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTAwZjY3NjgwYjE1NzMwNGUwNzI3NjhlM2NkNTVjZGE0N2ExODg5MDIyOGU4MzUyODIxMWE4NmNiOTA5YmY5ZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_8f654538b2e24ff890af0ceace63da27",
+      "statement": "Two multi-node models cannot co-reside on the pair — a second model's warmup/boot starved or killed the Flash rank and sparkrun placement refuses a tensor-parallel rank on an occupied host (only placed 1 of 2 ranks) — whereas one solo (--tp 1) model per node does run concurrently.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md#L619-L627",
+          "version": "repo-lines-v1:sha256:5b5036727b3bf03a8a51c5114fd3c8bfc687e4aee92415af14d3a11c699153ef:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWJjYzk2YTRiNDNmZjY2ZWFkNjdlMmE3NmMyYTUwYmEwZTYxNzM3Y2EwNTc1MThkODA4YzkzYzJiYmEzMzcxNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2NmNmVkMzcwZjMzOWRkZDQzMTJlN2QxZWI4ZGI5NDRmNDZhYjFhZjQ3OWQzY2UyNzQ0NzMxYmIwOWQ2YTUzNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTJmMDJiNzgzYWU2NjFkMDFmZGVkN2U5M2FiOTZhZmEyNWM1NjE2OTEyMTBhNzAyODdlMGJlOTk4NWIzZmYyMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmZmMTgwNDMyZmYyNTc5MDhhZTZjYTg3NTk2OGI0ZTNkMjMxMzg3ZTIzOTlmY2ExY2RhNDY1MTZiYzIxMTc2MCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_80fbf2b73c914821833179cc22723c08",
+      "statement": "sparkrun 0.3.10 has three defects to work around: self-rsync deletes symlinked HF blobs (hardlink first), digest-pinned images fail to ship to the worker (use dated tags), and --no-rm does not keep crashed containers.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L64-L66",
+          "version": "repo-lines-v1:sha256:b725d58795767680366b56c89a3cdfe3142ea2ab36f04b315b95c2134fbcd5d9:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjBhY2VhMTQ1YzBkYmIzZmNmOGQyNzU3OWEzYmNjZTFmM2RhZTNkZTgxYzE3M2ZkMTA0OGIwNmJjZGJmOGIyNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjMzNDZhNmE5Njg4MTMzYWRjZmQ5MmQ0ZjI1NGNlNzlmODUyYmRmMDUxNmMyMDAyN2Y2OTM5ZjFhMzhmNzVlOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2VmMDE4MTVkNTM5N2FmZGI4ZjAxMjQxM2U0MjcyMTU1OGQwNjhmYWYxOWU4NGU5OTcwYzYyZWIyODM5M2YxYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDEwZjgwMmJiYmRkZmRmZTEyOWFjMTdhYmU0MDNkYmJjMWYwYjMzZTM1NTJmN2FkODU3OTE0MTUyNmY2MTBiOCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-01T03:42:59.995Z"
+  }
+}

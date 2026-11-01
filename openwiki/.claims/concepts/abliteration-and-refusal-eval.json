@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:d277177605baeb2c12cb8f51bf70cd4a7cc1186a435c344e482c934f20ea8b35",
+  "claims": [
+    {
+      "id": "claim_9658aa4d780244c1b03da731f387b9fa",
+      "statement": "The registry's uncensored recipes are produced two ways: most point at checkpoints with refusal directions removed in the weights (abliterated/uncensored), while deepseek-v4-flash-0731-refusal-dial-tp2 serves stock weights through a locally built image that applies rank-1 refusal directions at inference time.",
+      "evidence": [
+        {
+          "resource": "repo://INDEX.md#L100-L100",
+          "version": "repo-lines-v1:sha256:6a5fec82d82bda8589a33fbc7c62611f6b1eae550e071872de20d9f32dd7218b:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmE1ZmVjODJkODJiZGE4NTg5YTMzZmJjN2M2MjYxMWY2YjFlYWU1NTBlMDcxODcyZGUyMGQ5ZjMyZGQ3MjE4YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmE1ZmVjODJkODJiZGE4NTg5YTMzZmJjN2M2MjYxMWY2YjFlYWU1NTBlMDcxODcyZGUyMGQ5ZjMyZGQ3MjE4YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWYxMzMzZGRkM2U4ZGI5NWYxMmVkYWNlYTcwOThjZmRkNzUzOWU0MGJhOTg1Mzc4OGVkY2E5M2YzM2U2MDVjNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2JiZDZjMzgyOGY3YzZkNjc3Mjc1ZGJlZjM2Y2FjMTFhNjdmM2Y2YzNkNDJiNzEwYWMzNDc2NDk3OGMwNTlmNyJ9"
+        },
+        {
+          "resource": "repo://images/deepseek-rank1/README.md#L1-L14",
+          "version": "repo-lines-v1:sha256:b5003b2d148a69fc5ea1b7df48bebce2a7ec19a549abcc59b9884897a350ac86:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhMjA3ZGE5NjU2ZDY3NTVlMzM0NGU2MWVkZjljMzJkZWE3YjU4NTNiMDE3MWUzYTBmOGUyMGQ4YTlkNTE1ODYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlZTBmMDkwY2RkZjMyZjhjNGFjMjIzZGQ0MDEzMjVlYWMzZGI3YjhiMDc3NzI0MDRjYzE0ZDQzZjhlNmQxOTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJhODAzYWJkNzhkMjIwZDhmMjI4ZDVkMzBiZDkxMjBlNDFjYjEwZDEwYWQzYmIzOWU2Y2NhMmMyNDAzY2EzOGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a08698c2f7f64287a1f7724611b8518c",
+      "statement": "The runtime refusal-projection image bakes a ~758 KB refusal_dirs.safetensors, is inert unless VLLM_REFUSAL_DIRS is set, boots at lambda 0, and has its strength set at runtime over HTTP, making the degree of abliteration a tunable serving parameter rather than a fixed weight property.",
+      "evidence": [
+        {
+          "resource": "repo://images/deepseek-rank1/README.md#L9-L28",
+          "version": "repo-lines-v1:sha256:a265805d9084d209d31dce4e0b8452a977ecaafa0f8a69453b95f0792f2b6eb4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzZTUxNjc5ZmIwMTAxMmJhNThjMzMwYTIyNWQyMWE0ZTE2Nzg0ZTcyMWI2YjFhOTlkNTFlNDE5Mzg2YzBiYTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhlYjBkMjAyYmU3YjczMTU0NzM1NTI2M2MwNWM1OWRiZGVlMzg2ZTkzZDgzMmI3OGMyNTk4YWJmZTJmMmY3ZDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImViNzZlOWJmNjQ2MTRmNjZmZmJhNDRjM2NjN2I1YWYwNDExNGI1YzA2NGFiMWRiNmQ4MzJkMWY4MzUxNjZjMjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3d9379ec316144b8ab5c08f982d194dd",
+      "statement": "Refusal behavior is measured with JailbreakBench JBB-Behaviors (100 harmful across 10 policy categories plus 100 category-matched benign controls), using prompts from the published benchmark so results are comparable to the JailbreakBench literature.",
+      "evidence": [
+        {
+          "resource": "repo://benchmarks/redteam/README.md#L10-L29",
+          "version": "repo-lines-v1:sha256:d20ca8802dab221c1245e37594896f84439d938ca237fb7d331ba37a57fd2797:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4MGE5ZmZlMWQ2ZDE4NTI2ZGM3Yzg5YTg2YWM4NGUzOTViMTI5YTI2YTllMjE5NjEyNzI0ZTkwMWU4NzFlMmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIyYjg1ZWUxYjI3M2Y1NjliN2MwMmQxZDZmNzQwMjY5YzVjMzgxNDc4YzQwNzcxN2I3OTAxMDA3Njg0NTYwNDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU4YTg4NWY5OTJlMzY5YzE3YTE0OWU0ZmM1ZDdjYjA4ZDEwMTE4ZmViNThkNTEwZDc3MDFkYTNmOGZlMTkxOWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7f1c6e57ff074999be3623610c8228da",
+      "statement": "The refusal eval scores both the harmful and benign splits because high harmful compliance with low benign compliance signals abliteration that damaged the model; the benign controls are the only way to distinguish clean abliteration from damage.",
+      "evidence": [
+        {
+          "resource": "repo://benchmarks/redteam/README.md#L18-L22",
+          "version": "repo-lines-v1:sha256:37d2cf1eefce4ee6bf0a64759442431a58146dbb94e874581185a8fe3500d9c0:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTQ3ODc2MGUwN2MwZDZjOGM1ZGUyYWZkZTI4MjIwODE5YTdhMWY5ZGQ2MmVhNzI3YzZjZDhlYzg1YTgzZjE1NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjQzYjEyMGRiNTBmMjU0MjY3MWY3YzExYmI4ZGE1N2YyNDU0ZGUwMDVkMjg0YmY3Y2FiMzdhNjRjNjEyOTE5NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDgwZDcyYTE1MzlmM2M5MGQ1ZTkyYzA3YzhlOThmYWQ3ODgzMzA5Y2I5NThhYTNmZDVjMTM5Yjc0MzhiODc3ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmQ0NWQwZjYxOGVkOGIzYjQ0Y2U5OWVjOWU3Y2I4MzNmYTI1MzI2YzFmZjExNGI5YWY3NTA3Y2VhYWY5NmFlYSJ9"
+        },
+        {
+          "resource": "repo://benchmarks/redteam/RESULTS-qwen3.8-27b-uncensored-2026-10-01.md#L74-L80",
+          "version": "repo-lines-v1:sha256:b614e59cb25944d79a56a8b21a5c11a484bfca19e287e5c5a4876589f6c0b5c4:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzVjOTEyNGExMTA1ZTAzYmE4YTM4NjkzNDI4YTBiZmJjMGU2ZjIyMDFmNWE0OWM4NzBlYTZhYzk2ZGEzMjM0ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTgxMWQ5ZDA1NDFiNGIxMmEyMjVmMmM1M2QzYTkzOWM1NGMzZmNiNDcxNjIzNWM0NDY3YWE3YTNmYzRiMTExOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWYwYzM0YTVjZmU5MmE2Y2IyYjg0ZmU5ZmE3MDBiOGQzZDA5YzZhNWE5YjI3NTE2YjhiZDg4ODUzZGNhN2YzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2VkOGFkYzk0MjUxN2UxZjcyMzRlNjIyNzA2OWVjMGUxYTdiMWM5ODkxZGZjZTM4MmY3NjYxMmQyY2Y1MTNmZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_767e04cc8a6d4f449308e86760702ae3",
+      "statement": "The refusal grader is keyword-based refusal detection that over-counts refusals on novel phrasing (so a flagged refusal can be a false positive), and the --pad-tokens option reruns a split at context depth to test the documented many-shot degradation of safety behavior.",
+      "evidence": [
+        {
+          "resource": "repo://benchmarks/redteam/README.md#L23-L34",
+          "version": "repo-lines-v1:sha256:7b61a762067ee9834dbb6d702f22ee7a6898734c95439ef7db37534698825ee5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE2N2IzY2FmNjcyYWI0NjBhYTJmZGZkNzczNWNhNjIxM2JkNzg4ZGI3YzI3MDNkMzk1NDFmNWY1NThlYmE0NTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlOWIxNmRiYzAyZWEwOTYxMTA2NjVmNjAwMjAxNTVhYzg3NzM1MzUxOTUyYTVjZjAyNTE1NGE0NmRmNWRmMjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI5OGQ5MDEwMTlhNTMzZTg1ODJjMTU5MWQzNjE5MzdiNjdmZTk2ZGQ2NTlmNTkxYzJmNzlkMjE0NWZjNmVlODEifQ"
+        },
+        {
+          "resource": "repo://benchmarks/redteam/RESULTS-qwen3.8-27b-uncensored-2026-10-01.md#L87-L95",
+          "version": "repo-lines-v1:sha256:fce6301a201cc1b9c9be1d7f5ec8ca01e47e61a3f4e6d2e61f8772f07eb1cc11:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTBhMzI3YTgxZTY5MDQ2OGNkNzdiOTRlYTFjZmQxZWM2NGU5NjE1NzEzYjM2OGEwZjEwNmY2NDhlYTNlYmFmMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2ZkNTM5ZTExZWZiYzExY2QzYTQ5ZTc5OWI0MzViZDAwMTJlZTMxNjQwOGQ1ZWE3ZDE5Mjk0ZmZhNzMwOGEwNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2FhNTY2NjUyODNjMWVkZGRlZGUzMDZjMTZjMjMyMzNkMThmZTQwYzFjMmEwZDYwZTVlY2MzZTQzNWY4NzIyMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWYzMzNlMTRhNWJhNjE1NjZlM2EwMzkzM2I5ODVhYmM1Y2U2NjBiNzdhYTYzODMzZWZjYWQwNThiZTZlMGRiYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4f529ab1402b476895aa6801a7096ecb",
+      "statement": "Full-context capability is confirmed with a needle-in-haystack harness (needle_context_test.py) rather than trusted from max_model_len; on the Qwen 27B uncensored checkpoint it retrieved 21/21 needles across depths/positions up to ~247k tokens and also surfaced a high-depth prefill-cost cliff.",
+      "evidence": [
+        {
+          "resource": "repo://benchmarks/redteam/README.md#L5-L9",
+          "version": "repo-lines-v1:sha256:0db647acccc90704e537e73f88faa157f2c837e7a6330c8be1123d5490dfcb0e:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzZmNTExNzU1ZDZjMmQ1MmNhODk4NGExMzgzMDZkOTliMzMyNDU3MWJjY2Y0NDViZWQ5ZjI1MjQ0MjQ4MjMwZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzc5YjMwNTgxMDZmZTVmNDdjMmNiOWY0OGIwMGVkNDFjZGIxNjE5Y2E2NWUyNmQ4MzQwMDk4Mzc4Y2M3ZTg5MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGUwNDM4OWMyNDk0NTUyYmZiNGU1OTFhNmU5NDIyMzZkMTEwZTFlMTk2ZjYyMmUyMjQxZTlhNjEwMjRlNGUyNiJ9"
+        },
+        {
+          "resource": "repo://benchmarks/redteam/RESULTS-qwen3.8-27b-uncensored-2026-10-01.md#L29-L45",
+          "version": "repo-lines-v1:sha256:b7f7118ac4df3cdbe9e0372ed71416cd4ee232352a6bf49ebd8533b2604729b2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ1YTI1NWQ3YzMyMjVhZmQ1MzcyMjU5ZjA4MDZmMmEyZWY1NGJmNTAzNmU0NjBmNDgxN2I0NDVmNGJjMGVlMTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3MDhkYTU4M2I5ZTZiOTBlNjIwN2MwMDhkZDBlYjg4OWQ1NzExMTYzNjgyMmE5NzhhMmM0NDg1NjgxNzBhNTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJkMjliNTQ2NzExYzc3N2FiMmI4N2U4ZmM0NDg2YTEzMDMxYTVhYmRiYTcyMmZjNWZjODMwOGQyNGQ3ZGEwYjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRhNDRmMTZlM2EyNjA1NWQyYWNhNTNhMzFhMjFmNTVjZjZlZjU1NTg5NGQ5OGZmODQzZTI0OTM5NjRlNzhhNGMifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-01T03:42:59.995Z"
+  }
+}

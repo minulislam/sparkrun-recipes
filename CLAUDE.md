@@ -91,3 +91,11 @@ date; re-check before acting on them.
 - Decision: work additively over CX7 link only — Reason: only remaining access path, avoid dropping it
 
 <!-- handoff:learnings:end -->
+
+<!-- OPENWIKI:START -->
+
+## OpenWiki
+
+@AGENTS.md
+
+<!-- OPENWIKI:END -->

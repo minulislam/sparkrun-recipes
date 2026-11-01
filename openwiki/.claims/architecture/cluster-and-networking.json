@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:956bf96e04d7e12115e24334eba3f58efe907dc2b9a06aeaa3b3e723e41430b9",
+  "claims": [
+    {
+      "id": "claim_3b0ca6ee679d4566b81277271e99fc08",
+      "statement": "The dgx-pair cluster is the sparkrun default and spans two GB10 DGX Spark nodes — head gb10-spark (10.10.20.10) and worker gx10-spark (10.10.20.11), each ~121 GiB unified memory — with sibling clusters dgx-pair-ep, gb10-solo, and gx10-solo; there is no cluster literally named 'default'.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L45-L47",
+          "version": "repo-lines-v1:sha256:15d4af8e8da05342580e042336ac4350ff186e2f5e48301d72f815323d860300:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTg4ZDhmMzM5ZjcwZTkzMjM2NzQ1ZjFhYzdkZWFkNWMyMGJkNzFmNGVlZTQ3MTA4ZjViY2QyMWVkYmVlYzA5NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODgxYzVkZmRlNTA4YjRkMzlhNjJiNmNmZjQ2NjE4YzFlOTNhZmRlYWM0ZDc3ZWViYWIyNGVjYTBkYjhjNGJmZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDJiZmE5Y2IzMTIxZmE2MDUwZDk5Y2NkMjI0MDgzNzcyZWJhY2VmNjM5NDhlMWRkMWQzNGUwMzQwYmY4YmQyYSJ9"
+        },
+        {
+          "resource": "repo://INDEX.md#L1-L9",
+          "version": "repo-lines-v1:sha256:641a750efe17523def9af1aee030343f474b15793d19728c17a30d0fb2c6d112:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDJjMmIzMmI1YTZjYzFjNDZiNjFkNzNjNDk3NGQxYzFjYTk4N2ZhNmNmMDdiYmYzMDYwN2U5ZDU2YzMyNzU5OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTQ3NjYxNzdjNWZkZTkxMTRmZmMwMGFjMGNlOTkwMDVkNjIxNWU4MmExMGM3NDQwYzg0MjQ0MTNiMDNhZDI4ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjEzZGI4YmQ4OTkyMjE1NDhmNGZmY2Y4MWI0YjMwNGRiYjE3YjAwZWM3MjllOTNhYTlmMGFmMjFiMzU5MDIwMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e243f8857a3c42758b6e160c093cc312",
+      "statement": "Two-node NCCL/Gloo/TCP-store interface bindings (NCCL_IB_HCA, NCCL_SOCKET_IFNAME, GLOO_SOCKET_IFNAME, TP_SOCKET_IFNAME) are pinned in the cluster definition at ~/.config/sparkrun/clusters/dgx-pair.yaml under env:, are load-bearing, and must not be moved into recipes (doing so trips the managed-comm-env validator).",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L48-L49",
+          "version": "repo-lines-v1:sha256:87f6248ecf70d792df4ba7ef80d2ef4490c73dfa6e7d148b8e2fc9cc8ad71d55:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2Q0NGY5MDc5YTI3MmMyZDE3NzViMTNkMjI5YmM2NDJmYWE5ZWRjOWI1YmQyOGMyNDc5NTJmYjE1NDM2NzQ1NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjU5ZGQ5Mzk2ZDZlOTUxMWYyYzYxYjUyNzFkY2E4MmZiNzI1MjUwMjMwMjBjNzUwNDgxYmQzZjNhYjY2MTAxYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTVkNGFmOGU4ZGEwNTM0MjU4MGUwNDIzMzZhYzQzNTBmZjE4NmUyZjVlNDgzMDFkNzJmODE1MzIzZDg2MDMwMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2UxODFjZTIyMzJjYWY2ZWVjOTU1MDc0OTVmZDUwOThjZGQ5YTQ1OGMxMmUzYmE2NTkwY2ZmYzkyMjUzZTQzMCJ9"
+        },
+        {
+          "resource": "repo://INDEX.md#L10-L20",
+          "version": "repo-lines-v1:sha256:67af774920d59fd5ff43befe874a529a247fe326f0c98dd3ee6df26789481f4f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxYmNmYzY0ODg3NTA0ZTE0OWNjNzcyNTY4ODVjMmZjMTFjNWM0YzRhYWEwMzEyNmRjZjA5Y2Y2MWMxOTUyOWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI4NTAxMGFlNjExMjk2NGRjMzRhZjAyYTlhMjU2N2U3YmE5M2I4NTRiYWMwYzQzYmYzYmI0NzI2MGIxYWE0NDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA4ZGQ2NWI0NjBkMzdiZTFmMTc4ODg0ZTQxOWNlYWFjYWMxMTc4NjE1OGU3NGMzZTUyOGE4ZDk5ZDNiNzM2OTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg0ZDI5NGUxM2FhYWZhMmQyZDQzNmI1ODhlZWZhODZjYzRjMDY3NDY4ZjUwNDFiNDBkZmQxNjY1ZWZiN2ExZTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fe38a811de0d49478719be6e2e18d615",
+      "statement": "Since 2026-09-29 each ConnectX-7 NIC's f0 port intentionally carries the same IPv4 as its f1 twin at a higher route metric; sparkrun's probe lists the f0 ports first, so the comm pins target the f1 ports to override that, and this layout is deliberate.",
+      "evidence": [
+        {
+          "resource": "repo://INDEX.md#L13-L20",
+          "version": "repo-lines-v1:sha256:5a9185b0dfa31bf947d1cfb6dafb23cd27d3739b2d2ee26dc63f9d0a3514cc4d:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWExZDAyM2QyYjliZTZlYjY5MzhlMDA3YTIyYWYyNmJlMDZkYjVmMjg3MmZlODQyNTVhYWFlYzY3YTg0ZDNlMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjg1MDEwYWU2MTEyOTY0ZGMzNGFmMDJhOWEyNTY3ZTdiYTkzYjg1NGJhYzBjNDNiZjNiYjQ3MjYwYjFhYTQ0MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjEzZGI4YmQ4OTkyMjE1NDhmNGZmY2Y4MWI0YjMwNGRiYjE3YjAwZWM3MjllOTNhYTlmMGFmMjFiMzU5MDIwMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODRkMjk0ZTEzYWFhZmEyZDJkNDM2YjU4OGVlZmE4NmNjNGMwNjc0NjhmNTA0MWI0MGRmZDE2NjVlZmI3YTFlOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7d2a1851b6a346a187ad372bb663c9e3",
+      "statement": "sparkrun setup cx7 and the setup wizard must never be run on dgx-pair because they can rewrite the intentional duplicate-IP layout and drop the load-bearing comm pins; after a worker reboot, sparkrun setup check --cluster dgx-pair should be run before a two-node launch.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L50-L54",
+          "version": "repo-lines-v1:sha256:8f47e5117c780ec99c8daabc541569d6f69ff0897c3db4d3e129451a6a5848be:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDdmOWM5ZGRiOTlmYmVjMWZhYTJlZjYwNGQyOWEzZmJlYzc1YjU0OWU1YTAyYmU2NDZjN2RhY2ZkZWQxOTBhZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTVkMmIwNDkzMjkwNGExMTU3ODg3NWU2YjgxY2M2YWNjOTI4MTQ1MjQ2NzY1ZmFjOWY4MzViMGY1OWQwYmJiZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzhiZmZjMWIyODE4ZTYxODBlMjhkZDM0NjdlYTk0MDMzOTBkNDk5NmQyN2NmNGUxMjQ3NWM2MjBmNWU1MjhhYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGU2Y2MzZWJmZjhhOGNjNDQ0OWQ5Mzk5Nzg0MjcwOTZiNjQyMGQ5YzU2YTcxMzNiNTBiNWFkMDM4NmE1NGY5NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2b9cf97ac1394d859ad3e39af4f6826a",
+      "statement": "The management plane (worker wired NIC enP7s7 holding 10.10.20.11, used by sparkrun for orchestration/SSH) is separate from the CX7 RoCE data plane (10.99.x, carrying tensor-parallel all-reduce); enP7s7 has repeatedly lost carrier while the host stayed up, so a two-node job can wedge even with a healthy data plane.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md#L475-L476",
+          "version": "repo-lines-v1:sha256:ae4b1588622539fc8a47330b8b9ab0f897b15aff912b1abba9e95246ca190478:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzk4OWI4ZTdhYjkxMjMzZDk5MWQ1YmU5YTNiZGE4YWVmYjcyMDA1ZjljYTliZjMwMjk3Zjc0MjQ1ZGRjZGRkYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDU0YWQzNTkyZjFlNzIyY2M3ZmM2ZmQ1ZWNlMDY1YWUyYjc4ODA5Zjk4N2VjY2JjNjRhNWEzYTQ2Y2I0N2QzYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODIyMmMyNDk3YjAyNmQwMmVlMTA0NDhjYjEwNjQ2MmVjMWMwYzk5NDFlNTc0MTJkMTljMDc5OGMwMGNlYTYyNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDIxYjM0ZTA2N2U1MmY2Njk1YjNiMWJmMGU4NTc1ZjY4OTFmYjNiNTMzZmI1Yzc1ZjIxYjE5N2Y5ZDNiNGI0ZiJ9"
+        },
+        {
+          "resource": "repo://HISTORY.md#L644-L645",
+          "version": "repo-lines-v1:sha256:69f4295b4ab8c26f6a58c8e2d84b6e951f19928ce586e44663dc7c77276e5a49:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTY4ZTIxMzkyMDYxODg4MDUzYmVmMzAxNDY0MTI5Njg4OGMxMThjNDBhZDRlYTg3MGUyMDZkZmIzNjM1NTk4MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTM4ZDM0NmY4NTI0MzgxZjVlMTRmMDg1YWU3NThkODI0Y2E0NzM4YWZhNjgyMWM2ZjlhMzEzZjE2NGYyNTI2YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2RmNjY4MDJhZTEzY2NmMzg1YzNmZWM0N2EzZmE3MzEwNzcxNzFhODhkMzQ0NTQwZTBjYjdhMTZiYzVmMDg4YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDQ3MTQzMDYwZGYzN2JkY2FjNDRhYzZhYzlhN2Y2ZjI4NDg5OWQ3YTBkY2E5MTMwMDBmYjBiMWE5ZWIwYjM3MiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1eb94e52f5714679a9210ebb17d4fac3",
+      "statement": "A non-persistent management workaround has been used when enP7s7 loses carrier: bring up the worker wifi interface wlP9s9 on the same 10.10.20.0/24 L2 and add 10.10.20.11/24 to it; it clears on reboot and later sessions have found it inactive, so the wired NIC still needs a physical fix.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md#L644-L651",
+          "version": "repo-lines-v1:sha256:07750e1e9eaa0a8e9eb3751f5e7cbecf1d258b84df2a97e2d9dafb36f18752b2:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTY4ZTIxMzkyMDYxODg4MDUzYmVmMzAxNDY0MTI5Njg4OGMxMThjNDBhZDRlYTg3MGUyMDZkZmIzNjM1NTk4MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWU4M2I0Mjg0MjQ0Mjg4ZTY0ZGQ1NTQ2M2FkOGU1ZTNhNDFhMjExNzAyZjg2NGUzMTIxMjk2NjMwMjE2YWRiMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2RmNjY4MDJhZTEzY2NmMzg1YzNmZWM0N2EzZmE3MzEwNzcxNzFhODhkMzQ0NTQwZTBjYjdhMTZiYzVmMDg4YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODE3NTZkODllNzJhYTBiY2YwMmMwNWE0MjJjNGViY2Y5MTAwNDhlMjlkMTNhZDA4OTRiMDFhM2VmMGViYzY4ZSJ9"
+        },
+        {
+          "resource": "repo://HISTORY.md#L752-L754",
+          "version": "repo-lines-v1:sha256:b2912cf854aeea8654628a9affa4152a96a731309956b14b333e509b4037d7b7:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTc3NjJiYjJlZjg5MTI1YTUzMTE5YWM5NjE0M2NhNjQwNDI2ZjUwZTM0ZDdiNmRlNjJhZWFhNTMwNDFiZDRhMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWZhYzIzM2QxMjk0M2EwMTEyYmU5YThiMjczYjE2OTg3NzIyMTlhOTk5ZmM5NTY1MTgzYTQyZWRhODg0YzhkZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWIxMmRiZjBlN2IxZThkYzcwOTcyZDE0MzU2Y2IxN2ZjMzRmMzEyMjY4ODA5MTdjMTIxZTE3NmQ3MjBiZWQ3NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzI3ZjE2ODIxMTIyYWRmY2NiNzQ3ZTViODEzMjc0OGQyNTc0OTY1MDM3NjE0MWNlYjI2MDA4NmEwNDcyMjJiZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1d02b53117bd41da8b54a02d51fdc062",
+      "statement": "Neither node has passwordless sudo, so root-level network repair steps are handed to the operator to run in their own terminal rather than performed by automation.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L67-L67",
+          "version": "repo-lines-v1:sha256:e4b628860d5beda829666ac0e7927dc588ee29ead68ed1b2aef3089665824046:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTRiNjI4ODYwZDViZWRhODI5NjY2YWMwZTc5MjdkYzU4OGVlMjllYWQ2OGVkMWIyYWVmMzA4OTY2NTgyNDA0NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTRiNjI4ODYwZDViZWRhODI5NjY2YWMwZTc5MjdkYzU4OGVlMjllYWQ2OGVkMWIyYWVmMzA4OTY2NTgyNDA0NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjcyNWQ1ODc5NTc2NzY4MDM2NmI1NmM4OWEzY2RmZTMxNDJlYTJhYjM2ZjA0YjMxNWI5NWMyMTM0ZmJjZDVkOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTFkNWYwNzU5NDFiMDg4MDcyODFiYWRiMzhiNzUwNjk0MTY1ODRhM2MyMzZhOWE0MTM0N2YxN2IzNDJkNjAyMiJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-01T03:42:59.995Z"
+  }
+}

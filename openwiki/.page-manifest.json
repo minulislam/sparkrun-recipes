@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "pages": {
+    "/openwiki/architecture/cluster-and-networking.md": {
+      "pageVersion": "sha256:956bf96e04d7e12115e24334eba3f58efe907dc2b9a06aeaa3b3e723e41430b9",
+      "completedBy": "claude-code",
+      "completedRunId": "1d977836-4e9e-4d75-a2cf-5ed2190b5310",
+      "gitHead": "37853bd4557d328185e0b498469cf368d8ed86fa",
+      "sourceFingerprint": "sha256:1391430131bb3cab4e0f78ed773f1fc7f6ecac2e5f00e3c0b48763a2913dc601"
+    },
+    "/openwiki/architecture/registry-and-publishing.md": {
+      "pageVersion": "sha256:835fd14fcf4ea76e8bd6dce2590e370493754ed0ba4082caa82a12b0c6529ed6",
+      "completedBy": "claude-code",
+      "completedRunId": "1d977836-4e9e-4d75-a2cf-5ed2190b5310",
+      "gitHead": "37853bd4557d328185e0b498469cf368d8ed86fa",
+      "sourceFingerprint": "sha256:1391430131bb3cab4e0f78ed773f1fc7f6ecac2e5f00e3c0b48763a2913dc601"
+    },
+    "/openwiki/concepts/abliteration-and-refusal-eval.md": {
+      "pageVersion": "sha256:d277177605baeb2c12cb8f51bf70cd4a7cc1186a435c344e482c934f20ea8b35",
+      "completedBy": "claude-code",
+      "completedRunId": "1d977836-4e9e-4d75-a2cf-5ed2190b5310",
+      "gitHead": "37853bd4557d328185e0b498469cf368d8ed86fa",
+      "sourceFingerprint": "sha256:1391430131bb3cab4e0f78ed773f1fc7f6ecac2e5f00e3c0b48763a2913dc601"
+    },
+    "/openwiki/concepts/recipe-anatomy.md": {
+      "pageVersion": "sha256:4398f4552ae55cc14e9aeebd559c5e5a905bba5b9ddf7aebc6ba7e114a6de54b",
+      "completedBy": "claude-code",
+      "completedRunId": "1d977836-4e9e-4d75-a2cf-5ed2190b5310",
+      "gitHead": "37853bd4557d328185e0b498469cf368d8ed86fa",
+      "sourceFingerprint": "sha256:1391430131bb3cab4e0f78ed773f1fc7f6ecac2e5f00e3c0b48763a2913dc601"
+    },
+    "/openwiki/concepts/status-vocabulary.md": {
+      "pageVersion": "sha256:9b8a783f521f4ee0e815897c481532f0c46d3655cea32c6da24014540fce99e3",
+      "completedBy": "claude-code",
+      "completedRunId": "1d977836-4e9e-4d75-a2cf-5ed2190b5310",
+      "gitHead": "37853bd4557d328185e0b498469cf368d8ed86fa",
+      "sourceFingerprint": "sha256:1391430131bb3cab4e0f78ed773f1fc7f6ecac2e5f00e3c0b48763a2913dc601"
+    },
+    "/openwiki/operations/memory-placement-and-pitfalls.md": {
+      "pageVersion": "sha256:2a7fd2f30f9a4bc8036647315b6f3c2306730fb56629d534a5753d1afe19d6c4",
+      "completedBy": "claude-code",
+      "completedRunId": "1d977836-4e9e-4d75-a2cf-5ed2190b5310",
+      "gitHead": "37853bd4557d328185e0b498469cf368d8ed86fa",
+      "sourceFingerprint": "sha256:1391430131bb3cab4e0f78ed773f1fc7f6ecac2e5f00e3c0b48763a2913dc601"
+    },
+    "/openwiki/quickstart.md": {
+      "pageVersion": "sha256:3cbec08f7db48218b63fb43be4d96ec4433c795fd4440c1235ec602ea8ee4a84",
+      "completedBy": "claude-code",
+      "completedRunId": "1d977836-4e9e-4d75-a2cf-5ed2190b5310",
+      "gitHead": "37853bd4557d328185e0b498469cf368d8ed86fa",
+      "sourceFingerprint": "sha256:1391430131bb3cab4e0f78ed773f1fc7f6ecac2e5f00e3c0b48763a2913dc601"
+    },
+    "/openwiki/reference/images-and-provenance.md": {
+      "pageVersion": "sha256:3dce65fc20521eff02a8f7604e98e6af10bd1b9cd441f74c27f9d215689f270e",
+      "completedBy": "claude-code",
+      "completedRunId": "1d977836-4e9e-4d75-a2cf-5ed2190b5310",
+      "gitHead": "37853bd4557d328185e0b498469cf368d8ed86fa",
+      "sourceFingerprint": "sha256:1391430131bb3cab4e0f78ed773f1fc7f6ecac2e5f00e3c0b48763a2913dc601"
+    },
+    "/openwiki/reference/model-inventory-and-weights.md": {
+      "pageVersion": "sha256:0265a70cda3b69b0c7872973d5f1ed20f48d30b42bae2183250953763816df3d",
+      "completedBy": "claude-code",
+      "completedRunId": "1d977836-4e9e-4d75-a2cf-5ed2190b5310",
+      "gitHead": "37853bd4557d328185e0b498469cf368d8ed86fa",
+      "sourceFingerprint": "sha256:1391430131bb3cab4e0f78ed773f1fc7f6ecac2e5f00e3c0b48763a2913dc601"
+    },
+    "/openwiki/workflows/authoring-recipes.md": {
+      "pageVersion": "sha256:505273aa3cde6714cacbc4e6430dea0bbb75f4442da6bb67bb0a8169c116bab8",
+      "completedBy": "claude-code",
+      "completedRunId": "1d977836-4e9e-4d75-a2cf-5ed2190b5310",
+      "gitHead": "37853bd4557d328185e0b498469cf368d8ed86fa",
+      "sourceFingerprint": "sha256:1391430131bb3cab4e0f78ed773f1fc7f6ecac2e5f00e3c0b48763a2913dc601"
+    },
+    "/openwiki/workflows/benchmarking.md": {
+      "pageVersion": "sha256:e42c875de9096aff8afc9b835fb206ee22cee1ca42d174702574fd9932b6cfd0",
+      "completedBy": "claude-code",
+      "completedRunId": "1d977836-4e9e-4d75-a2cf-5ed2190b5310",
+      "gitHead": "37853bd4557d328185e0b498469cf368d8ed86fa",
+      "sourceFingerprint": "sha256:1391430131bb3cab4e0f78ed773f1fc7f6ecac2e5f00e3c0b48763a2913dc601"
+    },
+    "/openwiki/workflows/launching-and-verifying.md": {
+      "pageVersion": "sha256:a727901680014e5f6cb5dcf431ade16f472311de071433e3b7bb2778e33ecc71",
+      "completedBy": "claude-code",
+      "completedRunId": "1d977836-4e9e-4d75-a2cf-5ed2190b5310",
+      "gitHead": "37853bd4557d328185e0b498469cf368d8ed86fa",
+      "sourceFingerprint": "sha256:1391430131bb3cab4e0f78ed773f1fc7f6ecac2e5f00e3c0b48763a2913dc601"
+    }
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:e42c875de9096aff8afc9b835fb206ee22cee1ca42d174702574fd9932b6cfd0",
+  "claims": [
+    {
+      "id": "claim_1f7e663125ac45009d7d858ed0513a0e",
+      "statement": "The canonical throughput profile is the quick ladder — concurrency 1 and 8 crossed with context depths 0, 8k, and 32k — run identically for every recipe so they are comparable, and because it runs at depth it exposes where a recipe's concurrency/prefill collapses (the fleet sweep found recipes that collapse at 8-way x 32k).",
+      "evidence": [
+        {
+          "resource": "repo://benchmarks/README.md#L12-L12",
+          "version": "repo-lines-v1:sha256:46cbf1bb19f70bbf923a76dd1d539af8c60997dceed812c9c9e1b352f5a9e34f:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDZjYmYxYmIxOWY3MGJiZjkyM2E3NmRkMWQ1MzlhZjhjNjA5OTdkY2VlZDgxMmM5YzllMWIzNTJmNWE5ZTM0ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDZjYmYxYmIxOWY3MGJiZjkyM2E3NmRkMWQ1MzlhZjhjNjA5OTdkY2VlZDgxMmM5YzllMWIzNTJmNWE5ZTM0ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjg4ZWI2MDhhNWYyZTQzYWM4NjAzOTBkMWZhNWU4Zjc3YmVmODU5YmRjYTFmMzg4ZTI4ZThjMWYxY2Q1MjJiNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjA2NmVjZTg4MTU4MGJiYTgyOGYxMWRmM2Q4YTZiOGJkN2Y5NWMxYzUyMGQ1NmYyY2I3YjA3MTk2NmNhMWUxZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b49802f0362f4d5a8c3e9ea9d62a2424",
+      "statement": "Benchmark output is two artifacts per recipe: results_<label>.json (streamed TTFT and decode tok/s over three runs, long-context prefill rate, 8-way aggregate, quality-probe transcripts) and mem_<label>.txt (captured vLLM log lines for model-load, KV cache size, and max concurrency).",
+      "evidence": [
+        {
+          "resource": "repo://benchmarks/README.md#L34-L42",
+          "version": "repo-lines-v1:sha256:92a07a671e34df795103b8efd0d0129481ea63d7fec37cdb307f07540d82faa0:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWY2ZjRkYjU1ZmE0MzczNzYxMzU2MDEzNDdmYTM5M2UzNDAxYWU4ODkyMzU0Mjk1ZGIwMTE4MDgwM2NiNjQzMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzNiZWE0YTFmMDE2OGQ4YmJjZGM2MmJhZDY5YWIzMTk3NTRhNWI0M2VjOTIyMjg3ODNhMGE2OTQzMTFiYWRjMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDAwNmQ3ODU2ZWVjNGNhYTQ2MGQ4YWMyZjcxYjhmZTdiMGE5YWNkMmQ3N2RjNGVjMTBmOGRkYzNjNTJmMjMzOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_9d0f24d9e20a4d80aea22b54bab00213",
+      "statement": "On GB10 nvidia-smi reports [N/A] for memory, so the vLLM log lines captured in mem_<label>.txt are the ground truth for KV pool size and per-request concurrency rather than a GPU-memory query.",
+      "evidence": [
+        {
+          "resource": "repo://benchmarks/README.md#L39-L42",
+          "version": "repo-lines-v1:sha256:d9526708d3f88967822e72d448dd501a62a22ee50f7c399b33dab2eeca38a7d0:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjFjNzU2YWJjYWY0MDFlOTA5ZWY2YjRlZWVmMjkwZDkwZGVlMTFlNmFlNjAxNTZkOTRkOTQ0YTZlOTg4MWQ5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWY2ZjRkYjU1ZmE0MzczNzYxMzU2MDEzNDdmYTM5M2UzNDAxYWU4ODkyMzU0Mjk1ZGIwMTE4MDgwM2NiNjQzMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTM4OWE5M2ExMDkxMjNhM2FmMzBmY2I4MWMwNDU4MzBiNTM4NjQ5NTFhMWFkNDBlMjdkYjg3MDA1OWU1YWFkNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDAwNmQ3ODU2ZWVjNGNhYTQ2MGQ4YWMyZjcxYjhmZTdiMGE5YWNkMmQ3N2RjNGVjMTBmOGRkYzNjNTJmMjMzOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_acb435c6c5444cad967296d72ddb2a1d",
+      "statement": "needle_context_test.py measures whether a served model can actually use the context length its recipe claims, and what prefill costs at depth, by placing a passkey needle at multiple depths/positions over OpenAI-compatible HTTP — so an advertised max_model_len is only treated as a capability once a needle is retrieved near that depth.",
+      "evidence": [
+        {
+          "resource": "repo://benchmarks/redteam/needle_context_test.py#L1-L10",
+          "version": "repo-lines-v1:sha256:d29081dfd71916a5098decf6139453a4de7e2bb69461dbec9aadf87b540cad61:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2ODJjYmRiNGM4YjA3NTE4YmY0ODZjNTg5OTBmYzM5MTc4M2FhMjBhOTE2YmZiMjdhZDIxMWViMWQ1YzM2NDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI4MTAzMTcyZjEwYjQ1NTU1ZmE5Yzc4NGUzMmJjZjc5YWVjOTYzNzgwMzdkYjNiOGM2ZTBiMTU5ODRjMDRkZDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNkMjAyNzQ0YWU1ODUxYzVmNjhkMWIxMDVhOTFiNDFkYmI4MjgxNmQ4NTYwMmE3ZDA3MDI3NTEzZDJiZmYzZWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6c48b2dc80b64ba3a72e948ec1b811ae",
+      "statement": "Benchmarked is strictly stronger than verified: a verified recipe answered a request, and a benchmarked one additionally has measured numbers recorded in benchmarks/.",
+      "evidence": [
+        {
+          "resource": "repo://CONTEXT.md#L33-L38",
+          "version": "repo-lines-v1:sha256:0ab8d34688b4da75e07e5379b0cf1391daa285b689b3ed20f2bd5fd4ced6f3db:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGI0NzZiODAzMmY4ZDRkZGQ2ZjExNDdkM2JlNGRmYWUwYjU1YjVlODJjNGE0NmFlMWM2MTNhM2QzZjY2YjAwYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmFlZmJlZTJkNDRjNjliNjU4M2FmNDZhY2FjMzQ5YmJhYWM4YjYzNGI3NjIxMzJkNTQxN2RkMTc4ZTczNDk1OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGM0NjZhZWMyYWI2MTViZDg0OWMwYTYyMzk1Y2FjY2VlOGU3NWY5YzVhNzU5MTIxMzRiMTZlODk1Nzg3MzNiYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ed8bc7065b9b4d829261a529c87ed997",
+      "statement": "Reports in benchmarks/ are dated and ordered so a later report supersedes earlier ones where they disagree, and all numbers are measured live on the cluster rather than estimated.",
+      "evidence": [
+        {
+          "resource": "repo://benchmarks/README.md#L3-L12",
+          "version": "repo-lines-v1:sha256:a749e2da8521a8319dbe4d6f9ecacefd785ff13c08dfc7586dd72a2919dad770:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmMGVlZTA3ZDVkOTU0NTMwZDNmM2Q1MTgyZTBhMjVkMzc3YmZlNzA2NTFlNjBhM2VjYmY3ZGNmMDAyZTdiYjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2Y2JmMWJiMTlmNzBiYmY5MjNhNzZkZDFkNTM5YWY4YzYwOTk3ZGNlZWQ4MTJjOWM5ZTFiMzUyZjVhOWUzNGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQxMzRjYzk2MGY4NTQ1YWRiZDJjYjM2N2I3MjIyNGUxNzE0NTk0NWMyMmY0Mjk4NTUyMDc4YTM3ZDkyMjcxOWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYwNjZlY2U4ODE1ODBiYmE4MjhmMTFkZjNkOGE2YjhiZDdmOTVjMWM1MjBkNTZmMmNiN2IwNzE5NjZjYTFlMWYifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-01T03:42:59.995Z"
+  }
+}

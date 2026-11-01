@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:3dce65fc20521eff02a8f7604e98e6af10bd1b9cd441f74c27f9d215689f270e",
+  "claims": [
+    {
+      "id": "claim_977b881f419848fba8b33b37b14aefea",
+      "statement": "Container images are chosen by a fixed order: spark-arena rebuilds first, then eugr images consumed via the spark-arena rebuild rather than direct, then a vendor image named by the model's own docs, then official vllm/vllm-openai as a fallback that lacks the GB10/NVFP4/FlashInfer work.",
+      "evidence": [
+        {
+          "resource": "repo://IMAGE-POLICY.md#L5-L14",
+          "version": "repo-lines-v1:sha256:2647ee9bf6e5f48003f3c599da4ff69b95218d3899bbb819be636bac30189723:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmMzU3Njc0ZTUyMTU1ZGNkYTM1MTRhMGY1OWEwNDNiMTNhYzY1Y2E5MTI4OWNmNGU3N2FlOTM0Y2NjN2U1NjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyYWFiZGU5MjUxNzczYzFjOGIzZWM1YWFjMzZiZTY4OGMyZDJiNWU1OGQ2MjA4YjQ1NzhkNzNlNjkxZmUzMDQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNiMDI1ZGFjZGVjNDcwNDY4NzQwN2Y4ZWJkOWM4YzY2MWI1NzgyYjY2ODM5ODAyNmVlNWZmNDMwMTA0MWRhMTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJkNjVkZGUyMGQ2OTY3MjY4ZDA2NzEwNzU1MTBhNmYzZWI2ZmU2NDcxMTU4YWNjYTRiMTNhYzAzZWY1Nzk2NzkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_35f0d3c3b6f84680ad85bc0ead562dc1",
+      "statement": "The selection order is also a security order because it tracks provenance reconstructibility: spark-arena rebuilds carry a full label chain (dev.sparkrun.* source/vllm/flashinfer hashes) while a direct eugr pull has no build labels at all, so consuming eugr through the spark-arena rebuild is what makes an opaque image documented.",
+      "evidence": [
+        {
+          "resource": "repo://IMAGE-POLICY.md#L23-L33",
+          "version": "repo-lines-v1:sha256:5ed4c6e8a63f52ec1e297adfbc0238edb6547c31f4a1da63bd4f8b3f9ebf712d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhNmZkNzNiOTY5MWMwMTRiMjgxYzIzZTJlYTMyMWM2MDkyNWNlM2FiYTI0NjM2YTdlNjQ3MGQyYTdiYjRkZWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUwNDg2YzNmNDAxZTgyNWI0MTIwMzI3ZjExNzc1NmZjMmZiYjA1MTI2MzRiNGRjNzMzOWI4OGIyNmI1NjZmMmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ2NDM0OGUzNjg0MTMxMmU2ZDc3MDEwNzRjNmYzMTkyMjRiZTZiODNmNzM2NWQxMDBmYWU0NjFhNzI5YzE4ZmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZiMjRkNjAzNGJlMDkwMGQxMzAwNjJhZWQ2M2ZjNWQ4ZjIxMjFjODlkZGE5MTRlMTgyNDZhMzNlMTA0Y2NiMjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_17feb148f7d14aebab306063fc1f6175",
+      "statement": "A verified recipe's image must carry provenance labels (dev.sparkrun.* or OCI org.opencontainers.image.*) or be mirrored into spark-arena so it does.",
+      "evidence": [
+        {
+          "resource": "repo://IMAGE-POLICY.md#L19-L21",
+          "version": "repo-lines-v1:sha256:482903d32b57e3a42c5c75292549c2e078e87c79141a0245d61aa79a85531e3e:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzg0MWI5ZmVkMDA0ZTIwOTIyZGEyOTc5MTJhNDJkMjNjMWMzMjMyMDg1ODEyZjk1NTkxMWViY2Y4NTRkZjAxMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWRjMThkMDc5OTEyNzg3OTJlMGJkODU2ZTYzYWNmOGFjMjg1Y2EwZGUyYjk4MDUyZDljZjE5NGE3NjNlMmJhNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2I0MTdmYzZkMTJiOTg5NTFjNTNkZDI3YzZjM2UwNWFmNDYyMGZhYTg4ODUyNmZlZGQwOGNlMmM0MjU5ZGNjMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzUxMTI2NTFjMWI2NGFhZWE5ZmY5OTBhMDY5MzU3NjUyYTRhM2VmNzQyNTMzYmViOGM0YWQ4MzFlZTIwMDM2NCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_fcc68aa0893b4cc19e3a681184fcb1b0",
+      "statement": "Policy is immutable tags only (no :latest or floating :nightly); digest pins are otherwise strongest but sparkrun 0.3.10 fails to ship a digest-pinned image to the worker, so a dated tag is the practical right form on this pair.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L64-L66",
+          "version": "repo-lines-v1:sha256:b725d58795767680366b56c89a3cdfe3142ea2ab36f04b315b95c2134fbcd5d9:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjBhY2VhMTQ1YzBkYmIzZmNmOGQyNzU3OWEzYmNjZTFmM2RhZTNkZTgxYzE3M2ZkMTA0OGIwNmJjZGJmOGIyNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjMzNDZhNmE5Njg4MTMzYWRjZmQ5MmQ0ZjI1NGNlNzlmODUyYmRmMDUxNmMyMDAyN2Y2OTM5ZjFhMzhmNzVlOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2VmMDE4MTVkNTM5N2FmZGI4ZjAxMjQxM2U0MjcyMTU1OGQwNjhmYWYxOWU4NGU5OTcwYzYyZWIyODM5M2YxYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDEwZjgwMmJiYmRkZmRmZTEyOWFjMTdhYmU0MDNkYmJjMWYwYjMzZTM1NTJmN2FkODU3OTE0MTUyNmY2MTBiOCJ9"
+        },
+        {
+          "resource": "repo://IMAGE-POLICY.md#L16-L18",
+          "version": "repo-lines-v1:sha256:3b417fc6d12b98951c53dd27c6c3e05af4620faa888526fedd08ce2c4259dcc2:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTE1YWZjMTc4ZTRiNjg1MWQ0MjFjM2JlMDQyMzNmODA4ZDYxODhhOTNhYmYwZTZhYmM4YzVmODJlMjY3NzYxNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGY5ZjhiNmY3ZDZkMWI0MDIxZDk4YjdkN2I2YjJmMjQ2MTI5NTM4OTc3YzU1NjhiMzA2YmQ3YWQyOTdkMjQ1MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWMwM2YwMjgzZmZkZmNmNmYzOTcwYTcyNjcwODRhZjAwMjY2MjZkNmQ0YmMxOTZhNTgxMzE1MjhiMDlmMDdlYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDgyOTAzZDMyYjU3ZTNhNDJjNWM3NTI5MjU0OWMyZTA3OGU4N2M3OTE0MWEwMjQ1ZDYxYWE3OWE4NTUzMWUzZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b6931b49f4554bd58ab0615d32096f50",
+      "statement": "The b12x image line runs an untagged vLLM main build, giving it full provenance labels but no release/CVE baseline.",
+      "evidence": [
+        {
+          "resource": "repo://IMAGE-POLICY.md#L46-L47",
+          "version": "repo-lines-v1:sha256:6feaf46ca247d4667d57a8ceecde6e82f719ab17dcf28c1798d6457c2f7637fc:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWJkY2NhNzI3ZDRhOGY0MzA5M2Y3ZWE5ODIyMDE3ZmJkMjJjNzE3YjYyOGE1MmVmZTVkZmViZmFkZmJlY2ExNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTMzNWJiNmM0NDgzNWI2NTJhMWMwNjRmODEyYWI2ZmI1ZGRhNmE3M2E4MTk3ZjhlNWYxN2VjYjNjNzk0ODFlZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTZjYTFlYzkzZmVkZDg5ODY4YmQ0ZTVhNGFhY2NiZmQ1YzhkOTk4MWQxZDlhY2FiYjAxY2M2MWQxYzVkMmQ2ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTY1MjgzNTNhZGEzOTFmYTdiZDBhNDQ4NGRkOGQ3YmU1OTg0MWIwZDgwOTZkMjM5OThmOGFkMzdhODZhZDQyMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_604739df4663402d8fa89b1921cdcaf1",
+      "statement": "spark-forge/vllm-dsv4-rank1 is a locally built image (existing only on the two nodes) that layers the pocharlies rank-1 refusal-projection patch and its direction file onto an anemll dspark-vLLM base, with its README recording the exact source commit, base image, direction-file hash, and a reproducible rebuild and worker-push procedure.",
+      "evidence": [
+        {
+          "resource": "repo://images/deepseek-rank1/README.md#L1-L26",
+          "version": "repo-lines-v1:sha256:2547b3d2cef87e71dc0354928add64de02f16a4c2bcf85615db57bd482c5153a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhMjA3ZGE5NjU2ZDY3NTVlMzM0NGU2MWVkZjljMzJkZWE3YjU4NTNiMDE3MWUzYTBmOGUyMGQ4YTlkNTE1ODYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA2Mzc2YmRhYWMyMjNkYTQ4ZTc3NjQzNzdjMDc5ZjQ3MTQwOTFhYWM4ODI1MDgzODVlNjk5OTZjZjAyMWM3ZTkifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-01T03:42:59.995Z"
+  }
+}

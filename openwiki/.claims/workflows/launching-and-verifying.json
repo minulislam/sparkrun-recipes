@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:a727901680014e5f6cb5dcf431ade16f472311de071433e3b7bb2778e33ecc71",
+  "claims": [
+    {
+      "id": "claim_56ca71812db34cf382140bbc4fdd28cb",
+      "statement": "The launch sequence is lint (sparkrun recipe validate), then a --dry-run per-host fit check, then sparkrun run with --no-follow; validate and --dry-run are lint and do not constitute verification.",
+      "evidence": [
+        {
+          "resource": "repo://.claude/skills/verify/SKILL.md#L8-L18",
+          "version": "repo-lines-v1:sha256:d62e9d9ba6261e26b960ebe76b6502ed02666f4134410a42db111cb3f9a6e386:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0ZTQ2OWFkMzdjN2NmNTI4Yjk1YjMxYjQ0NDNhMjU5NzQ0YjcyNDg3NmE2NWQ3NmNhMzg4OWMzNGM5OTU1YTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMwYWE5ZmE3OGI1MjgzOTFmNTBjOTVmMmQ0YjQxMzAyOTk2MmJmZjUyNjczNzcwMDYzMzRhOWIwOTU2ODU2NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxYjEwM2NjMDU5MjY2Yzg0YzBiYmM2OGY5MTE0NWY5YjUxZDBlNjBhYzllZjUzODJjM2Q1ZGFmZjdmNjFhNzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY1ODhmNDQ1NmU3OWEzNjZkZGUwZDEwMjUzYjg3NjNjMmZmMzM5ZDhiYmJmNWY1Yjg5M2UxODJkMTY3OTZlNGEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ee0279a2c6d34637a82ce067d8bb17a2",
+      "statement": "--no-follow is mandatory because sparkrun run returns as soon as containers are up, long before vLLM serves, so following logs only blocks.",
+      "evidence": [
+        {
+          "resource": "repo://.claude/skills/verify/SKILL.md#L30-L33",
+          "version": "repo-lines-v1:sha256:a6f3c350e7f7c2929e9bc25f0d1c93b7909b9de6618f18a7eda1e52a83c2cfa5:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjllYjVmMzI2Nzk5YTBiNWI1Y2ZkMGIxNzA1NGNhYWM1YjI2NmM2NzM5NjJhMTc3OTlkMzc2ZmFiMDY4NzhmZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmM0MDRkN2YwMWRlYWIzNTg4OGRmZDFiNGI4MzJlN2EwYWMzM2Q1M2QwZWVlYzI3ZTg3YmYwOGQzZjU5MTk3ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjM3YmZlNjRmMjczN2MzNjdiZDg1MjRiZWZmNDQ0YmVkNDQzNGFiODZiZjU5MWQwYTZmYmUyZTU2N2EzZWE4YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzg4ZGU3Mjc3YzRlNmI4OTZiNzY5NWZmNWI1YWY5YWMwOTU5ZGNjYzc3YWE5YTZhMjhiMjdiOGFlMDY4ZDg3NSJ9"
+        },
+        {
+          "resource": "repo://CLAUDE.md#L62-L63",
+          "version": "repo-lines-v1:sha256:01d7fcc78aacd3c6e7ed0265b47537618e2f31f969f58b6129b2f648d2cf5c7c:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWYwNmIwY2ExMTQ3ZmY2MTFhZTExNmY2ZThlNTE1MjA1NzI2YzRjNjE2Y2IyZjQ1YjI3Mzk2OWNmZTY3M2RmMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjAxNTZhZmFhMTFlZGRlOGM5NjliYmMyNjExNzhmYmIzNDEwZWNmMzJmNmE2MTZjNzkxYTY3ZjMyNWFkYzM1NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTAwZjY3NjgwYjE1NzMwNGUwNzI3NjhlM2NkNTVjZGE0N2ExODg5MDIyOGU4MzUyODIxMWE4NmNiOTA5YmY5ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjcyNWQ1ODc5NTc2NzY4MDM2NmI1NmM4OWEzY2RmZTMxNDJlYTJhYjM2ZjA0YjMxNWI5NWMyMTM0ZmJjZDVkOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b2e55b4fa60f45eeb250d7026dbdc7bd",
+      "statement": "Gated checkpoints need HF_TOKEN, but non-interactive shells do not receive it because ~/.bashrc returns early, so it must be passed inline on the launch command (and never printed into output or files).",
+      "evidence": [
+        {
+          "resource": "repo://.claude/skills/verify/SKILL.md#L17-L21",
+          "version": "repo-lines-v1:sha256:abcf0776c730e48e47d6503403746c12977211bc509be13a789c261d256c102f:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjNjY2M3ODZiZTRhNWQzNTUyMzg3NWEwOWI0NDE0YjE1NTI1OTc0ODg2Njk1NGVhOGEzNmU0ODQ1OTYyZGQ0MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzUxZmVhN2QwYTUxMWUyYTVkYmFmM2ZmYzY2M2I5M2E3YTE3MTlmMDUxMjU5YzI4MGJiOGQ3MTgzOGQxMzVkNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjM5NTk4NzlkNDFkNmUwNjI3NTNhNDk3MTU1ZjQ0ZTQxMDQ0ZjAwYzEwY2Q0NjVhYjY2MDliMDU1YjlmOGJhZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTM1ZDE5NmVkZDk5MDg4MjlkOTJlZGM5OGZkOTY1ZTNiZDYyNzMyYzI2OWU1OGM2NGMxNjA4Y2FjNWFmYmEyYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e506203293b242b780706687baf59829",
+      "statement": "Readiness is polled by checking the HTTP socket together with the in-container serve log at /tmp/sparkrun_serve.log (reached via docker exec), because vLLM output is not in docker logs.",
+      "evidence": [
+        {
+          "resource": "repo://.claude/skills/verify/SKILL.md#L30-L41",
+          "version": "repo-lines-v1:sha256:0779124ffdf1f1fd63f6fc38f942859f2647543c8f468284bc2777cd5b8eeeda:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI5ZWI1ZjMyNjc5OWEwYjViNWNmZDBiMTcwNTRjYWFjNWIyNjZjNjczOTYyYTE3Nzk5ZDM3NmZhYjA2ODc4ZmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYxYjk1YWY1YzQ2N2UxMjAwNDYyYjEzMWY2MGVjMTE5ODE0YWNhMmFhMDU3YWY4NDIyZGJiZDY0ODI2NDYwMDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYzN2JmZTY0ZjI3MzdjMzY3YmQ4NTI0YmVmZjQ0NGJlZDQ0MzRhYjg2YmY1OTFkMGE2ZmJlMmU1NjdhM2VhOGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ2ZjZkOTFmNTVmOGNhMmYzYzdkNDBiY2NlNTU2MDkwODM2YWMwMGQwZDhjN2VmMDBiMmYyNzE4OGY4NzJiMzAifQ"
+        },
+        {
+          "resource": "repo://CLAUDE.md#L61-L61",
+          "version": "repo-lines-v1:sha256:3cf70d8d09aa8afd12e6c367480aae76504bcb3567f60974f3ae3ec47ebb94b8:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2NmNzBkOGQwOWFhOGFmZDEyZTZjMzY3NDgwYWFlNzY1MDRiY2IzNTY3ZjYwOTc0ZjNhZTNlYzQ3ZWJiOTRiOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2NmNzBkOGQwOWFhOGFmZDEyZTZjMzY3NDgwYWFlNzY1MDRiY2IzNTY3ZjYwOTc0ZjNhZTNlYzQ3ZWJiOTRiOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjYxMjM1MmIyNWY1M2Y2NDE3MmQxZWE5MGI3NGM5ZmNjZTczYzcxNTdjYmQ5MjE3OTY2YWM4MDhkMDcyOTEwNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmM3ZWJlZmIxMTZjMjdjYTc5MGI2M2RhMTJjZjk3ODI2YzgxNmFlMGEzMjMyNjhmZWI1YTYzZDFiZmYwNjAwOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_411da0784aed45a29def55c8148352ad",
+      "statement": "A recipe clears the verified bar only when the model answers a request coherently; serving is necessary but not sufficient because a recipe can serve and still return garbage (the unfit outcome).",
+      "evidence": [
+        {
+          "resource": "repo://.claude/skills/verify/SKILL.md#L6-L9",
+          "version": "repo-lines-v1:sha256:6f936d588053bec917170daf09c7919a28c24cd000814f69068141fdc0447300:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjlmYWFlOThiNDU3MDA4OTQxMTJiMzA4ZDM1MWNiZmVkZTg0MjgyODM4YzlmODQ2YWY2NTQ4Mzg4ZTIzMmNiYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzJmNjRmMWY5MTY3Y2Y4YWNhMTk2MDQyZGQxNWZhOTYzZGZkNTI2N2M4ZDM2Nzg4NjBiNzg3MzVlYjdmZjMzOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjAwYjA1OWY3MmVjMzBjMWNjNDMyMWYxN2U1YmFlZTJhNjJmNmZlMDBjYzgzNjgyMjNhYjgxYjk4YjBkYzNmZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGM0Y2MyOTJhYjA1ZDE1ZjVhNTFlMGU0ZjM5NTU4MDQ3OTBmNzIxOTRhMjgwNTEwOTU4NjEzNjhmOGZlMjY0ZCJ9"
+        },
+        {
+          "resource": "repo://CONTEXT.md#L22-L32",
+          "version": "repo-lines-v1:sha256:61da43be7e783fbcc7d56af690ce781fa87c7564e9598112f1a59a095873909c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxNTg4NDhiODM0ZjFkZjc2ZWVlZmZlMDhjMjc3OTk0NzkwOTUzN2JkYjkxMzVmZTQ5MTQ2MThhMWQxYjU0MmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE1OTYzNjdmOTY4YWFkNzczYTVmZTNlMjdjYWJiMjczZmRiMzMxZDAwYzViNDYxYTdmY2Y4MjdiMGY4MzAxYjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIwMTU2NDkzZTRjZjZlNWI5MzY1ODI4YjM5YjFjOTI1NGJhODk2Y2RlYjI0NjU5ZTEwYTQ0Njc2NmQ5OThlYmUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-01T03:42:59.995Z"
+  }
+}

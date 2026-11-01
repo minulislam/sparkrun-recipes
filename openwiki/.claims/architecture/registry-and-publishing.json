@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:835fd14fcf4ea76e8bd6dce2590e370493754ed0ba4082caa82a12b0c6529ed6",
+  "claims": [
+    {
+      "id": "claim_c648c3ba6a0f4c2c850b86e1bf25d498",
+      "statement": "This repository is a sparkrun recipe/benchmark registry rather than an application — it has nothing to build or install and is consumed through the sparkrun CLI — and it publishes under the registry name spark-forge.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L1-L7",
+          "version": "repo-lines-v1:sha256:dd8ea9413afb6bf8dc47e94ccf454dc175fc19309c89bfacfa1d79b70720f9fc:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWJjNzU0NmViOTc0MGM5ZWU0MmNhZjg0NWYxMzc5OGIwZTliNTdlNGNhMWRiZmFkMTk5ZWY1MGU0N2I3NGVhMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzNlZWUxMzQ1M2VjYzQzMDNmOTJiNGQ2NjI3NzQ3ZGI0NGYwNzkzMjAzZTliOWJkMGEwNjgxY2QxNzRmMzNlZCJ9"
+        },
+        {
+          "resource": "repo://README.md#L1-L10",
+          "version": "repo-lines-v1:sha256:55cd058562a3cbac9bb6b9e43cc871a7c52078c2f6f902e80423a90ba2d29e6a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2OWE3OGRlYmFmMDY0MDc0ODBkMDYzYmYyOTQ1NjU5MWQxOWJhNGQ2NmY5YWYwNDc1ZWU1MTNjMzU0NDlkNTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5ZmVkNzRkOThiMGI5ZDFkMDIwOWU3YmYzYmM1M2MzNzI2YjUzMmQ1ZjFkOWJmMzAzZTkwNmJmMjFhZGE5ZjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVkY2NlMjhjZDc0OWViZmNlNmY1ODMzM2E2OTY4NDAyNGU2MTk0MGFkMjk0MTljMzlmOTYzNGVmODE1NGEzZjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ea6bfc6ff373409eb7d2f85ba4ec678f",
+      "statement": "The git repository is minulislam/sparkrun-recipes while the published registry is named spark-forge, and the name mismatch is deliberate.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L1-L7",
+          "version": "repo-lines-v1:sha256:dd8ea9413afb6bf8dc47e94ccf454dc175fc19309c89bfacfa1d79b70720f9fc:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWJjNzU0NmViOTc0MGM5ZWU0MmNhZjg0NWYxMzc5OGIwZTliNTdlNGNhMWRiZmFkMTk5ZWY1MGU0N2I3NGVhMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzNlZWUxMzQ1M2VjYzQzMDNmOTJiNGQ2NjI3NzQ3ZGI0NGYwNzkzMjAzZTliOWJkMGEwNjgxY2QxNzRmMzNlZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_290e506f2789418fa1fd156fd84acae8",
+      "statement": "The spark-forge registry is a local git clone of the repo's main branch, so a recipe change is invisible to sparkrun until it is committed to main and 'sparkrun registry update spark-forge' has refreshed the clone; work goes straight to main with no pull-request step.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L24-L30",
+          "version": "repo-lines-v1:sha256:6a5a8178c311913da66a90c718802bfd8fb64dbb3bdbdbd6bcb047fe8b87c4ac:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjAwODhjY2M5NTQ5OGVkZjk3OTdhZmMyNjIwM2MyMDdiNjc3NWNkNjQ5NTNiMDBjZTU5YWYwZjdiODdlMTVmNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmYzMjFmZTQ4NTU4ZmY5MzI4Y2Q2N2U0ZThlOWM0YTk4YWYyODNkYjI0NmVmYzcwZjA2MWRhODM5OWFlM2Y4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmUwMmI4ODM4NDljNjc4YTZhNjYxNWMwNmZjYjE5OGRkNGFjOWFjMTBhNDI5YTY5YzljMjRiMjgwNjFkZTc0MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGExMzM5MzEwZTExMDM3NTlkZGY1MTZhZmZhNWZjMGI5NDQ1ZmQwMjg5OTA3ZWIzMzEwODJjNzhhNzJjODFlNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_a5a5634391034e78a019a4331f47c0e2",
+      "statement": "Recipes can be consumed either by local file path (sparkrun run ./recipes/<name>.yaml, which does not require a registry update) or by registry name (@spark-forge/<name>) after running sparkrun registry update spark-forge.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L24-L30",
+          "version": "repo-lines-v1:sha256:6a5a8178c311913da66a90c718802bfd8fb64dbb3bdbdbd6bcb047fe8b87c4ac:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjAwODhjY2M5NTQ5OGVkZjk3OTdhZmMyNjIwM2MyMDdiNjc3NWNkNjQ5NTNiMDBjZTU5YWYwZjdiODdlMTVmNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmYzMjFmZTQ4NTU4ZmY5MzI4Y2Q2N2U0ZThlOWM0YTk4YWYyODNkYjI0NmVmYzcwZjA2MWRhODM5OWFlM2Y4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmUwMmI4ODM4NDljNjc4YTZhNjYxNWMwNmZjYjE5OGRkNGFjOWFjMTBhNDI5YTY5YzljMjRiMjgwNjFkZTc0MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGExMzM5MzEwZTExMDM3NTlkZGY1MTZhZmZhNWZjMGI5NDQ1ZmQwMjg5OTA3ZWIzMzEwODJjNzhhNzJjODFlNiJ9"
+        },
+        {
+          "resource": "repo://README.md#L30-L45",
+          "version": "repo-lines-v1:sha256:83e51dbad8afca5237204a1d4bf2ee0fe5b0672df31eae12ab70cf6e61e8a9c8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA1M2ZiMjQ5MTZhYTk5ZDZkNTdiMTI2NzM1ZDVjZDNlNGJkOWVlNmQwNGU3YTFhYzViYTE5MjNhNGQxMTJhMGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjMWFlNjg0NTBkOTA0MmRlNjAyNDhmZjM3ODljMzliZTUzYjQwNmMzMTM4Mzg2NjJkMDVlMDRjNmUzOTdiMDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZlZGMzYzQ0NzM4ZDExMjcxZmUwYjliOTRmZWFmMmRkNjY4YjliNmU3NzZlZDc0Mjc1MmEyNmMyYWRjMjc1NmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdmYjkzYzAwY2I4Y2U4ZTc1MzViNTQ3MGZkN2Q4OWYwYWIwNTdiMmU3ZDdkZjEzN2VhM2QwNjQ5ZTM1NWZlOTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_158d3ae24ea245a2b60d965c5fa72e2e",
+      "statement": "Each served model has exactly one canonical recipe file in recipes/, benchmark reports live under benchmarks/ rather than in the recipe files, and INDEX.md row numbers are stable and must not be renumbered.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L57-L63",
+          "version": "repo-lines-v1:sha256:3d32862b99b7b977efe0c492021db40da92cc2a0a71b485ee8c3a37f524c8499:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTgyZTc2ODljYmQ4NGU3ODZiNzRjZjBiNTdiMjVhMzhjNzU1MTY1NmZlMmYxMDU4ODNkZGVkNjU2YTNlMWMwNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjAxNTZhZmFhMTFlZGRlOGM5NjliYmMyNjExNzhmYmIzNDEwZWNmMzJmNmE2MTZjNzkxYTY3ZjMyNWFkYzM1NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmFhYjlmMmRkMzNkOWEyYzAwMjQ2NjU3MTcyZWU5OTEyZDJhODY1YjQ4N2EyNTI1MzEwM2M1YTM5MmVkNjcxZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjcyNWQ1ODc5NTc2NzY4MDM2NmI1NmM4OWEzY2RmZTMxNDJlYTJhYjM2ZjA0YjMxNWI5NWMyMTM0ZmJjZDVkOSJ9"
+        },
+        {
+          "resource": "repo://INDEX.md#L22-L26",
+          "version": "repo-lines-v1:sha256:5e04f427d030f14f553e4dd5e4316ac2b9bbdfab83528dccdd661ba165573993:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmVlYmNlN2JiOTk4Mzc2MzU4ZGFjMjAxOTg5YWYwOTUxZjlmZmE4ODc4MWFkN2Q1NmNlZjFkMzU1NGZhM2YxOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmFjZDMyYzA3YzE5NzUzOTAzY2E5YWUwNmIzMmRiYmQwNTA5NmY0NDI1NDMzOThjODc2MmFlNGVhYjdmNGRkZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTgwYjQyNmYxM2YxMDMxMTU4N2RjMGQ2NTc2YTBkZTRiNTk1ZWUzYjllY2IyNDU4MDIyYzRiMDhiMmZkNDJlYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTA5OTJlODVlMzA3Zjc1MzRlZmExNGJmM2E0OGFiYWY2NzM0ZTk0ZGU5ZDk2ZmIxMDhjNmM2ZDY1N2Y2NzIzNCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-01T03:42:59.995Z"
+  }
+}

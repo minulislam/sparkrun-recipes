@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:3cbec08f7db48218b63fb43be4d96ec4433c795fd4440c1235ec602ea8ee4a84",
+  "claims": [
+    {
+      "id": "claim_632bfad53bbe428599bc2007d416520f",
+      "statement": "sparkrun-recipes is a recipe and benchmark registry that publishes as the sparkrun registry spark-forge, serving NVFP4-quantized LLMs on a two-node DGX Spark (GB10) pair; it is consumed through the sparkrun CLI and has nothing to build or install.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L1-L7",
+          "version": "repo-lines-v1:sha256:dd8ea9413afb6bf8dc47e94ccf454dc175fc19309c89bfacfa1d79b70720f9fc:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWJjNzU0NmViOTc0MGM5ZWU0MmNhZjg0NWYxMzc5OGIwZTliNTdlNGNhMWRiZmFkMTk5ZWY1MGU0N2I3NGVhMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzNlZWUxMzQ1M2VjYzQzMDNmOTJiNGQ2NjI3NzQ3ZGI0NGYwNzkzMjAzZTliOWJkMGEwNjgxY2QxNzRmMzNlZCJ9"
+        },
+        {
+          "resource": "repo://README.md#L1-L10",
+          "version": "repo-lines-v1:sha256:55cd058562a3cbac9bb6b9e43cc871a7c52078c2f6f902e80423a90ba2d29e6a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2OWE3OGRlYmFmMDY0MDc0ODBkMDYzYmYyOTQ1NjU5MWQxOWJhNGQ2NmY5YWYwNDc1ZWU1MTNjMzU0NDlkNTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5ZmVkNzRkOThiMGI5ZDFkMDIwOWU3YmYzYmM1M2MzNzI2YjUzMmQ1ZjFkOWJmMzAzZTkwNmJmMjFhZGE5ZjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVkY2NlMjhjZDc0OWViZmNlNmY1ODMzM2E2OTY4NDAyNGU2MTk0MGFkMjk0MTljMzlmOTYzNGVmODE1NGEzZjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_775aa397b3a649dfb6142d0710384c8c",
+      "statement": "The authoritative source files are INDEX.md (recipe status/numbers), CONTEXT.md (status vocabulary), MODELS.md (on-disk checkpoint inventory), IMAGE-POLICY.md (image policy), HISTORY.md (dated work log), benchmarks/ (reports and raw artifacts), and .claude/skills/verify/SKILL.md (the verified-bar procedure).",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L9-L17",
+          "version": "repo-lines-v1:sha256:0dfff5ae4322fa62d0b113d6832fe3ab0b2ab7d030c64be007ec846d1b93504e:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTc3NDA3N2FhMWExOThhZmQ1NWZjMWMzZjUwNGU2MDNmMWJlMTgwZDM4NmMwODkwMzQzM2JkYTAyZmUwMGVmMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2RmMzVjMTVhZmNmNjlkYzQ1YWZlZTNhN2ZmMTIyOWM5OWFiMzJhNzljZmY1NDdkYzhhZDgzMDg3N2Q5YzFjYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTM3OWEwOTRhMjQwNzEwYWE2NzZmNWNiZTAyZTZmMDBiMTg5MDNiMDZhMDhmNjIyZjdhZTk2ZmNlNzA0Y2UzNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2caa35ad8dd6431d80d83eb39da2b4a1",
+      "statement": "The live cluster is the ultimate source of truth and docs record what was measured on a date, so they must be re-checked before acting on them.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L18-L19",
+          "version": "repo-lines-v1:sha256:39e1cee1106ace7c6ee73c42cd99b56f0a517e287f63d8633dc7794037326264:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjViMGQzZWY5OTYzOThlNTlkNWZiMjdmNTc1NWQyOTg5YTcxNmNjNDRjNzJjNTViYTEyZDY2N2ExNzUzNTJlMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWQyNWFiMTBmYTc0NGYzOWI3OWNmMTQzZDU2ODllODE1OTlmMGNkNmUzY2RmZjgwNTkwMDQyYjliNzdhYjBjYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGE0OGViNDk3M2Y2MTVkYmJhNzI1MzJiYzkwNjU5YmJmZmYzNWE2MWJjOTI5YzUwMDkzOTBiYWY1MmEyODZiNiJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-01T03:42:59.995Z"
+  }
+}

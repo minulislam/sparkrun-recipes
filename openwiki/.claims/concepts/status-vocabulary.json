@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:9b8a783f521f4ee0e815897c481532f0c46d3655cea32c6da24014540fce99e3",
+  "claims": [
+    {
+      "id": "claim_7a484415a4934974b377c0fbbd6ea436",
+      "statement": "The registry defines a strict status vocabulary in CONTEXT.md because it previously used the single word 'verified' for at least three different bars, which allowed a coverage count to produce several irreconcilable answers.",
+      "evidence": [
+        {
+          "resource": "repo://CONTEXT.md#L1-L10",
+          "version": "repo-lines-v1:sha256:50308cb4481a1c68b7d197dd66a243f8e985e3b586b22acfc1d1386e194b58c4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiYzc1NDZlYjk3NDBjOWVlNDJjYWY4NDVmMTM3OThiMGU5YjU3ZTRjYTFkYmZhZDE5OWVmNTBlNDdiNzRlYTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxZGM3NTdjYWQxZDlmODMxZjhiMjc3NGM3NTMzODM0OGRlYjFjNTkxY2ZjMjM0NzEwZjQ4NWIxOWRjMDNjNjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIyNTU4Y2VhYTM4YmY4ODBmMGU3ZGVjNjAwYjNmZmYyNmE3MDljNWFhNzUyNTMxMTM4MGU3ODlhY2Y3OWQ5YWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_28292fdc77eb4f8794a93bb81d01b489",
+      "statement": "'Lints' means the recipe file passes sparkrun recipe validate and is a statement about the file that proves nothing about whether the model can serve, while 'serves' means the engine reached ready and the endpoint accepts requests but may still return garbage.",
+      "evidence": [
+        {
+          "resource": "repo://CONTEXT.md#L17-L26",
+          "version": "repo-lines-v1:sha256:3840d351abbdd4330ae5a2bb5d9f858d09ecc2351d8d1041896a76dba42b994a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhZWE4YTBhNDdiY2VlNjMyZDQyMTBiYWFhMjA2MDQzNjFlMjc5OTczOWFjZDQxMDY5YWRmMDBiNmU5MjNiNTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMxNGZlOTI3ZWIyMDgwNDE2YjY0ZjJlMTQxNTRhNzc0ZTg1MDU3YjBlNTQwMThiZGJjNTU1Yzk0ZjllZjkzZDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA3ZjRlZGMxNjcwMDBkMDY1MGM3N2Q0YTQ2MWMyMzhkMzA5NTA0OTY0ZDIzMmI4Nzk0MzU2OGU3NzQwODk4NTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8d62a82312be44fd8b6d122124f1a189",
+      "statement": "'Verified' is the authoritative bar meaning the model actually answered a request on this cluster; a dry run or clean lint never qualifies, and the bar is owned by .claude/skills/verify/SKILL.md.",
+      "evidence": [
+        {
+          "resource": "repo://CONTEXT.md#L27-L32",
+          "version": "repo-lines-v1:sha256:77bd1e409bf13e1dd02775041ee9c69e25e138a0f2796e06a5abf2b206a81259:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjMxNDc3MGMyNmEyOTkyZTY1OGQzODE1OWYxMzgyNzc2YmEyZWUyODk0MmYwYjVjODY0MmY0ZjdkNTdjY2UxNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDg0NmZiZmFhNGQ0YmU0MjU1MTg0MGIyZGZjY2NlYjFhZjAyNWMxOGVhYTZiNzE2OGUxNzRmNjhkNTczNGE3NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjAxNTY0OTNlNGNmNmU1YjkzNjU4MjhiMzliMWM5MjU0YmE4OTZjZGViMjQ2NTllMTBhNDQ2NzY2ZDk5OGViZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b4a4c2aad96a4128baa74021eea984c3",
+      "statement": "'Benchmarked' is strictly stronger than verified — it adds measured numbers recorded in benchmarks/ — so every benchmarked recipe is verified but not every verified recipe is benchmarked.",
+      "evidence": [
+        {
+          "resource": "repo://CONTEXT.md#L33-L38",
+          "version": "repo-lines-v1:sha256:0ab8d34688b4da75e07e5379b0cf1391daa285b689b3ed20f2bd5fd4ced6f3db:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGI0NzZiODAzMmY4ZDRkZGQ2ZjExNDdkM2JlNGRmYWUwYjU1YjVlODJjNGE0NmFlMWM2MTNhM2QzZjY2YjAwYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmFlZmJlZTJkNDRjNjliNjU4M2FmNDZhY2FjMzQ5YmJhYWM4YjYzNGI3NjIxMzJkNTQxN2RkMTc4ZTczNDk1OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGM0NjZhZWMyYWI2MTViZDg0OWMwYTYyMzk1Y2FjY2VlOGU3NWY5YzVhNzU5MTIxMzRiMTZlODk1Nzg3MzNiYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_34deb7b7da6e45728cc314bf0424dbae",
+      "statement": "'Unfit' is a recorded outcome for a recipe that serves on this pair but cannot be used because it returns incoherent output or otherwise fails, distinguishing it from a merely untested recipe.",
+      "evidence": [
+        {
+          "resource": "repo://CONTEXT.md#L39-L41",
+          "version": "repo-lines-v1:sha256:4c466aec2ab615bd849c0a62395caccee8e75f9c5a75912134b16e89578733ba:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWU0ZjdkYzkyYzQ2NDZiOTM3YzNiZWQ5YWNkODk0MzBjODRlNzQwMWYwYzg0NmZkYjhiZGQ4M2Y2OWIxMmNkOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjc1NWZlYTBkMTBjOWQwM2I1MzY4ZWJmYzdiMDFiYWE1ZjkwYmE2ODExN2U4Yzg2ZjRhMTA2NmM2ZTExNjUxZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTMwN2MxNDZiMGZkMjg4MzVmZWQ4NjdmOTBiODQ3MWMyMGZlNGI2Yzc3M2IwNWYyMmY1NTYzZWM2ZjljN2RkZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGJkZjRmYTI1Y2I5ZGFjOGQ4MWUyMWU4ZDM4ZTZlNWVmMDZlYmQzMWE4NTc1ZDNhMmY2ODk1NmRmMmRjZjA4YyJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-01T03:42:59.995Z"
+  }
+}

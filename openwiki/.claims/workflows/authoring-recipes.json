@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:505273aa3cde6714cacbc4e6430dea0bbb75f4442da6bb67bb0a8169c116bab8",
+  "claims": [
+    {
+      "id": "claim_04170aae475542d6a184179c01a297f9",
+      "statement": "Before writing a recipe, run sparkrun registry update then sparkrun recipe search across every registry, and if an upstream recipe exists copy it rather than authoring from scratch.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L28-L30",
+          "version": "repo-lines-v1:sha256:47a3f0df4391a796632f56237b6d8f8df95e611445ac86ba69bd9b77028b25c6:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWQ5YzZhZGNkNzBmZDUxNjRmYmM1MThjNjA4YTFhMTUyN2RmZTQxZjJiYTAxMzUyZWZmYTg0ZTI4ZGYxOGUzNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmYzMjFmZTQ4NTU4ZmY5MzI4Y2Q2N2U0ZThlOWM0YTk4YWYyODNkYjI0NmVmYzcwZjA2MWRhODM5OWFlM2Y4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2JhYTNlZTg0YjVkZjJjYjZkNTk3ZTliYjgzMzMyZTg2ZTdmOTQ2YTQwZGY5NGMyYzlkZDVlMzNlZjE5M2Y0NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGExMzM5MzEwZTExMDM3NTlkZGY1MTZhZmZhNWZjMGI5NDQ1ZmQwMjg5OTA3ZWIzMzEwODJjNzhhNzJjODFlNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_36a915bf97d44658948e0745a32f544d",
+      "statement": "A copied recipe keeps an attribution header naming the upstream source and changes only what the cluster needs, with the recipe header recording why each deviation from upstream was made.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L28-L30",
+          "version": "repo-lines-v1:sha256:47a3f0df4391a796632f56237b6d8f8df95e611445ac86ba69bd9b77028b25c6:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWQ5YzZhZGNkNzBmZDUxNjRmYmM1MThjNjA4YTFhMTUyN2RmZTQxZjJiYTAxMzUyZWZmYTg0ZTI4ZGYxOGUzNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmYzMjFmZTQ4NTU4ZmY5MzI4Y2Q2N2U0ZThlOWM0YTk4YWYyODNkYjI0NmVmYzcwZjA2MWRhODM5OWFlM2Y4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2JhYTNlZTg0YjVkZjJjYjZkNTk3ZTliYjgzMzMyZTg2ZTdmOTQ2YTQwZGY5NGMyYzlkZDVlMzNlZjE5M2Y0NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGExMzM5MzEwZTExMDM3NTlkZGY1MTZhZmZhNWZjMGI5NDQ1ZmQwMjg5OTA3ZWIzMzEwODJjNzhhNzJjODFlNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4d6e257a948846b48a2ff03024baa1f8",
+      "statement": "A new or changed recipe is published only by committing to main and running sparkrun registry update spark-forge; work goes straight to main with no pull-request step, and commit/push happens only when the operator asks.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L24-L27",
+          "version": "repo-lines-v1:sha256:38d8d7ee9dcf7c76a0ca236d3f6f330e7c7a7d9d98ac932e6908f8bf52e739db:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjAwODhjY2M5NTQ5OGVkZjk3OTdhZmMyNjIwM2MyMDdiNjc3NWNkNjQ5NTNiMDBjZTU5YWYwZjdiODdlMTVmNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTI0YjU1MmM4ZjMyMGI0ZTRlOTg0ZTRhZjU1NTAzNmQ1ODA0N2MyZmViY2Q3MGRlNzg1OTZmOWQwYzcyYzAwOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmUwMmI4ODM4NDljNjc4YTZhNjYxNWMwNmZjYjE5OGRkNGFjOWFjMTBhNDI5YTY5YzljMjRiMjgwNjFkZTc0MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDdhM2YwZGY0MzkxYTc5NjYzMmY1NjIzN2I2ZDhmOGRmOTVlNjExNDQ1YWM4NmJhNjliZDliNzcwMjhiMjVjNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d32ca38ef9024c688cddbd56a073c49c",
+      "statement": "Each served model keeps exactly one canonical recipe file (distinct operating profiles get their own named files), with measured numbers in benchmarks/ and the status row in INDEX.md whose row numbers are not renumbered.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L57-L63",
+          "version": "repo-lines-v1:sha256:3d32862b99b7b977efe0c492021db40da92cc2a0a71b485ee8c3a37f524c8499:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTgyZTc2ODljYmQ4NGU3ODZiNzRjZjBiNTdiMjVhMzhjNzU1MTY1NmZlMmYxMDU4ODNkZGVkNjU2YTNlMWMwNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjAxNTZhZmFhMTFlZGRlOGM5NjliYmMyNjExNzhmYmIzNDEwZWNmMzJmNmE2MTZjNzkxYTY3ZjMyNWFkYzM1NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmFhYjlmMmRkMzNkOWEyYzAwMjQ2NjU3MTcyZWU5OTEyZDJhODY1YjQ4N2EyNTI1MzEwM2M1YTM5MmVkNjcxZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjcyNWQ1ODc5NTc2NzY4MDM2NmI1NmM4OWEzY2RmZTMxNDJlYTJhYjM2ZjA0YjMxNWI5NWMyMTM0ZmJjZDVkOSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-01T03:42:59.995Z"
+  }
+}
