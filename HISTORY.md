@@ -760,3 +760,44 @@ nothing committed:
   (root-owned lmstudio/nvpair-lmstudio-forward unit files handed to the user to rm).
   23G of parked LM Studio weights in ~/models-parked/lmstudio-2026-10-13 kept pending decision.
 - GB10 Recipe Throughput artifact now at v5 with the EXL3 row (28 recipes).
+
+## 2026-11-03: Network repair night — WiFi mgmt fallback, CX7 MTU root-caused and fixed, TP2 re-validated (+59% c=1)
+
+- **Mgmt LAN outage root-caused:** gx10-spark's `enP7s7` lost physical link (NO-CARRIER, 69
+  carrier flaps since boot — marginal cable/switch port, hardware fix still pending). Worked
+  around with new WiFi SSID "Citadel LAB" bridged onto 10.10.20.0/24, static 10.10.20.11,
+  `ipv4.route-metric 200` so wired auto-wins when repaired. ~05:45 the worker's NM flipped back
+  to the old "Rayan's Mesh" profile (DHCP 10.10.10.158), breaking mgmt again mid-benchmark —
+  needs `sudo nmcli con up "Citadel LAB"` + autoconnect priority fix on the worker (see below).
+- **CX7 jumbo blackhole root-caused and fixed:** spark-10's `enp1s0f1np1`/`enP2p1s0f1np1` sat at
+  MTU 1500 (NM auto-profiles "Wired connection 4/5"; netplan `40-cx7.yaml` only covered the f0
+  functions), capping RoCE `active_mtu` at 1024 on exactly the HCAs the cluster pins NCCL to
+  (`rocep1s0f1,roceP2p1s0f1`). Fixed via `nmcli con mod ... 802-3-ethernet.mtu 9000`; all 8 HCAs
+  across both nodes now at `active_mtu 4096`. DF-ping 8972 passes on both subnets.
+  `sparkrun setup rdma-test`: 1.81/1.82 µs, 111.6 Gb/s per link, **195.6 Gb/s of 200 aggregate**, 3/3 OK.
+- **Worker HF-cache corruption fixed:** first TP2 relaunch crashed — `refs/main` for
+  Qwen3.8-Flash-Next-NVFP4 on the worker pointed at a root-owned EMPTY snapshot (6909a5…, left
+  by an Oct 3 root container) while the complete 196G snapshot (6c01ac…) sat beside it. One-line
+  ref update fixed it; `sparkrun setup fix-permissions` (needs interactive sudo) is the proper
+  cleanup for the leftover root-owned dir.
+- **qwen3.8-flash-next-nvfp4-tp2 re-benchmarked post-MTU-fix** (same recipe/image as 09-27 row):
+  tg128 c=1 **73.7 tok/s vs 46.3 baseline (+59%)**; c=8 at tg=256 **118.5 agg vs 92.3 (+28%)**,
+  peak 206.7. pp2048 c=1 2167-2624 across runs (noisy, ≈baseline). Caveat: tg128 c=8 reads 38.5
+  agg — artifact of ~4.8 s TTFR stagger vs the short 128-tok window (per-request 19.6 ≈ baseline
+  20.2); use tg=256 for c=8 comparisons. Raw: `benchmarks/results_qwen38-flash-next-tp2-20261103.{json,csv,yaml}`
+  (file holds the final c8/tg256 row; c1 figures are in the session logs). Smoke test passed:
+  "TP2 OK" completion over the repaired cluster, readiness 13 min from cold cache.
+- **inkling-small-nvfp4-tp2-sglang** re-run: pp2048 1678 (c1) / 1381 (c8); llama-benchy recorded
+  no steady-state tg for this SGLang server (only peaks: 32 c1 / 289 c8) — parsing quirk, not a
+  server failure. Raw: `benchmarks/results_inkling-small-tp2-20261103.*`.
+- **4-HCA NCCL experiment concluded (negative, config unchanged):** overriding
+  `NCCL_IB_HCA=rocep1s0f0,rocep1s0f1,roceP2p1s0f0,roceP2p1s0f1` makes b12x RoCEnante cap at 2
+  HCAs and take the FIRST TWO — both PCIe functions of the *same* physical cable — strictly
+  worse than the cluster's f1-per-subnet pin, which already drives both 200G cables (one
+  function per cable). The dgx-pair.yaml pin stays as-is. (The measurement run itself died when
+  the worker's WiFi flipped mid-launch; adoption was already ruled out by the HCA-selection
+  behavior.)
+- Decision stands: **sparkrun for all multi-node inference** (auto IB detect + env layering
+  detected < cluster < recipe < `-e`/`-o env.`), custom vLLM/SGLang launch scripts ruled out.
+  NCCL data rides RoCE on both cables; only rendezvous/bootstrap uses the mgmt path, so WiFi
+  mgmt is acceptable for launches but the enP7s7 hardware fix remains the real cure.

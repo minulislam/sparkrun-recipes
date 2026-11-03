@@ -1,0 +1,395 @@
+sparkrun_benchmark:
+  version: '1'
+  timestamp: '2026-11-02T23:39:54.396476+00:00'
+  recipe:
+    name: inkling-small-nvfp4-tp2-sglang
+    qualified_name: '@spark-forge/inkling-small-nvfp4-tp2-sglang'
+    type: sparkrun
+    model: thinkingmachines/Inkling-Small-NVFP4
+    container: ghcr.io/drowzeys/inkling-sglang-gb10:kvquant
+    runtime: sglang
+    registry: spark-forge
+    registry_git: file:///home/devops/workspace/sparkrun-recipes
+    text: "recipe_version: '2'\nmodel: thinkingmachines/Inkling-Small-NVFP4\nruntime:\
+      \ sglang\nmin_nodes: 2\nmax_nodes: 2\ncontainer: ghcr.io/drowzeys/inkling-sglang-gb10:kvquant\n\
+      metadata:\n  description: \"Thinking Machines Inkling-Small NVFP4 via SGLang\
+      \ on 2x DGX Spark \\u2014\\\n    \\ DSpark speculative decoding, fp4_mx_block16\
+      \ KV, 1M context. Champion config\\\n    \\ from MiaAI-Lab / drowzeys.\"\n \
+      \ maintainer: MiaAI-Lab (https://github.com/MiaAI-Lab)\n  model_params: 7B\n\
+      \  model_dtype: nvfp4\n  kv_dtype: fp4\n  quantization: nvfp4\n  quant_bits:\
+      \ 4\n  num_layers: 42\n  num_kv_heads: 8\n  head_dim: 128\n  model_type: inkling_mm_model\n\
+      defaults:\n  host: 0.0.0.0\n  port: 8000\n  tensor_parallel: 2\n  gpu_memory_utilization:\
+      \ 0.85\n  max_model_len: 1048576\n  max_num_seqs: 16\n  max_num_batched_tokens:\
+      \ 8192\n  kv_cache_dtype: fp4_mx_block16\n  page_size: 1\n  attention_backend:\
+      \ triton\n  fp4_gemm_backend: flashinfer_trtllm\n  moe_runner_backend: marlin\n\
+      \  speculative_algorithm: DSPARK\n  speculative_draft_model_path: RadixArk/Inkling-Small-DSpark-Preview\n\
+      \  speculative_dspark_block_size: 7\n  cuda_graph_bs: 1 2 3 4 5 6 7 8 10 12\
+      \ 14 16\n  served_model_name: inkling-small\nenv:\n  NCCL_IB_DISABLE: '0'\n\
+      \  NCCL_IB_ROCE_VERSION_NUM: '2'\n  NCCL_IB_GID_INDEX: '3'\n  NCCL_NET: IB\n\
+      \  NCCL_NET_PLUGIN: none\n  NCCL_NVLS_ENABLE: '0'\n  NCCL_CUMEM_ENABLE: '0'\n\
+      \  NCCL_CROSS_NIC: '0'\n  NCCL_IGNORE_CPU_AFFINITY: '1'\n  NCCL_DEBUG: WARN\n\
+      \  SGLANG_ENABLE_UNIFIED_RADIX_TREE: '1'\n  TORCH_CUDA_ARCH_LIST: 12.1a\n  FLASHINFER_CUDA_ARCH_LIST:\
+      \ 12.1a\n  PYTORCH_CUDA_ALLOC_CONF: expandable_segments:True\n  INKLING_TORCH_CONV_COMMIT:\
+      \ '1'\n  INKLING_COMMIT_STEP_BIAS: '1'\n  INKLING_NOOP_CONV_COMMIT: '0'\n  INKLING_DRAFT_CTX_CAP:\
+      \ '65536'\nreadiness:\n  port_timeout_s: 1800\n  health_timeout_s: 1800\n  inference_timeout_s:\
+      \ 600\ncommand: |\n  python3 -m sglang.launch_server \\\n    --model-path {model}\
+      \ \\\n    --trust-remote-code \\\n    --served-model-name {served_model_name}\
+      \ \\\n    --tp {tensor_parallel} \\\n    --context-length {max_model_len} \\\
+      \n    --quantization modelopt_fp4 \\\n    --attention-backend {attention_backend}\
+      \ \\\n    --triton-attention-reduce-in-fp32 \\\n    --page-size {page_size}\
+      \ \\\n    --kv-cache-dtype {kv_cache_dtype} \\\n    --fp4-gemm-backend {fp4_gemm_backend}\
+      \ \\\n    --moe-runner-backend {moe_runner_backend} \\\n    --mamba-radix-cache-strategy\
+      \ extra_buffer \\\n    --mem-fraction-static {gpu_memory_utilization} \\\n \
+      \   --swa-full-tokens-ratio 0.1 \\\n    --mamba-full-memory-ratio 0.1 \\\n \
+      \   --max-running-requests {max_num_seqs} \\\n    --chunked-prefill-size {max_num_batched_tokens}\
+      \ \\\n    --reasoning-parser inkling \\\n    --tool-call-parser inkling \\\n\
+      \    --skip-server-warmup \\\n    --disable-flashinfer-autotune \\\n    --stream-interval\
+      \ 32 \\\n    --speculative-algorithm {speculative_algorithm} \\\n    --speculative-draft-model-path\
+      \ {speculative_draft_model_path} \\\n    --speculative-draft-model-quantization\
+      \ unquant \\\n    --speculative-dspark-block-size {speculative_dspark_block_size}\
+      \ \\\n    --disable-prefill-cuda-graph \\\n    --disable-piecewise-cuda-graph\
+      \ \\\n    --cuda-graph-bs {cuda_graph_bs} \\\n    --host {host} \\\n    --port\
+      \ {port}\n"
+    hash: 0948a173b0619fae91ee452890c7c2f255b9a6462b29d6483f994625c8055d86
+  model:
+    dtype: nvfp4
+    params: 7B
+    num_layers: 42
+    num_kv_heads: 8
+    head_dim: 128
+    quantization: nvfp4
+    quant_bits: 4
+    kv_dtype: fp4
+  cluster:
+    tp: 2
+    cluster_id: sparkrun_a41d412a4eb69e80_56464d522753
+    node_count: 2
+    hosts:
+    - node-64826494
+    - node-9648fb06
+    hosts_redacted: true
+    runtime_info:
+      cuda: '13.0'
+      nccl_lib: 2.28.3
+      nccl_torch: 2.28.9
+      python: 3.12.3
+      sglang: 0.0.0.dev1+gb7252cc6b
+      torch: 2.11.0+cu130
+  benchmark:
+    framework: llama-benchy
+    profile: null
+    args:
+      pp:
+      - 2048
+      depth:
+      - 0
+      prefix_caching: true
+      concurrency:
+      - 1
+      - 8
+      served_model_name: inkling-small
+      extra_body: return_token_ids=false
+    resumed: false
+  results:
+    json:
+      model: thinkingmachines/Inkling-Small-NVFP4
+      max_concurrency: 8
+      benchmarks:
+      - concurrency: 1
+        context_size: 0
+        prompt_size: 2048
+        response_size: 32
+        is_context_prefill_phase: false
+        pp_throughput:
+          mean: 1678.299243719661
+          std: 70.9854276873369
+          values:
+          - 1577.9381335950136
+          - 1726.4470428097927
+          - 1730.512554754177
+        pp_req_throughput:
+          mean: 1678.299243719661
+          std: 70.9854276873369
+          values:
+          - 1577.9381335950136
+          - 1726.4470428097927
+          - 1730.512554754177
+        tg_throughput: null
+        tg_req_throughput: null
+        peak_throughput:
+          mean: 32.0
+          std: 0.0
+          values:
+          - 32.0
+          - 32.0
+          - 32.0
+        peak_req_throughput:
+          mean: 32.0
+          std: 0.0
+          values:
+          - 32.0
+          - 32.0
+          - 32.0
+        ttfr:
+          mean: 1223.7059019995893
+          std: 53.29896847625626
+          values:
+          - 1299.0648509985476
+          - 1187.4198639998212
+          - 1184.6329910003988
+        est_ppt:
+          mean: 1222.537309667435
+          std: 53.29896847625626
+          values:
+          - 1297.8962586663936
+          - 1186.2512716676672
+          - 1183.4643986682447
+        e2e_ttft:
+          mean: 2768.2226636667715
+          std: 141.0762146476549
+          values:
+          - 2816.0667810007
+          - 2912.0413359996746
+          - 2576.5598739999405
+        throughput_over_time: null
+        requests_throughput_over_time: null
+      - concurrency: 8
+        context_size: 0
+        prompt_size: 2048
+        response_size: 32
+        is_context_prefill_phase: false
+        pp_throughput:
+          mean: 1380.7700536415807
+          std: 91.23049386583844
+          values:
+          - 1260.344578715438
+          - 1481.0799637994558
+          - 1400.8856184098486
+        pp_req_throughput:
+          mean: 289.14222144282223
+          std: 55.62524915819515
+          values:
+          - 239.83703632686195
+          - 368.5711938912299
+          - 250.6489918209501
+          - 250.64787076318564
+          - 250.66052425154444
+          - 239.9066293332179
+          - 239.91178560794694
+          - 250.67308279848297
+          - 300.7447496278944
+          - 289.7728200478904
+          - 300.76283255552784
+          - 300.75539886181497
+          - 477.4156389308761
+          - 300.760034028515
+          - 289.82933897998953
+          - 289.82652427492377
+          - 273.2402806142598
+          - 414.82372136188235
+          - 263.60680494747385
+          - 273.2551162438484
+          - 273.2546658645655
+          - 263.6161602769786
+          - 273.2678093971276
+          - 263.6243038207451
+        tg_throughput: null
+        tg_req_throughput: null
+        peak_throughput:
+          mean: 288.8477080937965
+          std: 72.34284287025824
+          values:
+          - 365.8306491282089
+          - 192.0
+          - 308.71247515318055
+        peak_req_throughput:
+          mean: 32.0
+          std: 0.0
+          values:
+          - 32.0
+          - 32.0
+          - 32.0
+          - 32.0
+          - 32.0
+          - 32.0
+          - 32.0
+          - 32.0
+          - 32.0
+          - 32.0
+          - 32.0
+          - 32.0
+          - 32.0
+          - 32.0
+          - 32.0
+          - 32.0
+          - 32.0
+          - 32.0
+          - 32.0
+          - 32.0
+          - 32.0
+          - 32.0
+          - 32.0
+          - 32.0
+        ttfr:
+          mean: 7284.432244500143
+          std: 1065.358783673788
+          values:
+          - 8540.151704000891
+          - 5557.612854998297
+          - 8171.809069001029
+          - 8171.845614000631
+          - 8171.433146002528
+          - 8537.674641000194
+          - 8537.49116799736
+          - 8171.023814000364
+          - 6810.7816119991185
+          - 7068.6257500019565
+          - 6810.372185002052
+          - 6810.540490001586
+          - 4290.783287997328
+          - 6810.435545001383
+          - 7067.24751299771
+          - 7067.316138000024
+          - 7496.254749999935
+          - 4938.0570229986915
+          - 7770.167102000414
+          - 7495.847817001049
+          - 7495.8601700018335
+          - 7769.8913870008255
+          - 7495.499685999675
+          - 7769.651400998555
+        est_ppt:
+          mean: 7283.412074833602
+          std: 1065.3587836737881
+          values:
+          - 8539.13153433435
+          - 5556.592685331755
+          - 8170.788899334488
+          - 8170.82544433409
+          - 8170.412976335987
+          - 8536.654471333653
+          - 8536.470998330818
+          - 8170.003644333823
+          - 6809.761442332577
+          - 7067.605580335415
+          - 6809.35201533551
+          - 6809.520320335044
+          - 4289.763118330787
+          - 6809.415375334841
+          - 7066.227343331168
+          - 7066.295968333482
+          - 7495.234580333393
+          - 4937.03685333215
+          - 7769.146932333872
+          - 7494.827647334508
+          - 7494.840000335292
+          - 7768.871217334284
+          - 7494.479516333134
+          - 7768.631231332013
+        e2e_ttft:
+          mean: 11457.509220000398
+          std: 997.3218626620478
+          values:
+          - 12999.619530000928
+          - 12787.610969997331
+          - 12785.85276100057
+          - 12997.86941700222
+          - 12297.791479002626
+          - 12785.15041799983
+          - 12556.025123998552
+          - 12785.25645099944
+          - 11062.198126001022
+          - 9873.526225001115
+          - 11061.92726000154
+          - 10534.789261000697
+          - 10786.063865998585
+          - 10534.624140000233
+          - 9872.158515998308
+          - 10533.55299300165
+          - 11040.053471999272
+          - 11039.718924999761
+          - 10866.150720001315
+          - 11487.885183003527
+          - 10866.064528003335
+          - 10865.870670000731
+          - 11694.88912199813
+          - 10865.572122998856
+        throughput_over_time: null
+        requests_throughput_over_time: null
+    csv: "model,test_name,t_s_mean,t_s_std,t_s_req_mean,t_s_req_std,peak_ts_mean,peak_ts_std,peak_ts_req_mean,peak_ts_req_std,ttfr_mean,ttfr_std,est_ppt_mean,est_ppt_std,e2e_ttft_mean,e2e_ttft_std\r\
+      \nthinkingmachines/Inkling-Small-NVFP4,pp2048 (c1),1678.299243719661,70.9854276873369,1678.299243719661,70.9854276873369,,,,,1223.7059019995893,53.29896847625626,1222.537309667435,53.29896847625626,2768.2226636667715,141.0762146476549\r\
+      \nthinkingmachines/Inkling-Small-NVFP4,pp2048 (c8),1380.7700536415807,91.23049386583844,289.14222144282223,55.62524915819515,,,,,7284.432244500143,1065.358783673788,7283.412074833602,1065.3587836737881,11457.509220000398,997.3218626620478\r\
+      \n"
+    stdout: '{"model": "thinkingmachines/Inkling-Small-NVFP4", "max_concurrency":
+      8, "benchmarks": [{"concurrency": 1, "context_size": 0, "prompt_size": 2048,
+      "response_size": 32, "is_context_prefill_phase": false, "pp_throughput": {"mean":
+      1678.299243719661, "std": 70.9854276873369, "values": [1577.9381335950136, 1726.4470428097927,
+      1730.512554754177]}, "pp_req_throughput": {"mean": 1678.299243719661, "std":
+      70.9854276873369, "values": [1577.9381335950136, 1726.4470428097927, 1730.512554754177]},
+      "tg_throughput": null, "tg_req_throughput": null, "peak_throughput": {"mean":
+      32.0, "std": 0.0, "values": [32.0, 32.0, 32.0]}, "peak_req_throughput": {"mean":
+      32.0, "std": 0.0, "values": [32.0, 32.0, 32.0]}, "ttfr": {"mean": 1223.7059019995893,
+      "std": 53.29896847625626, "values": [1299.0648509985476, 1187.4198639998212,
+      1184.6329910003988]}, "est_ppt": {"mean": 1222.537309667435, "std": 53.29896847625626,
+      "values": [1297.8962586663936, 1186.2512716676672, 1183.4643986682447]}, "e2e_ttft":
+      {"mean": 2768.2226636667715, "std": 141.0762146476549, "values": [2816.0667810007,
+      2912.0413359996746, 2576.5598739999405]}, "throughput_over_time": null, "requests_throughput_over_time":
+      null}, {"concurrency": 8, "context_size": 0, "prompt_size": 2048, "response_size":
+      32, "is_context_prefill_phase": false, "pp_throughput": {"mean": 1380.7700536415807,
+      "std": 91.23049386583844, "values": [1260.344578715438, 1481.0799637994558,
+      1400.8856184098486]}, "pp_req_throughput": {"mean": 289.14222144282223, "std":
+      55.62524915819515, "values": [239.83703632686195, 368.5711938912299, 250.6489918209501,
+      250.64787076318564, 250.66052425154444, 239.9066293332179, 239.91178560794694,
+      250.67308279848297, 300.7447496278944, 289.7728200478904, 300.76283255552784,
+      300.75539886181497, 477.4156389308761, 300.760034028515, 289.82933897998953,
+      289.82652427492377, 273.2402806142598, 414.82372136188235, 263.60680494747385,
+      273.2551162438484, 273.2546658645655, 263.6161602769786, 273.2678093971276,
+      263.6243038207451]}, "tg_throughput": null, "tg_req_throughput": null, "peak_throughput":
+      {"mean": 288.8477080937965, "std": 72.34284287025824, "values": [365.8306491282089,
+      192.0, 308.71247515318055]}, "peak_req_throughput": {"mean": 32.0, "std": 0.0,
+      "values": [32.0, 32.0, 32.0, 32.0, 32.0, 32.0, 32.0, 32.0, 32.0, 32.0, 32.0,
+      32.0, 32.0, 32.0, 32.0, 32.0, 32.0, 32.0, 32.0, 32.0, 32.0, 32.0, 32.0, 32.0]},
+      "ttfr": {"mean": 7284.432244500143, "std": 1065.358783673788, "values": [8540.151704000891,
+      5557.612854998297, 8171.809069001029, 8171.845614000631, 8171.433146002528,
+      8537.674641000194, 8537.49116799736, 8171.023814000364, 6810.7816119991185,
+      7068.6257500019565, 6810.372185002052, 6810.540490001586, 4290.783287997328,
+      6810.435545001383, 7067.24751299771, 7067.316138000024, 7496.254749999935, 4938.0570229986915,
+      7770.167102000414, 7495.847817001049, 7495.8601700018335, 7769.8913870008255,
+      7495.499685999675, 7769.651400998555]}, "est_ppt": {"mean": 7283.412074833602,
+      "std": 1065.3587836737881, "values": [8539.13153433435, 5556.592685331755, 8170.788899334488,
+      8170.82544433409, 8170.412976335987, 8536.654471333653, 8536.470998330818, 8170.003644333823,
+      6809.761442332577, 7067.605580335415, 6809.35201533551, 6809.520320335044, 4289.763118330787,
+      6809.415375334841, 7066.227343331168, 7066.295968333482, 7495.234580333393,
+      4937.03685333215, 7769.146932333872, 7494.827647334508, 7494.840000335292, 7768.871217334284,
+      7494.479516333134, 7768.631231332013]}, "e2e_ttft": {"mean": 11457.509220000398,
+      "std": 997.3218626620478, "values": [12999.619530000928, 12787.610969997331,
+      12785.85276100057, 12997.86941700222, 12297.791479002626, 12785.15041799983,
+      12556.025123998552, 12785.25645099944, 11062.198126001022, 9873.526225001115,
+      11061.92726000154, 10534.789261000697, 10786.063865998585, 10534.624140000233,
+      9872.158515998308, 10533.55299300165, 11040.053471999272, 11039.718924999761,
+      10866.150720001315, 11487.885183003527, 10866.064528003335, 10865.870670000731,
+      11694.88912199813, 10865.572122998856]}, "throughput_over_time": null, "requests_throughput_over_time":
+      null}]}'
+  timing:
+    startup:
+      format: 1
+      measurement: sparkrun-rank0-v1
+      observer: rank0
+      start_boundary: docker.State.StartedAt
+      executor: docker
+      observer_location: rank0-host
+      inference_style: openai-chat-stream-v1
+      ttft_status: measured
+      inference_requested: true
+      inference_ready: true
+      ttr_port_open_s: 385.235576
+      ttr_http_ready_s: 404.291753
+      ttft_s: 407.4271
+      observer_start_delay_s: 59.020577
+      first_token_field: reasoning_content
+      response_validated: false
+      http_ready_path: /health
+      prompt_sha256: 9e49e6e9b25b4b7f3578c08c7761a92e8596dcd26eba9f2f89ee304fc560831e
+      max_tokens: 64
+      temperature: 0
+      request_ttft_s: 3.133814420001727

@@ -1,0 +1,326 @@
+sparkrun_benchmark:
+  version: '1'
+  timestamp: '2026-11-02T23:31:29.578495+00:00'
+  recipe:
+    name: qwen3.8-flash-next-nvfp4-tp2
+    qualified_name: '@spark-forge/qwen3.8-flash-next-nvfp4-tp2'
+    type: sparkrun
+    model: local-inference-lab/Qwen3.8-Flash-Next-NVFP4
+    container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly-b12x:20260926
+    runtime: vllm-distributed
+    registry: spark-forge
+    registry_git: file:///home/devops/workspace/sparkrun-recipes
+    text: "recipe_version: '2'\nmodel: local-inference-lab/Qwen3.8-Flash-Next-NVFP4\n\
+      runtime: vllm\nbuilder: eugr\nmin_nodes: 2\nmax_nodes: 2\ncontainer: ghcr.io/spark-arena/dgx-vllm-eugr-nightly-b12x:20260926\n\
+      metadata:\n  description: Qwen3.8 Flash Next (local-inference-lab NVFP4, modelopt_mixed),\
+      \ vision-capable.\n    vLLM tensor-parallel across both DGX Sparks, native MTP\
+      \ speculative decoding.\n    Local mirror of eugr's cluster recipe with the\
+      \ safetensors loader.\n  maintainer: \"eugr (recipe) / local-inference-lab (model)\
+      \ \\u2014 adapted for this\\\n    \\ cluster\"\n  model_dtype: nvfp4\n  model_vram:\
+      \ 106\n  num_layers: 48\n  num_kv_heads: 2\n  head_dim: 256\n  kv_dtype: fp8\n\
+      \  model_type: qwen4_exp\ndefaults:\n  host: 0.0.0.0\n  port: 8000\n  tensor_parallel:\
+      \ 2\n  pipeline_parallel: 1\n  gpu_memory_utilization: 0.7\n  max_model_len:\
+      \ 262144\n  max_num_seqs: 16\n  kv_cache_dtype: fp8\n  max_num_batched_tokens:\
+      \ 4096\n  block_size: 16\n  moe_backend: b12x\n  linear_backend: b12x\n  load_format:\
+      \ safetensors\n  num_speculative_tokens: 4\n  served_model_name: qwen3.8-flash-next\n\
+      env:\n  VLLM_PLE_TABLE_MEMORY: ram\n  CUTE_DSL_ARCH: sm_121a\n  SAFETENSORS_FAST_GPU:\
+      \ '1'\n  VLLM_WORKER_MULTIPROC_METHOD: spawn\n  VLLM_SSM_CONV_STATE_LAYOUT:\
+      \ DS\n  VLLM_USE_AOT_COMPILE: '1'\n  VLLM_USE_MEGA_AOT_ARTIFACT: '1'\n  VLLM_USE_V2_MODEL_RUNNER:\
+      \ '1'\n  B12X_POLICY_MODE: auto\n  VLLM_ENABLE_ROCE_ALLREDUCE: '1'\n  VLLM_ROCE_ALLREDUCE_MAX_SIZE:\
+      \ 2MB\nreadiness:\n  port_timeout_s: 2400\n  health_timeout_s: 2400\n  inference_timeout_s:\
+      \ 600\ncommand: |\n  vllm serve {model} \\\n    --served-model-name {served_model_name}\
+      \ \\\n    --host {host} \\\n    --port {port} \\\n    --trust-remote-code \\\
+      \n    --tensor-parallel-size {tensor_parallel} \\\n    --pipeline-parallel-size\
+      \ {pipeline_parallel} \\\n    --mamba-cache-mode align \\\n    --enable-prefix-caching\
+      \ \\\n    --enable-chunked-prefill \\\n    --dtype bfloat16 \\\n    --kv-cache-dtype\
+      \ {kv_cache_dtype} \\\n    --quantization modelopt_mixed \\\n    --block-size\
+      \ {block_size} \\\n    --load-format {load_format} \\\n    --max-model-len {max_model_len}\
+      \ \\\n    --max-num-seqs {max_num_seqs} \\\n    --max-num-batched-tokens {max_num_batched_tokens}\
+      \ \\\n    --speculative-config '{\"method\":\"mtp\",\"num_speculative_tokens\"\
+      :{num_speculative_tokens}}' \\\n    --gdn-decode-kernel b12x \\\n    --linear-backend\
+      \ {linear_backend} \\\n    --moe-backend {moe_backend} \\\n    --no-enable-flashinfer-autotune\
+      \ \\\n    --mm-encoder-tp-mode data \\\n    --reasoning-parser qwen3 \\\n  \
+      \  --tool-call-parser qwen3_xml \\\n    --enable-auto-tool-choice \\\n    --compilation-config\
+      \ '{\"pass_config\":{\"fuse_act_quant\":true}}' \\\n    --gpu-memory-utilization\
+      \ {gpu_memory_utilization}\n"
+    hash: 95439e69d54545815ffa90f3b76f13d538dad3d8b686040f631cd253f4f6f45b
+  model:
+    dtype: nvfp4
+    num_layers: 48
+    num_kv_heads: 2
+    head_dim: 256
+    kv_dtype: fp8
+  cluster:
+    tp: 2
+    cluster_id: sparkrun_23ee7e962f76caa4_b07b0c7c3532
+    node_count: 2
+    hosts:
+    - node-64826494
+    - node-9648fb06
+    hosts_redacted: true
+    runtime_info: {}
+  benchmark:
+    framework: llama-benchy
+    profile: null
+    args:
+      pp:
+      - 2048
+      depth:
+      - 0
+      prefix_caching: true
+      concurrency:
+      - 8
+      tg:
+      - 256
+      served_model_name: qwen3.8-flash-next
+    resumed: false
+  results:
+    json:
+      model: local-inference-lab/Qwen3.8-Flash-Next-NVFP4
+      max_concurrency: 8
+      benchmarks:
+      - concurrency: 8
+        context_size: 0
+        prompt_size: 2048
+        response_size: 256
+        is_context_prefill_phase: false
+        pp_throughput:
+          mean: 2809.9726160821106
+          std: 10.708835208328981
+          values:
+          - 2794.8292404364583
+          - 2817.3789019106525
+          - 2817.7097058992217
+        pp_req_throughput:
+          mean: 661.6153506610304
+          std: 689.6914605858456
+          values:
+          - 355.1423104200117
+          - 568.5509334225796
+          - 2431.9058624097866
+          - 355.2030529986951
+          - 349.53861772773513
+          - 410.404303948677
+          - 349.51464019497934
+          - 410.4731104994066
+          - 414.3653458054596
+          - 358.0381972902144
+          - 358.0806073113446
+          - 414.47277328554827
+          - 352.43350788533917
+          - 352.29916707270576
+          - 578.9443821041892
+          - 2478.241446291646
+          - 2520.047328038204
+          - 357.993302726656
+          - 413.5564855263991
+          - 413.5878473048572
+          - 572.7643133149512
+          - 352.2974935613278
+          - 352.49992594406245
+          - 358.4134607799561
+        tg_throughput:
+          mean: 118.49226089494765
+          std: 3.681938731241957
+          values:
+          - 121.60555668386353
+          - 113.32098283559476
+          - 120.55024316538464
+        tg_req_throughput:
+          mean: 20.66907050546268
+          std: 2.403491565186859
+          values:
+          - 21.728884282214253
+          - 21.89667603321137
+          - 16.07856684169012
+          - 21.624967082644556
+          - 23.339984681287273
+          - 21.976733407469958
+          - 22.014368044148522
+          - 21.478589654520704
+          - 22.433839563382048
+          - 22.80049607741969
+          - 21.763521072597136
+          - 21.845582262388547
+          - 19.535938842490417
+          - 19.533848196809636
+          - 17.39298256394173
+          - 14.873357065001956
+          - 15.85970390689235
+          - 23.433858076912696
+          - 20.05648707604149
+          - 20.932712358353726
+          - 18.525215704186785
+          - 23.17224559929684
+          - 22.413585418025562
+          - 21.345548320177006
+        peak_throughput:
+          mean: 250.0
+          std: 10.614455552060438
+          values:
+          - 243.0
+          - 242.0
+          - 265.0
+        peak_req_throughput:
+          mean: 36.291666666666664
+          std: 3.552923287785551
+          values:
+          - 33.0
+          - 42.0
+          - 34.0
+          - 31.0
+          - 39.0
+          - 36.0
+          - 35.0
+          - 36.0
+          - 42.0
+          - 36.0
+          - 32.0
+          - 40.0
+          - 32.0
+          - 34.0
+          - 32.0
+          - 40.0
+          - 34.0
+          - 33.0
+          - 39.0
+          - 38.0
+          - 35.0
+          - 44.0
+          - 39.0
+          - 35.0
+        ttfr:
+          mean: 4685.135820916305
+          std: 1624.933578533454
+          values:
+          - 5771.282527999574
+          - 3603.9042900010827
+          - 844.3134549997922
+          - 5770.295893998991
+          - 5863.777619997563
+          - 4994.402094001998
+          - 5864.179767999303
+          - 4993.565190998197
+          - 4946.675981998851
+          - 5724.617473999388
+          - 5723.939675997826
+          - 4945.394307000242
+          - 5818.464435997157
+          - 5817.843998000171
+          - 3542.691749997175
+          - 828.5603479998827
+          - 814.8443620011676
+          - 5725.335154998902
+          - 4956.34755699939
+          - 4955.971858002158
+          - 3577.406159001839
+          - 5817.871626000851
+          - 5817.368453001109
+          - 5724.205720998725
+        est_ppt:
+          mean: 4683.371426581895
+          std: 1624.933578533454
+          values:
+          - 5769.518133665163
+          - 3602.139895666672
+          - 842.5490606653815
+          - 5768.53149966458
+          - 5862.013225663152
+          - 4992.637699667587
+          - 5862.415373664892
+          - 4991.800796663786
+          - 4944.91158766444
+          - 5722.853079664977
+          - 5722.175281663415
+          - 4943.629912665831
+          - 5816.700041662746
+          - 5816.07960366576
+          - 3540.9273556627645
+          - 826.795953665472
+          - 813.0799676667569
+          - 5723.570760664491
+          - 4954.583162664979
+          - 4954.207463667747
+          - 3575.6417646674286
+          - 5816.10723166644
+          - 5815.604058666698
+          - 5722.441326664314
+        e2e_ttft:
+          mean: 4685.135820916305
+          std: 1624.933578533454
+          values:
+          - 5771.282527999574
+          - 3603.9042900010827
+          - 844.3134549997922
+          - 5770.295893998991
+          - 5863.777619997563
+          - 4994.402094001998
+          - 5864.179767999303
+          - 4993.565190998197
+          - 4946.675981998851
+          - 5724.617473999388
+          - 5723.939675997826
+          - 4945.394307000242
+          - 5818.464435997157
+          - 5817.843998000171
+          - 3542.691749997175
+          - 828.5603479998827
+          - 814.8443620011676
+          - 5725.335154998902
+          - 4956.34755699939
+          - 4955.971858002158
+          - 3577.406159001839
+          - 5817.871626000851
+          - 5817.368453001109
+          - 5724.205720998725
+        throughput_over_time: null
+        requests_throughput_over_time: null
+    csv: "model,test_name,t_s_mean,t_s_std,t_s_req_mean,t_s_req_std,peak_ts_mean,peak_ts_std,peak_ts_req_mean,peak_ts_req_std,ttfr_mean,ttfr_std,est_ppt_mean,est_ppt_std,e2e_ttft_mean,e2e_ttft_std\r\
+      \nlocal-inference-lab/Qwen3.8-Flash-Next-NVFP4,pp2048 (c8),2809.9726160821106,10.708835208328981,661.6153506610304,689.6914605858456,,,,,4685.135820916305,1624.933578533454,4683.371426581895,1624.933578533454,4685.135820916305,1624.933578533454\r\
+      \nlocal-inference-lab/Qwen3.8-Flash-Next-NVFP4,tg256 (c8),118.49226089494765,3.681938731241957,20.66907050546268,2.403491565186859,250.0,10.614455552060438,36.291666666666664,3.552923287785551,,,,,,\r\
+      \n"
+    stdout: '{"model": "local-inference-lab/Qwen3.8-Flash-Next-NVFP4", "max_concurrency":
+      8, "benchmarks": [{"concurrency": 8, "context_size": 0, "prompt_size": 2048,
+      "response_size": 256, "is_context_prefill_phase": false, "pp_throughput": {"mean":
+      2809.9726160821106, "std": 10.708835208328981, "values": [2794.8292404364583,
+      2817.3789019106525, 2817.7097058992217]}, "pp_req_throughput": {"mean": 661.6153506610304,
+      "std": 689.6914605858456, "values": [355.1423104200117, 568.5509334225796, 2431.9058624097866,
+      355.2030529986951, 349.53861772773513, 410.404303948677, 349.51464019497934,
+      410.4731104994066, 414.3653458054596, 358.0381972902144, 358.0806073113446,
+      414.47277328554827, 352.43350788533917, 352.29916707270576, 578.9443821041892,
+      2478.241446291646, 2520.047328038204, 357.993302726656, 413.5564855263991, 413.5878473048572,
+      572.7643133149512, 352.2974935613278, 352.49992594406245, 358.4134607799561]},
+      "tg_throughput": {"mean": 118.49226089494765, "std": 3.681938731241957, "values":
+      [121.60555668386353, 113.32098283559476, 120.55024316538464]}, "tg_req_throughput":
+      {"mean": 20.66907050546268, "std": 2.403491565186859, "values": [21.728884282214253,
+      21.89667603321137, 16.07856684169012, 21.624967082644556, 23.339984681287273,
+      21.976733407469958, 22.014368044148522, 21.478589654520704, 22.433839563382048,
+      22.80049607741969, 21.763521072597136, 21.845582262388547, 19.535938842490417,
+      19.533848196809636, 17.39298256394173, 14.873357065001956, 15.85970390689235,
+      23.433858076912696, 20.05648707604149, 20.932712358353726, 18.525215704186785,
+      23.17224559929684, 22.413585418025562, 21.345548320177006]}, "peak_throughput":
+      {"mean": 250.0, "std": 10.614455552060438, "values": [243.0, 242.0, 265.0]},
+      "peak_req_throughput": {"mean": 36.291666666666664, "std": 3.552923287785551,
+      "values": [33.0, 42.0, 34.0, 31.0, 39.0, 36.0, 35.0, 36.0, 42.0, 36.0, 32.0,
+      40.0, 32.0, 34.0, 32.0, 40.0, 34.0, 33.0, 39.0, 38.0, 35.0, 44.0, 39.0, 35.0]},
+      "ttfr": {"mean": 4685.135820916305, "std": 1624.933578533454, "values": [5771.282527999574,
+      3603.9042900010827, 844.3134549997922, 5770.295893998991, 5863.777619997563,
+      4994.402094001998, 5864.179767999303, 4993.565190998197, 4946.675981998851,
+      5724.617473999388, 5723.939675997826, 4945.394307000242, 5818.464435997157,
+      5817.843998000171, 3542.691749997175, 828.5603479998827, 814.8443620011676,
+      5725.335154998902, 4956.34755699939, 4955.971858002158, 3577.406159001839, 5817.871626000851,
+      5817.368453001109, 5724.205720998725]}, "est_ppt": {"mean": 4683.371426581895,
+      "std": 1624.933578533454, "values": [5769.518133665163, 3602.139895666672, 842.5490606653815,
+      5768.53149966458, 5862.013225663152, 4992.637699667587, 5862.415373664892, 4991.800796663786,
+      4944.91158766444, 5722.853079664977, 5722.175281663415, 4943.629912665831, 5816.700041662746,
+      5816.07960366576, 3540.9273556627645, 826.795953665472, 813.0799676667569, 5723.570760664491,
+      4954.583162664979, 4954.207463667747, 3575.6417646674286, 5816.10723166644,
+      5815.604058666698, 5722.441326664314]}, "e2e_ttft": {"mean": 4685.135820916305,
+      "std": 1624.933578533454, "values": [5771.282527999574, 3603.9042900010827,
+      844.3134549997922, 5770.295893998991, 5863.777619997563, 4994.402094001998,
+      5864.179767999303, 4993.565190998197, 4946.675981998851, 5724.617473999388,
+      5723.939675997826, 4945.394307000242, 5818.464435997157, 5817.843998000171,
+      3542.691749997175, 828.5603479998827, 814.8443620011676, 5725.335154998902,
+      4956.34755699939, 4955.971858002158, 3577.406159001839, 5817.871626000851, 5817.368453001109,
+      5724.205720998725]}, "throughput_over_time": null, "requests_throughput_over_time":
+      null}]}'
