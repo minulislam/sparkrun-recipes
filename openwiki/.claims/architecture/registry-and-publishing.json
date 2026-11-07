@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:835fd14fcf4ea76e8bd6dce2590e370493754ed0ba4082caa82a12b0c6529ed6",
+  "pageVersion": "sha256:89ea0b17140c8d58afe429d388638a970d4bf959acdeb9d0aa67deb971934325",
   "claims": [
     {
       "id": "claim_c648c3ba6a0f4c2c850b86e1bf25d498",
@@ -63,10 +63,30 @@
           "version": "repo-lines-v1:sha256:5e04f427d030f14f553e4dd5e4316ac2b9bbdfab83528dccdd661ba165573993:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmVlYmNlN2JiOTk4Mzc2MzU4ZGFjMjAxOTg5YWYwOTUxZjlmZmE4ODc4MWFkN2Q1NmNlZjFkMzU1NGZhM2YxOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmFjZDMyYzA3YzE5NzUzOTAzY2E5YWUwNmIzMmRiYmQwNTA5NmY0NDI1NDMzOThjODc2MmFlNGVhYjdmNGRkZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTgwYjQyNmYxM2YxMDMxMTU4N2RjMGQ2NTc2YTBkZTRiNTk1ZWUzYjllY2IyNDU4MDIyYzRiMDhiMmZkNDJlYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTA5OTJlODVlMzA3Zjc1MzRlZmExNGJmM2E0OGFiYWY2NzM0ZTk0ZGU5ZDk2ZmIxMDhjNmM2ZDY1N2Y2NzIzNCJ9"
         }
       ]
+    },
+    {
+      "id": "claim_c31d7d30334045a299c304a09ca74c51",
+      "statement": "As of the 2026-11-03 audit on sparkrun 0.4.2, 10 registries are configured on this host, including the trusted spark-forge file:// registry for this repo and three untrusted ones (sparkrun-testing, coldsnap, coldsnap-vanilla), with roughly 118 recipes visible across enabled registries.",
+      "evidence": [
+        {
+          "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md",
+          "version": "repo-file-v1:sha256:85c4136149356bd1a0b3fd476bdaa3416e7bb681ab3e23f7a3a32245cbda73ff"
+        }
+      ]
+    },
+    {
+      "id": "claim_292a96928b3f43af908eace009e592da",
+      "statement": "SparkRoute gateway bindings in proxy.yaml must reference recipes in the qualified @spark-forge/<recipe> form because plain names are ambiguous between the local checkout and the spark-forge registry.",
+      "evidence": [
+        {
+          "resource": "repo://AGENTS.md",
+          "version": "repo-file-v1:sha256:7c257d130372a14d4a7b896366a69b09ba6cf5c716661539df7597d5a9fa6191"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-01T03:42:59.995Z"
+    "at": "2026-11-06T21:00:17.440Z"
   }
 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:3cbec08f7db48218b63fb43be4d96ec4433c795fd4440c1235ec602ea8ee4a84",
+  "pageVersion": "sha256:cc60b296a69fa30e214a533918b8628fd816683ae176b6747ea7be1c691d6464",
   "claims": [
     {
       "id": "claim_632bfad53bbe428599bc2007d416520f",
@@ -35,10 +35,24 @@
           "version": "repo-lines-v1:sha256:39e1cee1106ace7c6ee73c42cd99b56f0a517e287f63d8633dc7794037326264:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjViMGQzZWY5OTYzOThlNTlkNWZiMjdmNTc1NWQyOTg5YTcxNmNjNDRjNzJjNTViYTEyZDY2N2ExNzUzNTJlMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWQyNWFiMTBmYTc0NGYzOWI3OWNmMTQzZDU2ODllODE1OTlmMGNkNmUzY2RmZjgwNTkwMDQyYjliNzdhYjBjYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGE0OGViNDk3M2Y2MTVkYmJhNzI1MzJiYzkwNjU5YmJmZmYzNWE2MWJjOTI5YzUwMDkzOTBiYWY1MmEyODZiNiJ9"
         }
       ]
+    },
+    {
+      "id": "claim_ecdb8ae1a3ab427990f170ece21c14c7",
+      "statement": "The sparkrun CLI consumed by this registry is currently 0.4.2 (uv tool); the 0.3.10 gotchas in CLAUDE.md are from the earlier pinned version and their workarounds stand until re-verified on 0.4.x.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md",
+          "version": "repo-file-v1:sha256:bf594984d79b57acfd8e08cfc445f7af21ad28162a4444ccf23d5ab6d8beb23e"
+        },
+        {
+          "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md",
+          "version": "repo-file-v1:sha256:85c4136149356bd1a0b3fd476bdaa3416e7bb681ab3e23f7a3a32245cbda73ff"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-01T03:42:59.995Z"
+    "at": "2026-11-06T21:00:17.440Z"
   }
 }

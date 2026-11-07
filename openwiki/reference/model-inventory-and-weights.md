@@ -3,15 +3,19 @@ type: reference
 title: Model Inventory & Weight Safety
 description: What MODELS.md records about which checkpoints are complete, partial, or stubs on each node and which recipes use them, and the standing rules for handling weights safely (back up before delete, deletion is the operator's call, never hf cache prune without --dry-run).
 tags: [models, weights, inventory, storage, safety]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-11-01T03:42:59.995Z
 sources:
+  - id: openwiki-source-d844af9966f902d563fa3f52
+    resource: repo://benchmarks/MIAAI-LAB-VALIDATION-RESULTS-2026-10-16.md
   - id: openwiki-source-a2371d6362e5db4bc834ad03
     resource: repo://CLAUDE.md
+  - id: openwiki-source-382af0b12a087a97295aa93b
+    resource: repo://HISTORY.md
   - id: openwiki-source-456fceaa0ae7a8e901be70bf
     resource: repo://MODELS.md
-generated: { by: "claude-code", at: "2026-11-01T03:42:59.995Z" }
+generated: { by: "claude-code", at: "2026-11-04T21:00:13.713Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-06T21:00:17.440Z
 ---
 
 # Model Inventory & Weight Safety
@@ -61,6 +65,16 @@ Whether a deleted checkpoint is recoverable depends on the source: some live
 upstream and can be re-downloaded, while a partial whose source repo has since
 disappeared is gone for good — another reason the inventory tracks source
 availability alongside completeness.
+
+## Preserved external validation record
+
+`benchmarks/MIAAI-LAB-VALIDATION-RESULTS-2026-10-16.md` preserves the MiaAI-Lab
+abliterated-recipe validation report (3 PASS serve-only, 4 blocked/gated, with
+per-recipe patches and checkpoint cache status on both nodes). It was copied
+into this repo before the external `miaai-runner` repo was deleted, so it is
+now the only surviving copy of that evidence — including which drowzeys/keys
+checkpoints were HF-gated (HTTP 403) at the time. The GLM-5.3-Flash EXL3
+abliterated recipe adopted into this registry (row 64) traces back to that set.
 
 ## Related
 

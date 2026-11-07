@@ -3,17 +3,21 @@ type: architecture
 title: Registry & Publishing Model
 description: How sparkrun-recipes operates as the spark-forge sparkrun registry — the git-clone-of-main publishing model, the commit-then-update visibility rule, consumption by @registry/name, and the one-canonical-copy discipline.
 tags: [registry, sparkrun, publishing, workflow, git]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-11-01T03:42:59.995Z
 sources:
+  - id: openwiki-source-8037e2358a2c4f9b2c722a11
+    resource: repo://AGENTS.md
   - id: openwiki-source-a2371d6362e5db4bc834ad03
     resource: repo://CLAUDE.md
   - id: openwiki-source-d731ee870c7c4da596ac3b0a
     resource: repo://INDEX.md
+  - id: openwiki-source-eedd5219d6290708f61cb7bf
+    resource: repo://notes/2026-11-03-sparkrun-version-config-audit.md
   - id: openwiki-source-23775c3de52f3ab95a13cb8b
     resource: repo://README.md
-generated: { by: "claude-code", at: "2026-11-01T03:42:59.995Z" }
+generated: { by: "claude-code", at: "2026-11-04T21:00:13.713Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-06T21:00:17.440Z
 ---
 
 # Registry & Publishing Model
@@ -57,6 +61,21 @@ A recipe can be run two ways:
 
 The local-file path is how a change is verified before it is committed; the
 registry-name path is how the published recipe is consumed afterward.
+
+When a recipe is referenced from gateway configuration (SparkRoute bindings in
+`proxy.yaml`), the **qualified** `@spark-forge/<recipe>` form is required —
+plain names are ambiguous because the local checkout and the `spark-forge`
+registry both match.
+
+## The registry landscape on this host
+
+As of the 2026-11-03 audit (sparkrun 0.4.2), **10 registries** are configured:
+official, experimental, community, eugr, atlas, sparkrun-transitional,
+`spark-forge` (this repo, `file:///home/devops/workspace/sparkrun-recipes`,
+trusted), plus three **untrusted** ones — sparkrun-testing, coldsnap
+(plugin-provided), and coldsnap-vanilla. Roughly 118 recipes are visible across
+the enabled registries. Untrusted registries are fine for search, but recipes
+from them warrant review before launch.
 
 ## One canonical copy per recipe
 

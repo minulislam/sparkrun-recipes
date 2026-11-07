@@ -3,15 +3,19 @@ type: concept
 title: Recipe Anatomy
 description: The structure of a sparkrun v2 recipe YAML in this registry — identity (model/container/runtime), placement (min/max_nodes), readiness, the defaults block, the command template with its {placeholder} substitution, the env block, the executor_config entrypoint rule, and the memory-fit knobs.
 tags: [recipe, yaml, schema, vllm, configuration]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-11-01T03:42:59.995Z
 sources:
   - id: openwiki-source-a2371d6362e5db4bc834ad03
     resource: repo://CLAUDE.md
+  - id: openwiki-source-67c295973f38e30669ebf01c
+    resource: repo://recipes/glm-5.3-flash-exl3-abliterated-tp2.yaml
+  - id: openwiki-source-5c02b2143bb9723499b2edf3
+    resource: repo://recipes/mods/glm53-exl3-gb10-topk/run.sh
   - id: openwiki-source-9c55c8fb4c58db89d64b13df
     resource: repo://recipes/qwen3.8-flash-next-abliterated-nvfp4-tp2.yaml
-generated: { by: "claude-code", at: "2026-11-01T03:42:59.995Z" }
+generated: { by: "claude-code", at: "2026-11-04T21:00:13.713Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-06T21:00:17.440Z
 ---
 
 # Recipe Anatomy
@@ -85,6 +89,25 @@ re-invokes `vllm serve` must clear that entrypoint with
 `executor_config: {entrypoint: ""}`, or the two stack and the container fails to
 start. This is a per-image property, so it is set on the recipes whose image
 needs it.
+
+## Mods: pre-serve patches under `recipes/mods/`
+
+A recipe can list directories under a top-level `mods:` key:
+
+```yaml
+mods:
+  - mods/glm53-exl3-gb10-topk
+```
+
+Each mod directory holds a `run.sh` that sparkrun executes **inside every
+rank's container before serve**. Mods exist to patch a prebuilt image for this
+platform without rebuilding it — the worked example disables vLLM's
+decode-path `persistent_topk` in the `:exl3` GLM image, which otherwise kills
+the engine on long-history decode on GB10 (SM121) with a shared-memory
+oversubscription error. A good mod is idempotent (detects an already-applied
+patch), fails loudly if the target pattern is missing, and carries upstream
+attribution/licensing files when the edit is ported from another project
+(see `mods/glm53-nvfp4kv-overlays/CREDITS.upstream.md`).
 
 ## Fit: the memory knobs
 

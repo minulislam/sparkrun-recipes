@@ -3,15 +3,17 @@ type: quickstart
 title: Quickstart & Task Routing
 description: What the sparkrun-recipes (spark-forge) registry is, the source files that are authoritative, and where to go for each task — launch, verify, benchmark, author, or debug a recipe.
 tags: [quickstart, overview, routing, registry]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-11-01T03:42:59.995Z
 sources:
   - id: openwiki-source-a2371d6362e5db4bc834ad03
     resource: repo://CLAUDE.md
+  - id: openwiki-source-eedd5219d6290708f61cb7bf
+    resource: repo://notes/2026-11-03-sparkrun-version-config-audit.md
   - id: openwiki-source-23775c3de52f3ab95a13cb8b
     resource: repo://README.md
-generated: { by: "claude-code", at: "2026-11-01T03:42:59.995Z" }
+generated: { by: "claude-code", at: "2026-11-05T21:00:18.164Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-06T21:00:17.440Z
 ---
 
 # Quickstart & Task Routing
@@ -21,7 +23,10 @@ sparkrun registry **`spark-forge`**), not an application — there is nothing to
 build or install. Its product is a set of recipe YAML files that serve
 NVFP4-quantized LLMs on a two-node DGX Spark (GB10) pair, plus benchmark reports
 whose every number was measured live on that hardware. You consume it through
-the `sparkrun` CLI.
+the `sparkrun` CLI — currently **0.4.2**, installed as a uv tool. (The
+"sparkrun 0.3.10" gotchas listed in `CLAUDE.md` are from the earlier pinned
+version; their workarounds stand until re-verified on 0.4.x — see the
+pitfalls page and `notes/2026-11-03-sparkrun-version-config-audit.md`.)
 
 ## Authoritative source files
 
@@ -60,6 +65,8 @@ out of this wiki — it points at `INDEX.md` and `benchmarks/` as the evidence.
   [Authoring & Changing Recipes](workflows/authoring-recipes.md)
 - **Debug a launch that OOMs, wedges, or won't place** →
   [Memory, Placement & Known Pitfalls](operations/memory-placement-and-pitfalls.md)
+- **Route requests to a served model / manage gateway bindings** →
+  [Proxy & Gateway Routing (SparkRoute)](operations/proxy-and-gateway-routing.md)
 - **Pick or vet a container image** →
   [Container Images & Provenance](reference/images-and-provenance.md)
 - **Check what's on disk / handle weights safely** →

@@ -3,9 +3,6 @@ type: concept
 title: Abliteration & Refusal Evaluation
 description: The uncensored/abliterated recipe family on this pair — weight-baked abliteration vs. runtime refusal-projection — and the JailbreakBench-based refusal evaluation and full-context needle methodology used to characterize them.
 tags: [abliteration, refusal-eval, jailbreakbench, uncensored, evaluation, red-team]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-11-01T03:42:59.995Z
 sources:
   - id: openwiki-source-8e8938d8ee8b250a61e4bfb0
     resource: repo://benchmarks/redteam/README.md
@@ -16,6 +13,9 @@ sources:
   - id: openwiki-source-d731ee870c7c4da596ac3b0a
     resource: repo://INDEX.md
 generated: { by: "claude-code", at: "2026-11-01T03:42:59.995Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-06T21:00:17.440Z
 ---
 
 # Abliteration & Refusal Evaluation

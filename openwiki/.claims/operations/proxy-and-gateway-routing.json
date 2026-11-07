@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:62bb58bff27443c6005ab5ac2d68f01028aae6956338b1f8a78ce63136689460",
+  "claims": [
+    {
+      "id": "claim_ac6370c102d94140a4c199439882ef88",
+      "statement": "SparkRoute bindings live only in ~/.config/sparkrun/proxy.yaml; there is no CLI add/remove command, and sparkrun proxy sync makes the running gateway match the file atomically.",
+      "evidence": [
+        {
+          "resource": "repo://AGENTS.md",
+          "version": "repo-file-v1:sha256:7c257d130372a14d4a7b896366a69b09ba6cf5c716661539df7597d5a9fa6191"
+        }
+      ]
+    },
+    {
+      "id": "claim_fd2d49edcc334518b61b0f7f6388f3ec",
+      "statement": "The SparkRoute binding schema (fields: recipe, cluster/cluster_candidates, cold_start wait|reject, model, overrides, capabilities) is documented authoritatively by the installed plugin source at ~/.config/sparkrun/plugins/sparkroute/*/payload/, not upstream docs.",
+      "evidence": [
+        {
+          "resource": "repo://AGENTS.md",
+          "version": "repo-file-v1:sha256:7c257d130372a14d4a7b896366a69b09ba6cf5c716661539df7597d5a9fa6191"
+        }
+      ]
+    },
+    {
+      "id": "claim_8bfd6ee6b3764936852bbbd36dbd910d",
+      "statement": "Bindings reference recipes in qualified @spark-forge/<recipe> form because plain names are ambiguous between the local checkout and the spark-forge registry.",
+      "evidence": [
+        {
+          "resource": "repo://AGENTS.md",
+          "version": "repo-file-v1:sha256:7c257d130372a14d4a7b896366a69b09ba6cf5c716661539df7597d5a9fa6191"
+        }
+      ]
+    },
+    {
+      "id": "claim_0aa6b153127e48ec9a89c0583f1c29d4",
+      "statement": "All bindings use cold_start: wait so requests queue through multi-minute model swaps instead of erroring; idle-node-first placement is encoded via cluster_candidates order because SparkRoute 0.3.4 has no preempt-on-demand and eviction happens only via gateway idle timers on gateway-owned jobs.",
+      "evidence": [
+        {
+          "resource": "repo://AGENTS.md",
+          "version": "repo-file-v1:sha256:7c257d130372a14d4a7b896366a69b09ba6cf5c716661539df7597d5a9fa6191"
+        }
+      ]
+    },
+    {
+      "id": "claim_3fd2c8ec525c408dba8e62c05d5e2244",
+      "statement": "The gateway admin API on port 4000 has no authentication and the proxy binds 0.0.0.0, offering GET/PUT /v1/config/managed-sets/operator, a validate endpoint, and CAS updates via expected_active_revision.",
+      "evidence": [
+        {
+          "resource": "repo://AGENTS.md",
+          "version": "repo-file-v1:sha256:7c257d130372a14d4a7b896366a69b09ba6cf5c716661539df7597d5a9fa6191"
+        },
+        {
+          "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md",
+          "version": "repo-file-v1:sha256:85c4136149356bd1a0b3fd476bdaa3416e7bb681ab3e23f7a3a32245cbda73ff"
+        }
+      ]
+    },
+    {
+      "id": "claim_b971e2204ed84db49f0e3a059738bd46",
+      "statement": "Strict validation rejects a sparkrun binding whose public model name an operator route owns; on 2026-11-03 three stale operator virtual models were removed via admin-API CAS replace with a backup at ~/.config/sparkrun/sparkroute/operator-set-backup-2026-11-03.json, keeping qwen38-27b and qwen38-27b:low as operator routes.",
+      "evidence": [
+        {
+          "resource": "repo://AGENTS.md",
+          "version": "repo-file-v1:sha256:7c257d130372a14d4a7b896366a69b09ba6cf5c716661539df7597d5a9fa6191"
+        }
+      ]
+    },
+    {
+      "id": "claim_0cb4dc55e58f4ccf8ae2797742fa2726",
+      "statement": "The proxy advertises model routes without live backends (5 routes exposed while both hosts were idle on 2026-11-03), autodiscovery sweeps dgx-pair every 30 s, and a discovered model name can collide with a reserved operator route of the same name.",
+      "evidence": [
+        {
+          "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md",
+          "version": "repo-file-v1:sha256:85c4136149356bd1a0b3fd476bdaa3416e7bb681ab3e23f7a3a32245cbda73ff"
+        }
+      ]
+    },
+    {
+      "id": "claim_2cbe6df139494bc589ed480017c34ead",
+      "statement": "proxy.env (mode 600) holds HF/NGC/NVIDIA/Ollama secrets and must never be printed into output or files.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md",
+          "version": "repo-file-v1:sha256:bf594984d79b57acfd8e08cfc445f7af21ad28162a4444ccf23d5ab6d8beb23e"
+        },
+        {
+          "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md",
+          "version": "repo-file-v1:sha256:85c4136149356bd1a0b3fd476bdaa3416e7bb681ab3e23f7a3a32245cbda73ff"
+        }
+      ]
+    },
+    {
+      "id": "claim_592c3bdbc1ca4c6e82b6b0824cafea10",
+      "statement": "The active gateway is the SparkRoute plugin 0.3.4 selected via the gateway.sparkroute feature, running on 0.0.0.0:4000, which the 2026-11-03 audit flags as a deliberate-or-not exposure decision.",
+      "evidence": [
+        {
+          "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md",
+          "version": "repo-file-v1:sha256:85c4136149356bd1a0b3fd476bdaa3416e7bb681ab3e23f7a3a32245cbda73ff"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-11-06T21:00:17.440Z"
+  }
+}

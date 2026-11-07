@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:0265a70cda3b69b0c7872973d5f1ed20f48d30b42bae2183250953763816df3d",
+  "pageVersion": "sha256:a307aefaac4e6863060059ae819ac18d2ca6de7d4bd6cca194d31154977aeb07",
   "claims": [
     {
       "id": "claim_a30aa7caefc4472ab4d7b9bacb20f7f5",
@@ -55,10 +55,24 @@
           "version": "repo-lines-v1:sha256:69b8be5c132a1153383036f3abb607e4a43771335a69da691300fc21c7b13d73:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTRmNTgwMmM1YTBjOTBlZThhZjY2MmM0NzYyNmNlMjk3OGI1YmFmYjYwOTk4NjJmYzdlOTU0ZmEwMjNmNmY0YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTFjZTE5NDI2ZTE0YTBjYzRiNGY1YWJkMDk3MWFmM2YzZGMwNjNhYmViODBlMDg1YWNiOGUzMzlkOTUxMzBhMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjM1YzUwOWNhNmQzMjcyOTQ3MmMzNWNiZTZjOTZjYzc2Y2ZkZjFmMGNiMGRjODkzM2JlMTEzMjUzN2I5Y2M3NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTVlODQ2MjNiZDczOWY4MmFkODdmM2IzN2U4ODQ4NTYxMjE0NDFlMjk0M2RiZjA4NTJiYmE5YzkzNWI5ZDg5YSJ9"
         }
       ]
+    },
+    {
+      "id": "claim_42ff93005e86451c804670a7d794cfd2",
+      "statement": "benchmarks/MIAAI-LAB-VALIDATION-RESULTS-2026-10-16.md preserves the MiaAI-Lab abliterated-recipe validation report (3 PASS serve-only, 4 blocked/gated) copied into this repo before the external miaai-runner repo was deleted, and the adopted GLM-5.3-Flash EXL3 abliterated recipe traces back to that validated set.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md",
+          "version": "repo-file-v1:sha256:29ff7213dc80f1945a25f4d81f46507f126e3590d8f96ae36474a29a3dca5d3e"
+        },
+        {
+          "resource": "repo://benchmarks/MIAAI-LAB-VALIDATION-RESULTS-2026-10-16.md",
+          "version": "repo-file-v1:sha256:2d642f308fcc7553c1068aa5139fac3fe51953cf46f9324883148755897f8023"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-01T03:42:59.995Z"
+    "at": "2026-11-06T21:00:17.440Z"
   }
 }

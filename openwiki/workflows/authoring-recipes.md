@@ -3,13 +3,17 @@ type: workflow
 title: Authoring & Changing Recipes
 description: How to add or change a recipe in this registry — search upstream first, copy with attribution and minimal changes, apply the image policy, keep one canonical copy, and publish by committing to main and refreshing the registry.
 tags: [workflow, authoring, recipes, registry, contribution]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-11-01T03:42:59.995Z
 sources:
   - id: openwiki-source-a2371d6362e5db4bc834ad03
     resource: repo://CLAUDE.md
-generated: { by: "claude-code", at: "2026-11-01T03:42:59.995Z" }
+  - id: openwiki-source-67c295973f38e30669ebf01c
+    resource: repo://recipes/glm-5.3-flash-exl3-abliterated-tp2.yaml
+  - id: openwiki-source-5c02b2143bb9723499b2edf3
+    resource: repo://recipes/mods/glm53-exl3-gb10-topk/run.sh
+generated: { by: "claude-code", at: "2026-11-04T21:00:13.713Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-06T21:00:17.440Z
 ---
 
 # Authoring & Changing Recipes
@@ -40,6 +44,16 @@ change from an accident. See recipe anatomy for the fields themselves.
 Pick the `container:` by the selection order (spark-arena first), use an
 **immutable tag** — a dated tag rather than a digest pin, since the worker
 cannot receive digest-pinned images — and prefer an image already on disk.
+
+## 3b. Patch the image with a mod, not a rebuild
+
+When a prebuilt image needs a platform fix (a GB10/SM121 kernel workaround, an
+upstream overlay edit the image lacks), add a directory under `recipes/mods/`
+with a `run.sh` that applies the edit idempotently inside each rank's
+container pre-serve, and list it under the recipe's `mods:` key. Carry upstream
+attribution/licensing files in the mod directory when the edit is ported from
+another project. See recipe anatomy for the mechanics and the worked
+`glm53-exl3-gb10-topk` example.
 
 ## 4. Keep one canonical copy
 

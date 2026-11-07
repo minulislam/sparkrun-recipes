@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:a727901680014e5f6cb5dcf431ade16f472311de071433e3b7bb2778e33ecc71",
+  "pageVersion": "sha256:fe9faaaae2b1ca3695286c9050d6c123c7c1ea3e9c8d206661ea7951650e354c",
   "claims": [
     {
       "id": "claim_56ca71812db34cf382140bbc4fdd28cb",
@@ -63,10 +63,30 @@
           "version": "repo-lines-v1:sha256:61da43be7e783fbcc7d56af690ce781fa87c7564e9598112f1a59a095873909c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxNTg4NDhiODM0ZjFkZjc2ZWVlZmZlMDhjMjc3OTk0NzkwOTUzN2JkYjkxMzVmZTQ5MTQ2MThhMWQxYjU0MmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE1OTYzNjdmOTY4YWFkNzczYTVmZTNlMjdjYWJiMjczZmRiMzMxZDAwYzViNDYxYTdmY2Y4MjdiMGY4MzAxYjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIwMTU2NDkzZTRjZjZlNWI5MzY1ODI4YjM5YjFjOTI1NGJhODk2Y2RlYjI0NjU5ZTEwYTQ0Njc2NmQ5OThlYmUifQ"
         }
       ]
+    },
+    {
+      "id": "claim_e0e72daf29b04fe88b6ac6d1116cf661",
+      "statement": "When the worker management link is down, two-node launches fall back to CX7 addresses directly (--hosts 10.99.10.10,10.99.10.11 with HF_HUB_OFFLINE=1) instead of --cluster dgx-pair, because only rendezvous/bootstrap uses the management path.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md",
+          "version": "repo-file-v1:sha256:29ff7213dc80f1945a25f4d81f46507f126e3590d8f96ae36474a29a3dca5d3e"
+        }
+      ]
+    },
+    {
+      "id": "claim_77db17905a084d71b72d294792c6e3c0",
+      "statement": "The installed sparkrun CLI is 0.4.2, installed as a uv tool.",
+      "evidence": [
+        {
+          "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md",
+          "version": "repo-file-v1:sha256:85c4136149356bd1a0b3fd476bdaa3416e7bb681ab3e23f7a3a32245cbda73ff"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-01T03:42:59.995Z"
+    "at": "2026-11-06T21:00:17.440Z"
   }
 }

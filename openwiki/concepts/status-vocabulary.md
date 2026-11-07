@@ -3,13 +3,13 @@ type: concept
 title: Recipe Status Vocabulary
 description: The authoritative status ladder for recipes in this registry — lints, serves, verified, benchmarked, and unfit — and why collapsing them into one word produced irreconcilable coverage counts.
 tags: [vocabulary, status, verified, benchmarked, conventions]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-11-01T03:42:59.995Z
 sources:
   - id: openwiki-source-39c3295efc089133e87a9c80
     resource: repo://CONTEXT.md
 generated: { by: "claude-code", at: "2026-11-01T03:42:59.995Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-06T21:00:17.440Z
 ---
 
 # Recipe Status Vocabulary

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:4398f4552ae55cc14e9aeebd559c5e5a905bba5b9ddf7aebc6ba7e114a6de54b",
+  "pageVersion": "sha256:90dc545081ba026bab7ad2317ddcca80f710701acd7a650a29683afb2327a5d5",
   "claims": [
     {
       "id": "claim_cf69e2682a8340baad49b751cefd401f",
@@ -87,10 +87,24 @@
           "version": "repo-lines-v1:sha256:59936ea2f2b19b04bec3240ec9af4787027fd1e94c34da589c410cec6580d7c2:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk5MzZlYTJmMmIxOWIwNGJlYzMyNDBlYzlhZjQ3ODcwMjdmZDFlOTRjMzRkYTU4OWM0MTBjZWM2NTgwZDdjMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk5MzZlYTJmMmIxOWIwNGJlYzMyNDBlYzlhZjQ3ODcwMjdmZDFlOTRjMzRkYTU4OWM0MTBjZWM2NTgwZDdjMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjEsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGQ2YTkzM2Q5YzA0MjVhNzZhYjA3YmYxNjIwOTNiMGFhNDhmYTI5NGVmYzA0ODVhZDAzMzc0NGM5YmQ0ZTZmYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDhkY2E5NmFmYjBiMzBmZGIwYmU1Y2NkY2M0MTU2YTdkYzEzM2U4ZDA0OTgxZGYzMjA0NDc1YTJiZmI0ZTcyZiJ9"
         }
       ]
+    },
+    {
+      "id": "claim_f51cdce0b6614b158360c5010832fb37",
+      "statement": "A recipe can list directories under a top-level mods: key (e.g. mods/glm53-exl3-gb10-topk); each mod's run.sh executes inside every rank's container before serve to patch the prebuilt image, as with the GB10 persistent_topk disable for the :exl3 GLM image.",
+      "evidence": [
+        {
+          "resource": "repo://recipes/glm-5.3-flash-exl3-abliterated-tp2.yaml",
+          "version": "repo-file-v1:sha256:e5d76111cf8814f85261e200d472189d806c70019113fde1f111628cb29c4bfd"
+        },
+        {
+          "resource": "repo://recipes/mods/glm53-exl3-gb10-topk/run.sh",
+          "version": "repo-file-v1:sha256:471d508dfab0dffa6f4f70c38ffd94889e4606fc52c49ba5157a0a4ef4e3888b"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-01T03:42:59.995Z"
+    "at": "2026-11-06T21:00:17.440Z"
   }
 }

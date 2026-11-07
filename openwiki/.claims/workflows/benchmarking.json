@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:e42c875de9096aff8afc9b835fb206ee22cee1ca42d174702574fd9932b6cfd0",
+  "pageVersion": "sha256:98cde3e8e762c0b16363c55f2a5adc8416581b67f6f514062039c8290b8ff52b",
   "claims": [
     {
       "id": "claim_1f7e663125ac45009d7d858ed0513a0e",
@@ -61,10 +61,48 @@
           "version": "repo-lines-v1:sha256:a749e2da8521a8319dbe4d6f9ecacefd785ff13c08dfc7586dd72a2919dad770:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmMGVlZTA3ZDVkOTU0NTMwZDNmM2Q1MTgyZTBhMjVkMzc3YmZlNzA2NTFlNjBhM2VjYmY3ZGNmMDAyZTdiYjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2Y2JmMWJiMTlmNzBiYmY5MjNhNzZkZDFkNTM5YWY4YzYwOTk3ZGNlZWQ4MTJjOWM5ZTFiMzUyZjVhOWUzNGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQxMzRjYzk2MGY4NTQ1YWRiZDJjYjM2N2I3MjIyNGUxNzE0NTk0NWMyMmY0Mjk4NTUyMDc4YTM3ZDkyMjcxOWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYwNjZlY2U4ODE1ODBiYmE4MjhmMTFkZjNkOGE2YjhiZDdmOTVjMWM1MjBkNTZmMmNiN2IwNzE5NjZjYTFlMWYifQ"
         }
       ]
+    },
+    {
+      "id": "claim_cd5a1612d3704b63998514ebd540d119",
+      "statement": "After the 2026-11-03 CX7 MTU fix, qwen3.8-flash-next-nvfp4-tp2 re-benchmarked at tg128 c=1 73.7 tok/s vs the 46.3 baseline (+59%) and c=8 tg=256 118.5 aggregate vs 92.3 (+28%), with raw artifacts in benchmarks/results_qwen38-flash-next-tp2-20261103.*.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md",
+          "version": "repo-file-v1:sha256:29ff7213dc80f1945a25f4d81f46507f126e3590d8f96ae36474a29a3dca5d3e"
+        },
+        {
+          "resource": "repo://benchmarks/results_qwen38-flash-next-tp2-20261103.yaml",
+          "version": "repo-file-v1:sha256:d6ae4250338092dca184d5bfe4587b74233777c06a4acff1f243028ee19b0ecc"
+        }
+      ]
+    },
+    {
+      "id": "claim_803b86f2294f434986c39671f34f63a2",
+      "statement": "tg128 is unreliable at c=8 because TTFR stagger (~4.8 s) overlaps too little of a 128-token window; tg=256 or longer is required for c=8 comparisons.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md",
+          "version": "repo-file-v1:sha256:29ff7213dc80f1945a25f4d81f46507f126e3590d8f96ae36474a29a3dca5d3e"
+        }
+      ]
+    },
+    {
+      "id": "claim_4ac15053a0a44b30b0ea7cf7bf728992",
+      "statement": "The 2026-11-03 inkling-small-nvfp4-tp2-sglang re-run recorded pp2048 1678 (c1) / 1381 (c8) but no steady-state tg — a llama-benchy parsing quirk against that SGLang server, not a server failure; raw artifacts are benchmarks/results_inkling-small-tp2-20261103.*.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md",
+          "version": "repo-file-v1:sha256:29ff7213dc80f1945a25f4d81f46507f126e3590d8f96ae36474a29a3dca5d3e"
+        },
+        {
+          "resource": "repo://benchmarks/results_inkling-small-tp2-20261103.yaml",
+          "version": "repo-file-v1:sha256:381065b9fbef3abc35a30ebb1abc78b1fcb7891cc67c76975bf7d68822ab6aae"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-01T03:42:59.995Z"
+    "at": "2026-11-06T21:00:17.440Z"
   }
 }

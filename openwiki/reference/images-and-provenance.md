@@ -3,9 +3,6 @@ type: reference
 title: Container Images & Provenance
 description: The container-image selection order and provenance rules for recipes — the spark-arena-first tier list, the immutable-tag policy and why dated tags beat digest pins here, and the locally built deepseek-rank1 runtime-abliteration image.
 tags: [images, containers, provenance, security, spark-arena, policy]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-11-01T03:42:59.995Z
 sources:
   - id: openwiki-source-a2371d6362e5db4bc834ad03
     resource: repo://CLAUDE.md
@@ -13,7 +10,10 @@ sources:
     resource: repo://IMAGE-POLICY.md
   - id: openwiki-source-7845db45164b8996bda8b203
     resource: repo://images/deepseek-rank1/README.md
-generated: { by: "claude-code", at: "2026-11-01T03:42:59.995Z" }
+generated: { by: "claude-code", at: "2026-11-04T21:00:13.713Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-06T21:00:17.440Z
 ---
 
 # Container Images & Provenance
@@ -49,8 +49,9 @@ it does not, it should be mirrored into spark-arena so it does.
 
 **Immutable tags only** — no `:latest`, no floating `:nightly`, because a
 floating tag can move or disappear under a recipe. Digest pins are otherwise the
-strongest form, **but** sparkrun 0.3.10 fails to ship a digest-pinned image to
-the worker node (see the operations pitfalls), so in practice a **dated tag**
+strongest form, **but** sparkrun 0.3.10 failed to ship a digest-pinned image to
+the worker node (see the operations pitfalls; unverified whether 0.4.2 still
+does), so in practice a **dated tag**
 (for example `...-b12x:20260926`) is the right form on this pair: immutable in
 spirit and shippable to both nodes.
 

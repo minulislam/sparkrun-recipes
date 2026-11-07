@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:505273aa3cde6714cacbc4e6430dea0bbb75f4442da6bb67bb0a8169c116bab8",
+  "pageVersion": "sha256:842a7af30fe3f10a3165f8dd9d9f9a4393d96a0c57dc7f8cc721847371dac8bf",
   "claims": [
     {
       "id": "claim_04170aae475542d6a184179c01a297f9",
@@ -41,10 +41,24 @@
           "version": "repo-lines-v1:sha256:3d32862b99b7b977efe0c492021db40da92cc2a0a71b485ee8c3a37f524c8499:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTgyZTc2ODljYmQ4NGU3ODZiNzRjZjBiNTdiMjVhMzhjNzU1MTY1NmZlMmYxMDU4ODNkZGVkNjU2YTNlMWMwNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjAxNTZhZmFhMTFlZGRlOGM5NjliYmMyNjExNzhmYmIzNDEwZWNmMzJmNmE2MTZjNzkxYTY3ZjMyNWFkYzM1NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmFhYjlmMmRkMzNkOWEyYzAwMjQ2NjU3MTcyZWU5OTEyZDJhODY1YjQ4N2EyNTI1MzEwM2M1YTM5MmVkNjcxZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjcyNWQ1ODc5NTc2NzY4MDM2NmI1NmM4OWEzY2RmZTMxNDJlYTJhYjM2ZjA0YjMxNWI5NWMyMTM0ZmJjZDVkOSJ9"
         }
       ]
+    },
+    {
+      "id": "claim_fd9f5cbb2cd54f16b219c0e4c29182ad",
+      "statement": "Platform fixes to prebuilt images are applied via directories under recipes/mods/ listed in a recipe's mods: key (run.sh executed pre-serve in each rank's container), rather than rebuilding the image.",
+      "evidence": [
+        {
+          "resource": "repo://recipes/glm-5.3-flash-exl3-abliterated-tp2.yaml",
+          "version": "repo-file-v1:sha256:e5d76111cf8814f85261e200d472189d806c70019113fde1f111628cb29c4bfd"
+        },
+        {
+          "resource": "repo://recipes/mods/glm53-exl3-gb10-topk/run.sh",
+          "version": "repo-file-v1:sha256:471d508dfab0dffa6f4f70c38ffd94889e4606fc52c49ba5157a0a4ef4e3888b"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-01T03:42:59.995Z"
+    "at": "2026-11-06T21:00:17.440Z"
   }
 }

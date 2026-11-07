@@ -3,17 +3,23 @@ type: workflow
 title: Benchmarking & Context Verification
 description: How recipes get measured — the canonical quick throughput ladder, the needle-in-haystack full-context harness, the mem/results artifacts (the ground truth since nvidia-smi reports N/A on GB10), and the INDEX/benchmarks recording convention.
 tags: [benchmarking, throughput, context, needle, workflow, measurement]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-11-01T03:42:59.995Z
 sources:
   - id: openwiki-source-af5b2fc4a0830cd3de40e530
     resource: repo://benchmarks/README.md
   - id: openwiki-source-f2fa2c5d988e34496c32de5f
     resource: repo://benchmarks/redteam/needle_context_test.py
+  - id: openwiki-source-c14951f9251e738c0eb1ed0a
+    resource: repo://benchmarks/results_inkling-small-tp2-20261103.yaml
+  - id: openwiki-source-56477e1b1ab6b670861f1147
+    resource: repo://benchmarks/results_qwen38-flash-next-tp2-20261103.yaml
   - id: openwiki-source-39c3295efc089133e87a9c80
     resource: repo://CONTEXT.md
-generated: { by: "claude-code", at: "2026-11-01T03:42:59.995Z" }
+  - id: openwiki-source-382af0b12a087a97295aa93b
+    resource: repo://HISTORY.md
+generated: { by: "claude-code", at: "2026-11-04T21:00:13.713Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-06T21:00:17.440Z
 ---
 
 # Benchmarking & Context Verification
@@ -53,6 +59,30 @@ an N-token window" is only asserted once a needle has been retrieved near depth
 N. It talks plain OpenAI-compatible HTTP, so it runs against any served
 workload, and it is what turns an advertised context length into a measured one
 (and surfaces prefill-cost cliffs that retrieval accuracy alone would hide).
+
+## Numbers are only as good as the fabric: the 2026-11-03 re-benchmarks
+
+Benchmark figures are measurements of the recipe **on the cluster as
+configured that day**, and a fabric defect silently caps them. After the CX7
+MTU fix (see cluster & networking), `qwen3.8-flash-next-nvfp4-tp2` — same
+recipe, same image as the 09-27 baseline — re-measured at tg128 c=1 **73.7
+tok/s vs 46.3 (+59%)** and c=8 at tg=256 **118.5 aggregate vs 92.3 (+28%)**,
+with pp2048 roughly unchanged. Raw:
+`benchmarks/results_qwen38-flash-next-tp2-20261103.{json,csv,yaml}`. Earlier
+two-node decode numbers therefore understate the recipes measured before the
+fix.
+
+Two caveats from that session:
+
+- **tg128 is unreliable at c=8.** With ~4.8 s of TTFR stagger across 8
+  requests, a 128-token window overlaps too little concurrency — the run read
+  38.5 aggregate while per-request decode matched baseline. **Use tg=256 (or
+  longer) for c=8 comparisons.**
+- **llama-benchy can record no steady-state tg for SGLang servers.** The
+  `inkling-small-nvfp4-tp2-sglang` re-run produced pp2048 1678 (c1) / 1381
+  (c8) but only peak decode figures — a parsing quirk of the harness against
+  that server, not a server failure. Raw:
+  `benchmarks/results_inkling-small-tp2-20261103.*`.
 
 ## Recording convention
 

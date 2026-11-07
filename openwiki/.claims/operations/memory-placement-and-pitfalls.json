@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:2a7fd2f30f9a4bc8036647315b6f3c2306730fb56629d534a5753d1afe19d6c4",
+  "pageVersion": "sha256:3a4f9c6110a63d21dcbb6492bb4db98ede88fb203c70c0d43afdbff9c9d45ca4",
   "claims": [
     {
       "id": "claim_ce0c18a017eb45eb8fdbb33390dc963a",
@@ -18,15 +18,15 @@
     },
     {
       "id": "claim_c80f7994a394422d80d8abd604dc77c2",
-      "statement": "The working gpu_memory_utilization range is 0.70-0.82 and 0.85 has caused NVRM OOM at boot; individual recipes may have their own floor (a large Flash checkpoint needed >=0.64 to leave room for any KV).",
+      "statement": "The working gpu_memory_utilization range is 0.70-0.82 and 0.85 has caused NVRM OOM at boot; within the range a recipe may have its own floor below which no KV fits, so the value is tuned per recipe.",
       "evidence": [
         {
           "resource": "repo://CLAUDE.md#L55-L55",
           "version": "repo-lines-v1:sha256:67d554783b120c3d589e4afcfead7ea1a4ebe02ad3e5ce79b7cd8fd482dad7ed:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdkNTU0NzgzYjEyMGMzZDU4OWU0YWZjZmVhZDdlYTFhNGViZTAyYWQzZTVjZTc5YjdjZDhmZDQ4MmRhZDdlZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdkNTU0NzgzYjEyMGMzZDU4OWU0YWZjZmVhZDdlYTFhNGViZTAyYWQzZTVjZTc5YjdjZDhmZDQ4MmRhZDdlZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2NmMTI4ZmJlZjI5NTg4MWYyMGY2YjJlOTNmNmFhMzIxNDk3OTQxYjc5MTYzZTRkMTRmNTE4Y2E4NDhiMGQ2MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2Q2NWEyMGYyMDc3Yzk0N2ZlNjg1N2I5YzkyMDY4MGQyOGZkZjA2OTgwMDlhZDcxZmY3OWQzYWI5MGIyMTU0OCJ9"
         },
         {
-          "resource": "repo://CLAUDE.md#L79-L79",
-          "version": "repo-lines-v1:sha256:a737d396969f64d5eb04498ebd8ad747b45d7382f0d170005145aec8db3a9de0:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTczN2QzOTY5NjlmNjRkNWViMDQ0OThlYmQ4YWQ3NDdiNDVkNzM4MmYwZDE3MDAwNTE0NWFlYzhkYjNhOWRlMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTczN2QzOTY5NjlmNjRkNWViMDQ0OThlYmQ4YWQ3NDdiNDVkNzM4MmYwZDE3MDAwNTE0NWFlYzhkYjNhOWRlMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzlmMWRhNmZhYzc4NGQ0M2Q2OTIyMDE2ODI0ODY1YTJmNjQ3N2U1YmI4M2ZiZDdlMTEyZGJhZTM2MDNkMjdiOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTViOWUxMGEyMWI3ZjcyOTY2MmQ4MDdhZjNmY2RkNWE1MzczYTQ3NWMzYWNmZGE1ZTA4MzkzMGJkZjIwNDY2MSJ9"
+          "resource": "repo://HISTORY.md#L337-L337",
+          "version": "repo-lines-v1:sha256:764fc8ccd5278dcedd91dd0fed4c9253efc37e5f5df5b77e48a4c818374541fe:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzY0ZmM4Y2NkNTI3OGRjZWRkOTFkZDBmZWQ0YzkyNTNlZmMzN2U1ZjVkZjViNzdlNDhhNGM4MTgzNzQ1NDFmZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzY0ZmM4Y2NkNTI3OGRjZWRkOTFkZDBmZWQ0YzkyNTNlZmMzN2U1ZjVkZjViNzdlNDhhNGM4MTgzNzQ1NDFmZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmZlOWQxYzhjZmM2NWM5YzlmODJmZmQ1YTlkZmIyZTQ0ZjAwYzBjMmUyNjBhMzYzMjlhMTZjODRkNzI4MzI1OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTk2OThjN2NkZmY1NjcxNDYyOWRjNjhmZjc1MGQ3YjM5YzI2ZGQ0ODdiODk5ZDliYjI2OGJkZTQ4N2ZkYjY0YiJ9"
         }
       ]
     },
@@ -73,10 +73,44 @@
           "version": "repo-lines-v1:sha256:b725d58795767680366b56c89a3cdfe3142ea2ab36f04b315b95c2134fbcd5d9:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjBhY2VhMTQ1YzBkYmIzZmNmOGQyNzU3OWEzYmNjZTFmM2RhZTNkZTgxYzE3M2ZkMTA0OGIwNmJjZGJmOGIyNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjMzNDZhNmE5Njg4MTMzYWRjZmQ5MmQ0ZjI1NGNlNzlmODUyYmRmMDUxNmMyMDAyN2Y2OTM5ZjFhMzhmNzVlOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2VmMDE4MTVkNTM5N2FmZGI4ZjAxMjQxM2U0MjcyMTU1OGQwNjhmYWYxOWU4NGU5OTcwYzYyZWIyODM5M2YxYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDEwZjgwMmJiYmRkZmRmZTEyOWFjMTdhYmU0MDNkYmJjMWYwYjMzZTM1NTJmN2FkODU3OTE0MTUyNmY2MTBiOCJ9"
         }
       ]
+    },
+    {
+      "id": "claim_aa006e0c05154c88973022fe0dbc7f18",
+      "statement": "The three sparkrun defects (self-rsync deleting symlinked HF blobs, digest-pinned images failing on the worker, --no-rm not keeping crashed containers) were observed on 0.3.10; the installed version is now 0.4.2, and v0.4.0 PR #300 plausibly fixed the rsync gotcha but it is unverified on this pair, so hardlink-first stands.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L64-L66",
+          "version": "repo-lines-v1:sha256:b725d58795767680366b56c89a3cdfe3142ea2ab36f04b315b95c2134fbcd5d9:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjBhY2VhMTQ1YzBkYmIzZmNmOGQyNzU3OWEzYmNjZTFmM2RhZTNkZTgxYzE3M2ZkMTA0OGIwNmJjZGJmOGIyNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjMzNDZhNmE5Njg4MTMzYWRjZmQ5MmQ0ZjI1NGNlNzlmODUyYmRmMDUxNmMyMDAyN2Y2OTM5ZjFhMzhmNzVlOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2VmMDE4MTVkNTM5N2FmZGI4ZjAxMjQxM2U0MjcyMTU1OGQwNjhmYWYxOWU4NGU5OTcwYzYyZWIyODM5M2YxYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDEwZjgwMmJiYmRkZmRmZTEyOWFjMTdhYmU0MDNkYmJjMWYwYjMzZTM1NTJmN2FkODU3OTE0MTUyNmY2MTBiOCJ9"
+        },
+        {
+          "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md",
+          "version": "repo-file-v1:sha256:85c4136149356bd1a0b3fd476bdaa3416e7bb681ab3e23f7a3a32245cbda73ff"
+        }
+      ]
+    },
+    {
+      "id": "claim_567efdfcec1444b4af2522a26e690acc",
+      "statement": "A 2026-11-03 TP2 relaunch crashed because the worker HF cache's refs/main pointed at a root-owned empty snapshot left by an earlier root container; the fix was a one-line ref update, and sparkrun setup fix-permissions (interactive sudo) is the proper cleanup for root-owned cache dirs.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md",
+          "version": "repo-file-v1:sha256:29ff7213dc80f1945a25f4d81f46507f126e3590d8f96ae36474a29a3dca5d3e"
+        }
+      ]
+    },
+    {
+      "id": "claim_abf39f52295f462e8d158b3e42ba51f5",
+      "statement": "The max_gpu_memory_utilization: 0.95 override in clusters/dgx-pair-ep.yaml exists as a workaround for the sparkrun 0.3.10 EP fit-planner bug and needs re-testing on 0.4.2 before being relied on or removed.",
+      "evidence": [
+        {
+          "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md",
+          "version": "repo-file-v1:sha256:85c4136149356bd1a0b3fd476bdaa3416e7bb681ab3e23f7a3a32245cbda73ff"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-01T03:42:59.995Z"
+    "at": "2026-11-06T21:00:17.440Z"
   }
 }
