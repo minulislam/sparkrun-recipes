@@ -1,0 +1,145 @@
+#!/usr/bin/env bash
+# Stage the 9 mods that the sparkrun lane-A recipe needs, next to the recipe.
+#
+# WHY THIS EXISTS
+#   a3refaat's recipe references one mod entry, mods/minimax-m3-gptq-b12x-eagle3.
+#   That is a mod *group* (a mod-group.yaml listing other mods) which his
+#   run-recipe.py expands before launching. sparkrun's mod resolver only accepts
+#   a directory containing run.sh, so the group cannot be referenced directly —
+#   the recipe lists the 9 expanded members instead, and this script copies them
+#   out of his branch into ./mods/ where sparkrun's adjacent-mod resolver finds
+#   them.
+#
+#   It also applies ../patches/mod-prometheus-graceful-skip.patch to the copied
+#   fix-prometheus-fastapi-routing mod. That is NOT optional: prometheus-fastapi-
+#   instrumentator 8.0.2 already ships the fix his mod applies, so the mod's
+#   anchor text no longer matches, the mod exits non-zero, and because mods run
+#   under `set -euo pipefail` the entire launch aborts.
+#
+# USAGE
+#   ./sync-mods.sh                              # shallow-clone his branch to a tmpdir
+#   ./sync-mods.sh --src ../spark-vllm-docker   # reuse an existing checkout
+#   ./sync-mods.sh --force                      # overwrite an existing ./mods/
+#
+# The copied mods are a3refaat's MIT-licensed work (see ../LICENSE.upstream-MIT).
+# ./mods/ is generated and gitignored — this repo does not re-vendor them.
+
+set -euo pipefail
+
+UPSTREAM_URL="https://github.com/a3refaat/spark-vllm-docker.git"
+UPSTREAM_BRANCH="minimax-m3-4bit-w4a16"
+
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$HERE/.." && pwd)"
+DEST="$HERE/mods"
+PATCH="$REPO_ROOT/patches/mod-prometheus-graceful-skip.patch"
+
+# Expansion of mods/minimax-m3-gptq-b12x-eagle3, in group order:
+# the 8 members of mods/minimax-m3-gptq-b12x, then the EAGLE3 draft fix.
+MODS=(
+  fix-prometheus-fastapi-routing
+  fix-minimax-m3-reasoning-parser-robustness
+  fix-minimax-m3-compressed-tensors-swiglu-clamp
+  fix-minimax-m3-indexer-proj-bf16-load
+  fix-minimax-m3-b12x-indexer
+  fix-minimax-m3-b12x-msa
+  fix-minimax-m3-b12x-dense
+  fix-minimax-m3-b12x-triton-prewarm
+  fix-eagle3-draft-embed-quant
+)
+
+SRC=""
+FORCE=0
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --src) SRC="${2:?--src needs a path}"; shift 2 ;;
+    --force) FORCE=1; shift ;;
+    -h|--help) sed -n '2,26p' "${BASH_SOURCE[0]}"; exit 0 ;;
+    *) echo "unknown argument: $1" >&2; exit 2 ;;
+  esac
+done
+
+if [[ -d "$DEST" && $FORCE -eq 0 ]]; then
+  echo "$DEST already exists — pass --force to re-stage it." >&2
+  exit 1
+fi
+
+CLONE_TMP=""
+cleanup() { [[ -n "$CLONE_TMP" ]] && rm -rf "$CLONE_TMP"; }
+trap cleanup EXIT
+
+if [[ -z "$SRC" ]]; then
+  CLONE_TMP="$(mktemp -d -t spark-vllm-docker.XXXXXX)"
+  echo "==> cloning $UPSTREAM_BRANCH into $CLONE_TMP"
+  git clone --depth 1 -b "$UPSTREAM_BRANCH" "$UPSTREAM_URL" "$CLONE_TMP/repo" >/dev/null
+  SRC="$CLONE_TMP/repo"
+fi
+
+SRC="$(cd "$SRC" && pwd)"
+[[ -d "$SRC/mods" ]] || { echo "no mods/ directory under $SRC — is that a spark-vllm-docker checkout?" >&2; exit 1; }
+
+SRC_SHA="$(git -C "$SRC" rev-parse HEAD 2>/dev/null || echo unknown)"
+echo "==> source: $SRC (commit ${SRC_SHA:0:12})"
+
+# Verify every mod is present before touching the destination, so a bad source
+# fails cleanly instead of leaving a half-staged mods/ behind.
+missing=()
+for m in "${MODS[@]}"; do
+  [[ -f "$SRC/mods/$m/run.sh" ]] || missing+=("$m")
+done
+if [[ ${#missing[@]} -gt 0 ]]; then
+  echo "source is missing these mods (or their run.sh): ${missing[*]}" >&2
+  exit 1
+fi
+
+# Stage into a scratch dir first; DEST is only replaced once the patch lands.
+STAGE="$(mktemp -d -t sparkrun-mods.XXXXXX)"
+stage_cleanup() { [[ -d "$STAGE" ]] && rm -rf "$STAGE"; cleanup; }
+trap stage_cleanup EXIT
+
+# The patch is written against paths of the form mods/<name>/run.sh, so it is
+# applied one level above the staged mod directories.
+PATCH_ROOT="$STAGE/root"
+mkdir -p "$PATCH_ROOT/mods"
+for m in "${MODS[@]}"; do
+  cp -a "$SRC/mods/$m" "$PATCH_ROOT/mods/$m"
+  echo "    staged $m"
+done
+
+# --- the graceful-skip patch (mandatory; see header) -------------------------
+PROM="$PATCH_ROOT/mods/fix-prometheus-fastapi-routing/run.sh"
+if grep -q '_resolve_path' "$PROM"; then
+  echo "==> fix-prometheus-fastapi-routing already carries the graceful skip"
+  PATCH_STATE="already-present-upstream"
+elif patch -s -p1 -d "$PATCH_ROOT" <"$PATCH"; then
+  grep -q '_resolve_path' "$PROM" || {
+    echo "patch reported success but the _resolve_path guard is absent" >&2; exit 1; }
+  echo "==> applied patches/mod-prometheus-graceful-skip.patch"
+  PATCH_STATE="applied"
+else
+  echo "FAILED to apply $PATCH to the staged mod." >&2
+  echo "Without it, dependency drift in prometheus-fastapi-instrumentator aborts every launch." >&2
+  exit 1
+fi
+
+rm -rf "$DEST"
+mv "$PATCH_ROOT/mods" "$DEST"
+chmod -R u+rwX "$DEST"
+
+cat >"$DEST/.gitignore" <<'EOF'
+# Generated by ../sync-mods.sh from a3refaat/spark-vllm-docker (MIT).
+# Not re-vendored in this repo — re-run sync-mods.sh to recreate.
+*
+EOF
+
+cat >"$DEST/PROVENANCE.txt" <<EOF
+source_repo:   $UPSTREAM_URL
+source_branch: $UPSTREAM_BRANCH
+source_commit: $SRC_SHA
+license:       MIT (see ../../LICENSE.upstream-MIT)
+mod_group:     mods/minimax-m3-gptq-b12x-eagle3 (expanded — sparkrun cannot read mod groups)
+prometheus_graceful_skip: $PATCH_STATE
+EOF
+
+echo "==> ${#MODS[@]} mods staged in $DEST"
+echo "    next: sparkrun recipe validate $HERE/minimax-m3-w4a16-gptq-b12x-nvfp4-eagle3.yaml"

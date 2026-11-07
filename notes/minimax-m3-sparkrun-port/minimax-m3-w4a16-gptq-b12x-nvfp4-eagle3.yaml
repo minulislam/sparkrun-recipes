@@ -1,0 +1,259 @@
+# =============================================================================
+# sparkrun port of LANE A — BALANCED (the verified hero config)
+#   MiniMax-M3-W4A16-GPTQ + b12x nvfp4 target stack + EAGLE3 (nvfp4 draft KV)
+#   428B params, no pruning, TP=2 across two DGX Sparks (GB10).
+#
+# Source of truth: ../recipes/minimax-m3-w4a16-gptq-b12x-nvfp4-eagle3.yaml
+#   (a3refaat's run-recipe.sh recipe, MIT — see ../LICENSE.upstream-MIT).
+#   This file is a TRANSLATION of that recipe into sparkrun's schema, not a
+#   byte-exact reproduction. Every serve flag is carried over verbatim; the
+#   deltas are listed under "PORT NOTES" below.
+#
+# Reference numbers (../benchmarks/RESULTS.md): 36.6 tok/s JSON / 31.8 code,
+#   196K max context, 208,128-token KV pool, single stream, temp 0 — measured on
+#   a direct-cabled 200G RoCE pair. This recipe is hardware-neutral; on a
+#   switched fabric the all-reduce cost differs and the numbers are UNVERIFIED
+#   until you boot it.
+#
+# -----------------------------------------------------------------------------
+# PREREQUISITES (none of these are things sparkrun can do for you)
+#
+# 1. The container image must exist on the head node. It is built from
+#    a3refaat's branch, not pulled from a registry:
+#
+#      git clone -b minimax-m3-4bit-w4a16 \
+#        https://github.com/a3refaat/spark-vllm-docker.git
+#      cd spark-vllm-docker                       # branch HEAD f942437
+#      git apply <this-repo>/patches/dockerfile-unreachable-ref-fetch.patch
+#      git apply <this-repo>/patches/mod-prometheus-graceful-skip.patch
+#      ./build-deploy.sh                          # ~29G image, 1-2h cold
+#
+#    Patch 1 is mandatory on a cold /repo-cache: the pinned vLLM ref
+#    979b56a66c96 lives only on a deleted branch and the build dies without it.
+#    sparkrun distributes the built image to the worker for you (docker save |
+#    ssh docker load), so build on the head only.
+#
+# 2. The mods must be staged next to this file. sparkrun resolves `mods:`
+#    entries as directories containing run.sh, adjacent to the recipe — and
+#    a3refaat's `mods/minimax-m3-gptq-b12x-eagle3` is a mod-GROUP (a
+#    mod-group.yaml, no run.sh), which sparkrun cannot expand. The group is
+#    therefore expanded by hand into the 9 `mods:` entries below, and
+#    ./sync-mods.sh vendors them from his branch:
+#
+#      ./sparkrun/sync-mods.sh                      # clones his branch
+#      ./sparkrun/sync-mods.sh --src ../spark-vllm-docker   # or reuse a checkout
+#
+#    sync-mods.sh also applies patches/mod-prometheus-graceful-skip.patch to the
+#    copied fix-prometheus-fastapi-routing mod. Without it, prometheus-fastapi-
+#    instrumentator 8.0.2 already contains the fix, the mod's anchor misses, and
+#    because mods run under `set -euo pipefail` THE WHOLE LAUNCH ABORTS.
+#
+# -----------------------------------------------------------------------------
+# LAUNCH
+#
+#   cd <this-repo>
+#   sparkrun run  ./sparkrun/minimax-m3-w4a16-gptq-b12x-nvfp4-eagle3.yaml \
+#                 --cluster default --tp 2 --dry-run     # inspect first
+#   sparkrun run  ./sparkrun/minimax-m3-w4a16-gptq-b12x-nvfp4-eagle3.yaml \
+#                 --cluster default --tp 2
+#   sparkrun stop ./sparkrun/minimax-m3-w4a16-gptq-b12x-nvfp4-eagle3.yaml \
+#                 --cluster default --tp 2               # repeat --tp 2
+#
+# Run it BY FILE PATH. A recipe loaded from a local path is auto-trusted, so its
+# mods (which sparkrun injects as pre_exec hooks) run without an interactive
+# confirmation per launch. Installing it into an untrusted registry makes every
+# launch prompt; `sparkrun registry trust <name>` is the fix if you prefer that.
+#
+# -----------------------------------------------------------------------------
+# PORT NOTES — what changed vs ../recipes/, and why
+#
+# * `--distributed-executor-backend mp` was DROPPED. It is dead text on the
+#   verified path: upstream launch-cluster.sh strips that flag in --no-ray mode
+#   (launch-cluster.sh:781,990,1007) before appending --nnodes/--node-rank/
+#   --master-addr/--master-port/--headless. sparkrun's vllm-distributed runtime
+#   appends the identical flags. Setting it here would inject a flag the
+#   36.6 tok/s run never had.
+# * JSON-valued flags use PLAIN braces, not the `{{...}}` of the v1 recipe.
+#   recipe_version "2" masks non-placeholder braces before substitution, so
+#   {drafter_model} inside --speculative-config still resolves. Doubled braces
+#   would emit literal `{{` to vLLM.
+# * `build_args:` was dropped — not a sparkrun recipe key. Those args belong to
+#   build-deploy.sh; see PREREQUISITE 1.
+# * `gpu_memory_utilization` defaults to 0.929, not his 0.93. 0.93 failed the
+#   startup free-memory check by 0.02 GiB on the reference pair; 0.925 boots but
+#   shrinks the KV pool below what 196K context needs. BRACKET IT ON YOUR OWN
+#   HARDWARE — both failure modes print the exact number you need (too high:
+#   the GiB shortfall; too low: the resulting pool size). Override without
+#   editing: `--gpu-mem 0.925`.
+# * `mods:` lists the 9 members of his group in group order.
+#
+# -----------------------------------------------------------------------------
+# IGNORE THE VRAM ESTIMATOR WARNING
+#
+# `sparkrun run --dry-run` prints, for this recipe:
+#
+#   Available for KV:   0.4 GB    Max context tokens: 25,414
+#   WARNING: max_model_len exceeds available KV budget (12.9% fits)
+#   10.10.20.x: ... headroom=-12.3 GB [EXCEEDS]
+#
+# That is a static estimate, and it is wrong here in two ways. It reads the
+# config's 4 KV heads across all 60 layers, but MiniMax-M3's sparse-attention
+# (MSA) layers carry only 2 KV heads — most of the per-token KV it is charging
+# for does not exist. And the per-host [EXCEEDS] line applies a fixed 85%
+# utilization, not this recipe's 0.929. The measured reality on the reference
+# pair is a 208,128-token pool at 196K max context. Do NOT lower max_model_len
+# because of this warning; bracket gpu_memory_utilization instead and read the
+# pool size vLLM prints at startup.
+# =============================================================================
+
+recipe_version: "2"
+name: minimax-m3-w4a16-gptq-b12x-nvfp4-eagle3
+model: Sebesky/MiniMax-M3-W4A16-GPTQ
+runtime: vllm
+container: vllm-node-minimax-m3-b12x
+
+# 428B W4A16 = 224G on disk -> 112G/node at TP=2. Does not fit one Spark.
+min_nodes: 2
+max_nodes: 2
+cluster_only: true
+
+# This workload opts out of occupancy-aware placement. The occupancy scheduler
+# turns the VRAM estimate into a hard admission check, and that estimate is
+# provably wrong for M3 (see "IGNORE THE VRAM ESTIMATOR WARNING" above): it
+# charges 4 KV heads across all 60 layers where the MSA layers carry 2, giving
+# 115.2 GB/rank against a 121 GB accelerator. No cluster-wide
+# --max-gpu-mem-util rescues that — 0.93 yields 112.5 GB usable, still below the
+# inflated figure — so occupancy-sparse refuses to place the ranks at all
+# ("only placed 0 of 2 ranks"). greedy places them and lets vLLM's own
+# profiler, which knows the real KV geometry, be the authority.
+# This is per-recipe: it does not weaken the scheduler for other workloads.
+scheduler: greedy
+
+metadata:
+  description: >-
+    MiniMax-M3 428B (unpruned) W4A16 GPTQ across 2x DGX Spark at TP=2 — b12x
+    nvfp4 target stack (sparse MSA + indexer + dense layers 0-2) plus EAGLE3
+    speculative decoding with nvfp4 draft KV on the same b12x backend, Marlin
+    int4 MoE. 196K context, 208,128-token KV pool.
+  maintainer: a3refaat (stack) — sparkrun port in MiniMax-M3-2x-DGX-Spark-36-tok-s
+  model_params: 428B
+  model_dtype: gptq          # W4A16 GPTQ, Marlin int4 MoE ('gptq' is the
+                             # spelling sparkrun's dtype table recognizes)
+  kv_dtype: nvfp4
+  model_vram: 224          # GB on disk, split across the two nodes at TP=2
+  category: general
+
+# Expansion of a3refaat's mods/minimax-m3-gptq-b12x-eagle3 group, in group
+# order: the 8 members of mods/minimax-m3-gptq-b12x, then the EAGLE3 fix.
+# Staged into ./mods/ by ./sync-mods.sh. The b12x attention kernels themselves
+# are NOT here — they are vendored into the image by Dockerfile.deploy; these
+# mods only install the vLLM-side glue and compatibility shims.
+mods:
+  - fix-prometheus-fastapi-routing                     # + graceful-skip patch
+  - fix-minimax-m3-reasoning-parser-robustness
+  - fix-minimax-m3-compressed-tensors-swiglu-clamp
+  - fix-minimax-m3-indexer-proj-bf16-load
+  - fix-minimax-m3-b12x-indexer
+  - fix-minimax-m3-b12x-msa
+  - fix-minimax-m3-b12x-dense
+  - fix-minimax-m3-b12x-triton-prewarm
+  - fix-eagle3-draft-embed-quant
+
+defaults:
+  host: 0.0.0.0
+  port: 8000
+  tensor_parallel: 2
+  draft_tensor_parallel: 2
+  spec_tokens: 3
+  # 0.929, bracket-derived on the reference pair — see PORT NOTES.
+  gpu_memory_utilization: 0.929
+  max_model_len: 196608
+  max_num_batched_tokens: 1024
+  # All published numbers (his and the reproduction's) are single-sequence.
+  # Concurrency against the 208K pool is untested.
+  max_num_seqs: 1
+  block_size: 128
+  # Global nvfp4 KV. The target's sparse/dense layers read+write it natively;
+  # the draft (b12x dense backend) inherits the dtype and writes via the b12x
+  # impl's own nvfp4_block_quant_write — no fp8 pin on the drafter.
+  kv_cache_dtype: nvfp4
+  attention_backend: b12x
+  load_format: safetensors
+  # EAGLE3 drafter: int4 RTN everywhere incl. embed/lm_head (~1.6 GB). Do NOT
+  # substitute a bf16 or "slim" shared-embed drafter — fix-eagle3-draft-embed-
+  # quant depends on this checkpoint's quant config.
+  drafter_model: Sebesky/MiniMax-M3-EAGLE3-RTN-INT4
+
+# The EAGLE3 drafter must be distributed EXPLICITLY. sparkrun's auto-detection
+# (vllm_distributed.prepare -> detect_spec_config_draft_model) only finds a
+# draft model when the spec config is a `speculative_config` *default* it can
+# json.loads; here it lives inline in the command template, so detection
+# returns None and the 1.6G drafter never reaches the worker. That is fatal,
+# not merely slow: the vLLM runtime sets HF_HUB_OFFLINE=1 and
+# TRANSFORMERS_OFFLINE=1 in every container (runtimes/_util.py
+# default_env_hf_offline), so a node without the drafter in its HF cache dies
+# at draft-model load instead of downloading it.
+#
+# Listing `models` explicitly REPLACES the default single-entry list, so the
+# target has to be re-listed alongside the drafter. `containers` is omitted on
+# purpose — that keeps the default {container} entry, i.e. the ~29G image still
+# ships to the worker via docker save | ssh docker load.
+distribution_config:
+  models:
+    entries:
+      - name: "{model}"
+        target: [-1]           # -1 = every node
+      - name: "{drafter_model}"
+        target: [-1]
+
+# NCCL is deliberately left STOCK. NCCL_PROTO=LL + NCCL_MAX_NCHANNELS=2 is a
+# win on 32B-class dense models on this same class of fabric but LOSES 5-9% on
+# M3 (code 28.8 vs 31.8, JSON ~33.8-35.4 vs 36.6) — 428B MoE all-reduces are
+# bandwidth-heavy where LL optimizes for tiny messages. See ../benchmarks/.
+env:
+  PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
+  VLLM_MARLIN_USE_ATOMIC_ADD: "1"
+  OMP_NUM_THREADS: "20"
+  MKL_NUM_THREADS: "20"
+  OPENBLAS_NUM_THREADS: "20"
+  NUMEXPR_NUM_THREADS: "20"
+  # mode:0 + BREAKABLE_CUDAGRAPH=0 makes vLLM silently downgrade any piecewise-
+  # requiring cudagraph mode to NONE, which would run the whole verify+draft
+  # loop EAGER and bypass the b12x decode-graph stack. FULL_DECODE_ONLY (below)
+  # survives mode:0 and captures the uniform verify shape (1 + spec_tokens).
+  VLLM_USE_BREAKABLE_CUDAGRAPH: "0"
+  VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS: "0"
+  VLLM_M3_FP8_KV_TEST_SCALE: "1.0"
+  HF_TOKEN: ${HF_TOKEN}
+
+command: |
+  vllm serve {model} \
+      --trust-remote-code \
+      --host {host} \
+      --port {port} \
+      --gpu-memory-utilization {gpu_memory_utilization} \
+      -tp {tensor_parallel} \
+      --block-size {block_size} \
+      --kv-cache-dtype {kv_cache_dtype} \
+      --attention-backend {attention_backend} \
+      --attention-config '{"indexer_kv_dtype": "nvfp4"}' \
+      --compilation-config '{"mode": 0, "cudagraph_mode": "FULL_DECODE_ONLY", "cudagraph_copy_inputs": true}' \
+      --speculative-config '{"method":"eagle3","model":"{drafter_model}","draft_tensor_parallel_size":{draft_tensor_parallel},"num_speculative_tokens":{spec_tokens},"attention_backend":"b12x"}' \
+      --default-chat-template-kwargs '{"thinking_mode":"adaptive"}' \
+      --max-model-len {max_model_len} \
+      --max-num-batched-tokens {max_num_batched_tokens} \
+      --max-num-seqs {max_num_seqs} \
+      --language-model-only \
+      --load-format {load_format} \
+      --reasoning-parser minimax_m3 \
+      --enable-auto-tool-choice \
+      --tool-call-parser minimax_m3
+
+# Health is reported once the port listens and /v1/models answers. The FIRST
+# request after boot still pays the ~60s b12x JIT warmup — this burns it so a
+# benchmark never measures it. Never treat the first request as a data point.
+post_commands:
+  - >-
+    curl -sS --max-time 300 http://{head_ip}:{port}/v1/chat/completions
+    -H 'Content-Type: application/json'
+    -d '{"model":"{model}","messages":[{"role":"user","content":"Reply exactly: OK M3 LIVE"}],"max_tokens":16}'
