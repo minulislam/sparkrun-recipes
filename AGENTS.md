@@ -20,6 +20,11 @@
 
 <!-- OPENWIKI:START -->
 
+## Model storage
+
+- Model backup lives at `/mnt/nas/ai-models/model-backup/huggingface-hub/` (NFS `10.10.20.2:/volume1/ai-models`, automount). The old `/mnt/nas/dgx-spark` share is removed; do not reference it.
+- Back up a checkpoint there before deleting it. Deleting weights is the user's call.
+
 ## OpenWiki
 
 This repository has a generated `openwiki/` evidence index. It is optional just-in-time context, not required startup reading.
