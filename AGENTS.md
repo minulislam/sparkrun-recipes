@@ -18,6 +18,11 @@
 
 <!-- handoff:learnings:end -->
 
+## Model storage
+
+- Model backup is `/mnt/nas/ai-models/model-backup/huggingface-hub/` (NFS `10.10.20.2:/volume1/ai-models`, automount). The old `/mnt/nas/dgx-spark` share is removed; do not reference it. It held Proxmox backups, so never write to or read from that path.
+- Back up a checkpoint there before deleting it. Deleting weights is the user's call.
+
 <!-- OPENWIKI:START -->
 
 ## OpenWiki

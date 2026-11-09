@@ -10,12 +10,14 @@ sources:
     resource: repo://CLAUDE.md
   - id: openwiki-source-382af0b12a087a97295aa93b
     resource: repo://HISTORY.md
+  - id: openwiki-source-d731ee870c7c4da596ac3b0a
+    resource: repo://INDEX.md
   - id: openwiki-source-456fceaa0ae7a8e901be70bf
     resource: repo://MODELS.md
-generated: { by: "claude-code", at: "2026-11-04T21:00:13.713Z" }
+generated: { by: "claude-code", at: "2026-11-07T21:00:21.382Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-06T21:00:17.440Z
+    at: 2026-11-08T21:00:19.321Z
 ---
 
 # Model Inventory & Weight Safety
@@ -46,6 +48,13 @@ under-report a complete checkpoint's size, so completeness is judged against the
 weight index, not a byte count. The inventory also notes shared/hardlinked
 variant copies (for example a `config.json`-patched copy of a checkpoint for a
 planned recipe) that occupy no extra space.
+
+Because `MODELS.md` lags the live cluster, newer arrivals are recorded in
+`HISTORY.md` first: on 2026-11-08 `Qwen/Qwen3-Embedding-4B` and
+`Qwen/Qwen3-Reranker-4B` (7.5 GiB each) were downloaded to **both** nodes for
+the new pooling recipes (rows 65–66). Their pinned container
+(`dgx-vllm-eugr-nightly-tf5:2026092702`, 24.8 GB) is on the head only — a
+`gx10-solo` activation of either recipe will pull it on first use.
 
 ## Weight-safety rules
 

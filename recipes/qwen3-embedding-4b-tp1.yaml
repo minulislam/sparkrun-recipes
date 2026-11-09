@@ -1,0 +1,33 @@
+# >>> ADAPTED from @official/qwen3-vl-embedding-8b-vllm (fetched 2026-11-07): same pooling-runner
+# >>> serve shape, model switched to the text-only Qwen/Qwen3-Embedding-4B (no 4B exists in the VL
+# >>> series) for RAG/agent-memory embedding. Container pinned from :latest per IMAGE-POLICY to the
+# >>> tf5 build already on disk. UNVERIFIED until launched on this pair.
+recipe_version: "2"
+model: Qwen/Qwen3-Embedding-4B
+runtime: vllm
+container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly-tf5:2026092702  # pinned from tf5:latest, build on disk
+
+metadata:
+  description: Qwen3-Embedding-4B — text embedding model for RAG / agent memories (2560-dim, MRL)
+
+sparkroute:
+  capabilities: [single_vector_embedding]
+
+defaults:
+  port: 8000
+  host: 0.0.0.0
+  tensor_parallel: 1
+  gpu_memory_utilization: 0.3
+  max_model_len: 32768
+  load_format: safetensors
+
+command: |
+  vllm serve {model} \
+    --runner pooling \
+    --gpu-memory-utilization {gpu_memory_utilization} \
+    -tp {tensor_parallel} \
+    --host {host} \
+    --port {port} \
+    --max-model-len {max_model_len} \
+    --load-format {load_format} \
+    --trust-remote-code

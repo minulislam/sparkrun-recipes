@@ -32,8 +32,8 @@ date; re-check before acting on them.
   own docs, then official vLLM. Immutable tags only. Reuse images already on
   disk.
 - **Weights are hard to replace.** Check `MODELS.md` before launching. Back up
-  to `/mnt/nas/dgx-spark/model-backup/` before deleting a checkpoint. Deleting
-  weights is the user's call. Never run `hf cache prune` without `--dry-run`.
+  to `/mnt/nas/ai-models/model-backup/huggingface-hub/` before deleting a
+  checkpoint. Deleting weights is the user's call. Never run `hf cache prune` without `--dry-run`.
 - **Keep what runs on two nodes; drop what needs three.**
 - **One canonical copy of each recipe.** Benchmark reports live in
   `benchmarks/`.

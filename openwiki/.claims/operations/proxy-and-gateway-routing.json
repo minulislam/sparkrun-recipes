@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:62bb58bff27443c6005ab5ac2d68f01028aae6956338b1f8a78ce63136689460",
+  "pageVersion": "sha256:c8551b1dcc8632c4aae4d6e05862c7d574cf8c367bf9ba52fce66b1e2f710ae5",
   "claims": [
     {
       "id": "claim_ac6370c102d94140a4c199439882ef88",
@@ -44,15 +44,19 @@
     },
     {
       "id": "claim_3fd2c8ec525c408dba8e62c05d5e2244",
-      "statement": "The gateway admin API on port 4000 has no authentication and the proxy binds 0.0.0.0, offering GET/PUT /v1/config/managed-sets/operator, a validate endpoint, and CAS updates via expected_active_revision.",
+      "statement": "The gateway admin API on port 4000 has no authentication — mitigated since the 2026-11-07 restart bound to 127.0.0.1 — offering GET/PUT /v1/config/managed-sets/operator, a validate endpoint, and CAS updates via expected_active_revision.",
       "evidence": [
         {
-          "resource": "repo://AGENTS.md",
-          "version": "repo-file-v1:sha256:7c257d130372a14d4a7b896366a69b09ba6cf5c716661539df7597d5a9fa6191"
+          "resource": "repo://AGENTS.md#L8-L8",
+          "version": "repo-lines-v1:sha256:7959133199146198868b5d12603fd068f5e8e5116785cef873a283c3d448e8fc:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzk1OTEzMzE5OTE0NjE5ODg2OGI1ZDEyNjAzZmQwNjhmNWU4ZTUxMTY3ODVjZWY4NzNhMjgzYzNkNDQ4ZThmYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzk1OTEzMzE5OTE0NjE5ODg2OGI1ZDEyNjAzZmQwNjhmNWU4ZTUxMTY3ODVjZWY4NzNhMjgzYzNkNDQ4ZThmYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjYzMDc1MDQ3ZWI3OWEwZmJjNGZlNjJjY2M4YWNjNTdhMTQwNmNmYTc5Yzk1NTU2ZmM3NzM0NmI1Y2M1ZTA4YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWU4ZDFhYWE5NjBkODMzNjc0ODIxNWUyOTI5Mjg1OTc2ZmMwNmU3Yjc3OGEyOThhYTIwN2VlNWIxNzAzOWNlYiJ9"
         },
         {
-          "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md",
-          "version": "repo-file-v1:sha256:85c4136149356bd1a0b3fd476bdaa3416e7bb681ab3e23f7a3a32245cbda73ff"
+          "resource": "repo://HISTORY.md#L805-L814",
+          "version": "repo-lines-v1:sha256:7aed78e8b254fa8b0e88414a7862d5470737ea368a447e89db134ebdeecb03ea:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0ZTc3YmY2MDhlMThjMjI4ZjI5OTBiZjU0MGEzMzAzM2I1NTVkNjc2MjA4MzJkZjI2ZjQ5NjllZWEwMzc1MzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkZDU2ZjBhNzliYjFjNGI1MWMxZTVlZGM2ZjRkZGYzYzM0OGNhYTdmY2E1MDQwYmIxYjZjZjhkMWEyNGY1MTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFhNDc4ZTM4MDM2M2IxNDg0ZmYyNGRjNTgyYzcyMjRjZjYzMWU5YTgzNGY0NmEzOGI2Yzg5MzgxMzIxOTI2ZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM1ZjUyNGZjNWNmNzNhZThkMjM4MTY1ZWJlOTU3ZjgyZTU5MzU1YTgxMGM1ZDkxNGE3M2U1ZDhiNmI5YjI5NTcifQ"
+        },
+        {
+          "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md#L99-L102",
+          "version": "repo-lines-v1:sha256:6bb5fc85f2f09951558d19121bbaa3a0eb1ecc702e187c14752c2020dfd9c9ad:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDViOGMwMTY3NDQwMzVmOGRiOWUzN2M2NWRmMGMwODk4NGI4YWE5Mzc3M2IxNzM1ODJjZWQwNDY5ZWQwY2NlOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTM3YmVlOWZlMTYzZTVlZWY3MjU1M2VhMDM0MDBlZGFiOTMzMDBkZjc3YzIxNDc4M2E4M2FkNGZjYWI4NWM0ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWI2OWRhNTg1ZGI0ZTI0OGJjMDlmZjFhZmQyNjUzZmZhNzJiNzNlMmE2YzNmNDU4ZTU3NDk2ZGJjMWViNTViMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWNiN2MwMThhN2IwMTYyM2E2NzU4ODFhMGUwYmFlYjUxMjIzZjRjNTkwMWE0OTI3NTBlNDdmYWNjMjA0ZTBhZCJ9"
         }
       ]
     },
@@ -92,17 +96,73 @@
     },
     {
       "id": "claim_592c3bdbc1ca4c6e82b6b0824cafea10",
-      "statement": "The active gateway is the SparkRoute plugin 0.3.4 selected via the gateway.sparkroute feature, running on 0.0.0.0:4000, which the 2026-11-03 audit flags as a deliberate-or-not exposure decision.",
+      "statement": "The active gateway is the SparkRoute plugin 0.3.4 selected via the gateway.sparkroute feature; it originally ran on 0.0.0.0:4000 (flagged by the 2026-11-03 audit) and was rebound to 127.0.0.1:4000 on 2026-11-07.",
       "evidence": [
         {
-          "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md",
-          "version": "repo-file-v1:sha256:85c4136149356bd1a0b3fd476bdaa3416e7bb681ab3e23f7a3a32245cbda73ff"
+          "resource": "repo://HISTORY.md#L805-L814",
+          "version": "repo-lines-v1:sha256:7aed78e8b254fa8b0e88414a7862d5470737ea368a447e89db134ebdeecb03ea:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0ZTc3YmY2MDhlMThjMjI4ZjI5OTBiZjU0MGEzMzAzM2I1NTVkNjc2MjA4MzJkZjI2ZjQ5NjllZWEwMzc1MzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkZDU2ZjBhNzliYjFjNGI1MWMxZTVlZGM2ZjRkZGYzYzM0OGNhYTdmY2E1MDQwYmIxYjZjZjhkMWEyNGY1MTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFhNDc4ZTM4MDM2M2IxNDg0ZmYyNGRjNTgyYzcyMjRjZjYzMWU5YTgzNGY0NmEzOGI2Yzg5MzgxMzIxOTI2ZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM1ZjUyNGZjNWNmNzNhZThkMjM4MTY1ZWJlOTU3ZjgyZTU5MzU1YTgxMGM1ZDkxNGE3M2U1ZDhiNmI5YjI5NTcifQ"
+        },
+        {
+          "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md#L46-L46",
+          "version": "repo-lines-v1:sha256:22742ba87b88ede55f6ba5a68300ed5930a190984a1a2ea3f348451dbbbb21f5:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjI3NDJiYTg3Yjg4ZWRlNTVmNmJhNWE2ODMwMGVkNTkzMGExOTA5ODRhMWEyZWEzZjM0ODQ1MWRiYmJiMjFmNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjI3NDJiYTg3Yjg4ZWRlNTVmNmJhNWE2ODMwMGVkNTkzMGExOTA5ODRhMWEyZWEzZjM0ODQ1MWRiYmJiMjFmNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDQwZWQwNDZlOWViMDI4Zjk1OWQ5NmU2YzdiYTE3NjhiNTU3MWMzYTgwOGY0ZDI5YjM2ZTM1MjNjMTk1MDI5ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTcwYTQ4ZjQyMWIwMGNmMTM2YzliMzU2NDk2NGVlZjNiMmMwOGU1NWE3ZGM4ZGM1NzM1ZDRlMGE0NmNhYjhhZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c90e33b2bd8846d6801ce111c1b90acb",
+      "statement": "cold_start: wait is proven in practice: a 2026-11-08 request to the cold glm-5.3-flash-abliterated binding held the HTTP connection through the entire boot and returned 200 with the expected completion after 584 s.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md#L836-L838",
+          "version": "repo-lines-v1:sha256:37ed94053432642cdcb719521155419dea0471c85b9bd151a23e960e885d6f60:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWVlZGE3OGQ0MTliMTY2NzkzNzZlZmM5NTBlZTYxODA1MDQwN2IyMGFhYTY5NGEyNjA1NTllYTU0NTk2MmUyZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWExOTBjNzAxOTU3MmQxMjcyYjE3YWNhNWFjODkyZGE3ODhhZTkzYjFkZjUxNjlmMGY5MWEzYWYyN2Y5NWM3MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWJmM2Y3OWM3MzU2ZDlhNmZkYzdhZmUxZjE1MjgyOGJlNDE1NzhkZTBkNzVkMGE4NzcyZWE0NDhiMmFlYzBjMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTMzMTNlY2YzMmI4OTU1ODc1OWMxZmE4M2MyNDI1N2JmYWUyMTE1YzZlMzFmYTI5MTVkMzc2NjQ2OWJlNTg1MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6a2031762404450bb70582f626ac3856",
+      "statement": "The gateway's binding list was rebuilt on 2026-11-07 after console edits had excluded all five sparkrun deployments (exclusions cleared via admin-API CAS replace, backup at operator-set-backup-2026-11-07.json), and expanded on 2026-11-08 to 9 routes including the new Qwen3 Embedding-4B and Reranker-4B bindings.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md#L805-L833",
+          "version": "repo-lines-v1:sha256:a84fa29d7ed8c5775445148b82a8ad20c354df77edbe96dbc189685c7bd90288:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0ZTc3YmY2MDhlMThjMjI4ZjI5OTBiZjU0MGEzMzAzM2I1NTVkNjc2MjA4MzJkZjI2ZjQ5NjllZWEwMzc1MzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFhNDc4ZTM4MDM2M2IxNDg0ZmYyNGRjNTgyYzcyMjRjZjYzMWU5YTgzNGY0NmEzOGI2Yzg5MzgxMzIxOTI2ZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ0MzZhNzdmYjZkODJmMDg5ZDU5NjA2MmQwMzM4YTVjMDQyNmM5ZGMzOGVlNGUyYTNhOTkzZmFiODUzNmI0MDgifQ"
+        },
+        {
+          "resource": "repo://HISTORY.md#L834-L859",
+          "version": "repo-lines-v1:sha256:74bec0c888a3567e1c72ff5d9353e1e1d4755086897b7b9f686d6ef1f9ee8d5f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0NThiOTM1ZGFlMzE5MDMzOGY4ZWVlMDMyMDlhZTY4Y2U4YjNlODFjNTAzMzFlZjcyNGIzMjZmZmU0MmE2NTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRhOTBkMTU3ODUyMTdmYzAzZDY3MzVhM2Q3MWZhMGM2ZTVlZmU2NTcwZDA2OTJlZWNlYzY2ZGIzNDI3MzI5YWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzZDIzN2ViMjAwMjUwZWFkYzUxZjIzMzYwZjY4YjQ2ODA2YzAwZDJhYzQwYzQwYTUyN2I3MDhiMDc1ZWRhMTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3fc3f886155c488ebd90432de6cf0715",
+      "statement": "sparkrun proxy unload deletes the recipe's binding from proxy.yaml rather than just the running deployment, so the binding must be restored by hand afterwards; recipes not yet committed to main can be bound by absolute file path.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md#L843-L845",
+          "version": "repo-lines-v1:sha256:9d67ca16e9c2333a91fdf78ed96c773929a2ac863ec4a2d8fc7dbf371d84cdef:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmFkMTY2OGFkYWMzNWQzNzkxYThlYzk0MGEyNDNlNzIxNGJiMzFlNDcwMWRkOWIyZGJhOTY4NWVkMzI1MTQzNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjU0YWZjZjM2NzczOWQ1YzA0ODVhMjU3YTU4MGNlOGNlMzJlZmFjMmI4ZjhjMTk1YjM5OTZlMTVkMGQ5ZmM5ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGE2NGY2NWJiNmI3OTcwNTI2NDVkMGE4ODRlODk1NTg5MDBhZjJjY2ViOWFmODgxYzU2YjcyYTc2MGQ0NmRlZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjg5NjNhZWY0OTY3ZjVlYTZmMzRmZjEwZGUwNGE0YjM5N2Y2MmQ1ZjMwZmNmNzI2MDVmZmFlNmU1M2JhNjdjZCJ9"
+        },
+        {
+          "resource": "repo://HISTORY.md#L848-L850",
+          "version": "repo-lines-v1:sha256:c3af6be7f0c71553f566bdba2d0bd19e0f919f857a6aaf58293424741f4985a0:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTQ0YzQzZmI3YjM5MjViMTI1YzExODU2NGMxNmM0MzMyMjIyZjBhOTQzYTYwZGE5MWViOWM4OTY2OThlOGZjNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2QzZWUzMTY3OWRjODc1ZTZhZGQxZTYyMWI3M2E1YmQwN2Q1ZTViMzYwOWI4MzU1NTM5MmZiZWNhYmYxMTI4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTQ4YmNiYzI3MGZhY2RjN2FjZGFiNzc5NzBlMDA2NWI5ZDMyZTlhZWRhYTg0NjYwYjAxNmQxM2QyYTE2ZTk4MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGYyNTMzOWM2OTA1MWNkOGEwZGQ0YWJlYTc1Y2MxNWE2MGQxYTNiNTRmYWIyMWFhZDRkYjc5ODVhYzg5MDQxOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_05e8287109734944a2110a525b0c81e4",
+      "statement": "The gateway's embedding activation wait (~160 s) is shorter than the ~3-4 min cold boot, so the first cold embedding request returns 503 activation_failed and a retry succeeds; SparkRoute 0.3.4 has no /v1/rerank route, so rerank callers must hit the serving container's endpoint directly.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md#L846-L852",
+          "version": "repo-lines-v1:sha256:2f234aeed9b851e0f0e44d288e70da89d8f96f57caafb4a75b649bd65056e8bb:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWE3NGExNDU1YTYwYzdmY2IwM2I4MTc3MTY3ZDQ3OWU1M2RiNTYyOWYzMWE1NWEzZTllNGViODlhMGEzZTAyNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2Q4NTljMmY1YTZmM2RlMmRhMzkzYjc3OTEzZjYxNjVkZjdmZWZjYzUyNWU5YTUxZDk1Y2E2MTFmYjFlOTVjOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWQ2N2NhMTZlOWMyMzMzYTkxZmRmNzhlZDk2Yzc3MzkyOWEyYWM4NjNlYzRhMmQ4ZmM3ZGJmMzcxZDg0Y2RlZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODNmMTU4NDZjYjY3MjVkOGE3YjA3MWQ2OWYwYWU0NDQ0ZjYyMDdlZGJkYTlkMGI0ZmM5ZTA5NjdjNTVlOGMxZSJ9"
+        },
+        {
+          "resource": "repo://INDEX.md#L104-L105",
+          "version": "repo-lines-v1:sha256:80c46319fec791b64c5927ce71b80b55d1f65c080da1b44de643ef26b762001b:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTlkNzU2MmRiZWQ0MGVmY2I1ODQzNDljODk3MzcxNTBjOWM2ZjM1M2M5M2IwNzE2YjM3MWUxOWRjMGU2NWZkNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTA0ZjU2OTc5NjAyYjk0ZWVjYjBkMmQ4NTYyYWVhNDgzYmNhODBjZDE5MjI4YjVlYzMwMzRiOGVhNzFmYTk5NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2JiZDZjMzgyOGY3YzZkNjc3Mjc1ZGJlZjM2Y2FjMTFhNjdmM2Y2YzNkNDJiNzEwYWMzNDc2NDk3OGMwNTlmNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTYwZDFhMTBhNWQxMmJjYjRmMDI0OGY5ZmFiNmI2NDQwNjhlMTNiMDk5NjAzNWYwYmFhOWRkNjYzYThjZmE0YyJ9"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-06T21:00:17.440Z"
+    "at": "2026-11-08T21:00:19.321Z"
   }
 }

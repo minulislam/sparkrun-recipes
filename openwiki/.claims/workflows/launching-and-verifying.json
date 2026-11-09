@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:fe9faaaae2b1ca3695286c9050d6c123c7c1ea3e9c8d206661ea7951650e354c",
+  "pageVersion": "sha256:a6e20fd70b06c5246c7b6e516fce0d158f551491280ba26b250c165f974b73c0",
   "claims": [
     {
       "id": "claim_56ca71812db34cf382140bbc4fdd28cb",
@@ -70,7 +70,7 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:29ff7213dc80f1945a25f4d81f46507f126e3590d8f96ae36474a29a3dca5d3e"
+          "version": "repo-file-v1:sha256:16973763515f9eb6a3771b672d29c2432fad3440162d41bf9194b0b4af7d8a52"
         }
       ]
     },
@@ -83,10 +83,34 @@
           "version": "repo-file-v1:sha256:85c4136149356bd1a0b3fd476bdaa3416e7bb681ab3e23f7a3a32245cbda73ff"
         }
       ]
+    },
+    {
+      "id": "claim_8064e6b55e984f38a20a2eb208ddd630",
+      "statement": "Pooling-runner recipes cannot be verified via sparkrun's readiness probe (it expects a chat token and reports them never-ready); the embedding recipe was verified through the gateway /v1/embeddings while the reranker was verified direct against the container's /v1/rerank because SparkRoute 0.3.4 lacks a rerank route.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md#L846-L855",
+          "version": "repo-lines-v1:sha256:6cf3035cdf47780c62d037befb59f5089bc7ce7d28a88428c8959f1965c73d51:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhNzRhMTQ1NWE2MGM3ZmNiMDNiODE3NzE2N2Q0NzllNTNkYjU2MjlmMzFhNTVhM2U5ZTRlYjg5YTBhM2UwMjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5MzNjM2ZiNjdiZWZkN2JmMTE3Mzk2YTU4ZTYyYzI2NmQ1NTM3N2YzMDY1MWNhZDJjNGVlMTM0ZmM2MDdiODUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlkNjdjYTE2ZTljMjMzM2E5MWZkZjc4ZWQ5NmM3NzM5MjlhMmFjODYzZWM0YTJkOGZjN2RiZjM3MWQ4NGNkZWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgyYzcyMmJiMzdmZDczMGM3NTkyZTM3NGZmMmQ0NDFkNDgxOWEzNzJlNjQzN2EyNTYxMzNkN2NiMzdiOTY0ODcifQ"
+        },
+        {
+          "resource": "repo://INDEX.md#L104-L105",
+          "version": "repo-lines-v1:sha256:80c46319fec791b64c5927ce71b80b55d1f65c080da1b44de643ef26b762001b:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTlkNzU2MmRiZWQ0MGVmY2I1ODQzNDljODk3MzcxNTBjOWM2ZjM1M2M5M2IwNzE2YjM3MWUxOWRjMGU2NWZkNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTA0ZjU2OTc5NjAyYjk0ZWVjYjBkMmQ4NTYyYWVhNDgzYmNhODBjZDE5MjI4YjVlYzMwMzRiOGVhNzFmYTk5NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2JiZDZjMzgyOGY3YzZkNjc3Mjc1ZGJlZjM2Y2FjMTFhNjdmM2Y2YzNkNDJiNzEwYWMzNDc2NDk3OGMwNTlmNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTYwZDFhMTBhNWQxMmJjYjRmMDI0OGY5ZmFiNmI2NDQwNjhlMTNiMDk5NjAzNWYwYmFhOWRkNjYzYThjZmE0YyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f5c1d3617db7458cbdce208a0abe69f3",
+      "statement": "A gateway binding with cold_start: wait boots the recipe and holds the HTTP connection through the swap (GLM cold start returned 200 after 584 s on 2026-11-08), so a gateway-mediated answered request clears the verified bar.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md",
+          "version": "repo-file-v1:sha256:16973763515f9eb6a3771b672d29c2432fad3440162d41bf9194b0b4af7d8a52"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-06T21:00:17.440Z"
+    "at": "2026-11-08T21:00:19.321Z"
   }
 }

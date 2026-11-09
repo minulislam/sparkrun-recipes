@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:3a4f9c6110a63d21dcbb6492bb4db98ede88fb203c70c0d43afdbff9c9d45ca4",
+  "pageVersion": "sha256:2bc6de747615fd4fda2d970d7cff7ea4bc4fdc6cec25145fe472f68d25e496ff",
   "claims": [
     {
       "id": "claim_ce0c18a017eb45eb8fdbb33390dc963a",
@@ -94,7 +94,7 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:29ff7213dc80f1945a25f4d81f46507f126e3590d8f96ae36474a29a3dca5d3e"
+          "version": "repo-file-v1:sha256:16973763515f9eb6a3771b672d29c2432fad3440162d41bf9194b0b4af7d8a52"
         }
       ]
     },
@@ -107,10 +107,42 @@
           "version": "repo-file-v1:sha256:85c4136149356bd1a0b3fd476bdaa3416e7bb681ab3e23f7a3a32245cbda73ff"
         }
       ]
+    },
+    {
+      "id": "claim_b48537a779614bb6b3677721fbea983f",
+      "statement": "The 0.70-0.82 gpu_memory_utilization envelope applies to full-size chat engines; the small pooling-runner recipes (Qwen3 Embedding/Reranker 4B) deliberately run at 0.3 so they can co-reside with other workloads on a node.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L57-L57",
+          "version": "repo-lines-v1:sha256:a82e7689cbd84e786b74cf0b57b25a38c7551656fe2f105883dded656a3e1c06:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTgyZTc2ODljYmQ4NGU3ODZiNzRjZjBiNTdiMjVhMzhjNzU1MTY1NmZlMmYxMDU4ODNkZGVkNjU2YTNlMWMwNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTgyZTc2ODljYmQ4NGU3ODZiNzRjZjBiNTdiMjVhMzhjNzU1MTY1NmZlMmYxMDU4ODNkZGVkNjU2YTNlMWMwNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmFhYjlmMmRkMzNkOWEyYzAwMjQ2NjU3MTcyZWU5OTEyZDJhODY1YjQ4N2EyNTI1MzEwM2M1YTM5MmVkNjcxZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjYxMjM1MmIyNWY1M2Y2NDE3MmQxZWE5MGI3NGM5ZmNjZTczYzcxNTdjYmQ5MjE3OTY2YWM4MDhkMDcyOTEwNiJ9"
+        },
+        {
+          "resource": "repo://recipes/qwen3-embedding-4b-tp1.yaml#L16-L22",
+          "version": "repo-lines-v1:sha256:3132716ea7860cf61b1105b67f3cbc1c2629d513a30e330769def3270d11b207:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzI3YTA1NTg4MmZhYjdiYWQ5YTRiNmM2M2ZmY2JhZTUyMTAyOTBhZDYyNjk5YzMxZmYwY2JjODQ1ZWZiYTU2NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmM2YjJlOWVmYmQ5NGU3MjEwNjM4MzNlOWEzZTI5NWYwNWQ0OWE4Zjk0NWFlMWVkYWFlMTZlZDA1MmMzMGQyZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzBhOTczZTg2ZjYwZjc1MDc3MGFjMzdiMjBlZmJhMDFkNzA2NjQ4OWViMTFjY2ZhNzVhYjQ0NGVmZTIxMjk4OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODEyNWQ2ZjFlYmI2NDJiMzRiMWRiM2FhMjdiYzA0NDIyZmVkMzM2YmZiMzkxNDY5Yzc1ZWU0Yjk2MThmNzE0MCJ9"
+        },
+        {
+          "resource": "repo://recipes/qwen3-reranker-4b-tp1.yaml#L14-L20",
+          "version": "repo-lines-v1:sha256:3132716ea7860cf61b1105b67f3cbc1c2629d513a30e330769def3270d11b207:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzI3YTA1NTg4MmZhYjdiYWQ5YTRiNmM2M2ZmY2JhZTUyMTAyOTBhZDYyNjk5YzMxZmYwY2JjODQ1ZWZiYTU2NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmM2YjJlOWVmYmQ5NGU3MjEwNjM4MzNlOWEzZTI5NWYwNWQ0OWE4Zjk0NWFlMWVkYWFlMTZlZDA1MmMzMGQyZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmRhNTJlYWRjMGQxZmIxZmFjNDdlMjM0OWQ1MGM3MGI3ODE4ZThhYTA4ZWJlMDFhNmQyNjEyMWY0ZTJiOWE3MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODEyNWQ2ZjFlYmI2NDJiMzRiMWRiM2FhMjdiYzA0NDIyZmVkMzM2YmZiMzkxNDY5Yzc1ZWU0Yjk2MThmNzE0MCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_768f30edb56e49a2a468b7c2ab7f4c77",
+      "statement": "Under the occupancy-sparse scheduler the VRAM estimate is a hard admission check; for MiniMax-M3 the inflated 115.2 GB/rank estimate refuses placement entirely and the per-recipe escape is scheduler: greedy, which defers to vLLM's own memory profiler.",
+      "evidence": [
+        {
+          "resource": "repo://notes/minimax-m3-sparkrun-port/README.md",
+          "version": "repo-file-v1:sha256:4b0d29261912baa678926f114ccc759d2ea2cbafc47e4f67cb4b9318e60b5443"
+        },
+        {
+          "resource": "repo://notes/minimax-m3-sparkrun-port/minimax-m3-w4a16-gptq-b12x-nvfp4-eagle3.yaml",
+          "version": "repo-file-v1:sha256:62ffa8fc0e7131bf9f058838f134af398cf0660e65602e4c757f0ee79889134b"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-06T21:00:17.440Z"
+    "at": "2026-11-08T21:00:19.321Z"
   }
 }

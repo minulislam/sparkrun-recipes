@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:a307aefaac4e6863060059ae819ac18d2ca6de7d4bd6cca194d31154977aeb07",
+  "pageVersion": "sha256:1ed0c395a2e9a8d26a567de82dc4240431ac1599a7c4ad83e63591b8b39c7677",
   "claims": [
     {
       "id": "claim_a30aa7caefc4472ab4d7b9bacb20f7f5",
@@ -62,17 +62,31 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:29ff7213dc80f1945a25f4d81f46507f126e3590d8f96ae36474a29a3dca5d3e"
+          "version": "repo-file-v1:sha256:16973763515f9eb6a3771b672d29c2432fad3440162d41bf9194b0b4af7d8a52"
         },
         {
           "resource": "repo://benchmarks/MIAAI-LAB-VALIDATION-RESULTS-2026-10-16.md",
           "version": "repo-file-v1:sha256:2d642f308fcc7553c1068aa5139fac3fe51953cf46f9324883148755897f8023"
         }
       ]
+    },
+    {
+      "id": "claim_0325af9ec2d24246b60c1d7ff35eabe8",
+      "statement": "On 2026-11-08 the Qwen3-Embedding-4B and Qwen3-Reranker-4B checkpoints (7.5 GiB each) were downloaded to both nodes, but their pinned tf5 container image (24.8 GB) exists only on the head, so a gx10-solo activation of rows 65/66 pulls it on first use; MODELS.md has not yet been re-measured to include them.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md#L839-L855",
+          "version": "repo-lines-v1:sha256:8ae789abe121ac98bc9cd66208145229d65fcdf97144ac2d364fe1b8ab468c7c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2OWQ1YTkzNGY3YTRjNWVjOGYwYjNiM2Q3NGE3ZGI0MjA4NDY2MDY3NGQ4NGFlNjc4ODVkMGVhNzcyMDhjYWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5MzNjM2ZiNjdiZWZkN2JmMTE3Mzk2YTU4ZTYyYzI2NmQ1NTM3N2YzMDY1MWNhZDJjNGVlMTM0ZmM2MDdiODUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM3ZWQ5NDA1MzQzMjY0MmNkY2I3MTk1MjExNTU0MTlkZWEwNDcxYzg1YjliZDE1MWEyM2U5NjBlODg1ZDZmNjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgyYzcyMmJiMzdmZDczMGM3NTkyZTM3NGZmMmQ0NDFkNDgxOWEzNzJlNjQzN2EyNTYxMzNkN2NiMzdiOTY0ODcifQ"
+        },
+        {
+          "resource": "repo://INDEX.md#L104-L105",
+          "version": "repo-lines-v1:sha256:80c46319fec791b64c5927ce71b80b55d1f65c080da1b44de643ef26b762001b:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTlkNzU2MmRiZWQ0MGVmY2I1ODQzNDljODk3MzcxNTBjOWM2ZjM1M2M5M2IwNzE2YjM3MWUxOWRjMGU2NWZkNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTA0ZjU2OTc5NjAyYjk0ZWVjYjBkMmQ4NTYyYWVhNDgzYmNhODBjZDE5MjI4YjVlYzMwMzRiOGVhNzFmYTk5NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2JiZDZjMzgyOGY3YzZkNjc3Mjc1ZGJlZjM2Y2FjMTFhNjdmM2Y2YzNkNDJiNzEwYWMzNDc2NDk3OGMwNTlmNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTYwZDFhMTBhNWQxMmJjYjRmMDI0OGY5ZmFiNmI2NDQwNjhlMTNiMDk5NjAzNWYwYmFhOWRkNjYzYThjZmE0YyJ9"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-06T21:00:17.440Z"
+    "at": "2026-11-08T21:00:19.321Z"
   }
 }

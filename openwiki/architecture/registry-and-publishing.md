@@ -8,16 +8,20 @@ sources:
     resource: repo://AGENTS.md
   - id: openwiki-source-a2371d6362e5db4bc834ad03
     resource: repo://CLAUDE.md
+  - id: openwiki-source-382af0b12a087a97295aa93b
+    resource: repo://HISTORY.md
   - id: openwiki-source-d731ee870c7c4da596ac3b0a
     resource: repo://INDEX.md
   - id: openwiki-source-eedd5219d6290708f61cb7bf
     resource: repo://notes/2026-11-03-sparkrun-version-config-audit.md
+  - id: openwiki-source-036e64f955b6e8c14e4c8d88
+    resource: repo://notes/minimax-m3-sparkrun-port/README.md
   - id: openwiki-source-23775c3de52f3ab95a13cb8b
     resource: repo://README.md
-generated: { by: "claude-code", at: "2026-11-04T21:00:13.713Z" }
+generated: { by: "claude-code", at: "2026-11-08T21:00:19.321Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-06T21:00:17.440Z
+    at: 2026-11-08T21:00:19.321Z
 ---
 
 # Registry & Publishing Model
@@ -66,6 +70,18 @@ When a recipe is referenced from gateway configuration (SparkRoute bindings in
 `proxy.yaml`), the **qualified** `@spark-forge/<recipe>` form is required —
 plain names are ambiguous because the local checkout and the `spark-forge`
 registry both match.
+
+**Brand-new recipes can be bound by absolute file path until they land on
+`main`.** On 2026-11-08 the new `qwen3-embedding-4b-tp1` and
+`qwen3-reranker-4b-tp1` recipes were bound in `proxy.yaml` by absolute path
+while still uncommitted; once committed and the registry refreshed, such
+bindings should move to the `@spark-forge/<name>` form.
+
+Trust follows the source: a **locally-sourced recipe is auto-trusted**, so its
+mods (injected as `pre_exec` hooks) run without a per-launch confirmation
+prompt. The same recipe installed into an *untrusted* registry prompts on every
+launch — `sparkrun registry trust <name>` removes the prompt if discoverability
+by name is wanted.
 
 ## The registry landscape on this host
 

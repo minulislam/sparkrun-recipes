@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:98cde3e8e762c0b16363c55f2a5adc8416581b67f6f514062039c8290b8ff52b",
+  "pageVersion": "sha256:14dfed87fb14e40b93e5222bc1f37520f83a896be98e3297c143b9b128fad053",
   "claims": [
     {
       "id": "claim_1f7e663125ac45009d7d858ed0513a0e",
@@ -68,7 +68,7 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:29ff7213dc80f1945a25f4d81f46507f126e3590d8f96ae36474a29a3dca5d3e"
+          "version": "repo-file-v1:sha256:16973763515f9eb6a3771b672d29c2432fad3440162d41bf9194b0b4af7d8a52"
         },
         {
           "resource": "repo://benchmarks/results_qwen38-flash-next-tp2-20261103.yaml",
@@ -82,7 +82,7 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:29ff7213dc80f1945a25f4d81f46507f126e3590d8f96ae36474a29a3dca5d3e"
+          "version": "repo-file-v1:sha256:16973763515f9eb6a3771b672d29c2432fad3440162d41bf9194b0b4af7d8a52"
         }
       ]
     },
@@ -92,17 +92,27 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:29ff7213dc80f1945a25f4d81f46507f126e3590d8f96ae36474a29a3dca5d3e"
+          "version": "repo-file-v1:sha256:16973763515f9eb6a3771b672d29c2432fad3440162d41bf9194b0b4af7d8a52"
         },
         {
           "resource": "repo://benchmarks/results_inkling-small-tp2-20261103.yaml",
           "version": "repo-file-v1:sha256:381065b9fbef3abc35a30ebb1abc78b1fcb7891cc67c76975bf7d68822ab6aae"
         }
       ]
+    },
+    {
+      "id": "claim_0ed6dfe9ed964610864a9cae1d9cbb9d",
+      "statement": "The first request after boot must never be benchmarked: it pays one-time warmup (~60 s JIT on the MiniMax-M3 b12x stack), and one warmup request must be burned per workload shape even when the recipe's post_commands already burns one after the health gate.",
+      "evidence": [
+        {
+          "resource": "repo://notes/minimax-m3-sparkrun-port/README.md",
+          "version": "repo-file-v1:sha256:4b0d29261912baa678926f114ccc759d2ea2cbafc47e4f67cb4b9318e60b5443"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-06T21:00:17.440Z"
+    "at": "2026-11-08T21:00:19.321Z"
   }
 }

@@ -16,10 +16,12 @@ sources:
     resource: repo://CONTEXT.md
   - id: openwiki-source-382af0b12a087a97295aa93b
     resource: repo://HISTORY.md
-generated: { by: "claude-code", at: "2026-11-04T21:00:13.713Z" }
+  - id: openwiki-source-036e64f955b6e8c14e4c8d88
+    resource: repo://notes/minimax-m3-sparkrun-port/README.md
+generated: { by: "claude-code", at: "2026-11-08T21:00:19.321Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-06T21:00:17.440Z
+    at: 2026-11-08T21:00:19.321Z
 ---
 
 # Benchmarking & Context Verification
@@ -28,6 +30,15 @@ Benchmarking is the bar **above** verified: a verified recipe answered a
 request; a benchmarked one also has measured numbers recorded in `benchmarks/`.
 Two independent harnesses produce those numbers — a throughput ladder and a
 full-context retrieval test — because they answer different questions.
+
+## Never benchmark the first request
+
+The first request after boot pays one-time costs — JIT kernel compilation,
+graph capture, cache warms — that are not steady-state performance. On the
+MiniMax-M3 b12x stack the first-request warmup penalty is **~60 s**, and the
+penalty recurs per *workload shape*: even a recipe whose `post_commands` burns
+a warmup request after the health gate still needs one more burned per shape
+(prompt length / concurrency pattern) before numbers are recorded.
 
 ## The quick throughput ladder
 

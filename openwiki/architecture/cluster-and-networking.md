@@ -5,7 +5,7 @@ description: The dgx-pair two-node DGX Spark topology, the load-bearing NCCL/Glo
 tags: [cluster, networking, dgx-spark, nccl, connectx-7, topology]
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-06T21:00:17.440Z
+    at: 2026-11-08T21:00:19.321Z
 sources:
   - id: openwiki-source-8037e2358a2c4f9b2c722a11
     resource: repo://AGENTS.md
@@ -17,7 +17,7 @@ sources:
     resource: repo://INDEX.md
   - id: openwiki-source-eedd5219d6290708f61cb7bf
     resource: repo://notes/2026-11-03-sparkrun-version-config-audit.md
-generated: { by: "claude-code", at: "2026-11-05T21:00:18.164Z" }
+generated: { by: "claude-code", at: "2026-11-07T21:00:21.382Z" }
 ---
 
 # Cluster & Networking
@@ -129,10 +129,11 @@ cables. The `dgx-pair.yaml` pin stays as-is.
 
 The CLI is **sparkrun 0.4.2** (installed as a uv tool; the 0.3.10-era gotchas
 recorded elsewhere in repo docs predate 0.4.x). The active inference gateway is
-the **SparkRoute** plugin (0.3.4), running as the proxy on the head node bound
-to **0.0.0.0:4000** — reachable from any interface on the head, not just
-localhost, which the 2026-11-03 version audit flags as a deliberate-or-not
-exposure decision for the operator.
+the **SparkRoute** plugin (0.3.4), running as the proxy on the head node. It
+originally bound **0.0.0.0:4000** — reachable from any interface on the head —
+which the 2026-11-03 version audit flagged as an exposure risk; on 2026-11-07
+the proxy was restarted bound to **127.0.0.1:4000** (loopback only). See the
+proxy & gateway routing page for the binding model and current routes.
 
 ## Related
 

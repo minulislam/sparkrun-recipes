@@ -6,10 +6,14 @@ tags: [vocabulary, status, verified, benchmarked, conventions]
 sources:
   - id: openwiki-source-39c3295efc089133e87a9c80
     resource: repo://CONTEXT.md
-generated: { by: "claude-code", at: "2026-11-01T03:42:59.995Z" }
+  - id: openwiki-source-382af0b12a087a97295aa93b
+    resource: repo://HISTORY.md
+  - id: openwiki-source-d731ee870c7c4da596ac3b0a
+    resource: repo://INDEX.md
+generated: { by: "claude-code", at: "2026-11-08T21:00:19.321Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-06T21:00:17.440Z
+    at: 2026-11-08T21:00:19.321Z
 ---
 
 # Recipe Status Vocabulary
@@ -53,6 +57,17 @@ Three properties make the ladder meaningful:
 Because each word maps to one bar, a coverage statement ("N recipes verified")
 has a single defensible meaning, and status can be reported honestly at whatever
 level the evidence supports.
+
+## The path to the answer is part of the record
+
+`Verified` requires an answered request, but *how* the request reached the model
+is recorded too, because the paths fail differently. The 2026-11-08 pooling
+pair shows both forms: row 65 (`qwen3-embedding-4b-tp1`) is **verified through
+the SparkRoute gateway** (`/v1/embeddings` 200 with a 2560-dim vector), while
+row 66 (`qwen3-reranker-4b-tp1`) is **verified direct** against the container's
+`/v1/rerank` — the gateway has no rerank route, so gateway-path verification is
+impossible for it. Both clear the `verified` bar; the annotation tells a later
+operator which access path was actually proven.
 
 ## Related
 
