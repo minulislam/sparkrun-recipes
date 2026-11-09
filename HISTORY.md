@@ -857,3 +857,10 @@ Gateway now lists: `qwen3.8-flash-next-abliterated`, `deepseek-v4-coder`,
   deepseek-v4-coder, deepseek-v4-flash-vision-uncensored, Qwen/Qwen3.8-27B-FP8,
   qwen36-35b-a3b, nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4, Qwen/Qwen3-Embedding-4B,
   Qwen/Qwen3-Reranker-4B. All test containers stopped; pair left idle.
+
+## 2026-11-09: Embedding recipe verified on gx10-solo; worker image and weights staged
+
+- `qwen3-embedding-4b-tp1.yaml` launched on `gx10-solo` (idle node; gb10-spark left alone because `nim-embed-vl` / `nim-rerank-vl` hold GPU memory there). `/v1/embeddings` returned 200 with a 2560-dim vector; `/v1/models` reports `max_model_len` 32768. Workload stopped afterwards; no containers left on either node. Report: `benchmarks/qwen3-embedding-4b-gx10-2026-11-09.md`.
+- sparkrun's startup probe still reports failure for pooling runners (expects a chat token). Expected; ignore for this recipe.
+- Gotcha 5 from 2026-11-08 is resolved: the pinned `dgx-vllm-eugr-nightly-tf5:2026092702` image was streamed to gx10-spark (`docker save | ssh docker load`, 2m30s) and the Qwen3-Embedding-4B weights were copied to `~/.cache/huggingface/hub` on gx10-spark over CX7. Three Xet symlinks in the gb10 copy were hardlinked before the copy.
+- The reranker (row 66) is not touched in this entry. Its row claims direct `/v1/rerank` verification on 2026-11-08; that was not re-run today.

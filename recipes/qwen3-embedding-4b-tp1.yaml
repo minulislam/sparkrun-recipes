@@ -1,7 +1,9 @@
 # >>> ADAPTED from @official/qwen3-vl-embedding-8b-vllm (fetched 2026-11-07): same pooling-runner
 # >>> serve shape, model switched to the text-only Qwen/Qwen3-Embedding-4B (no 4B exists in the VL
 # >>> series) for RAG/agent-memory embedding. Container pinned from :latest per IMAGE-POLICY to the
-# >>> tf5 build already on disk. UNVERIFIED until launched on this pair.
+# >>> tf5 build already on disk. VERIFIED 2026-11-09 on gx10-solo (embeddings route only): /v1/embeddings
+# >>> 200, 2560-dim, max_model_len 32768. sparkrun's startup probe reports failure (expects a chat token
+# >>> from a pooling runner); ignore it. Measured in benchmarks/qwen3-embedding-4b-gx10-2026-11-09.md.
 recipe_version: "2"
 model: Qwen/Qwen3-Embedding-4B
 runtime: vllm

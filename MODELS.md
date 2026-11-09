@@ -119,6 +119,7 @@ below, measured 2026-10-13).
 | `unsloth/Qwen3.5-4B-MTP-GGUF` | W | 2.8 | — |
 | `BAAI/bge-reranker-v2-m3` | W | 2.1 | Used by `benchmarks/redteam/RESTORE-vllm-reranker.sh`, not by a recipe |
 | `Qwen/Qwen3-Embedding-0.6B` | H | 1.1 | Gateway embedding model, not a recipe target |
+| `Qwen/Qwen3-Embedding-4B` | H, W | 7.6 | Recipe `qwen3-embedding-4b-tp1.yaml`; copied to worker 2026-11-09 over CX7 |
 
 ## Partial download — source gone, cannot be completed
 
