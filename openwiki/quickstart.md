@@ -4,16 +4,18 @@ title: Quickstart & Task Routing
 description: What the sparkrun-recipes (spark-forge) registry is, the source files that are authoritative, and where to go for each task — launch, verify, benchmark, author, or debug a recipe.
 tags: [quickstart, overview, routing, registry]
 sources:
+  - id: openwiki-source-8037e2358a2c4f9b2c722a11
+    resource: repo://AGENTS.md
   - id: openwiki-source-a2371d6362e5db4bc834ad03
     resource: repo://CLAUDE.md
   - id: openwiki-source-eedd5219d6290708f61cb7bf
     resource: repo://notes/2026-11-03-sparkrun-version-config-audit.md
   - id: openwiki-source-23775c3de52f3ab95a13cb8b
     resource: repo://README.md
-generated: { by: "claude-code", at: "2026-11-05T21:00:18.164Z" }
+generated: { by: "claude-code", at: "2026-11-08T21:00:19.321Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-06T21:00:17.440Z
+    at: 2026-11-09T21:00:11.445Z
 ---
 
 # Quickstart & Task Routing
@@ -67,6 +69,8 @@ out of this wiki — it points at `INDEX.md` and `benchmarks/` as the evidence.
   [Memory, Placement & Known Pitfalls](operations/memory-placement-and-pitfalls.md)
 - **Route requests to a served model / manage gateway bindings** →
   [Proxy & Gateway Routing (SparkRoute)](operations/proxy-and-gateway-routing.md)
+  — the active gateway is the SparkRoute plugin 0.3.4 on the head node's
+  loopback port 4000
 - **Pick or vet a container image** →
   [Container Images & Provenance](reference/images-and-provenance.md)
 - **Check what's on disk / handle weights safely** →

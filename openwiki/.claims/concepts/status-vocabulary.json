@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:d0f909904df2182d9b0204ca2c94a93058984738c4f6bfc4d352aa4d6c03f821",
+  "pageVersion": "sha256:c92f4907492148be975f109bed918dedf7bfc5cb27ac2f9a72aa569c437785d3",
   "claims": [
     {
       "id": "claim_7a484415a4934974b377c0fbbd6ea436",
@@ -51,10 +51,24 @@
           "version": "repo-lines-v1:sha256:4c466aec2ab615bd849c0a62395caccee8e75f9c5a75912134b16e89578733ba:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWU0ZjdkYzkyYzQ2NDZiOTM3YzNiZWQ5YWNkODk0MzBjODRlNzQwMWYwYzg0NmZkYjhiZGQ4M2Y2OWIxMmNkOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjc1NWZlYTBkMTBjOWQwM2I1MzY4ZWJmYzdiMDFiYWE1ZjkwYmE2ODExN2U4Yzg2ZjRhMTA2NmM2ZTExNjUxZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTMwN2MxNDZiMGZkMjg4MzVmZWQ4NjdmOTBiODQ3MWMyMGZlNGI2Yzc3M2IwNWYyMmY1NTYzZWM2ZjljN2RkZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGJkZjRmYTI1Y2I5ZGFjOGQ4MWUyMWU4ZDM4ZTZlNWVmMDZlYmQzMWE4NTc1ZDNhMmY2ODk1NmRmMmRjZjA4YyJ9"
         }
       ]
+    },
+    {
+      "id": "claim_6428b17068c24a1690e8242e9229e6b4",
+      "statement": "Verification records the access path proven: row 65 qwen3-embedding-4b-tp1 was verified through the SparkRoute gateway while row 66 qwen3-reranker-4b-tp1 was verified direct against the container's /v1/rerank because the gateway has no rerank route.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md",
+          "version": "repo-file-v1:sha256:be491927f5129be026395cfe55ad0f4bf5c1d2294beb49064a76259dc1ee0cd6"
+        },
+        {
+          "resource": "repo://INDEX.md",
+          "version": "repo-file-v1:sha256:9ec1baf2cd4e419895ee15c34c643d581d24f5e34aac81df9cd59f243c74c5d2"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-06T21:00:17.440Z"
+    "at": "2026-11-09T21:00:11.445Z"
   }
 }

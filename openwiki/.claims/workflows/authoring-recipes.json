@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:842a7af30fe3f10a3165f8dd9d9f9a4393d96a0c57dc7f8cc721847371dac8bf",
+  "pageVersion": "sha256:b66ec592bc182e0987b154590f0c330617437cda5b3e999a428274f585fa304b",
   "claims": [
     {
       "id": "claim_04170aae475542d6a184179c01a297f9",
@@ -55,10 +55,62 @@
           "version": "repo-file-v1:sha256:471d508dfab0dffa6f4f70c38ffd94889e4606fc52c49ba5157a0a4ef4e3888b"
         }
       ]
+    },
+    {
+      "id": "claim_4f53ba1fb858404fa8987e6833b87640",
+      "statement": "An unverified recipe stays out of recipes/ and INDEX.md: the MiniMax-M3 sparkrun port under notes/minimax-m3-sparkrun-port/ passed recipe validate and a two-node --dry-run but was never booted here, and is preserved with PROVENANCE.md until a verify pass promotes it into recipes/.",
+      "evidence": [
+        {
+          "resource": "repo://notes/minimax-m3-sparkrun-port/PROVENANCE.md",
+          "version": "repo-file-v1:sha256:1462c69671c154914eb91d051137495e576f72e866a214f641e9494df8efa95e"
+        },
+        {
+          "resource": "repo://notes/minimax-m3-sparkrun-port/README.md#L140-L148",
+          "version": "repo-lines-v1:sha256:73556b38993a2f58af03faadbbfc3b33d37f4fb521cec9d6211a773eddc7e544:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTU4MDU3ODYzYjVmYzQ4MzY4ODA3ZGQ0YWMyYzdmZDkzNDhlMjQ3YWVhMTZiZTUxZTEwNGQzMWY4ZjJhYmRmZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTQ0YjBjNjIxNjZkOTcwZTg5ZjhmNTRkMDgyN2NmNjRjOTBmYWFmZjg3OTE0NmY1ZTI0ODNhYjUwYTJjNWFhZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzYxMzM0ZWY0YzUzN2FjMjFmZTBmMjY5ODU4M2U3YTRmZTdiMmI2MDAyYzcwNTE2YjJhZmQ2OGUwMzdmOWExYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ae668db04ec2456f84b55c263a128a0e",
+      "statement": "The MiniMax-M3 port sets scheduler: greedy deliberately because under occupancy-sparse the inflated VRAM estimate (115.2 GB/rank vs 121 GB accelerator) refuses placement outright, and it lists the EAGLE3 drafter explicitly in distribution_config because sparkrun auto-detection misses spec config carried inline in the command while HF_HUB_OFFLINE=1 makes a missing drafter a hard failure.",
+      "evidence": [
+        {
+          "resource": "repo://notes/minimax-m3-sparkrun-port/README.md#L17-L28",
+          "version": "repo-lines-v1:sha256:2f9bf25e5ef406cecf069cd9b70d9e67288e81dcb302824fa569b207ae53736c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE5ZjUyMWNkNDdjNTY3YzliYzc0NGU1OWI4ZGYxMjRjNDhhZjI1NmE3YWIzNDNiY2RjNzhlMzg4MThjNjlhYzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjNjJmOGQzYzA3MjUwNjQ1OWNjZmNiZjM2YmY4YjFhMjE5YmQzNjdjYjRjNjZiYmQwOWRlMmFhNWI4OWI1ZjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY2ZGZlMjdlNTJmMTExN2FjMDJjMzRjM2Y4ZTk3N2EwNmM5OGY1YTkxODViN2YzMDc4OWUzMDQ0ZTg3NDI0NjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY0M2U2MDc4MmIyZWVlMDAwNTc1NWZmMzIzMjFmMTZjMTBlMDEzN2QwNTg2YjAyN2MxOTc5NjY2NjRjYWU4MTIifQ"
+        },
+        {
+          "resource": "repo://notes/minimax-m3-sparkrun-port/README.md#L74-L89",
+          "version": "repo-lines-v1:sha256:4f303bc39952d834b688d822a999db610977cfe4f82352670f2de15950f4ff39:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY2YWRjZDUxNzlhNjE5NmIyN2JhMWQ0MDJmZDI2ZDg3ZmE4OWYzZTA3N2ZiMWQ5MDIzNzc2OWMzMjIxZDdjYmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyOWFkMjg3M2IxNWFhNTQwMDZlMDU1NDQzMWYzNDhmMTg2OTMzNzc1Yjc2OTgzNjA2YmFlNGQyMjJlMmUzNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM0ZTBiNmI5ZmMzODk1M2ZjZWUyY2VkNjAyN2FmNTcxNTFlOGUxYmNkYTZiZDEyOWM4N2VlNjUzYmRmYzA3ZmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM1Mzk0YTNmZmY1YzFkYzliYmRiZmUzNWQ2MjRjODUwZGVjMGMwMmJlZDRiZDI1NDUxZGQ2ZDliOWUyM2M3NWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9e13af5399da4af2b2e0e3f495992dbd",
+      "statement": "An uncommitted recipe is usable before publishing: sparkrun run accepts a file path and a SparkRoute binding can reference the recipe by absolute path until it is committed to main, as done for the embedding/reranker pair on 2026-11-08.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md#L843-L845",
+          "version": "repo-lines-v1:sha256:9d67ca16e9c2333a91fdf78ed96c773929a2ac863ec4a2d8fc7dbf371d84cdef:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmFkMTY2OGFkYWMzNWQzNzkxYThlYzk0MGEyNDNlNzIxNGJiMzFlNDcwMWRkOWIyZGJhOTY4NWVkMzI1MTQzNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjU0YWZjZjM2NzczOWQ1YzA0ODVhMjU3YTU4MGNlOGNlMzJlZmFjMmI4ZjhjMTk1YjM5OTZlMTVkMGQ5ZmM5ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGE2NGY2NWJiNmI3OTcwNTI2NDVkMGE4ODRlODk1NTg5MDBhZjJjY2ViOWFmODgxYzU2YjcyYTc2MGQ0NmRlZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjg5NjNhZWY0OTY3ZjVlYTZmMzRmZjEwZGUwNGE0YjM5N2Y2MmQ1ZjMwZmNmNzI2MDVmZmFlNmU1M2JhNjdjZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e748b68e28cc43f681d679d9477e05ce",
+      "statement": "The MiniMax-M3 port's 9 required mods are not vendored; sync-mods.sh stages them into a gitignored mods/ directory from a3refaat's branch and applies the prometheus graceful-skip patch, without which mods under set -euo pipefail abort the launch.",
+      "evidence": [
+        {
+          "resource": "repo://notes/minimax-m3-sparkrun-port/README.md",
+          "version": "repo-file-v1:sha256:4b0d29261912baa678926f114ccc759d2ea2cbafc47e4f67cb4b9318e60b5443"
+        },
+        {
+          "resource": "repo://notes/minimax-m3-sparkrun-port/sync-mods.sh",
+          "version": "repo-file-v1:sha256:e0c2bbbf94a59252a87bccf48efea8ff0c801e8a8197873f6e396c69398a1ecb"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-06T21:00:17.440Z"
+    "at": "2026-11-09T21:00:11.445Z"
   }
 }

@@ -801,6 +801,70 @@ nothing committed:
   detected < cluster < recipe < `-e`/`-o env.`), custom vLLM/SGLang launch scripts ruled out.
   NCCL data rides RoCE on both cables; only rendezvous/bootstrap uses the mgmt path, so WiFi
   mgmt is acceptable for launches but the enP7s7 hardware fix remains the real cure.
+
+## 2026-11-07: SparkRoute predefined model list rebuilt (curated 4-model set)
+
+The gateway was up with zero routable models: console edits (last 05:50Z today)
+had put ALL five sparkrun deployments into the operator set's
+`excluded_deployments`. Cleared the exclusions via the admin API (CAS replace,
+backup at `~/.config/sparkrun/sparkroute/operator-set-backup-2026-11-07.json`),
+restarted the proxy bound to **127.0.0.1** (was 0.0.0.0, unauthenticated), then
+replaced the binding list in `proxy.yaml` at the user's request ("pick models
+carefully"). All picks are VERIFIED rows with complete weights on every node
+they need; `cold_start: wait` on all.
+
+| Binding | Cluster | Role |
+|---|---|---|
+| `qwen3.8-flash-next-abliterated-nvfp4-tp2` (row 59) | dgx-pair | primary general chat — 39–55 tok/s c=1, 262k; chosen over stock row 48, whose RoCE all-reduce setting killed the engine under sustained load |
+| `deepseek-v4-flash-vision-uncensored-coder-tp2` (row 47) | dgx-pair | coding agents — thinking off, spec decode, roomiest head margin of the fleet |
+| `deepseek-v4-flash-vision-uncensored-tp2` (row 43) | dgx-pair | 1M context + vision — needle proven to 791k |
+| `nemotron-3-nano-30b-nvfp4-tp1` (row 54) | gb10-solo → gx10-solo | fast interactive lane — 58.4 c=1 / 154.6 agg, weights on both nodes |
+| `glm-5.3-flash-abliterated-nvfp4-tp2` (row 62) | dgx-pair | GLM lane, added at the user's word right after the re-pick — 28 tok/s c=1, 262k; tight (~102 GiB/rank), no co-tenants, one long request at a time |
+
+Dropped from the old list: stock `qwen3.8-flash-next-nvfp4-tp2` (RoCE
+all-reduce load risk, superseded by row 59), `qwen3.8-27b-uncensored-nvfp4-tp1`
+(head-only weights yet bound to both solos; 10 tok/s c=1 batch-only lane;
+empty-content caveat), `glm-5.3-flash-exl3-abliterated-tp2` (13.5 tok/s —
+row 43 beats it on both proven depth and speed).
+
+Gateway now lists: `qwen3.8-flash-next-abliterated`, `deepseek-v4-coder`,
+`deepseek-v4-flash-vision-uncensored`,
+`nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4`. Sync result: +6, −6.
+
+## 2026-11-08: GLM cold-start proven; 27B/35B/embedding/reranker added to the gateway (9 routes)
+
+- **GLM cold-start test PASS**: `glm-5.3-flash-abliterated` through the gateway with
+  `cold_start: wait` — HTTP 200 in **584 s (~9.7 min)**, exact expected completion. The
+  connection held through the whole boot.
+- Added bindings at the user's word: `qwen3.8-27b-fp8-mtp-tp1` (gb10-solo; head-only
+  weights), `qwen36-35b-a3b-heretic-nvfp4` (both solos; the only 35B-A3B MoE with
+  complete weights), and NEW recipes `qwen3-embedding-4b-tp1` + `qwen3-reranker-4b-tp1`
+  (rows 65–66; adapted from the @official VL-8B pair — **no 4B exists in the VL
+  series**, text 4B chosen for RAGFlow/OpenRAG/agent-memory use). 7.5 GiB weights each
+  downloaded to BOTH nodes. New recipes are bound by absolute path until committed to
+  `main` (uncommitted as of this entry).
+- Embedding VERIFIED through the gateway (2560-dim, 1.7 s warm); reranker VERIFIED
+  direct (`/v1/rerank` on the node) — SparkRoute 0.3.4 has no rerank route.
+- **Gotchas found**: (1) `sparkrun proxy unload` DELETES the recipe's binding from
+  proxy.yaml, not just the deployment — restore the binding by hand after using it.
+  (2) An embedding binding must declare `sparkroute: {capabilities:
+  [single_vector_embedding]}`. (3) The gateway's embedding activation wait (~160 s) is
+  shorter than a ~3–4 min cold boot: first cold embed request 503s, then works.
+  (4) sparkrun's readiness probe reports pooling runners as never-ready (expects a chat
+  token). (5) Worker lacks the pinned tf5 image (`dgx-vllm-eugr-nightly-tf5:2026092702`,
+  24.8 GB) — a gx10-solo activation of rows 65/66 will pull it on first use.
+- Gateway list now (9): qwen3.8-flash-next-abliterated, glm-5.3-flash-abliterated,
+  deepseek-v4-coder, deepseek-v4-flash-vision-uncensored, Qwen/Qwen3.8-27B-FP8,
+  qwen36-35b-a3b, nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4, Qwen/Qwen3-Embedding-4B,
+  Qwen/Qwen3-Reranker-4B. All test containers stopped; pair left idle.
+
+## 2026-11-09: Embedding recipe verified on gx10-solo; worker image and weights staged
+
+- `qwen3-embedding-4b-tp1.yaml` launched on `gx10-solo` (idle node; gb10-spark left alone because `nim-embed-vl` / `nim-rerank-vl` hold GPU memory there). `/v1/embeddings` returned 200 with a 2560-dim vector; `/v1/models` reports `max_model_len` 32768. Workload stopped afterwards; no containers left on either node. Report: `benchmarks/qwen3-embedding-4b-gx10-2026-11-09.md`.
+- sparkrun's startup probe still reports failure for pooling runners (expects a chat token). Expected; ignore for this recipe.
+- Gotcha 5 from 2026-11-08 is resolved: the pinned `dgx-vllm-eugr-nightly-tf5:2026092702` image was streamed to gx10-spark (`docker save | ssh docker load`, 2m30s) and the Qwen3-Embedding-4B weights were copied to `~/.cache/huggingface/hub` on gx10-spark over CX7. Three Xet symlinks in the gb10 copy were hardlinked before the copy.
+- The reranker (row 66) is not touched in this entry. Its row claims direct `/v1/rerank` verification on 2026-11-08; that was not re-run today.
+
 ## 2026-11-10: GLM-5.3 topk2044 checkpoint backed up to NAS and moved to hub layout (head only)
 
 - Backed up `~/.cache/huggingface/spark-forge-local/glm53-flash-ablit-topk2044` (30 files, 197,881,215,469 bytes) to `/mnt/nas/ai-models/model-backup/huggingface-hub/spark-forge-local/glm53-flash-ablit-topk2044/`. Sizes and file list verified against source.

@@ -1,0 +1,31 @@
+# >>> ADAPTED from @official/qwen3-vl-reranker-8b-vllm (fetched 2026-11-07): same pooling-runner
+# >>> serve shape, model switched to the text-only Qwen/Qwen3-Reranker-4B (no 4B exists in the VL
+# >>> series) for RAG reranking. Container pinned from :latest per IMAGE-POLICY to the tf5 build
+# >>> already on disk; fastsafetensors swapped for plain safetensors (matches this pair's loader
+# >>> policy). UNVERIFIED until launched on this pair.
+recipe_version: "2"
+model: Qwen/Qwen3-Reranker-4B
+runtime: vllm
+container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly-tf5:2026092702  # pinned from tf5:latest, build on disk
+
+metadata:
+  description: Qwen3-Reranker-4B — text reranker (score API) for RAG / agent memories
+
+defaults:
+  port: 8000
+  host: 0.0.0.0
+  tensor_parallel: 1
+  gpu_memory_utilization: 0.3
+  max_model_len: 32768
+  load_format: safetensors
+
+command: |
+  vllm serve {model} \
+    --runner pooling \
+    --gpu-memory-utilization {gpu_memory_utilization} \
+    -tp {tensor_parallel} \
+    --host {host} \
+    --port {port} \
+    --max-model-len {max_model_len} \
+    --load-format {load_format} \
+    --trust-remote-code

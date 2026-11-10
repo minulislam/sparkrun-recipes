@@ -12,12 +12,14 @@ sources:
     resource: repo://CONTEXT.md
   - id: openwiki-source-382af0b12a087a97295aa93b
     resource: repo://HISTORY.md
+  - id: openwiki-source-d731ee870c7c4da596ac3b0a
+    resource: repo://INDEX.md
   - id: openwiki-source-eedd5219d6290708f61cb7bf
     resource: repo://notes/2026-11-03-sparkrun-version-config-audit.md
-generated: { by: "claude-code", at: "2026-11-05T21:00:18.164Z" }
+generated: { by: "claude-code", at: "2026-11-09T21:00:11.445Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-06T21:00:17.440Z
+    at: 2026-11-09T21:00:11.445Z
 ---
 
 # Launching & Verifying a Recipe
@@ -36,9 +38,9 @@ end is specific: a recipe is verified only when the **model answers a request** 
    spending a boot.
 3. **Run** — `sparkrun run ./recipes/<name>.yaml --no-follow`.
 
-`--no-follow` is mandatory for scripted launches: `sparkrun run` returns as soon
-as the containers are up, long before vLLM actually serves, so following logs
-only blocks. For a local file you launch the file directly; for a published
+`--no-follow` is required for launches (`CLAUDE.md`); readiness is then checked
+separately through the serve log and the endpoint, not by following the launch
+output. For a local file you launch the file directly; for a published
 recipe you launch `@spark-forge/<name>` after a registry update. The installed
 CLI is sparkrun **0.4.2** (uv tool).
 
@@ -74,6 +76,28 @@ sufficient, because a recipe can serve and still return garbage (which is the
 `unfit` outcome). After a worker reboot, run
 `sparkrun setup check --cluster dgx-pair` before a two-node launch. From here, a
 verified recipe can go on to be benchmarked.
+
+A launch does not have to be driven by `sparkrun run` directly: a request sent
+to a **gateway binding with `cold_start: wait`** boots the recipe and holds the
+HTTP connection through the entire multi-minute swap. This is proven — a
+2026-11-08 request to the cold `glm-5.3-flash-abliterated` binding returned
+200 with the expected completion after **584 s (~9.7 min)** — so a
+gateway-mediated answer clears the verified bar the same as a direct one, and
+the access path is recorded alongside the status (see status vocabulary).
+
+## Verifying pooling runners (embedding / rerank)
+
+Pooling-runner recipes break two assumptions above:
+
+- **sparkrun's readiness probe never turns green** for them — it expects a chat
+  token the pooling endpoint will never send. Ignore the probe and verify
+  against the pooling endpoint itself.
+- The "real request" is not a chat completion. The embedding recipe was
+  verified **through the gateway** (`/v1/embeddings` → 200 with a 2560-dim
+  vector, 1.7 s warm); the reranker had to be verified **direct against the
+  container's `/v1/rerank`** because SparkRoute 0.3.4 has no rerank route (the
+  gateway 404s it). Expect the first cold gateway embedding request to 503
+  while the backend boots; retry after the launch completes.
 
 ## Related
 

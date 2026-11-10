@@ -1,8 +1,11 @@
 ---
 type: workflow
 title: Benchmarking & Context Verification
-description: How recipes get measured — the canonical quick throughput ladder, the needle-in-haystack full-context harness, the mem/results artifacts (the ground truth since nvidia-smi reports N/A on GB10), and the INDEX/benchmarks recording convention.
-tags: [benchmarking, throughput, context, needle, workflow, measurement]
+description: How recipes get measured — the canonical quick throughput ladder, task-mix benchmarking for speculative decoding, the needle-in-haystack full-context harness, the mem/results artifacts, and the INDEX/benchmarks recording convention.
+tags: [benchmarking, throughput, context, needle, workflow, measurement, task-mix]
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-09T23:33:40.548Z
 sources:
   - id: openwiki-source-af5b2fc4a0830cd3de40e530
     resource: repo://benchmarks/README.md
@@ -12,14 +15,15 @@ sources:
     resource: repo://benchmarks/results_inkling-small-tp2-20261103.yaml
   - id: openwiki-source-56477e1b1ab6b670861f1147
     resource: repo://benchmarks/results_qwen38-flash-next-tp2-20261103.yaml
+  - id: openwiki-source-3b7366a8b807b5d89221c480
+    resource: repo://benchmarks/scripts/task_mix_bench.py
   - id: openwiki-source-39c3295efc089133e87a9c80
     resource: repo://CONTEXT.md
   - id: openwiki-source-382af0b12a087a97295aa93b
     resource: repo://HISTORY.md
-generated: { by: "claude-code", at: "2026-11-04T21:00:13.713Z" }
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-11-06T21:00:17.440Z
+  - id: openwiki-source-036e64f955b6e8c14e4c8d88
+    resource: repo://notes/minimax-m3-sparkrun-port/README.md
+generated: { by: "antigravity", at: "2026-11-09T23:33:40.548Z" }
 ---
 
 # Benchmarking & Context Verification
@@ -28,6 +32,15 @@ Benchmarking is the bar **above** verified: a verified recipe answered a
 request; a benchmarked one also has measured numbers recorded in `benchmarks/`.
 Two independent harnesses produce those numbers — a throughput ladder and a
 full-context retrieval test — because they answer different questions.
+
+## Never benchmark the first request
+
+The first request after boot pays one-time costs — JIT kernel compilation,
+graph capture, cache warms — that are not steady-state performance. On the
+MiniMax-M3 b12x stack the first-request warmup penalty is **~60 s**, and the
+penalty recurs per *workload shape*: even a recipe whose `post_commands` burns
+a warmup request after the health gate still needs one more burned per shape
+(prompt length / concurrency pattern) before numbers are recorded.
 
 ## The quick throughput ladder
 
@@ -49,6 +62,22 @@ Per-recipe harness output lands as two artifacts:
   cache size", and "Maximum concurrency". On GB10 `nvidia-smi` reports `[N/A]`
   for memory, so **these log lines are the ground truth** for KV pool size and
   per-request concurrency, not a GPU-memory query.
+
+## Task-mix benchmarking for speculative decoding
+
+For models using speculative decoding (such as DFlash or MTP), reporting a single
+aggregate "tok/s" figure obscures real-world behavior: structured output and
+code draft with substantially higher acceptance rates than free-form prose.
+`benchmarks/scripts/task_mix_bench.py` standardizes this measurement by testing
+three distinct workloads across both single-stream (c=1) and concurrent (c=8) loads:
+
+- **Prose** (creative short story): baseline acceptance rate (~49 tok/s on Qwen3.6-35B DFlash).
+- **Code** (thread-safe LRU cache module): high draft acceptance (~89 tok/s, ~1.8x prose).
+- **JSON** (structured employee records): maximum draft acceptance (~159 tok/s c=1, >510 tok/s c=8).
+
+A warmup request is burned automatically before timing begins. Streaming decode
+throughput is calculated exclusively from the first token arrival to completion,
+separating Time-To-First-Token (TTFT) from steady-state decode speed.
 
 ## The needle-in-a-haystack context test
 

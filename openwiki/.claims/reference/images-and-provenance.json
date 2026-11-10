@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:e2a02022062610680d459c3c45cf83a528802bde03d5d45b62682dfea3ec64d5",
+  "pageVersion": "sha256:b3db7941cb5c2b08d9a28ac6d1e27e77835adadd77ae9c9e07d98392a4f536ee",
   "claims": [
     {
       "id": "claim_977b881f419848fba8b33b37b14aefea",
@@ -65,10 +65,34 @@
           "version": "repo-lines-v1:sha256:2547b3d2cef87e71dc0354928add64de02f16a4c2bcf85615db57bd482c5153a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhMjA3ZGE5NjU2ZDY3NTVlMzM0NGU2MWVkZjljMzJkZWE3YjU4NTNiMDE3MWUzYTBmOGUyMGQ4YTlkNTE1ODYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA2Mzc2YmRhYWMyMjNkYTQ4ZTc3NjQzNzdjMDc5ZjQ3MTQwOTFhYWM4ODI1MDgzODVlNjk5OTZjZjAyMWM3ZTkifQ"
         }
       ]
+    },
+    {
+      "id": "claim_6649cb8daf5e44d4918b3da3162a1ed6",
+      "statement": "The qwen3 embedding/reranker recipes (rows 65-66) pin the container from the upstream tf5:latest to the dated tf5:2026092702 build already on disk per IMAGE-POLICY; that image was not on the worker at adoption (2026-11-08) and was streamed to gx10-spark on 2026-11-09.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md",
+          "version": "repo-file-v1:sha256:be491927f5129be026395cfe55ad0f4bf5c1d2294beb49064a76259dc1ee0cd6"
+        },
+        {
+          "resource": "repo://recipes/qwen3-embedding-4b-tp1.yaml",
+          "version": "repo-file-v1:sha256:93148fc9359be79a2586ea5cfc2c1364176e330b242b6f5f7c0b106d1647d6fd"
+        }
+      ]
+    },
+    {
+      "id": "claim_6357e8f889824e02ace06593f82baef6",
+      "statement": "The MiniMax-M3 port requires an unpublished image built from a3refaat's patched spark-vllm-docker checkout on the head node; sparkrun distributes the ~29 GB built image to the worker via docker save | ssh docker load.",
+      "evidence": [
+        {
+          "resource": "repo://notes/minimax-m3-sparkrun-port/README.md",
+          "version": "repo-file-v1:sha256:4b0d29261912baa678926f114ccc759d2ea2cbafc47e4f67cb4b9318e60b5443"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-06T21:00:17.440Z"
+    "at": "2026-11-09T21:00:11.445Z"
   }
 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:a307aefaac4e6863060059ae819ac18d2ca6de7d4bd6cca194d31154977aeb07",
+  "pageVersion": "sha256:582881373775d154d83c498060005b9f03f82cae23b5f2cd71e268db6819d7af",
   "claims": [
     {
       "id": "claim_a30aa7caefc4472ab4d7b9bacb20f7f5",
@@ -28,11 +28,11 @@
     },
     {
       "id": "claim_cdf6d8f72644434986e8056a5aa23ba0",
-      "statement": "Weight handling rules are: check MODELS.md before launching, back up a checkpoint to /mnt/nas/dgx-spark/model-backup/ before deleting it, deletion is the operator's call, and never run hf cache prune without --dry-run.",
+      "statement": "Weight handling rules are: check MODELS.md before launching, back up a checkpoint to /mnt/nas/ai-models/model-backup/huggingface-hub/ before deleting it, deletion is the operator's call, and never run hf cache prune without --dry-run.",
       "evidence": [
         {
           "resource": "repo://CLAUDE.md#L34-L36",
-          "version": "repo-lines-v1:sha256:b9fb08b9abfb33a6cb64f1249568b495536019d07143b31c18cf3f2fd278c5bb:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzE0YWVhMjlhYjczOGI5ZDIwYjZiZDg1NDgyZmQxMzhhZDkzYjU3Nzg2YjBlZThhNTMxNmRjZjJiYzhkODY1ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2I5YTA0ZTNiMjg3YzFiNGI4YWQwODgwODBjZjJmMDUwNjM0NzE1MWNjYjBjY2ZmNGFkMDlhMTVmODFhYjVhOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGExMzM5MzEwZTExMDM3NTlkZGY1MTZhZmZhNWZjMGI5NDQ1ZmQwMjg5OTA3ZWIzMzEwODJjNzhhNzJjODFlNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2I2N2Q1MjQ4NjEwODJiMGViNmQ5OWVkZWMxOWVlM2I3YmY1ODFkYTAxMzcyODBhNmU3ZDRlOWM0YmEyN2FlZiJ9"
+          "version": "repo-lines-v1:sha256:78051705237925e5f32e57b0b64126786e92c4827654a00ffdf2d179ca77ee7f:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzE0YWVhMjlhYjczOGI5ZDIwYjZiZDg1NDgyZmQxMzhhZDkzYjU3Nzg2YjBlZThhNTMxNmRjZjJiYzhkODY1ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmM5ZmI1N2M5MjgyODdlMjk1ZDYxMmFkNDMyMWVmZTZjZGQ1ZWE3ZmNmMDFmMjllNWNiYzZjOTNiMDRhYTM0NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGExMzM5MzEwZTExMDM3NTlkZGY1MTZhZmZhNWZjMGI5NDQ1ZmQwMjg5OTA3ZWIzMzEwODJjNzhhNzJjODFlNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2I2N2Q1MjQ4NjEwODJiMGViNmQ5OWVkZWMxOWVlM2I3YmY1ODFkYTAxMzcyODBhNmU3ZDRlOWM0YmEyN2FlZiJ9"
         }
       ]
     },
@@ -62,17 +62,31 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:29ff7213dc80f1945a25f4d81f46507f126e3590d8f96ae36474a29a3dca5d3e"
+          "version": "repo-file-v1:sha256:be491927f5129be026395cfe55ad0f4bf5c1d2294beb49064a76259dc1ee0cd6"
         },
         {
           "resource": "repo://benchmarks/MIAAI-LAB-VALIDATION-RESULTS-2026-10-16.md",
           "version": "repo-file-v1:sha256:2d642f308fcc7553c1068aa5139fac3fe51953cf46f9324883148755897f8023"
         }
       ]
+    },
+    {
+      "id": "claim_0325af9ec2d24246b60c1d7ff35eabe8",
+      "statement": "On 2026-11-08 the Qwen3-Embedding-4B and Qwen3-Reranker-4B checkpoints (7.5 GiB each) were downloaded to both nodes with the pinned tf5 image (24.8 GB) on the head only; on 2026-11-09 the embedding checkpoint was copied to gx10-spark and MODELS.md lists it on both nodes, and the tf5 image was streamed to the worker.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md#L839-L865",
+          "version": "repo-lines-v1:sha256:5d314fc218c751d652cdcd859ada1f4ecfa5ce31d8d9ab2549e8e7bb456b0955:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2OWQ1YTkzNGY3YTRjNWVjOGYwYjNiM2Q3NGE3ZGI0MjA4NDY2MDY3NGQ4NGFlNjc4ODVkMGVhNzcyMDhjYWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3MTljNWJiMmQ1OWJiZTI3YjRhN2M0ZThhYmYzZWY2MGE1ZTVjZGJlMTE0NDA0ZDQwMGQyMGNmNGE4YTc1MjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM3ZWQ5NDA1MzQzMjY0MmNkY2I3MTk1MjExNTU0MTlkZWEwNDcxYzg1YjliZDE1MWEyM2U5NjBlODg1ZDZmNjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIwNjY5Y2Y3Mjk4ODJjNDcwMmU2M2ViODY3MGIyYjE1NTc3ZGMzMWY2YzcwMzE0YjFhZjRkMjA5YmI5OWQwODAifQ"
+        },
+        {
+          "resource": "repo://MODELS.md",
+          "version": "repo-file-v1:sha256:71f94e8b14acda63403383601ff253f67f90a90d07cef4c00ce3d7d14319ab81"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-06T21:00:17.440Z"
+    "at": "2026-11-09T21:00:11.445Z"
   }
 }

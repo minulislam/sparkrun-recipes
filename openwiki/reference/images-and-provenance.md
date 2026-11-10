@@ -6,14 +6,20 @@ tags: [images, containers, provenance, security, spark-arena, policy]
 sources:
   - id: openwiki-source-a2371d6362e5db4bc834ad03
     resource: repo://CLAUDE.md
+  - id: openwiki-source-382af0b12a087a97295aa93b
+    resource: repo://HISTORY.md
   - id: openwiki-source-f6fa64275fc0add6809ef750
     resource: repo://IMAGE-POLICY.md
   - id: openwiki-source-7845db45164b8996bda8b203
     resource: repo://images/deepseek-rank1/README.md
-generated: { by: "claude-code", at: "2026-11-04T21:00:13.713Z" }
+  - id: openwiki-source-036e64f955b6e8c14e4c8d88
+    resource: repo://notes/minimax-m3-sparkrun-port/README.md
+  - id: openwiki-source-b1867d7f36dadf1642430baf
+    resource: repo://recipes/qwen3-embedding-4b-tp1.yaml
+generated: { by: "claude-code", at: "2026-11-09T21:00:11.445Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-06T21:00:17.440Z
+    at: 2026-11-09T21:00:11.445Z
 ---
 
 # Container Images & Provenance
@@ -58,6 +64,26 @@ spirit and shippable to both nodes.
 A known caveat the audit records: the b12x image line runs an **untagged vLLM
 main** build, so it has full build labels but no release/CVE baseline — a
 provenance win that is not a version-pinning win.
+
+A worked example of the pinning rule: the upstream `@official` Qwen3-VL
+embedding/reranker recipes name a floating `tf5:latest`; when they were adapted
+as rows 65–66 (2026-11-08), the container was pinned to
+`ghcr.io/spark-arena/dgx-vllm-eugr-nightly-tf5:2026092702` — the dated tf5
+build already on disk — satisfying both the immutable-tag rule and the
+reuse-on-disk-images rule at once. The worker did not hold that image (24.8 GB)
+at adoption; on 2026-11-09 it was streamed to `gx10-spark` with `docker save |
+ssh docker load`, so `gx10-solo` activations no longer need a pull.
+
+## Images that must be built from source
+
+The MiniMax-M3 port (`notes/minimax-m3-sparkrun-port/`) names an image that
+**does not exist in any registry**: there is no published
+`vllm-node-minimax-m3-b12x`. It must be built on the head node from a3refaat's
+patched `spark-vllm-docker` checkout (branch `minimax-m3-4bit-w4a16`, two
+patches applied, `./build-deploy.sh`, ~29 GB, 1–2 h cold); sparkrun then
+distributes the built image to the worker itself via
+`docker save | ssh docker load`. Like deepseek-rank1, the provenance lives in
+the port's PROVENANCE notes rather than in a registry.
 
 ## The locally built deepseek-rank1 image
 

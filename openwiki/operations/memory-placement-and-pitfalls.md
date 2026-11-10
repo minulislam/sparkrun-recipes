@@ -10,10 +10,18 @@ sources:
     resource: repo://HISTORY.md
   - id: openwiki-source-eedd5219d6290708f61cb7bf
     resource: repo://notes/2026-11-03-sparkrun-version-config-audit.md
-generated: { by: "claude-code", at: "2026-11-05T21:00:18.164Z" }
+  - id: openwiki-source-c60867cd14827f47e426d16c
+    resource: repo://notes/minimax-m3-sparkrun-port/minimax-m3-w4a16-gptq-b12x-nvfp4-eagle3.yaml
+  - id: openwiki-source-036e64f955b6e8c14e4c8d88
+    resource: repo://notes/minimax-m3-sparkrun-port/README.md
+  - id: openwiki-source-b1867d7f36dadf1642430baf
+    resource: repo://recipes/qwen3-embedding-4b-tp1.yaml
+  - id: openwiki-source-5c6fb7c964f2f95da074a267
+    resource: repo://recipes/qwen3-reranker-4b-tp1.yaml
+generated: { by: "claude-code", at: "2026-11-08T21:00:19.321Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-06T21:00:17.440Z
+    at: 2026-11-09T21:00:11.445Z
 ---
 
 # Memory, Placement & Known Pitfalls
@@ -28,6 +36,11 @@ recurring ones.
 The working range is **0.70–0.82**. Setting it to **0.85 has caused NVRM OOM at
 boot**. Within the range, a given recipe may still have its own floor below
 which no KV fits, so the value is tuned per recipe, not set globally.
+
+The range is for full-size chat engines. Small pooling-runner recipes (the
+2026-11-08 embedding/reranker pair, 7.5 GiB of weights each) deliberately run at
+**0.3** so they can sit beside other work on a node — the envelope is an upper
+bound driven by boot stability, not a target.
 
 ## Head-node earlyoom pressure
 
@@ -58,6 +71,22 @@ placement refuses to put a tensor-parallel rank on an already-occupied host
 (`only placed 1 of 2 ranks`). What *does* work concurrently is **one solo
 (`--tp 1`) model per node** — sparkrun places two single-node jobs happily; only
 multi-node jobs demand exclusive hosts.
+
+## Scheduler admission: occupancy-sparse vs. greedy
+
+Under the `occupancy-sparse` scheduler (the 0.3.x default for new clusters),
+sparkrun's **VRAM estimate is a hard admission check** — and the estimator can
+be wrong in the direction that refuses a launch outright. The worked example is
+the MiniMax-M3 port (`notes/minimax-m3-sparkrun-port/`): the estimator charges
+4 KV heads across all 60 layers where the model's MSA layers carry 2, inflating
+the figure to 115.2 GB per rank against a 121 GB accelerator, so placement fails
+with `only placed 0 of 2 ranks` and **no** cluster-wide `--max-gpu-mem-util`
+value can fix it. The escape is per-recipe `scheduler: greedy`, which places the
+ranks and lets vLLM's own memory profiler — which knows the real KV geometry —
+be the authority. The same reasoning applies to the per-host `[EXCEEDS]`
+warning: when the estimate is known-wrong, measured reality (a 208,128-token KV
+pool, in that case) wins, and `max_model_len` should not be lowered to appease
+the estimator.
 
 ## sparkrun version gotchas (0.3.10-era, now on 0.4.2)
 

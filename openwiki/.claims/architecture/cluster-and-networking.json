@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:aaaebfb60b2bd891d11556a2d9bb511f6ec7e9dbacbc029dcd0d8a0f545371ac",
+  "pageVersion": "sha256:3efee858db7bb6f2bcaf2737cda294f58e44af79384b6fb54d6f6f9b7b8edb7a",
   "claims": [
     {
       "id": "claim_3b0ca6ee679d4566b81277271e99fc08",
@@ -94,7 +94,7 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:29ff7213dc80f1945a25f4d81f46507f126e3590d8f96ae36474a29a3dca5d3e"
+          "version": "repo-file-v1:sha256:be491927f5129be026395cfe55ad0f4bf5c1d2294beb49064a76259dc1ee0cd6"
         },
         {
           "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md",
@@ -108,7 +108,7 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:29ff7213dc80f1945a25f4d81f46507f126e3590d8f96ae36474a29a3dca5d3e"
+          "version": "repo-file-v1:sha256:be491927f5129be026395cfe55ad0f4bf5c1d2294beb49064a76259dc1ee0cd6"
         }
       ]
     },
@@ -118,21 +118,25 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:29ff7213dc80f1945a25f4d81f46507f126e3590d8f96ae36474a29a3dca5d3e"
+          "version": "repo-file-v1:sha256:be491927f5129be026395cfe55ad0f4bf5c1d2294beb49064a76259dc1ee0cd6"
         }
       ]
     },
     {
       "id": "claim_ab4bd3171f6344a0a0ae978063893b07",
-      "statement": "Installed sparkrun is 0.4.2 (uv tool) and the active gateway is the SparkRoute plugin 0.3.4, running as the proxy bound to 0.0.0.0:4000 on the head node.",
+      "statement": "Installed sparkrun is 0.4.2 (uv tool) and the active gateway is the SparkRoute plugin 0.3.4; the proxy originally bound 0.0.0.0:4000 (flagged by the 2026-11-03 audit) and was restarted bound to 127.0.0.1:4000 on 2026-11-07.",
       "evidence": [
         {
-          "resource": "repo://AGENTS.md",
-          "version": "repo-file-v1:sha256:7c257d130372a14d4a7b896366a69b09ba6cf5c716661539df7597d5a9fa6191"
+          "resource": "repo://AGENTS.md#L10-L10",
+          "version": "repo-lines-v1:sha256:f690f7ffa3f48874363e91b7f5cfce2813521faf3c6d871b304943371ce8f752:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjY5MGY3ZmZhM2Y0ODg3NDM2M2U5MWI3ZjVjZmNlMjgxMzUyMWZhZjNjNmQ4NzFiMzA0OTQzMzcxY2U4Zjc1MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjY5MGY3ZmZhM2Y0ODg3NDM2M2U5MWI3ZjVjZmNlMjgxMzUyMWZhZjNjNmQ4NzFiMzA0OTQzMzcxY2U4Zjc1MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGYwZjMxZjg5Yzg1ZGM0MDRlMDM2MTMyYTIxYzUwOGNkZGNkY2ZmMjMzY2Y2YWQxMmQ0MWJlNDQ4NTQ5ZDg2OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWRmNWMzZjMyMjQ1NjIxYzNhYmIxN2Y5MjkyNjUwYjU2ZTU0YmNmMDU1NjFlZWY0YjhmNDYwYzcyNGNmN2YxZSJ9"
         },
         {
-          "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md",
-          "version": "repo-file-v1:sha256:85c4136149356bd1a0b3fd476bdaa3416e7bb681ab3e23f7a3a32245cbda73ff"
+          "resource": "repo://HISTORY.md#L805-L814",
+          "version": "repo-lines-v1:sha256:7aed78e8b254fa8b0e88414a7862d5470737ea368a447e89db134ebdeecb03ea:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0ZTc3YmY2MDhlMThjMjI4ZjI5OTBiZjU0MGEzMzAzM2I1NTVkNjc2MjA4MzJkZjI2ZjQ5NjllZWEwMzc1MzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkZDU2ZjBhNzliYjFjNGI1MWMxZTVlZGM2ZjRkZGYzYzM0OGNhYTdmY2E1MDQwYmIxYjZjZjhkMWEyNGY1MTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFhNDc4ZTM4MDM2M2IxNDg0ZmYyNGRjNTgyYzcyMjRjZjYzMWU5YTgzNGY0NmEzOGI2Yzg5MzgxMzIxOTI2ZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM1ZjUyNGZjNWNmNzNhZThkMjM4MTY1ZWJlOTU3ZjgyZTU5MzU1YTgxMGM1ZDkxNGE3M2U1ZDhiNmI5YjI5NTcifQ"
+        },
+        {
+          "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md#L99-L102",
+          "version": "repo-lines-v1:sha256:6bb5fc85f2f09951558d19121bbaa3a0eb1ecc702e187c14752c2020dfd9c9ad:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDViOGMwMTY3NDQwMzVmOGRiOWUzN2M2NWRmMGMwODk4NGI4YWE5Mzc3M2IxNzM1ODJjZWQwNDY5ZWQwY2NlOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTM3YmVlOWZlMTYzZTVlZWY3MjU1M2VhMDM0MDBlZGFiOTMzMDBkZjc3YzIxNDc4M2E4M2FkNGZjYWI4NWM0ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWI2OWRhNTg1ZGI0ZTI0OGJjMDlmZjFhZmQyNjUzZmZhNzJiNzNlMmE2YzNmNDU4ZTU3NDk2ZGJjMWViNTViMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWNiN2MwMThhN2IwMTYyM2E2NzU4ODFhMGUwYmFlYjUxMjIzZjRjNTkwMWE0OTI3NTBlNDdmYWNjMjA0ZTBhZCJ9"
         }
       ]
     },
@@ -142,13 +146,13 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:29ff7213dc80f1945a25f4d81f46507f126e3590d8f96ae36474a29a3dca5d3e"
+          "version": "repo-file-v1:sha256:be491927f5129be026395cfe55ad0f4bf5c1d2294beb49064a76259dc1ee0cd6"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-06T21:00:17.440Z"
+    "at": "2026-11-09T21:00:11.445Z"
   }
 }

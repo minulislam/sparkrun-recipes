@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:89ea0b17140c8d58afe429d388638a970d4bf959acdeb9d0aa67deb971934325",
+  "pageVersion": "sha256:baf04a9a5bccde3d8da7599c422d534f4616ef561fa77e9b264e19bbbf9899b8",
   "claims": [
     {
       "id": "claim_c648c3ba6a0f4c2c850b86e1bf25d498",
@@ -80,13 +80,33 @@
       "evidence": [
         {
           "resource": "repo://AGENTS.md",
-          "version": "repo-file-v1:sha256:7c257d130372a14d4a7b896366a69b09ba6cf5c716661539df7597d5a9fa6191"
+          "version": "repo-file-v1:sha256:f2f1953df8b4c91f74ec62b952796964871f05b4b7cd44fe62ac92cd8bb50609"
+        }
+      ]
+    },
+    {
+      "id": "claim_ede7f069995346e9b31bf62c05725ef6",
+      "statement": "Brand-new recipes not yet committed to main can be bound in SparkRoute proxy.yaml by absolute file path, as done 2026-11-08 for qwen3-embedding-4b-tp1 and qwen3-reranker-4b-tp1.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md",
+          "version": "repo-file-v1:sha256:be491927f5129be026395cfe55ad0f4bf5c1d2294beb49064a76259dc1ee0cd6"
+        }
+      ]
+    },
+    {
+      "id": "claim_1f25762395b44258b5efe4090a71c730",
+      "statement": "Locally-sourced recipes are auto-trusted (mods run without a per-launch prompt), while recipes in an untrusted registry prompt on every launch unless the registry is trusted via sparkrun registry trust.",
+      "evidence": [
+        {
+          "resource": "repo://notes/minimax-m3-sparkrun-port/README.md",
+          "version": "repo-file-v1:sha256:4b0d29261912baa678926f114ccc759d2ea2cbafc47e4f67cb4b9318e60b5443"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-06T21:00:17.440Z"
+    "at": "2026-11-09T21:00:11.445Z"
   }
 }

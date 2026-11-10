@@ -1,0 +1,38 @@
+{
+  "label": "A_heretic_aeon_dflash",
+  "model": "m",
+  "url": "http://10.99.10.11:8899",
+  "max_tokens": 512,
+  "tasks": {
+    "prose": {
+      "c1_decode_tps_median": 49.1,
+      "c1_ttft_s_median": 0.121,
+      "c1_tokens": [
+        512,
+        512,
+        512
+      ],
+      "c8_aggregate_tps": 168.6
+    },
+    "code": {
+      "c1_decode_tps_median": 88.7,
+      "c1_ttft_s_median": 0.119,
+      "c1_tokens": [
+        512,
+        512,
+        512
+      ],
+      "c8_aggregate_tps": 288.6
+    },
+    "json": {
+      "c1_decode_tps_median": 159.0,
+      "c1_ttft_s_median": 0.137,
+      "c1_tokens": [
+        512,
+        512,
+        512
+      ],
+      "c8_aggregate_tps": 511.0
+    }
+  }
+}
