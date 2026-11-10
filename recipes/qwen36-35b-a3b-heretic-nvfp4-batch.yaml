@@ -21,6 +21,7 @@
 
 recipe_version: "2"
 model: AEON-7/Qwen3.6-35B-A3B-heretic-NVFP4
+model_revision: a483749169933e3fc5a4f48a5979effeba093192   # HF commit as of 2026-07-15; main c28027d only edits README and has no cached weights
 runtime: vllm
 # Digest = :2026-07-08-v0.24.0-maxsafe (vllm 0.24.0+aeon.sm121a.dflash); pin
 # avoids sparkrun's ':latest' re-pull hang and silent upstream tag drift.
