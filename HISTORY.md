@@ -893,3 +893,10 @@ Gateway now lists: `qwen3.8-flash-next-abliterated`, `deepseek-v4-coder`,
 - Gotcha: `hf cache rm` freed nothing on disk. The hub also has a shared content store at `~/.cache/huggingface/hub/blobs/<2-char>/<sha256>` that repo blobs hardlink (and, for `Qwen/Qwen3-Reranker-4B`, symlink) into. Removed the 650 store files no repo referenced by hardlink or symlink (103.1 GB); `/` free 522 → 618 GB. Every repo re-checked complete afterwards.
 - Do NOT run `hf cache prune` here: its dry run lists 1.2 TB, including detached revisions that recipes pin (`orcarouter/DeepSeek-V4-Flash-Vision-Uncensored` `2ef3d5c`, `orcarouter/Qwen3.8-27B-Uncensored-NVFP4` `69d2134`) and repos with no `main` ref.
 - `qwen36-35b-a3b-heretic-nvfp4.yaml` and `-batch.yaml`: added `model_revision: a483749…`. HF `main` `c28027d` only edits README.md, and both nodes cache just its config.json, so unpinned launches would have resolved to a weightless snapshot. `sparkrun recipe validate` passes on both (warnings only). Uncommitted.
+
+## 2026-11-10: Disable inference chat probe on pooling runner recipes
+
+- `recipes/qwen3-embedding-4b-tp1.yaml` and `recipes/qwen3-reranker-4b-tp1.yaml`: added `readiness: {inference: false}` to stop sparkrun's startup/activation probe from sending chat requests to pooling runners (which 404 and fail activation).
+- Tested on `gb10-solo` via gateway `:4000/v1/embeddings` (HTTP 200, 2560-dim vector returned).
+- Switched `proxy.yaml` bindings from temporary working-tree paths to `@spark-forge/qwen3-embedding-4b-tp1` and `@spark-forge/qwen3-reranker-4b-tp1` after committing to `main` and refreshing registry.
+

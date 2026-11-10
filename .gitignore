@@ -5,3 +5,6 @@ session-exports/
 
 # Claude Code worktrees (nested repos; never commit)
 .claude/worktrees/
+
+# Stakpak session files
+.stakpak/session*

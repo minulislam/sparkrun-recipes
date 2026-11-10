@@ -11,6 +11,10 @@ container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly-tf5:2026092702  # pinned fr
 metadata:
   description: Qwen3-Reranker-4B — text reranker (score API) for RAG / agent memories
 
+# Pooling runners serve no chat route; check the endpoint only (chat probe 404s and fails activation).
+readiness:
+  inference: false
+
 defaults:
   port: 8000
   host: 0.0.0.0
