@@ -10,14 +10,12 @@ sources:
     resource: repo://CLAUDE.md
   - id: openwiki-source-382af0b12a087a97295aa93b
     resource: repo://HISTORY.md
-  - id: openwiki-source-d731ee870c7c4da596ac3b0a
-    resource: repo://INDEX.md
   - id: openwiki-source-456fceaa0ae7a8e901be70bf
     resource: repo://MODELS.md
-generated: { by: "claude-code", at: "2026-11-07T21:00:21.382Z" }
+generated: { by: "claude-code", at: "2026-11-09T21:00:11.445Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-08T21:00:19.321Z
+    at: 2026-11-09T21:00:11.445Z
 ---
 
 # Model Inventory & Weight Safety
@@ -52,9 +50,10 @@ planned recipe) that occupy no extra space.
 Because `MODELS.md` lags the live cluster, newer arrivals are recorded in
 `HISTORY.md` first: on 2026-11-08 `Qwen/Qwen3-Embedding-4B` and
 `Qwen/Qwen3-Reranker-4B` (7.5 GiB each) were downloaded to **both** nodes for
-the new pooling recipes (rows 65–66). Their pinned container
-(`dgx-vllm-eugr-nightly-tf5:2026092702`, 24.8 GB) is on the head only — a
-`gx10-solo` activation of either recipe will pull it on first use.
+the new pooling recipes (rows 65–66). On 2026-11-09 the embedding checkpoint was
+copied to `gx10-spark` over CX7, and `MODELS.md` now lists it on both nodes. Their
+pinned container (`dgx-vllm-eugr-nightly-tf5:2026092702`, 24.8 GB) was streamed
+to the worker the same day.
 
 ## Weight-safety rules
 
@@ -63,7 +62,7 @@ Weights are hard to replace, so handling them is deliberately conservative:
 - **Check `MODELS.md` before launching** — confirm the checkpoint is complete on
   the target node(s) first.
 - **Back up before deleting.** A checkpoint is backed up to
-  `/mnt/nas/dgx-spark/model-backup/` before it is removed. (The history records a
+  `/mnt/nas/ai-models/model-backup/huggingface-hub/` before it is removed. (The history records a
   violation of this rule — a delete done while `/mnt/nas` was unmounted, so no
   backup was taken — as a cautionary case, which is exactly why the rule is
   explicit.)

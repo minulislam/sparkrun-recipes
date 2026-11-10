@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:08be4c3e3486384dedc74d26ab2cd34fd3317ab40789fd0029b56221fc2a8f63",
+  "pageVersion": "sha256:c92f4907492148be975f109bed918dedf7bfc5cb27ac2f9a72aa569c437785d3",
   "claims": [
     {
       "id": "claim_7a484415a4934974b377c0fbbd6ea436",
@@ -58,17 +58,17 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:16973763515f9eb6a3771b672d29c2432fad3440162d41bf9194b0b4af7d8a52"
+          "version": "repo-file-v1:sha256:be491927f5129be026395cfe55ad0f4bf5c1d2294beb49064a76259dc1ee0cd6"
         },
         {
           "resource": "repo://INDEX.md",
-          "version": "repo-file-v1:sha256:00dcd1c8690e423e7aa466e09e31f1f880360de835172e422952d71a6fb66f6a"
+          "version": "repo-file-v1:sha256:9ec1baf2cd4e419895ee15c34c643d581d24f5e34aac81df9cd59f243c74c5d2"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-08T21:00:19.321Z"
+    "at": "2026-11-09T21:00:11.445Z"
   }
 }

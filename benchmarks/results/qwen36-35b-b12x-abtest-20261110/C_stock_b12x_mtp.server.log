@@ -1,0 +1,193 @@
+INFO 11-09 23:19:25 [__init__.py:112] Registered model loader `<class 'b12x.integration.vllm.loader.B12xModelLoader'>` with load format `b12x`
+(APIServer pid=1) INFO 11-09 23:19:25 [api_utils.py:347] 
+(APIServer pid=1) INFO 11-09 23:19:25 [api_utils.py:347]        █     █     █▄   ▄█
+(APIServer pid=1) INFO 11-09 23:19:25 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.1.dev21510+g1794dcf18.d20260926
+(APIServer pid=1) INFO 11-09 23:19:25 [api_utils.py:347]   █▄█▀ █     █     █     █  model   /root/.cache/huggingface/hub/models--nvidia--Qwen3.6-35B-A3B-NVFP4/snapshots/491c2f1ea524c639598bf8fa787a93fed5a6fbce
+(APIServer pid=1) INFO 11-09 23:19:25 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+(APIServer pid=1) INFO 11-09 23:19:25 [api_utils.py:347] 
+(APIServer pid=1) INFO 11-09 23:19:25 [api_utils.py:286] non-default args: {'model_tag': '/root/.cache/huggingface/hub/models--nvidia--Qwen3.6-35B-A3B-NVFP4/snapshots/491c2f1ea524c639598bf8fa787a93fed5a6fbce', 'enable_auto_tool_choice': True, 'tool_call_parser': 'qwen3_coder', 'host': '0.0.0.0', 'port': 8899, 'model': '/root/.cache/huggingface/hub/models--nvidia--Qwen3.6-35B-A3B-NVFP4/snapshots/491c2f1ea524c639598bf8fa787a93fed5a6fbce', 'trust_remote_code': True, 'max_model_len': 262144, 'served_model_name': ['m'], 'attention_backend': 'flashinfer', 'reasoning_parser': 'qwen3', 'gpu_memory_utilization': 0.75, 'kv_cache_dtype': 'fp8', 'max_num_batched_tokens': 32768, 'max_num_seqs': 24, 'enable_chunked_prefill': True, 'async_scheduling': True, 'moe_backend': 'auto', 'linear_backend': 'flashinfer_b12x', 'speculative_config': {'method': 'mtp', 'num_speculative_tokens': 2, 'moe_backend': 'triton'}}
+(APIServer pid=1) WARNING 11-09 23:19:25 [envs.py:2410] Unknown vLLM environment variable detected: VLLM_BASE_DIR
+(APIServer pid=1) INFO 11-09 23:19:30 [model.py:693] Resolved architecture: Qwen3_5MoeForConditionalGeneration
+(APIServer pid=1) INFO 11-09 23:19:30 [model.py:2054] Using max model len 262144
+(APIServer pid=1) INFO 11-09 23:19:31 [cache.py:369] Using fp8 data type to store kv cache. It reduces the GPU memory footprint and boosts the performance. Meanwhile, it may cause accuracy drop without a proper scaling factor
+(APIServer pid=1) INFO 11-09 23:19:36 [model.py:693] Resolved architecture: Qwen3_5MoeMTP
+(APIServer pid=1) INFO 11-09 23:19:36 [model.py:2054] Using max model len 262144
+(APIServer pid=1) INFO 11-09 23:19:36 [model.py:901] Disabled mm_prefix attention mode because multimodal inputs are configuration-disabled. Attention backends without mm_prefix support may now be selected.
+(APIServer pid=1) WARNING 11-09 23:19:36 [speculative.py:1497] Enabling num_speculative_tokens > 1 will run multiple times of forward on same MTP layer,which may result in lower acceptance rate
+(APIServer pid=1) INFO 11-09 23:19:36 [scheduler.py:385] Chunked prefill is enabled with max_num_batched_tokens=32768.
+(APIServer pid=1) INFO 11-09 23:19:36 [config.py:727] Mamba cache mode is set to 'align' for Qwen3_5MoeForConditionalGeneration by default when prefix caching is enabled
+(APIServer pid=1) INFO 11-09 23:19:36 [kernel.py:430] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+(APIServer pid=1) [transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+(EngineCore pid=367) INFO 11-09 23:19:46 [__init__.py:112] Registered model loader `<class 'b12x.integration.vllm.loader.B12xModelLoader'>` with load format `b12x`
+(EngineCore pid=367) INFO 11-09 23:19:46 [core.py:123] Initializing a V1 LLM engine (v0.1.dev21510+g1794dcf18.d20260926) with config: model='/root/.cache/huggingface/hub/models--nvidia--Qwen3.6-35B-A3B-NVFP4/snapshots/491c2f1ea524c639598bf8fa787a93fed5a6fbce', speculative_config=SpeculativeConfig(method='mtp', model='/root/.cache/huggingface/hub/models--nvidia--Qwen3.6-35B-A3B-NVFP4/snapshots/491c2f1ea524c639598bf8fa787a93fed5a6fbce', num_spec_tokens=2), tokenizer='/root/.cache/huggingface/hub/models--nvidia--Qwen3.6-35B-A3B-NVFP4/snapshots/491c2f1ea524c639598bf8fa787a93fed5a6fbce', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=262144, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=modelopt_mixed, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=fp8, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='qwen3', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=m, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::qwen4_exp_ple_short_conv', 'vllm::qwen4_exp_qsa_with_output', 'vllm::linear_attention', 'vllm::qwen_gdn_attention_core', 'vllm::qwen_gdn_attention_core_fused_norm_packed', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [32768], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 3, 4, 6, 8, 12, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 144, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native']), enable_flashinfer_autotune=True, enable_b12x_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, enable_bf16x3_router_gemm=False, moe_backend='auto', sparse_indexer_topk_backend='auto', linear_backend='flashinfer_b12x', linear_backend_per_quant=None)
+(EngineCore pid=367) INFO 11-09 23:19:47 [parallel_state.py:1859] world_size=1 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_e675454ab4de4c22aaf738bbd9888e28 backend=nccl
+(EngineCore pid=367) INFO 11-09 23:19:47 [parallel_state.py:2299] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, ETP rank 0, EP rank 0, EPLB rank N/A
+(EngineCore pid=367) INFO 11-09 23:19:47 [gpu_worker.py:472] Using V2 Model Runner
+(EngineCore pid=367) INFO 11-09 23:19:47 [model_runner.py:412] Loading model from scratch...
+(EngineCore pid=367) INFO 11-09 23:19:47 [cuda.py:597] Using backend AttentionBackendEnum.FLASH_ATTN for vit attention
+(EngineCore pid=367) INFO 11-09 23:19:47 [mm_encoder_attention.py:372] Using AttentionBackendEnum.FLASH_ATTN for MMEncoderAttention.
+(EngineCore pid=367) WARNING 11-09 23:19:47 [__init__.py:366] --linear-backend=flashinfer_b12x has no kernel for this linear layer type; using automatic selection for that layer type.
+(EngineCore pid=367) INFO 11-09 23:19:47 [__init__.py:758] Selected FlashInferFP8ScaledMMLinearKernel for MergedColumnParallelLinear
+(EngineCore pid=367) INFO 11-09 23:19:47 [deep_gemm.py:196] deep_gemm not found in site-packages, trying vendored vllm.third_party.deep_gemm
+(EngineCore pid=367) INFO 11-09 23:19:47 [deep_gemm.py:223] DeepGEMM PDL enabled on vllm.third_party.deep_gemm.
+(EngineCore pid=367) INFO 11-09 23:19:47 [deep_gemm.py:136] DeepGEMM E8M0 enabled on current platform.
+(EngineCore pid=367) INFO 11-09 23:19:47 [__init__.py:758] Selected FlashInferFP8ScaledMMLinearKernel for RowParallelLinear
+(EngineCore pid=367) INFO 11-09 23:19:47 [qwen_gdn_linear_attn.py:425] Using FlashInfer GDN prefill kernel (requested=auto, head_k_dim=128).
+(EngineCore pid=367) INFO 11-09 23:19:47 [qwen_gdn_linear_attn.py:821] GDN decode kernel: cuda
+(EngineCore pid=367) INFO 11-09 23:19:49 [__init__.py:1181] Using FlashInferCuteDslNvFp4W4A16LinearKernel for NVFP4 GEMM
+(EngineCore pid=367) INFO 11-09 23:19:49 [nvfp4.py:314] Using 'MARLIN' NvFp4 MoE backend out of potential backends: ['FLASHINFER_TRTLLM', 'FLASHINFER_CUTEDSL', 'FLASHINFER_CUTEDSL_BATCHED', 'FLASHINFER_CUTLASS', 'VLLM_CUTLASS', 'MARLIN', 'HUMMING', 'EMULATION'].
+(EngineCore pid=367) INFO 11-09 23:19:49 [__init__.py:758] Selected FlashInferFP8ScaledMMLinearKernel for QKVParallelLinear
+(EngineCore pid=367) INFO 11-09 23:19:49 [cuda.py:478] Using AttentionBackendEnum.FLASHINFER backend.
+(EngineCore pid=367) INFO 11-09 23:19:50 [weight_utils.py:1058] Filesystem type for checkpoints: EXT4. Checkpoint size: 21.82 GiB. Available RAM: 91.44 GiB.
+(EngineCore pid=367) INFO 11-09 23:19:50 [weight_utils.py:1081] Auto-prefetch is disabled because the filesystem (EXT4) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+(EngineCore pid=367) Loading safetensors checkpoint shards:   0% Completed | 0/3 [00:00<?, ?it/s]
+(APIServer pid=1) [transformers] Qwen3VL video processing does not apply the per-frame pixel cap the reference implementation (qwen-vl-utils) applies, so some videos cost far more tokens than they would there. In v5.22 the capped behavior will become the default and `cap_pixels_per_frame` will be removed. Pass `cap_pixels_per_frame=True` to adopt the reference behavior now, or `False` to keep the current behavior and silence this warning.
+(APIServer pid=1) INFO 11-09 23:19:57 [base.py:261] Multi-modal warmup completed in 11.373s
+(APIServer pid=1) INFO 11-09 23:19:57 [base.py:261] Readonly multi-modal warmup completed in 0.602s
+(EngineCore pid=367) Loading safetensors checkpoint shards:  33% Completed | 1/3 [01:06<02:13, 66.73s/it]
+(EngineCore pid=367) Loading safetensors checkpoint shards:  67% Completed | 2/3 [02:06<01:02, 62.62s/it]
+(EngineCore pid=367) Loading safetensors checkpoint shards: 100% Completed | 3/3 [02:17<00:00, 38.84s/it]
+(EngineCore pid=367) Loading safetensors checkpoint shards: 100% Completed | 3/3 [02:17<00:00, 45.67s/it]
+(EngineCore pid=367) 
+(EngineCore pid=367) INFO 11-09 23:22:07 [default_loader.py:510] Loading weights took 137.08 seconds
+(EngineCore pid=367) WARNING 11-09 23:22:07 [modelopt.py:2475] Dropping input_scale from a weight-only W4A16 NVFP4 checkpoint (deprecated).
+(EngineCore pid=367) WARNING 11-09 23:22:07 [marlin_utils_fp4.py:362] Your GPU does not have native support for FP4 computation but FP4 quantization is being used. Weight-only FP4 compression will be used leveraging the Marlin kernel. This may degrade performance for compute-heavy workloads.
+(EngineCore pid=367) INFO 11-09 23:22:07 [nvfp4.py:628] Using MoEPrepareAndFinalizeNoDPEPModular
+(EngineCore pid=367) INFO 11-09 23:22:10 [kernel.py:430] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+(EngineCore pid=367) INFO 11-09 23:22:10 [kernel.py:430] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+(EngineCore pid=367) INFO 11-09 23:22:10 [kernel.py:430] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+(EngineCore pid=367) INFO 11-09 23:22:10 [cuda.py:538] Using FLASHINFER attention backend out of potential backends: ['FLASHINFER', 'TRITON_ATTN'].
+(EngineCore pid=367) INFO 11-09 23:22:10 [unquantized.py:282] Using TRITON Unquantized MoE backend out of potential backends: ['FlashInfer TRTLLM', 'FlashInfer CUTLASS', 'TRITON', 'BATCHED_TRITON'].
+(EngineCore pid=367) INFO 11-09 23:22:11 [weight_utils.py:1058] Filesystem type for checkpoints: EXT4. Checkpoint size: 21.82 GiB. Available RAM: 83.77 GiB.
+(EngineCore pid=367) Loading safetensors checkpoint shards:   0% Completed | 0/3 [00:00<?, ?it/s]
+(EngineCore pid=367) Loading safetensors checkpoint shards:  33% Completed | 1/3 [00:06<00:13,  6.69s/it]
+(EngineCore pid=367) Loading safetensors checkpoint shards:  67% Completed | 2/3 [00:07<00:03,  3.02s/it]
+(EngineCore pid=367) Loading safetensors checkpoint shards: 100% Completed | 3/3 [00:14<00:00,  5.05s/it]
+(EngineCore pid=367) Loading safetensors checkpoint shards: 100% Completed | 3/3 [00:14<00:00,  4.87s/it]
+(EngineCore pid=367) 
+(EngineCore pid=367) INFO 11-09 23:22:25 [default_loader.py:510] Loading weights took 14.68 seconds
+(EngineCore pid=367) INFO 11-09 23:22:25 [unquantized.py:400] Using MoEPrepareAndFinalizeNoDPEPModular
+(EngineCore pid=367) INFO 11-09 23:22:25 [unquantized.py:401] Using TritonExperts MoE backend
+(EngineCore pid=367) INFO 11-09 23:22:26 [model_runner.py:444] Model loading took 22.1 GiB memory and 158.655377 seconds
+(EngineCore pid=367) INFO 11-09 23:22:26 [topk_topp_sampler.py:80] Using FlashInfer for top-p & top-k sampling.
+(EngineCore pid=367) INFO 11-09 23:22:26 [interface.py:1051] Setting attention block size to 2128 tokens to ensure that attention page size is >= mamba page size.
+(EngineCore pid=367) INFO 11-09 23:22:26 [utils.py:405] Using LBNHC KV cache layout.
+(EngineCore pid=367) [transformers] The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+(EngineCore pid=367) INFO 11-09 23:22:30 [encoder_runner.py:131] Encoder cache will be initialized with a budget of 32768 tokens, and profiled with 2 image items of the maximum feature size.
+(EngineCore pid=367) INFO 11-09 23:22:58 [backends.py:1094] Using cache directory: /root/.cache/vllm/torch_compile_cache/f1eacbabe6/rank_0_0/backbone for vLLM's torch.compile
+(EngineCore pid=367) INFO 11-09 23:22:58 [backends.py:1155] Dynamo bytecode transform time: 4.18 s
+(EngineCore pid=367) [rank0]:W1109 23:22:58.727000 367 torch/_inductor/utils.py:1953] Not enough SMs to use max_autotune_gemm mode
+(EngineCore pid=367) INFO 11-09 23:23:06 [backends.py:393] Compiling a graph for compile range (1, 32768) takes 8.32 s
+(EngineCore pid=367) INFO 11-09 23:23:08 [backends.py:920] collected artifacts: 41 entries, 15 artifacts, 20483702 bytes total
+(EngineCore pid=367) INFO 11-09 23:23:08 [decorators.py:719] saved AOT compiled function to /root/.cache/vllm/torch_compile_cache/torch_aot_compile/652ce366bf1911691562ec9ac3b28b87711bd8afc45150b6743b080a501e8c0e/rank_0_0/model
+(EngineCore pid=367) INFO 11-09 23:23:08 [monitor.py:53] torch.compile took 14.79 s in total
+(EngineCore pid=367) Skipping cuDNN in bmm_fp8 auto candidates on SM12x: override_shape unavailable (cuDNN backend < 9.23.1); policy=ALL per-shape build is unbounded at serving time.
+(EngineCore pid=367) INFO 11-09 23:23:16 [monitor.py:81] Initial profiling/warmup run took 7.20 s
+(EngineCore pid=367) INFO 11-09 23:23:16 [backends.py:1094] Using cache directory: /root/.cache/vllm/torch_compile_cache/f1eacbabe6/rank_0_0/eagle_head for vLLM's torch.compile
+(EngineCore pid=367) INFO 11-09 23:23:16 [backends.py:1155] Dynamo bytecode transform time: 0.18 s
+(EngineCore pid=367) INFO 11-09 23:23:17 [backends.py:393] Compiling a graph for compile range (1, 32768) takes 1.64 s
+(EngineCore pid=367) INFO 11-09 23:23:18 [backends.py:920] collected artifacts: 2 entries, 2 artifacts, 3167684 bytes total
+(EngineCore pid=367) INFO 11-09 23:23:18 [decorators.py:719] saved AOT compiled function to /root/.cache/vllm/torch_compile_cache/torch_aot_compile/c93959ffd4fc27cd450e5ea4bd5058abe0814a0145e8e568af5361d6e014daf9/rank_0_0/model
+(EngineCore pid=367) INFO 11-09 23:23:18 [monitor.py:53] torch.compile took 1.93 s in total
+(EngineCore pid=367) WARNING 11-09 23:23:18 [fused_moe.py:1167] Using default MoE config. Performance might be sub-optimal! Config file not found at /usr/local/lib/python3.12/dist-packages/vllm/model_executor/layers/fused_moe/configs/E=256,N=512,device_name=NVIDIA_GB10.json
+(EngineCore pid=367) INFO 11-09 23:23:18 [monitor.py:81] Initial profiling/warmup run took 0.53 s
+(EngineCore pid=367) WARNING 11-09 23:23:21 [kv_cache_utils.py:1644] Add 3 padding layers, may waste at most 10.00% KV cache memory
+(EngineCore pid=367) WARNING 11-09 23:23:21 [kv_cache_utils.py:2520] Speculative decoding (method=mtp) is enabled but no KV cache group could be identified as the draft model's.
+(EngineCore pid=367) INFO 11-09 23:23:21 [flashinfer.py:913] FlashInfer resolved query dtypes: prefill=torch.bfloat16, decode=torch.bfloat16, decode_backend=xqa, kv_cache_dtype=torch.float8_e4m3fn, arch=sm121
+(EngineCore pid=367) INFO 11-09 23:23:21 [speculator.py:152] Fused multi-step draft decode is not supported by attention backend(s) FLASHINFER; falling back to rebuilding attention metadata between draft steps.
+(EngineCore pid=367) Capturing CUDA graphs (PIECEWISE):   0%|          | 0/24 [00:00<?, ?it/s]Capturing CUDA graphs (PIECEWISE):   4%|▍         | 1/24 [00:00<00:18,  1.28it/s]Capturing CUDA graphs (PIECEWISE):   8%|▊         | 2/24 [00:01<00:12,  1.69it/s]Capturing CUDA graphs (PIECEWISE):  12%|█▎        | 3/24 [00:01<00:10,  2.07it/s]Capturing CUDA graphs (PIECEWISE):  17%|█▋        | 4/24 [00:01<00:08,  2.31it/s]Capturing CUDA graphs (PIECEWISE):  21%|██        | 5/24 [00:02<00:07,  2.48it/s]Capturing CUDA graphs (PIECEWISE):  25%|██▌       | 6/24 [00:02<00:06,  2.58it/s]Capturing CUDA graphs (PIECEWISE):  29%|██▉       | 7/24 [00:03<00:06,  2.65it/s]2026-11-09 23:23:24,899 - INFO - core.py:588 - flashinfer.jit: Building JIT module xqa_input_bf16_kv_cache_e4m3_output_bf16_page_size_16_head_dim_256_head_group_ratio_8_use_sliding_window_False_use_spec_dec_True_spec_q_seq_len_3; this can take several minutes on first use.
+(EngineCore pid=367) Capturing CUDA graphs (PIECEWISE):  33%|███▎      | 8/24 [00:08<00:33,  2.10s/it]Capturing CUDA graphs (PIECEWISE):  38%|███▊      | 9/24 [00:09<00:23,  1.56s/it]Capturing CUDA graphs (PIECEWISE):  42%|████▏     | 10/24 [00:09<00:16,  1.19s/it]Capturing CUDA graphs (PIECEWISE):  46%|████▌     | 11/24 [00:09<00:12,  1.06it/s]Capturing CUDA graphs (PIECEWISE):  50%|█████     | 12/24 [00:10<00:09,  1.31it/s]2026-11-09 23:23:32,111 - INFO - core.py:588 - flashinfer.jit: Building JIT module xqa_input_bf16_kv_cache_e4m3_output_bf16_page_size_16_head_dim_256_head_group_ratio_8_use_sliding_window_False_use_spec_dec_True_spec_q_seq_len_2; this can take several minutes on first use.
+(EngineCore pid=367) Capturing CUDA graphs (PIECEWISE):  54%|█████▍    | 13/24 [00:15<00:24,  2.25s/it]Capturing CUDA graphs (PIECEWISE):  58%|█████▊    | 14/24 [00:16<00:16,  1.70s/it]Capturing CUDA graphs (PIECEWISE):  62%|██████▎   | 15/24 [00:16<00:11,  1.25s/it]Capturing CUDA graphs (PIECEWISE):  67%|██████▋   | 16/24 [00:16<00:07,  1.01it/s]Capturing CUDA graphs (PIECEWISE):  71%|███████   | 17/24 [00:17<00:06,  1.00it/s]Capturing CUDA graphs (PIECEWISE):  79%|███████▉  | 19/24 [00:18<00:02,  1.75it/s]Capturing CUDA graphs (PIECEWISE):  83%|████████▎ | 20/24 [00:18<00:01,  2.13it/s]Capturing CUDA graphs (PIECEWISE):  92%|█████████▏| 22/24 [00:18<00:00,  3.11it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 24/24 [00:19<00:00,  2.90it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 24/24 [00:19<00:00,  1.24it/s]
+(EngineCore pid=367) Capturing CUDA graphs (FULL):   0%|          | 0/2 [00:00<?, ?it/s]Capturing CUDA graphs (FULL):  50%|█████     | 1/2 [00:00<00:00,  4.53it/s]Capturing CUDA graphs (FULL): 100%|██████████| 2/2 [00:00<00:00,  6.87it/s]
+(EngineCore pid=367) INFO 11-09 23:23:41 [speculator.py:187] Capturing model for speculator...
+(EngineCore pid=367) Capturing prefill CUDA graphs (PIECEWISE):   0%|          | 0/24 [00:00<?, ?it/s]Capturing prefill CUDA graphs (PIECEWISE):   4%|▍         | 1/24 [00:00<00:06,  3.35it/s]Capturing prefill CUDA graphs (PIECEWISE):  12%|█▎        | 3/24 [00:00<00:04,  4.54it/s]Capturing prefill CUDA graphs (PIECEWISE):  29%|██▉       | 7/24 [00:00<00:02,  8.05it/s]Capturing prefill CUDA graphs (PIECEWISE):  46%|████▌     | 11/24 [00:01<00:01,  9.74it/s]Capturing prefill CUDA graphs (PIECEWISE):  71%|███████   | 17/24 [00:01<00:00, 17.05it/s]Capturing prefill CUDA graphs (PIECEWISE):  83%|████████▎ | 20/24 [00:01<00:00, 13.08it/s]Capturing prefill CUDA graphs (PIECEWISE):  96%|█████████▌| 23/24 [00:02<00:00, 10.96it/s]Capturing prefill CUDA graphs (PIECEWISE): 100%|██████████| 24/24 [00:02<00:00,  9.99it/s]
+(EngineCore pid=367) Capturing prefill CUDA graphs (FULL):   0%|          | 0/6 [00:00<?, ?it/s]Capturing prefill CUDA graphs (FULL): 100%|██████████| 6/6 [00:00<00:00, 157.84it/s]
+(EngineCore pid=367) Capturing decode CUDA graphs (FULL):   0%|          | 0/9 [00:00<?, ?it/s]Capturing decode CUDA graphs (FULL): 100%|██████████| 9/9 [00:00<00:00, 154.96it/s]
+(EngineCore pid=367) INFO 11-09 23:23:44 [model_runner.py:1247] Graph capturing finished in 23 secs, took 1.81 GiB
+(EngineCore pid=367) INFO 11-09 23:23:45 [gpu_worker.py:812] Available KV cache memory: 56.88 GiB
+(EngineCore pid=367) INFO 11-09 23:23:45 [gpu_worker.py:827] CUDA graph memory profiling is enabled (default since v0.21.0). The current --gpu-memory-utilization=0.7500 is equivalent to --gpu-memory-utilization=0.7350 without CUDA graph memory profiling. To maintain the same effective KV cache size as before, increase --gpu-memory-utilization to 0.7650. To disable, set VLLM_MEMORY_PROFILER_ESTIMATE_CUDAGRAPHS=0.
+(EngineCore pid=367) WARNING 11-09 23:23:45 [kv_cache_utils.py:1644] Add 3 padding layers, may waste at most 10.00% KV cache memory
+(EngineCore pid=367) WARNING 11-09 23:23:45 [kv_cache_utils.py:2520] Speculative decoding (method=mtp) is enabled but no KV cache group could be identified as the draft model's.
+(EngineCore pid=367) INFO 11-09 23:23:45 [kv_cache_utils.py:2798] GPU KV cache size: 4,909,417 tokens, Maximum concurrency for 262,144 tokens per request: 18.73x
+(EngineCore pid=367) INFO 11-09 23:23:45 [b12x_prepare.py:631] b12x autotuning uses 98 temporary KV blocks before allocating 2547 serving blocks
+(EngineCore pid=367) INFO 11-09 23:23:47 [gpu_worker.py:917] Cleared 0.20 GiB of cached CUDA allocator memory before KV cache allocation.
+(EngineCore pid=367) INFO 11-09 23:23:54 [kernel_warmup.py:171] JIT kernel warmup starting.
+(EngineCore pid=367) INFO 11-09 23:24:41 [kernel_warmup.py:184] JIT kernel warmup finished in 47.22s.
+(EngineCore pid=367) JIT kernel warmup (136 compile keys):   0%|          | 0/4 [00:00<?, ?kernel/s]JIT kernel warmup (136 compile keys):  25%|██▌       | 1/4 [00:19<00:59, 19.95s/kernel, _DecoratedTritonJitKernel (16 keys)]JIT kernel warmup (136 compile keys):  50%|█████     | 2/4 [00:22<00:18,  9.45s/kernel, _DecoratedTritonJitKernel (24 keys)]JIT kernel warmup (136 compile keys):  75%|███████▌  | 3/4 [00:39<00:12, 12.94s/kernel, _DecoratedTritonJitKernel (72 keys)]JIT kernel warmup (136 compile keys): 100%|██████████| 4/4 [00:47<00:00, 11.00s/kernel, _DecoratedTritonJitKernel (24 keys)]JIT kernel warmup (136 compile keys): 100%|██████████| 4/4 [00:47<00:00, 11.80s/kernel, _DecoratedTritonJitKernel (24 keys)]
+(EngineCore pid=367) INFO 11-09 23:24:41 [qwen_triton_warmup.py:294] Warming up Qwen GDN Triton kernels for model_type=qwen3_5_moe_text.
+(EngineCore pid=367) INFO 11-09 23:24:42 [qwen_vl_triton_warmup.py:57] Warmed position embedding and vision rotary kernels on grids=[(1, 16, 16), (1, 16, 2), (1, 2, 16), (1, 2, 2)].
+(EngineCore pid=367) INFO 11-09 23:24:42 [qwen_vl_triton_warmup.py:98] Warmed M-RoPE Triton kernels.
+(EngineCore pid=367) INFO 11-09 23:24:42 [mamba_triton_warmup.py:42] Warmed Mamba batch_memcpy_kernel.
+(EngineCore pid=367) WARNING 11-09 23:24:43 [indexer_topk.py:29] Failed to import the DeepSelect extension (vllm._deepselect_C): No module named 'vllm._deepselect_C'
+(EngineCore pid=367) INFO 11-09 23:24:43 [kernel_warmup.py:399] Using FlashInfer autotune cache file: /root/.cache/vllm/flashinfer_autotune_cache/0.7.0/121a/ba34a3e23b6788ee22ecf5713cd0e3b26b9b0c85c321bfa583bc9f57253368d4/autotune_configs.json
+(EngineCore pid=367) 2026-11-09 23:24:43,554 - INFO - autotuner.py:1046 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+(EngineCore pid=367) INFO 11-09 23:24:43 [kernel_warmup.py:350] Running FlashInfer autotune with 32768 tokens and token buckets (1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 768, 1024, 1280, 1536, 1792, 2048, 2560, 3072, 3584, 4096, 8192, 16384, 32768).
+(EngineCore pid=367) [AutoTuner]: Tuning fp8_gemm:   0%|          | 0/23 [00:00<?, ?profile/s]2026-11-09 23:24:43,659 - INFO - core.py:588 - flashinfer.jit: Building JIT module trtllm_utils; this can take several minutes on first use.
+(EngineCore pid=367) [AutoTuner]: Tuning fp8_gemm:   4%|▍         | 1/23 [00:03<01:10,  3.19s/profile][AutoTuner]: Tuning fp8_gemm:  30%|███       | 7/23 [00:03<00:05,  2.86profile/s][AutoTuner]: Tuning fp8_gemm:  48%|████▊     | 11/23 [00:03<00:02,  4.78profile/s][AutoTuner]: Tuning fp8_gemm:  65%|██████▌   | 15/23 [00:03<00:01,  7.13profile/s][AutoTuner]: Tuning fp8_gemm:  78%|███████▊  | 18/23 [00:03<00:00,  8.49profile/s][AutoTuner]: Tuning fp8_gemm:  91%|█████████▏| 21/23 [00:04<00:00,  7.46profile/s][AutoTuner]: Tuning fp8_gemm: 100%|██████████| 23/23 [00:06<00:00,  2.85profile/s][AutoTuner]: Tuning fp8_gemm: 100%|██████████| 23/23 [00:06<00:00,  3.51profile/s]
+(EngineCore pid=367) [AutoTuner]: Tuning fp8_gemm:   0%|          | 0/23 [00:00<?, ?profile/s][AutoTuner]: Tuning fp8_gemm:  30%|███       | 7/23 [00:00<00:00, 24.34profile/s][AutoTuner]: Tuning fp8_gemm:  48%|████▊     | 11/23 [00:00<00:00, 28.43profile/s][AutoTuner]: Tuning fp8_gemm:  70%|██████▉   | 16/23 [00:00<00:00, 33.62profile/s][AutoTuner]: Tuning fp8_gemm:  87%|████████▋ | 20/23 [00:00<00:00, 23.56profile/s][AutoTuner]: Tuning fp8_gemm: 100%|██████████| 23/23 [00:01<00:00, 14.16profile/s][AutoTuner]: Tuning fp8_gemm: 100%|██████████| 23/23 [00:01<00:00, 18.70profile/s]
+(EngineCore pid=367) [AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:   0%|          | 0/23 [00:00<?, ?profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:   4%|▍         | 1/23 [00:04<01:39,  4.50s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  61%|██████    | 14/23 [00:04<00:02,  4.19profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  91%|█████████▏| 21/23 [00:05<00:00,  6.00profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm: 100%|██████████| 23/23 [00:06<00:00,  3.38profile/s]
+(EngineCore pid=367) [AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:   0%|          | 0/23 [00:00<?, ?profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  70%|██████▉   | 16/23 [00:00<00:00, 139.01profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm: 100%|██████████| 23/23 [00:01<00:00, 20.83profile/s] 
+(EngineCore pid=367) [AutoTuner]: Tuning fp8_gemm:   0%|          | 0/23 [00:00<?, ?profile/s][AutoTuner]: Tuning fp8_gemm:  22%|██▏       | 5/23 [00:00<00:00, 48.51profile/s][AutoTuner]: Tuning fp8_gemm:  48%|████▊     | 11/23 [00:00<00:00, 53.52profile/s][AutoTuner]: Tuning fp8_gemm:  74%|███████▍  | 17/23 [00:00<00:00, 37.62profile/s][AutoTuner]: Tuning fp8_gemm:  96%|█████████▌| 22/23 [00:01<00:00, 15.29profile/s][AutoTuner]: Tuning fp8_gemm: 100%|██████████| 23/23 [00:02<00:00, 11.36profile/s]
+(APIServer pid=1) INFO 11-09 23:25:57 [utils.py:632] [shutdown] Process manager: send sigterm to process EngineCore
+(EngineCore pid=367) [AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:   0%|          | 0/23 [00:00<?, ?profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:   4%|▍         | 1/23 [00:04<01:34,  4.31s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:   9%|▊         | 2/23 [00:04<00:42,  2.01s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  13%|█▎        | 3/23 [00:05<00:25,  1.28s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  17%|█▋        | 4/23 [00:05<00:17,  1.06profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  22%|██▏       | 5/23 [00:05<00:13,  1.33profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  26%|██▌       | 6/23 [00:06<00:10,  1.69profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  30%|███       | 7/23 [00:06<00:08,  1.95profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  35%|███▍      | 8/23 [00:07<00:07,  1.89profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  39%|███▉      | 9/23 [00:08<00:09,  1.42profile/s][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  43%|████▎     | 10/23 [00:10<00:14,  1.14s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  48%|████▊     | 11/23 [00:13<00:21,  1.76s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  52%|█████▏    | 12/23 [00:17<00:27,  2.50s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  57%|█████▋    | 13/23 [00:23<00:34,  3.43s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  61%|██████    | 14/23 [00:30<00:40,  4.46s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  65%|██████▌   | 15/23 [00:39<00:47,  5.99s/profile][AutoTuner]: Tuning bf16_fp4_cute_dsl_gemm:  70%|██████▉   | 16/23 [00:50<00:51,  7.39s/profile](APIServer pid=1) Traceback (most recent call last):
+(APIServer pid=1)   File "/usr/local/bin/vllm", line 10, in <module>
+(APIServer pid=1)     sys.exit(main())
+(APIServer pid=1)              ^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/entrypoints/cli/main.py", line 106, in main
+(APIServer pid=1)     args.dispatch_function(args)
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/entrypoints/cli/serve.py", line 179, in cmd
+(APIServer pid=1)     uvloop.run(run_server(args))
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/uvloop/__init__.py", line 96, in run
+(APIServer pid=1)     return __asyncio.run(
+(APIServer pid=1)            ^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/lib/python3.12/asyncio/runners.py", line 194, in run
+(APIServer pid=1)     return runner.run(main)
+(APIServer pid=1)            ^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/lib/python3.12/asyncio/runners.py", line 118, in run
+(APIServer pid=1)     return self._loop.run_until_complete(task)
+(APIServer pid=1)            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/uvloop/__init__.py", line 48, in wrapper
+(APIServer pid=1)     return await main
+(APIServer pid=1)            ^^^^^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/entrypoints/launchers/api_server/entry.py", line 176, in run_server
+(APIServer pid=1)     await run_server_worker(listen_address, sock, args, **uvicorn_kwargs)
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/entrypoints/launchers/api_server/entry.py", line 190, in run_server_worker
+(APIServer pid=1)     async with build_async_engine_client(
+(APIServer pid=1)   File "/usr/lib/python3.12/contextlib.py", line 210, in __aenter__
+(APIServer pid=1)     return await anext(self.gen)
+(APIServer pid=1)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/entrypoints/launchers/api_server/entry.py", line 58, in build_async_engine_client
+(APIServer pid=1)     async with build_async_engine_client_from_engine_args(
+(APIServer pid=1)   File "/usr/lib/python3.12/contextlib.py", line 210, in __aenter__
+(APIServer pid=1)     return await anext(self.gen)
+(APIServer pid=1)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/entrypoints/launchers/api_server/entry.py", line 94, in build_async_engine_client_from_engine_args
+(APIServer pid=1)     async_llm = AsyncLLM.from_vllm_config(
+(APIServer pid=1)                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/async_llm.py", line 235, in from_vllm_config
+(APIServer pid=1)     return cls(
+(APIServer pid=1)            ^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/async_llm.py", line 169, in __init__
+(APIServer pid=1)     self.engine_core = EngineCoreClient.make_async_mp_client(
+(APIServer pid=1)                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(APIServer pid=1)     return func(*args, **kwargs)
+(APIServer pid=1)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core_client.py", line 163, in make_async_mp_client
+(APIServer pid=1)     return AsyncMPClient(
+(APIServer pid=1)            ^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(APIServer pid=1)     return func(*args, **kwargs)
+(APIServer pid=1)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core_client.py", line 1086, in __init__
+(APIServer pid=1)     super().__init__(
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core_client.py", line 676, in __init__
+(APIServer pid=1)     with launch_core_engines(
+(APIServer pid=1)   File "/usr/lib/python3.12/contextlib.py", line 144, in __exit__
+(APIServer pid=1)     next(self.gen)
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/utils.py", line 1240, in launch_core_engines
+(APIServer pid=1)     wait_for_engine_startup(
+(APIServer pid=1)   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/utils.py", line 1320, in wait_for_engine_startup
+(APIServer pid=1)     raise RuntimeError(
+(APIServer pid=1) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}

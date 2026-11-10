@@ -15,7 +15,7 @@ sources:
 generated: { by: "claude-code", at: "2026-11-01T03:42:59.995Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-08T21:00:19.321Z
+    at: 2026-11-09T21:00:11.445Z
 ---
 
 # Abliteration & Refusal Evaluation

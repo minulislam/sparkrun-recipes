@@ -16,10 +16,10 @@ sources:
     resource: repo://notes/minimax-m3-sparkrun-port/README.md
   - id: openwiki-source-b1867d7f36dadf1642430baf
     resource: repo://recipes/qwen3-embedding-4b-tp1.yaml
-generated: { by: "claude-code", at: "2026-11-08T21:00:19.321Z" }
+generated: { by: "claude-code", at: "2026-11-09T21:00:11.445Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-08T21:00:19.321Z
+    at: 2026-11-09T21:00:11.445Z
 ---
 
 # Container Images & Provenance
@@ -70,8 +70,9 @@ embedding/reranker recipes name a floating `tf5:latest`; when they were adapted
 as rows 65–66 (2026-11-08), the container was pinned to
 `ghcr.io/spark-arena/dgx-vllm-eugr-nightly-tf5:2026092702` — the dated tf5
 build already on disk — satisfying both the immutable-tag rule and the
-reuse-on-disk-images rule at once. Note the worker does not yet hold that image
-(24.8 GB): a `gx10-solo` activation of either recipe pulls it on first use.
+reuse-on-disk-images rule at once. The worker did not hold that image (24.8 GB)
+at adoption; on 2026-11-09 it was streamed to `gx10-spark` with `docker save |
+ssh docker load`, so `gx10-solo` activations no longer need a pull.
 
 ## Images that must be built from source
 

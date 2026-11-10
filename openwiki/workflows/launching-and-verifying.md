@@ -16,10 +16,10 @@ sources:
     resource: repo://INDEX.md
   - id: openwiki-source-eedd5219d6290708f61cb7bf
     resource: repo://notes/2026-11-03-sparkrun-version-config-audit.md
-generated: { by: "claude-code", at: "2026-11-08T21:00:19.321Z" }
+generated: { by: "claude-code", at: "2026-11-09T21:00:11.445Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-08T21:00:19.321Z
+    at: 2026-11-09T21:00:11.445Z
 ---
 
 # Launching & Verifying a Recipe
@@ -38,9 +38,9 @@ end is specific: a recipe is verified only when the **model answers a request** 
    spending a boot.
 3. **Run** — `sparkrun run ./recipes/<name>.yaml --no-follow`.
 
-`--no-follow` is mandatory for scripted launches: `sparkrun run` returns as soon
-as the containers are up, long before vLLM actually serves, so following logs
-only blocks. For a local file you launch the file directly; for a published
+`--no-follow` is required for launches (`CLAUDE.md`); readiness is then checked
+separately through the serve log and the endpoint, not by following the launch
+output. For a local file you launch the file directly; for a published
 recipe you launch `@spark-forge/<name>` after a registry update. The installed
 CLI is sparkrun **0.4.2** (uv tool).
 

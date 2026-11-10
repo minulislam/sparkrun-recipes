@@ -5,7 +5,7 @@ description: The dgx-pair two-node DGX Spark topology, the load-bearing NCCL/Glo
 tags: [cluster, networking, dgx-spark, nccl, connectx-7, topology]
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-08T21:00:19.321Z
+    at: 2026-11-09T21:00:11.445Z
 sources:
   - id: openwiki-source-8037e2358a2c4f9b2c722a11
     resource: repo://AGENTS.md

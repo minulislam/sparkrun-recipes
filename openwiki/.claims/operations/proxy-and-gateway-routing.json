@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:c8551b1dcc8632c4aae4d6e05862c7d574cf8c367bf9ba52fce66b1e2f710ae5",
+  "pageVersion": "sha256:10d6632df06ed438913541384dc0bcd8796094b0fd1baa94adad8d14854f0c42",
   "claims": [
     {
       "id": "claim_ac6370c102d94140a4c199439882ef88",
@@ -8,7 +8,7 @@
       "evidence": [
         {
           "resource": "repo://AGENTS.md",
-          "version": "repo-file-v1:sha256:7c257d130372a14d4a7b896366a69b09ba6cf5c716661539df7597d5a9fa6191"
+          "version": "repo-file-v1:sha256:f2f1953df8b4c91f74ec62b952796964871f05b4b7cd44fe62ac92cd8bb50609"
         }
       ]
     },
@@ -18,7 +18,7 @@
       "evidence": [
         {
           "resource": "repo://AGENTS.md",
-          "version": "repo-file-v1:sha256:7c257d130372a14d4a7b896366a69b09ba6cf5c716661539df7597d5a9fa6191"
+          "version": "repo-file-v1:sha256:f2f1953df8b4c91f74ec62b952796964871f05b4b7cd44fe62ac92cd8bb50609"
         }
       ]
     },
@@ -28,7 +28,7 @@
       "evidence": [
         {
           "resource": "repo://AGENTS.md",
-          "version": "repo-file-v1:sha256:7c257d130372a14d4a7b896366a69b09ba6cf5c716661539df7597d5a9fa6191"
+          "version": "repo-file-v1:sha256:f2f1953df8b4c91f74ec62b952796964871f05b4b7cd44fe62ac92cd8bb50609"
         }
       ]
     },
@@ -38,7 +38,7 @@
       "evidence": [
         {
           "resource": "repo://AGENTS.md",
-          "version": "repo-file-v1:sha256:7c257d130372a14d4a7b896366a69b09ba6cf5c716661539df7597d5a9fa6191"
+          "version": "repo-file-v1:sha256:f2f1953df8b4c91f74ec62b952796964871f05b4b7cd44fe62ac92cd8bb50609"
         }
       ]
     },
@@ -66,7 +66,7 @@
       "evidence": [
         {
           "resource": "repo://AGENTS.md",
-          "version": "repo-file-v1:sha256:7c257d130372a14d4a7b896366a69b09ba6cf5c716661539df7597d5a9fa6191"
+          "version": "repo-file-v1:sha256:f2f1953df8b4c91f74ec62b952796964871f05b4b7cd44fe62ac92cd8bb50609"
         }
       ]
     },
@@ -86,7 +86,7 @@
       "evidence": [
         {
           "resource": "repo://CLAUDE.md",
-          "version": "repo-file-v1:sha256:bf594984d79b57acfd8e08cfc445f7af21ad28162a4444ccf23d5ab6d8beb23e"
+          "version": "repo-file-v1:sha256:c5b2fd11733a937f8283f39320c6e269a7e6aaa1638abdca581d89a6e2572e57"
         },
         {
           "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md",
@@ -156,13 +156,13 @@
         },
         {
           "resource": "repo://INDEX.md#L104-L105",
-          "version": "repo-lines-v1:sha256:80c46319fec791b64c5927ce71b80b55d1f65c080da1b44de643ef26b762001b:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTlkNzU2MmRiZWQ0MGVmY2I1ODQzNDljODk3MzcxNTBjOWM2ZjM1M2M5M2IwNzE2YjM3MWUxOWRjMGU2NWZkNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTA0ZjU2OTc5NjAyYjk0ZWVjYjBkMmQ4NTYyYWVhNDgzYmNhODBjZDE5MjI4YjVlYzMwMzRiOGVhNzFmYTk5NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2JiZDZjMzgyOGY3YzZkNjc3Mjc1ZGJlZjM2Y2FjMTFhNjdmM2Y2YzNkNDJiNzEwYWMzNDc2NDk3OGMwNTlmNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTYwZDFhMTBhNWQxMmJjYjRmMDI0OGY5ZmFiNmI2NDQwNjhlMTNiMDk5NjAzNWYwYmFhOWRkNjYzYThjZmE0YyJ9"
+          "version": "repo-lines-v1:sha256:949cdefac33e1ae75a1447f367c4ec37d720999d2bcb0f58f1a8688e8813eb91:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWYxNDU5MjA0OGVlYzk0MzU1MzU4MTlhMWNkNDAyZTNmOWI4ZWM0MmY1N2Q3NTg4MDdjZWQzMmEyNTllYzc2ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTA0ZjU2OTc5NjAyYjk0ZWVjYjBkMmQ4NTYyYWVhNDgzYmNhODBjZDE5MjI4YjVlYzMwMzRiOGVhNzFmYTk5NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2JiZDZjMzgyOGY3YzZkNjc3Mjc1ZGJlZjM2Y2FjMTFhNjdmM2Y2YzNkNDJiNzEwYWMzNDc2NDk3OGMwNTlmNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTYwZDFhMTBhNWQxMmJjYjRmMDI0OGY5ZmFiNmI2NDQwNjhlMTNiMDk5NjAzNWYwYmFhOWRkNjYzYThjZmE0YyJ9"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-08T21:00:19.321Z"
+    "at": "2026-11-09T21:00:11.445Z"
   }
 }

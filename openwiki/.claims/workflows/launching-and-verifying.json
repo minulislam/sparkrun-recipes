@@ -1,24 +1,28 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:a6e20fd70b06c5246c7b6e516fce0d158f551491280ba26b250c165f974b73c0",
+  "pageVersion": "sha256:ac11de7e98b02152e7d329ff6bffe15119b468c53c9554bb35304de0e0328860",
   "claims": [
     {
       "id": "claim_56ca71812db34cf382140bbc4fdd28cb",
       "statement": "The launch sequence is lint (sparkrun recipe validate), then a --dry-run per-host fit check, then sparkrun run with --no-follow; validate and --dry-run are lint and do not constitute verification.",
       "evidence": [
         {
-          "resource": "repo://.claude/skills/verify/SKILL.md#L8-L18",
-          "version": "repo-lines-v1:sha256:d62e9d9ba6261e26b960ebe76b6502ed02666f4134410a42db111cb3f9a6e386:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0ZTQ2OWFkMzdjN2NmNTI4Yjk1YjMxYjQ0NDNhMjU5NzQ0YjcyNDg3NmE2NWQ3NmNhMzg4OWMzNGM5OTU1YTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMwYWE5ZmE3OGI1MjgzOTFmNTBjOTVmMmQ0YjQxMzAyOTk2MmJmZjUyNjczNzcwMDYzMzRhOWIwOTU2ODU2NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxYjEwM2NjMDU5MjY2Yzg0YzBiYmM2OGY5MTE0NWY5YjUxZDBlNjBhYzllZjUzODJjM2Q1ZGFmZjdmNjFhNzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY1ODhmNDQ1NmU3OWEzNjZkZGUwZDEwMjUzYjg3NjNjMmZmMzM5ZDhiYmJmNWY1Yjg5M2UxODJkMTY3OTZlNGEifQ"
+          "resource": "repo://.claude/skills/verify/SKILL.md#L207-L211",
+          "version": "repo-lines-v1:sha256:60ba49456af80a3fce8e1f20c56e3f2d6cc37b083c369998b16e4a5d4f46c652:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGMzZGJmYTJkMjVjNjNjMDQ0MzQ5MTU5OGI2MmFiOWU5ZTEwMTljNDYwOGMzOGMwZGY4YmYxNjJiMjY0ZmUzYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDU5NmY2YjkzM2Q2YmEwMTg4NDY2ZjQwZWQ5YWEwNjlhM2FlNTlhNmNhMDYyZmE3ZGE0ZDhjMjEzOGM3YmM1NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjUyMThlODk4YTY1NTg1MTE4NTNiNjY2ZjY1MThmMDUzZjYzY2VkNmZkYzU1MmIwMjY2MzQzM2E4MGM2ODI1NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTY4OTM2YTg5NDQzYTk0ZjZkMzQxMDFhN2UyNWJmZTVkMGU3NzQ2ZTE0YTQ1ZWJlMDRmOTI1NzU5NjYxNzk1YSJ9"
+        },
+        {
+          "resource": "repo://.claude/skills/verify/SKILL.md#L22-L22",
+          "version": "repo-lines-v1:sha256:2bc0ac7cc5cc6b1892ef92180235a91331e8fb40fe0518143b8d0cd3158e600f:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmJjMGFjN2NjNWNjNmIxODkyZWY5MjE4MDIzNWE5MTMzMWU4ZmI0MGZlMDUxODE0M2I4ZDBjZDMxNThlNjAwZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmJjMGFjN2NjNWNjNmIxODkyZWY5MjE4MDIzNWE5MTMzMWU4ZmI0MGZlMDUxODE0M2I4ZDBjZDMxNThlNjAwZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzYwNzk1NmVhODU0NTQxY2Q5MzVmZGQ3MzZmOTJhZGM2MmZjZTJjNGEwOTVjYmJhNzVmZWU4NjYwNTc2YjA0OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzM4OGIzNWI0NWUzNGJmZDIwM2M3MTU0NDJlYzEzZjE5YTAxMjEzNmZjZjYyMzdiNjQ2YzgyNzg5NThhNTQ2MiJ9"
         }
       ]
     },
     {
       "id": "claim_ee0279a2c6d34637a82ce067d8bb17a2",
-      "statement": "--no-follow is mandatory because sparkrun run returns as soon as containers are up, long before vLLM serves, so following logs only blocks.",
+      "statement": "Launches use --no-follow (required by CLAUDE.md), and readiness is checked through the in-container serve log and the endpoint rather than by following the launch output.",
       "evidence": [
         {
-          "resource": "repo://.claude/skills/verify/SKILL.md#L30-L33",
-          "version": "repo-lines-v1:sha256:a6f3c350e7f7c2929e9bc25f0d1c93b7909b9de6618f18a7eda1e52a83c2cfa5:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjllYjVmMzI2Nzk5YTBiNWI1Y2ZkMGIxNzA1NGNhYWM1YjI2NmM2NzM5NjJhMTc3OTlkMzc2ZmFiMDY4NzhmZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmM0MDRkN2YwMWRlYWIzNTg4OGRmZDFiNGI4MzJlN2EwYWMzM2Q1M2QwZWVlYzI3ZTg3YmYwOGQzZjU5MTk3ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjM3YmZlNjRmMjczN2MzNjdiZDg1MjRiZWZmNDQ0YmVkNDQzNGFiODZiZjU5MWQwYTZmYmUyZTU2N2EzZWE4YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzg4ZGU3Mjc3YzRlNmI4OTZiNzY5NWZmNWI1YWY5YWMwOTU5ZGNjYzc3YWE5YTZhMjhiMjdiOGFlMDY4ZDg3NSJ9"
+          "resource": "repo://.claude/skills/verify/SKILL.md#L212-L217",
+          "version": "repo-lines-v1:sha256:46e07c7acaab02a8b3008ae42a3a641130eb9d49ed8ddb14d908c7e85c779549:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTY3MDhiNzZmZTczMDRmZTBhNzIwOTEyMmFmYjM0MjU2N2ZiMDY2NDNmNjg2YzczNzUzMDRhMjkyNTljZTk1YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDU5NmY2YjkzM2Q2YmEwMTg4NDY2ZjQwZWQ5YWEwNjlhM2FlNTlhNmNhMDYyZmE3ZGE0ZDhjMjEzOGM3YmM1NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzdhNGQzMTlmYzk0MjExZTc0MDdjMTA5OGJjYWU4N2VlOTQ0NDEwMDRjNjEyNWNkOGMzOGEwYzZmMjI2ZmFjNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDE0ZDY4YTVjYjYxZGZiYmI0MWQ1MDllYzNlMjQ3NjUzZDFiOTkyMzllOGZmYTkwMzI2MTFkZmY0NDBjZTc1NyJ9"
         },
         {
           "resource": "repo://CLAUDE.md#L62-L63",
@@ -31,18 +35,22 @@
       "statement": "Gated checkpoints need HF_TOKEN, but non-interactive shells do not receive it because ~/.bashrc returns early, so it must be passed inline on the launch command (and never printed into output or files).",
       "evidence": [
         {
-          "resource": "repo://.claude/skills/verify/SKILL.md#L17-L21",
-          "version": "repo-lines-v1:sha256:abcf0776c730e48e47d6503403746c12977211bc509be13a789c261d256c102f:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjNjY2M3ODZiZTRhNWQzNTUyMzg3NWEwOWI0NDE0YjE1NTI1OTc0ODg2Njk1NGVhOGEzNmU0ODQ1OTYyZGQ0MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzUxZmVhN2QwYTUxMWUyYTVkYmFmM2ZmYzY2M2I5M2E3YTE3MTlmMDUxMjU5YzI4MGJiOGQ3MTgzOGQxMzVkNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjM5NTk4NzlkNDFkNmUwNjI3NTNhNDk3MTU1ZjQ0ZTQxMDQ0ZjAwYzEwY2Q0NjVhYjY2MDliMDU1YjlmOGJhZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTM1ZDE5NmVkZDk5MDg4MjlkOTJlZGM5OGZkOTY1ZTNiZDYyNzMyYzI2OWU1OGM2NGMxNjA4Y2FjNWFmYmEyYSJ9"
+          "resource": "repo://.claude/skills/verify/SKILL.md#L212-L215",
+          "version": "repo-lines-v1:sha256:1182db2887e7246d99d3bb758e2f735a8e20d3553868a5edf19306879a683fb1:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTY3MDhiNzZmZTczMDRmZTBhNzIwOTEyMmFmYjM0MjU2N2ZiMDY2NDNmNjg2YzczNzUzMDRhMjkyNTljZTk1YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDVmOTU4ODJhOTRhYTA0NWNkNTAyMGYyODM3ZGQzZjk5YTZmMjA1ZmU4NTkzMzg5MzRjNGQ5YzJmOTMyYjdiZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzdhNGQzMTlmYzk0MjExZTc0MDdjMTA5OGJjYWU4N2VlOTQ0NDEwMDRjNjEyNWNkOGMzOGEwYzZmMjI2ZmFjNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTEzMjZiN2JjYzc3NzkzMGY5NmZhZmVjMTcxOGY4ZmQ4MzZlN2E1MzliNDNjYTczOGUyYjE3MGMxNGNlNzJiZiJ9"
+        },
+        {
+          "resource": "repo://CLAUDE.md#L42-L42",
+          "version": "repo-lines-v1:sha256:c614711147c6555a062f299b55ba70371851e13f0f99ee30d4730218ce58f8a4:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzYxNDcxMTE0N2M2NTU1YTA2MmYyOTliNTViYTcwMzcxODUxZTEzZjBmOTllZTMwZDQ3MzAyMThjZTU4ZjhhNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzYxNDcxMTE0N2M2NTU1YTA2MmYyOTliNTViYTcwMzcxODUxZTEzZjBmOTllZTMwZDQ3MzAyMThjZTU4ZjhhNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWNjNjExYmE0OTU4MTVjZmE2NmY4MjMyZjE2YTc4ZDNjZWVhNmJjZDE1MjFiMzE3ZDI5MTZiNGVhYWUzNGYzYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzgyOTkwYjE2YTdlZDMzNmQ4MWJkMDVkYjIxNTVhZGRlMjY4ZDkxOGY1M2IxOWU0MDFiYjQ3Mzg0MWJmOGExMyJ9"
         }
       ]
     },
     {
       "id": "claim_e506203293b242b780706687baf59829",
-      "statement": "Readiness is polled by checking the HTTP socket together with the in-container serve log at /tmp/sparkrun_serve.log (reached via docker exec), because vLLM output is not in docker logs.",
+      "statement": "Readiness is monitored by reading /tmp/sparkrun_serve.log inside the serve container via docker exec and probing /v1/models and /v1/chat/completions, because vLLM output is not in docker logs.",
       "evidence": [
         {
-          "resource": "repo://.claude/skills/verify/SKILL.md#L30-L41",
-          "version": "repo-lines-v1:sha256:0779124ffdf1f1fd63f6fc38f942859f2647543c8f468284bc2777cd5b8eeeda:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI5ZWI1ZjMyNjc5OWEwYjViNWNmZDBiMTcwNTRjYWFjNWIyNjZjNjczOTYyYTE3Nzk5ZDM3NmZhYjA2ODc4ZmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYxYjk1YWY1YzQ2N2UxMjAwNDYyYjEzMWY2MGVjMTE5ODE0YWNhMmFhMDU3YWY4NDIyZGJiZDY0ODI2NDYwMDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYzN2JmZTY0ZjI3MzdjMzY3YmQ4NTI0YmVmZjQ0NGJlZDQ0MzRhYjg2YmY1OTFkMGE2ZmJlMmU1NjdhM2VhOGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ2ZjZkOTFmNTVmOGNhMmYzYzdkNDBiY2NlNTU2MDkwODM2YWMwMGQwZDhjN2VmMDBiMmYyNzE4OGY4NzJiMzAifQ"
+          "resource": "repo://.claude/skills/verify/SKILL.md#L218-L221",
+          "version": "repo-lines-v1:sha256:fad139ee4dba202634d5a63bfb3317f30fe2994c710eccd96960186f841c9538:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDc2ZTQwNzBlNjFhMDM1MGE5YjBhZTA2YjY0OGE1OGZjYmY3MjU5OTIwOTllNDU4ZTRiODBmZTAxMjI2ZGE3ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDllN2M5ZjQzODg0ZjNjNDdjNzYzYTZmNDFlMDhmNDIwZGM5YjVkMzU5NzNmZmFmNGJkNzA3NGI5ZTNlMjEwYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTIwMzQwZGI3NmE1ZGUwODMzZmRhODY0MzgwYjlhZTI4ODExOTBlZGNlMDAyN2E4NDEwZjM1N2FiZDVhMTIyOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2VhYmE0MmVmZjU4ZDYxNDg2MmI5YzkyZTNhOTBkNmFkYzg2OTZjZjAzMWU2MTU2M2UyZjk1N2M3YmUxMTczMCJ9"
         },
         {
           "resource": "repo://CLAUDE.md#L61-L61",
@@ -55,8 +63,8 @@
       "statement": "A recipe clears the verified bar only when the model answers a request coherently; serving is necessary but not sufficient because a recipe can serve and still return garbage (the unfit outcome).",
       "evidence": [
         {
-          "resource": "repo://.claude/skills/verify/SKILL.md#L6-L9",
-          "version": "repo-lines-v1:sha256:6f936d588053bec917170daf09c7919a28c24cd000814f69068141fdc0447300:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjlmYWFlOThiNDU3MDA4OTQxMTJiMzA4ZDM1MWNiZmVkZTg0MjgyODM4YzlmODQ2YWY2NTQ4Mzg4ZTIzMmNiYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzJmNjRmMWY5MTY3Y2Y4YWNhMTk2MDQyZGQxNWZhOTYzZGZkNTI2N2M4ZDM2Nzg4NjBiNzg3MzVlYjdmZjMzOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjAwYjA1OWY3MmVjMzBjMWNjNDMyMWYxN2U1YmFlZTJhNjJmNmZlMDBjYzgzNjgyMjNhYjgxYjk4YjBkYzNmZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGM0Y2MyOTJhYjA1ZDE1ZjVhNTFlMGU0ZjM5NTU4MDQ3OTBmNzIxOTRhMjgwNTEwOTU4NjEzNjhmOGZlMjY0ZCJ9"
+          "resource": "repo://.claude/skills/verify/SKILL.md#L6-L10",
+          "version": "repo-lines-v1:sha256:6803e34b0d320aa97a72a1d045f4c5f7d01787b5a41b3a1cbc2e31594d74d464:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODg0MGJjMDk4YmJmMzlkYWQxMjczYjUxOTlhY2E3YWMyZmQ0YjhjYTUwY2VkZTJmMzJmZmRlOTFkNzY5NDM1ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTQxMDNiYmUwYTI2MjhkMzY5NmExMTBhOTIzN2ZmNWYyMTMzZmJiMDIwNjBiYjdmMjk0NjBmMTU0MmY2Njk0YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzBjODY0ZjlhZDk4Y2FkNjkwODA4OGZmMWM5NjM3ZjAyNzk1MWEwZjNmZGM1YTBlY2EyMDliNDQ5OWI5YTFlOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzhhMzYxYzZjYzE3MDA2OTNkOGM2MGZhMzU5ZmVkNTJhMzBiYmM5OTVjNjgxMDUyZGMxODc5ODNkYTQ5ZjI5ZCJ9"
         },
         {
           "resource": "repo://CONTEXT.md#L22-L32",
@@ -66,11 +74,11 @@
     },
     {
       "id": "claim_e0e72daf29b04fe88b6ac6d1116cf661",
-      "statement": "When the worker management link is down, two-node launches fall back to CX7 addresses directly (--hosts 10.99.10.10,10.99.10.11 with HF_HUB_OFFLINE=1) instead of --cluster dgx-pair, because only rendezvous/bootstrap uses the management path.",
+      "statement": "During the 2026-11-03 worker management-link outage, two-node launches used the CX7 addresses directly (--hosts 10.99.10.10,10.99.10.11 with HF_HUB_OFFLINE=1) instead of --cluster dgx-pair, because only rendezvous/bootstrap traffic uses the management path.",
       "evidence": [
         {
-          "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:16973763515f9eb6a3771b672d29c2432fad3440162d41bf9194b0b4af7d8a52"
+          "resource": "repo://HISTORY.md#L751-L755",
+          "version": "repo-lines-v1:sha256:ea6dc13220bfe86a70ed3efe7a63f821a57e7b2842ceec69a60ac9bc99f53003:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzBiOWNkOTgwYWQ0NzQ2NDBjY2NiZGZiOTI4NzYyOWQxZGUyODY0YjVhYzlhOTQ1YTU4YzZiZTU4YTAxNGEzNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDU2MGRlZWIzMDk4MjBkZWZiN2I1M2Q2NDI1NjQzNjFlZTYxMDc0Y2M3MmIxMjU2NmUwOWExOTk3ZDNlODA4MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWMxZGVhZWZmYjQ4YTAyNTVjOTBlMmQ1YTYzM2YyNjdmNGE5YzE1MDQzOGQzYTE2ZjFiYzVjM2VhZmIwNWY3MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2I1NTZkMTMyODljNDk4ZjEyYjEzYTIyZjY0NTg2NGJiZjFiNTg1YzljNTFiZTc5YjdkMGY4OWM0ZTQxNzJkZiJ9"
         }
       ]
     },
@@ -94,7 +102,7 @@
         },
         {
           "resource": "repo://INDEX.md#L104-L105",
-          "version": "repo-lines-v1:sha256:80c46319fec791b64c5927ce71b80b55d1f65c080da1b44de643ef26b762001b:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTlkNzU2MmRiZWQ0MGVmY2I1ODQzNDljODk3MzcxNTBjOWM2ZjM1M2M5M2IwNzE2YjM3MWUxOWRjMGU2NWZkNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTA0ZjU2OTc5NjAyYjk0ZWVjYjBkMmQ4NTYyYWVhNDgzYmNhODBjZDE5MjI4YjVlYzMwMzRiOGVhNzFmYTk5NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2JiZDZjMzgyOGY3YzZkNjc3Mjc1ZGJlZjM2Y2FjMTFhNjdmM2Y2YzNkNDJiNzEwYWMzNDc2NDk3OGMwNTlmNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTYwZDFhMTBhNWQxMmJjYjRmMDI0OGY5ZmFiNmI2NDQwNjhlMTNiMDk5NjAzNWYwYmFhOWRkNjYzYThjZmE0YyJ9"
+          "version": "repo-lines-v1:sha256:949cdefac33e1ae75a1447f367c4ec37d720999d2bcb0f58f1a8688e8813eb91:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWYxNDU5MjA0OGVlYzk0MzU1MzU4MTlhMWNkNDAyZTNmOWI4ZWM0MmY1N2Q3NTg4MDdjZWQzMmEyNTllYzc2ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTA0ZjU2OTc5NjAyYjk0ZWVjYjBkMmQ4NTYyYWVhNDgzYmNhODBjZDE5MjI4YjVlYzMwMzRiOGVhNzFmYTk5NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2JiZDZjMzgyOGY3YzZkNjc3Mjc1ZGJlZjM2Y2FjMTFhNjdmM2Y2YzNkNDJiNzEwYWMzNDc2NDk3OGMwNTlmNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTYwZDFhMTBhNWQxMmJjYjRmMDI0OGY5ZmFiNmI2NDQwNjhlMTNiMDk5NjAzNWYwYmFhOWRkNjYzYThjZmE0YyJ9"
         }
       ]
     },
@@ -103,14 +111,14 @@
       "statement": "A gateway binding with cold_start: wait boots the recipe and holds the HTTP connection through the swap (GLM cold start returned 200 after 584 s on 2026-11-08), so a gateway-mediated answered request clears the verified bar.",
       "evidence": [
         {
-          "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:16973763515f9eb6a3771b672d29c2432fad3440162d41bf9194b0b4af7d8a52"
+          "resource": "repo://HISTORY.md#L836-L838",
+          "version": "repo-lines-v1:sha256:37ed94053432642cdcb719521155419dea0471c85b9bd151a23e960e885d6f60:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWVlZGE3OGQ0MTliMTY2NzkzNzZlZmM5NTBlZTYxODA1MDQwN2IyMGFhYTY5NGEyNjA1NTllYTU0NTk2MmUyZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWExOTBjNzAxOTU3MmQxMjcyYjE3YWNhNWFjODkyZGE3ODhhZTkzYjFkZjUxNjlmMGY5MWEzYWYyN2Y5NWM3MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWJmM2Y3OWM3MzU2ZDlhNmZkYzdhZmUxZjE1MjgyOGJlNDE1NzhkZTBkNzVkMGE4NzcyZWE0NDhiMmFlYzBjMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTMzMTNlY2YzMmI4OTU1ODc1OWMxZmE4M2MyNDI1N2JmYWUyMTE1YzZlMzFmYTI5MTVkMzc2NjQ2OWJlNTg1MSJ9"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-08T21:00:19.321Z"
+    "at": "2026-11-09T21:00:11.445Z"
   }
 }

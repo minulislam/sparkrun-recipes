@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:14dfed87fb14e40b93e5222bc1f37520f83a896be98e3297c143b9b128fad053",
+  "pageVersion": "sha256:24fc355d76c00d736ea018317fa66753a72ee1a727948848a2ad06f4b76de454",
   "claims": [
     {
       "id": "claim_1f7e663125ac45009d7d858ed0513a0e",
@@ -68,7 +68,7 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:16973763515f9eb6a3771b672d29c2432fad3440162d41bf9194b0b4af7d8a52"
+          "version": "repo-file-v1:sha256:be491927f5129be026395cfe55ad0f4bf5c1d2294beb49064a76259dc1ee0cd6"
         },
         {
           "resource": "repo://benchmarks/results_qwen38-flash-next-tp2-20261103.yaml",
@@ -78,11 +78,11 @@
     },
     {
       "id": "claim_803b86f2294f434986c39671f34f63a2",
-      "statement": "tg128 is unreliable at c=8 because TTFR stagger (~4.8 s) overlaps too little of a 128-token window; tg=256 or longer is required for c=8 comparisons.",
+      "statement": "tg128 reads unreliably at c=8 because the ~4.8 s TTFR stagger overlaps too little of a 128-token window, so c=8 comparisons use tg=256.",
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:16973763515f9eb6a3771b672d29c2432fad3440162d41bf9194b0b4af7d8a52"
+          "version": "repo-file-v1:sha256:be491927f5129be026395cfe55ad0f4bf5c1d2294beb49064a76259dc1ee0cd6"
         }
       ]
     },
@@ -92,7 +92,7 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:16973763515f9eb6a3771b672d29c2432fad3440162d41bf9194b0b4af7d8a52"
+          "version": "repo-file-v1:sha256:be491927f5129be026395cfe55ad0f4bf5c1d2294beb49064a76259dc1ee0cd6"
         },
         {
           "resource": "repo://benchmarks/results_inkling-small-tp2-20261103.yaml",
@@ -109,10 +109,20 @@
           "version": "repo-file-v1:sha256:4b0d29261912baa678926f114ccc759d2ea2cbafc47e4f67cb4b9318e60b5443"
         }
       ]
+    },
+    {
+      "id": "claim_9564fcab44434cdeb360384d88d91553",
+      "statement": "For models using speculative decoding (such as DFlash or MTP), benchmarks/scripts/task_mix_bench.py standardizes throughput measurement across prose, code, and JSON tasks because structured output and code draft with substantially higher acceptance rates than free-form prose.",
+      "evidence": [
+        {
+          "resource": "repo://benchmarks/scripts/task_mix_bench.py#L1-L20",
+          "version": "repo-lines-v1:sha256:a6fb758889e1e6cb77aaade681c31d89c8fd3fe69199189c7833516416e306f4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2ODJjYmRiNGM4YjA3NTE4YmY0ODZjNTg5OTBmYzM5MTc4M2FhMjBhOTE2YmZiMjdhZDIxMWViMWQ1YzM2NDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzN2E3MzJkODExYzE2OWZkNTFkYzU1ZjI2ZmZjNjRlZTNlZmFkMWFmNTQ3M2JkMzdjN2NlNmVmMmUyODcwNGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYxNzMyNmYxNzNjNmE5YWQ0NWQyNWUyYmU2MzMwNDgxZGUyODRmYTVjODAxMTEwYjMyNThjMzdlMDc0MDk1MDMifQ"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-08T21:00:19.321Z"
+    "at": "2026-11-09T23:33:40.548Z"
   }
 }

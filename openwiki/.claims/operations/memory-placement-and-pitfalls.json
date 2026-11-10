@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:2bc6de747615fd4fda2d970d7cff7ea4bc4fdc6cec25145fe472f68d25e496ff",
+  "pageVersion": "sha256:6164ca840c2cbaf8a300b9ca044bf79a435a83671ad37d86e9285ff36d568451",
   "claims": [
     {
       "id": "claim_ce0c18a017eb45eb8fdbb33390dc963a",
@@ -94,7 +94,7 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:16973763515f9eb6a3771b672d29c2432fad3440162d41bf9194b0b4af7d8a52"
+          "version": "repo-file-v1:sha256:be491927f5129be026395cfe55ad0f4bf5c1d2294beb49064a76259dc1ee0cd6"
         }
       ]
     },
@@ -117,7 +117,7 @@
           "version": "repo-lines-v1:sha256:a82e7689cbd84e786b74cf0b57b25a38c7551656fe2f105883dded656a3e1c06:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTgyZTc2ODljYmQ4NGU3ODZiNzRjZjBiNTdiMjVhMzhjNzU1MTY1NmZlMmYxMDU4ODNkZGVkNjU2YTNlMWMwNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTgyZTc2ODljYmQ4NGU3ODZiNzRjZjBiNTdiMjVhMzhjNzU1MTY1NmZlMmYxMDU4ODNkZGVkNjU2YTNlMWMwNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmFhYjlmMmRkMzNkOWEyYzAwMjQ2NjU3MTcyZWU5OTEyZDJhODY1YjQ4N2EyNTI1MzEwM2M1YTM5MmVkNjcxZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjYxMjM1MmIyNWY1M2Y2NDE3MmQxZWE5MGI3NGM5ZmNjZTczYzcxNTdjYmQ5MjE3OTY2YWM4MDhkMDcyOTEwNiJ9"
         },
         {
-          "resource": "repo://recipes/qwen3-embedding-4b-tp1.yaml#L16-L22",
+          "resource": "repo://recipes/qwen3-embedding-4b-tp1.yaml#L18-L24",
           "version": "repo-lines-v1:sha256:3132716ea7860cf61b1105b67f3cbc1c2629d513a30e330769def3270d11b207:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzI3YTA1NTg4MmZhYjdiYWQ5YTRiNmM2M2ZmY2JhZTUyMTAyOTBhZDYyNjk5YzMxZmYwY2JjODQ1ZWZiYTU2NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmM2YjJlOWVmYmQ5NGU3MjEwNjM4MzNlOWEzZTI5NWYwNWQ0OWE4Zjk0NWFlMWVkYWFlMTZlZDA1MmMzMGQyZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzBhOTczZTg2ZjYwZjc1MDc3MGFjMzdiMjBlZmJhMDFkNzA2NjQ4OWViMTFjY2ZhNzVhYjQ0NGVmZTIxMjk4OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODEyNWQ2ZjFlYmI2NDJiMzRiMWRiM2FhMjdiYzA0NDIyZmVkMzM2YmZiMzkxNDY5Yzc1ZWU0Yjk2MThmNzE0MCJ9"
         },
         {
@@ -143,6 +143,6 @@
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-08T21:00:19.321Z"
+    "at": "2026-11-09T21:00:11.445Z"
   }
 }

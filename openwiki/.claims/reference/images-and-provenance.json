@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:fbdaaa026cb70b34b7f3b5410e05974f0b1aff396ca77da0ca71abe23f583789",
+  "pageVersion": "sha256:b3db7941cb5c2b08d9a28ac6d1e27e77835adadd77ae9c9e07d98392a4f536ee",
   "claims": [
     {
       "id": "claim_977b881f419848fba8b33b37b14aefea",
@@ -68,15 +68,15 @@
     },
     {
       "id": "claim_6649cb8daf5e44d4918b3da3162a1ed6",
-      "statement": "The qwen3 embedding/reranker recipes (rows 65-66) pin the container from the upstream tf5:latest to the dated tf5:2026092702 build already on disk per IMAGE-POLICY; the worker lacks this 24.8 GB image, so a gx10-solo activation pulls it on first use.",
+      "statement": "The qwen3 embedding/reranker recipes (rows 65-66) pin the container from the upstream tf5:latest to the dated tf5:2026092702 build already on disk per IMAGE-POLICY; that image was not on the worker at adoption (2026-11-08) and was streamed to gx10-spark on 2026-11-09.",
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:16973763515f9eb6a3771b672d29c2432fad3440162d41bf9194b0b4af7d8a52"
+          "version": "repo-file-v1:sha256:be491927f5129be026395cfe55ad0f4bf5c1d2294beb49064a76259dc1ee0cd6"
         },
         {
           "resource": "repo://recipes/qwen3-embedding-4b-tp1.yaml",
-          "version": "repo-file-v1:sha256:8c2986c3a8670c0f29b79234dc789280f991893a8c5e197a531925e0f24b12b7"
+          "version": "repo-file-v1:sha256:93148fc9359be79a2586ea5cfc2c1364176e330b242b6f5f7c0b106d1647d6fd"
         }
       ]
     },
@@ -93,6 +93,6 @@
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-08T21:00:19.321Z"
+    "at": "2026-11-09T21:00:11.445Z"
   }
 }
