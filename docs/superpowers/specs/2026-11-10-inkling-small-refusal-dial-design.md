@@ -129,19 +129,33 @@ flowchart TD
   - `POST /admin/refusal_lambda` -> `{"status": "ok", "lambda": float(val)}` (triggers cache flush)
 
 ### 5.4 Recipe Specification: `recipes/inkling-small-nvfp4-refusal-dial-tp2.yaml`
-- Inherits exact flags from `recipes/inkling-small-nvfp4-tp2-sglang.yaml`.
-- Container mounts overlay mod via `mods/inkling-refusal-dial`.
-- Env configuration:
+Following the exact setup pattern established in [`recipes/qwen38-27b-nvfp4-refusal-dial.yaml`](file:///home/devops/workspace/sparkrun-recipes/recipes/qwen38-27b-nvfp4-refusal-dial.yaml):
+- **Model**: `thinkingmachines/Inkling-Small-NVFP4` (stock weights)
+- **Runtime**: `sglang` (TP=2)
+- **Container**: `ghcr.io/drowzeys/inkling-sglang-gb10:kvquant` with the refusal projection overlay
+- **Env**:
   ```yaml
   env:
     SGLANG_REFUSAL_DIRS: /opt/refusal/refusal_dirs_inkling.safetensors
     SGLANG_REFUSAL_LAMBDA_INIT: "1.0"
   ```
-- Post-exec smoke test:
+- **Pre-Exec** (verifies directions load and claim all 42 layers before engine boot):
+  ```yaml
+  pre_exec:
+    - python3 /opt/refusal/verify_inkling_rank1.py
+  ```
+- **Post-Exec** (confirms readiness, sets default lambda=1.0 uncensored, prints active state):
   ```yaml
   post_exec:
     - curl -s localhost:{port}/v1/models
+    - 'curl -s -XPOST localhost:{port}/admin/refusal_lambda -H ''Content-Type: application/json'' -d ''{{"lambda": 1}}'''
     - curl -s localhost:{port}/admin/refusal_lambda
+  ```
+- **Post-Commands** (prints standard operator helper commands):
+  ```yaml
+  post_commands:
+    - 'echo "ablation on:  curl -XPOST {head_host}:{port}/admin/refusal_lambda -d ''{{\"lambda\": 1}}''"'
+    - 'echo "ablation off: curl -XPOST {head_host}:{port}/admin/refusal_lambda -d ''{{\"lambda\": 0}}''"'
   ```
 
 ---
