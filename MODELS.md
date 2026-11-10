@@ -32,9 +32,10 @@ upstream repos that no longer exist (only one of them had data on disk).
 >   can be re-downloaded) and the 82.3 GiB partial `Mia-AiLab/GLM-5.3-Flash-EXL3-TR3-4bpw`
 >   on the head (source gone, not resumable). The `nvidia/DeepSeek-V4-Flash-NVFP4` stub and
 >   its `deepseek-v4-flash-nvfp4-atlas-ep2` recipe were left in place.
-> - `~/.cache/huggingface/spark-forge-local/glm53-flash-ablit-topk2044` on both nodes is a
->   hardlinked copy of the GLM checkpoint with `index_topk` 2044 in `config.json`. It takes
->   no extra space and is for the planned NVFP4-KV long-context recipe.
+> - `~/.cache/huggingface/hub/models--local--glm53-flash-ablit-topk2044/snapshots/local` on the
+>   head (moved 2026-11-10 from `spark-forge-local/`) is the GLM checkpoint with `index_topk` 2044
+>   in `config.json`. The worker still has the old `spark-forge-local/` path, which the recipe
+>   needs for two-node launches. NAS backup: `/mnt/nas/ai-models/model-backup/huggingface-hub/spark-forge-local/glm53-flash-ablit-topk2044/`.
 > - Free space after the deletions: head 852 GiB, worker 1.3 TiB.
 
 A repo counts as **complete** only when every shard named in

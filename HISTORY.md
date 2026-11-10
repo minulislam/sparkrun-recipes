@@ -864,3 +864,32 @@ Gateway now lists: `qwen3.8-flash-next-abliterated`, `deepseek-v4-coder`,
 - sparkrun's startup probe still reports failure for pooling runners (expects a chat token). Expected; ignore for this recipe.
 - Gotcha 5 from 2026-11-08 is resolved: the pinned `dgx-vllm-eugr-nightly-tf5:2026092702` image was streamed to gx10-spark (`docker save | ssh docker load`, 2m30s) and the Qwen3-Embedding-4B weights were copied to `~/.cache/huggingface/hub` on gx10-spark over CX7. Three Xet symlinks in the gb10 copy were hardlinked before the copy.
 - The reranker (row 66) is not touched in this entry. Its row claims direct `/v1/rerank` verification on 2026-11-08; that was not re-run today.
+
+## 2026-11-10: GLM-5.3 topk2044 checkpoint backed up to NAS and moved to hub layout (head only)
+
+- Backed up `~/.cache/huggingface/spark-forge-local/glm53-flash-ablit-topk2044` (30 files, 197,881,215,469 bytes) to `/mnt/nas/ai-models/model-backup/huggingface-hub/spark-forge-local/glm53-flash-ablit-topk2044/`. Sizes and file list verified against source.
+- Moved the head copy into hub layout: `~/.cache/huggingface/hub/models--local--glm53-flash-ablit-topk2044/` (blobs/, refs/main = `local`, snapshots/local/ symlinks). `spark-forge-local/` removed on the head. All 30 symlinks resolve.
+- Recipe `glm-5.3-flash-abliterated-nvfp4kv-long-tp2.yaml`: `model_path` now `/cache/huggingface/hub/models--local--glm53-flash-ablit-topk2044/snapshots/local`; comments updated. `MODELS.md` updated.
+- Open: the recipe comment previously said the directory must NOT use HF cache layout. Hub layout is untested for vLLM; first boot must confirm.
+- Open: worker `gx10-spark` still has only the old `spark-forge-local/` path, and the worker was unreachable (10.10.20.11). Two-node launches of this recipe will fail until the worker copy is moved or recreated at the new path.
+- Not committed. Recipe and MODELS.md changes are uncommitted on `main`.
+
+## 2026-11-10: Worker copy of GLM topk2044 moved to hub layout
+
+- gx10-spark was back (mgmt 10.10.20.11 and CX7 10.99.10.11 both answered). Moved `~/.cache/huggingface/spark-forge-local/glm53-flash-ablit-topk2044` to `~/.cache/huggingface/hub/models--local--glm53-flash-ablit-topk2044/snapshots/local/` with the same layout as the head. 30 files; safetensors bytes match the head (197,843,812,476); `index_topk` is 2044 in config.json.
+- Both nodes now have the path the recipe uses. Still untested: a two-node launch of the recipe, and whether vLLM accepts the hub layout (first boot).
+
+## 2026-11-10: Head HF cache — FP8 Qwen3.8-27B and all non-full repos deleted
+
+- User request. All 20 repos were already on the NAS backup (`/mnt/nas/ai-models/model-backup/huggingface-hub/`); `Qwen/Qwen3.8-27B-FP8` snapshot `017b9c7` and the two complete Mistral shards were checked by name and size before deleting.
+- Deleted with `hf cache rm` (dry run first), 42.5 GB reported, `/` free 459 → 522 GB: `Qwen/Qwen3.8-27B-FP8`; partials `mistralai/Mistral-Small-4-119B-2603-NVFP4` (2/13 shards), `local-inference-lab/{Qwen3.8-27B-NVFP4-QAD,GLM-5.3-Flash-NVFP4,GLM-5.3-Flash-NVFP4-Spark,GLM-5.3-NVFP4}`, `deepseek-ai/{DeepSeek-V4-Flash,DeepSeek-V4-Flash-Vision-Exp}`, `Qwen/Qwen3-VL-Reranker-8B`, `OptimizeLLM/Qwen3-VL-30B-A3B-Thinking-NVFP4`; stubs `0xSero/deepseek-v4-flash-0731-spark`, `dealignai/GLM-5.3-Flash-UNCENSORED-NVFP4`, `inclusionAI/Ling-3.0-flash-int4`, `kodelow/Hy3-NVFP4-W4A16`, `mistralai/Mistral-Small-4-119B-2603`, `nvidia/DeepSeek-V4-Flash-NVFP4`, `nvidia/Qwen3.8-Flash-Next-NVFP4`, `RadixArk/Qwen3.8-27B-NVFP4`, `Sebesky/MiniMax-M3-W4A16-GPTQ`, `XanuNetworks/North-Mini-Code-1.0-NVFP4`.
+- Head now holds only complete repos. Worker gx10-spark not touched.
+- Open: proxy binding `@spark-forge/qwen3.8-27b-fp8-mtp-tp1` still routes `Qwen/Qwen3.8-27B-FP8`; a request will cold-start a 31 GB download or fail. `MODELS.md` not yet updated for these deletions.
+- Follow-up: the same 10 weightless stubs were also removed from the NAS backup (`hf cache rm --cache-dir /mnt/nas/ai-models/model-backup/huggingface-hub`, dry run first; 10 repos, 11 revisions, 469 KB). Each NAS copy was checked to hold zero weight files first. Worker had none of them.
+
+## 2026-11-10: Old lil Qwen3.8-Flash-Next revision removed; heretic recipes pinned
+
+- `local-inference-lab/Qwen3.8-Flash-Next-NVFP4` held two full revisions: `main` `6c01ac3` (41 shards, 106.4 GB) and the superseded `7c4f1bc` (36 shards, 105.9 GB, no shared files). NAS copy of `7c4f1bc` verified by name and size, then `hf cache rm 7c4f1bc…` (dry run first).
+- Gotcha: `hf cache rm` freed nothing on disk. The hub also has a shared content store at `~/.cache/huggingface/hub/blobs/<2-char>/<sha256>` that repo blobs hardlink (and, for `Qwen/Qwen3-Reranker-4B`, symlink) into. Removed the 650 store files no repo referenced by hardlink or symlink (103.1 GB); `/` free 522 → 618 GB. Every repo re-checked complete afterwards.
+- Do NOT run `hf cache prune` here: its dry run lists 1.2 TB, including detached revisions that recipes pin (`orcarouter/DeepSeek-V4-Flash-Vision-Uncensored` `2ef3d5c`, `orcarouter/Qwen3.8-27B-Uncensored-NVFP4` `69d2134`) and repos with no `main` ref.
+- `qwen36-35b-a3b-heretic-nvfp4.yaml` and `-batch.yaml`: added `model_revision: a483749…`. HF `main` `c28027d` only edits README.md, and both nodes cache just its config.json, so unpinned launches would have resolved to a weightless snapshot. `sparkrun recipe validate` passes on both (warnings only). Uncommitted.

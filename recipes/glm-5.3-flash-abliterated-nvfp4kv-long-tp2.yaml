@@ -44,11 +44,14 @@
 # >>>   4. Image retagged with a date; same digest as upstream's
 # >>>      sha256:f722ec19d8260833e948d5bf46949d9ac574841860060caa24213cf550d1a41b.
 # >>>   5. Chat template is the checkpoint's chat_template.thinking-off.jinja.
-# >>> SERVES FROM A LOCAL DIRECTORY, not the HF cache layout: upstream needs `index_topk` 2044 in
+# >>> SERVES FROM A LOCAL DIRECTORY (moved into hub layout 2026-11-10; first boot must confirm vLLM
+# >>>   accepts it): upstream needs `index_topk` 2044 in
 # >>>   config.json (the SM120/b12x kernels are fixed at a 2048-wide index and GLM adds a tail), and
 # >>>   --hf-config-path breaks vLLM's sparse-backend detection. So
-# >>>   ~/.cache/huggingface/spark-forge-local/glm53-flash-ablit-topk2044 on BOTH nodes is a
-# >>>   hardlinked copy of snapshot cecebc0 with only config.json changed (zero extra space).
+# >>>   ~/.cache/huggingface/hub/models--local--glm53-flash-ablit-topk2044/snapshots/local on the head
+# >>>   is the snapshot with only config.json changed (2026-11-10 move from spark-forge-local). The
+# >>>   worker copy at ~/.cache/huggingface/spark-forge-local/glm53-flash-ablit-topk2044 is NOT yet
+# >>>   moved; this recipe cannot launch two-node until the worker has the same path.
 # >>>   sparkrun does not manage or sync that directory. Recreate it on each node with
 # >>>   mods/glm53-nvfp4kv-overlays/make_topk2044_dir.py if the checkpoint is re-downloaded.
 # >>> Upstream predates the checkpoint's 2026-09-27 re-publish (RedHat-layout body). Whether the
@@ -109,7 +112,7 @@ defaults:
   kv_cache_dtype: nvfp4_ds_mla
   kv_cache_memory: 2147483648
   num_speculative_tokens: 2
-  model_path: /cache/huggingface/spark-forge-local/glm53-flash-ablit-topk2044
+  model_path: /cache/huggingface/hub/models--local--glm53-flash-ablit-topk2044/snapshots/local
   served_model_name: glm-5.3-flash-abliterated-long
 
 command: |
