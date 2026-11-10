@@ -74,6 +74,7 @@ defaults:
 
 command: |
   vllm serve {model} \
+      --revision {model_revision} \
       --served-model-name {served_model_name} \
       --host {host} \
       --port {port} \
