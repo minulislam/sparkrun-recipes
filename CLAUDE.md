@@ -1,3 +1,7 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 # spark-forge recipe registry
 
 sparkrun recipes for a two-node DGX Spark pair: head `gb10-spark` (10.10.20.10)
@@ -17,14 +21,58 @@ publishes is named `spark-forge`. The name mismatch is deliberate.
 | `.claude/skills/verify/SKILL.md` | How to launch a recipe and prove it serves |
 
 The live cluster is the source of truth. Docs record what was measured on a
-date; re-check before acting on them.
+date; re-check before acting on them. `README.md` is the public face and is
+older than the rest (it still names a cluster `default`, which does not exist).
+
+## Commands
+
+There is nothing to build. The work is YAML recipes run through the `sparkrun`
+CLI (0.4.2, uv tool).
+
+```bash
+sparkrun recipe validate recipes/<name>.yaml        # one file per call; warnings do not block
+sparkrun recipe show ./recipes/<name>.yaml          # render the working-tree copy
+sparkrun recipe show @spark-forge/<name>            # render what the registry (= main) serves
+sparkrun run ./recipes/<name>.yaml --cluster <c> --dry-run
+sparkrun run ./recipes/<name>.yaml --cluster <c> --no-follow
+sparkrun stop ./recipes/<name>.yaml --cluster <c>
+sparkrun registry update spark-forge                # after committing to main
+sparkrun proxy sync                                 # make the gateway match proxy.yaml
+```
+
+To re-measure weights for `MODELS.md`, run the script under its *Regenerate*
+section on each node (copy it to the worker first).
+
+## How the pieces connect
+
+- **Recipe → registry.** `~/.config/sparkrun/registries.yaml` defines
+  `spark-forge` as `file:///home/devops/workspace/sparkrun-recipes`, subpath
+  `recipes`. sparkrun keeps a clone of local `main` at
+  `~/.cache/sparkrun/registries/spark-forge`. The working tree is often on
+  `develop`, so a commit there is invisible to sparkrun until it reaches `main`.
+  Check `git branch --show-current` before committing.
+- **Registry → gateway.** `~/.config/sparkrun/proxy.yaml` holds the SparkRoute
+  bindings (`recipe: '@spark-forge/<name>'`, `cluster` or `cluster_candidates`,
+  `cold_start: wait`) and aliases (`default` → `qwen3.8-27b-uncensored`). The
+  gateway listens on `0.0.0.0:4000` with no admin token. Bindings name the
+  registry copy, not the working tree.
+- **Recipe → weights.** `model:` names the HF repo. `model_revision:` alone does
+  not reach vLLM; the `command:` must also pass `--revision {model_revision}`.
+  A recipe that loads a local directory sets `model_path:` instead, using the
+  container path `/cache/huggingface/...` (the host's `~/.cache/huggingface`).
+- **Overlays and images.** `recipes/mods/<name>/` holds runtime patches that
+  recipes reference by name. `images/<name>/` holds locally built images (e.g.
+  `images/deepseek-rank1/` for the DeepSeek refusal-dial recipe).
+- **Evidence.** `benchmarks/` holds reports, `benchmarks/results/` raw runs,
+  `benchmarks/scripts/` the drivers. `openwiki/` is generated nightly; do not
+  hand-edit it. Design docs live in `docs/superpowers/specs/`.
 
 ## Rules
 
-- **Registry is a git clone of `main`.** A recipe change is invisible to
+- **Registry is a clone of local `main`.** A recipe change is invisible to
   sparkrun until it is committed to `main` and
-  `sparkrun registry update spark-forge` has run. Work goes straight to `main`;
-  there is no PR step. Commit and push only when asked.
+  `sparkrun registry update spark-forge` has run. There is no PR step. Commit
+  and push only when asked.
 - **Search before writing a recipe.** Run `sparkrun registry update`, then
   `sparkrun recipe search` across every registry. If upstream has one, copy it
   with an attribution header and change only what this pair needs.
@@ -33,7 +81,14 @@ date; re-check before acting on them.
   disk.
 - **Weights are hard to replace.** Check `MODELS.md` before launching. Back up
   to `/mnt/nas/ai-models/model-backup/huggingface-hub/` before deleting a
-  checkpoint. Deleting weights is the user's call. Never run `hf cache prune` without `--dry-run`.
+  checkpoint. Deleting weights is the user's call.
+- **Never run `hf cache prune` for real.** Its dry run lists about 1.2 TB here,
+  including detached revisions that recipes pin. Delete with `hf cache rm`
+  (dry run first). Repo blobs are hardlinks or symlinks into a shared store at
+  `~/.cache/huggingface/hub/blobs/<2-char>/<sha256>`, so `hf cache rm` frees
+  nothing until the unreferenced store files go too.
+- **A TP2/EP2 recipe needs its weights on both nodes.** `MODELS.md` lists which
+  ones have them; as of 2026-11-10 most two-node checkpoints are head-only.
 - **Keep what runs on two nodes; drop what needs three.**
 - **One canonical copy of each recipe.** Benchmark reports live in
   `benchmarks/`.
@@ -61,10 +116,15 @@ date; re-check before acting on them.
 - Serve logs are in `/tmp/sparkrun_serve.log` inside the container.
 - Always launch with `--no-follow`. Load the `sparkrun:run` skill before using
   the CLI.
-- sparkrun 0.3.10: self-rsync deletes symlinked HF blobs (hardlink first),
-  digest-pinned images fail on the worker (use tags), `--no-rm` does not keep
-  crashed containers.
-- No passwordless sudo on either node. Hand root steps to the user.
+- Seen on sparkrun 0.3.10 (not re-checked on 0.4.2): self-rsync deletes
+  symlinked HF blobs (hardlink first), digest-pinned images fail on the worker
+  (use tags), `--no-rm` does not keep crashed containers.
+- `sparkrun proxy start`/`alias add` can fail with `ResourceBusy` while the
+  proxy runs under `sparkrun-proxy.service`. Edit `proxy.yaml`, then
+  `sparkrun proxy sync`, or restart the unit
+  (`sudo -n systemctl restart sparkrun-proxy.service` is allowed without a password).
+- No passwordless sudo on either node, apart from start/stop/restart of
+  `sparkrun-proxy.service` on the head. Hand other root steps to the user.
 
 <!-- handoff:learnings:begin -->
 ## Session Learnings (auto-updated by handoff)
