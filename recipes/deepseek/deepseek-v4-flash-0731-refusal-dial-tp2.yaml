@@ -105,6 +105,11 @@ defaults:
   num_speculative_tokens: 5
   served_model_name: deepseek-v4-flash-0731-dial
 
+post_exec:
+  - curl -s localhost:{port}/v1/models
+  - 'curl -s -XPOST localhost:{port}/admin/refusal_lambda -H ''Content-Type: application/json'' -d ''{{"lambda": 2.0}}'''
+  - curl -s localhost:{port}/admin/refusal_lambda
+
 post_commands:
   - 'echo "ablation on:  curl -XPOST {head_host}:{port}/admin/refusal_lambda -d ''{{\"lambda\": 1.5}}''"'
   - 'echo "ablation off: curl -XPOST {head_host}:{port}/admin/refusal_lambda -d ''{{\"lambda\": 0}}''"'
