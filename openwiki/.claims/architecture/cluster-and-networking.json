@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:3efee858db7bb6f2bcaf2737cda294f58e44af79384b6fb54d6f6f9b7b8edb7a",
+  "pageVersion": "sha256:a70ac8ea7ca6bec30040db59f9787373507e87ed791e3ad371057f6221b3554f",
   "claims": [
     {
       "id": "claim_3b0ca6ee679d4566b81277271e99fc08",
       "statement": "The dgx-pair cluster is the sparkrun default and spans two GB10 DGX Spark nodes — head gb10-spark (10.10.20.10) and worker gx10-spark (10.10.20.11), each ~121 GiB unified memory — with sibling clusters dgx-pair-ep, gb10-solo, and gx10-solo; there is no cluster literally named 'default'.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L45-L47",
+          "resource": "repo://CLAUDE.md#L100-L102",
           "version": "repo-lines-v1:sha256:15d4af8e8da05342580e042336ac4350ff186e2f5e48301d72f815323d860300:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTg4ZDhmMzM5ZjcwZTkzMjM2NzQ1ZjFhYzdkZWFkNWMyMGJkNzFmNGVlZTQ3MTA4ZjViY2QyMWVkYmVlYzA5NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODgxYzVkZmRlNTA4YjRkMzlhNjJiNmNmZjQ2NjE4YzFlOTNhZmRlYWM0ZDc3ZWViYWIyNGVjYTBkYjhjNGJmZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDJiZmE5Y2IzMTIxZmE2MDUwZDk5Y2NkMjI0MDgzNzcyZWJhY2VmNjM5NDhlMWRkMWQzNGUwMzQwYmY4YmQyYSJ9"
         },
         {
@@ -21,7 +21,7 @@
       "statement": "Two-node NCCL/Gloo/TCP-store interface bindings (NCCL_IB_HCA, NCCL_SOCKET_IFNAME, GLOO_SOCKET_IFNAME, TP_SOCKET_IFNAME) are pinned in the cluster definition at ~/.config/sparkrun/clusters/dgx-pair.yaml under env:, are load-bearing, and must not be moved into recipes (doing so trips the managed-comm-env validator).",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L48-L49",
+          "resource": "repo://CLAUDE.md#L103-L104",
           "version": "repo-lines-v1:sha256:87f6248ecf70d792df4ba7ef80d2ef4490c73dfa6e7d148b8e2fc9cc8ad71d55:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2Q0NGY5MDc5YTI3MmMyZDE3NzViMTNkMjI5YmM2NDJmYWE5ZWRjOWI1YmQyOGMyNDc5NTJmYjE1NDM2NzQ1NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjU5ZGQ5Mzk2ZDZlOTUxMWYyYzYxYjUyNzFkY2E4MmZiNzI1MjUwMjMwMjBjNzUwNDgxYmQzZjNhYjY2MTAxYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTVkNGFmOGU4ZGEwNTM0MjU4MGUwNDIzMzZhYzQzNTBmZjE4NmUyZjVlNDgzMDFkNzJmODE1MzIzZDg2MDMwMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2UxODFjZTIyMzJjYWY2ZWVjOTU1MDc0OTVmZDUwOThjZGQ5YTQ1OGMxMmUzYmE2NTkwY2ZmYzkyMjUzZTQzMCJ9"
         },
         {
@@ -45,7 +45,7 @@
       "statement": "sparkrun setup cx7 and the setup wizard must never be run on dgx-pair because they can rewrite the intentional duplicate-IP layout and drop the load-bearing comm pins; after a worker reboot, sparkrun setup check --cluster dgx-pair should be run before a two-node launch.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L50-L54",
+          "resource": "repo://CLAUDE.md#L105-L109",
           "version": "repo-lines-v1:sha256:8f47e5117c780ec99c8daabc541569d6f69ff0897c3db4d3e129451a6a5848be:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDdmOWM5ZGRiOTlmYmVjMWZhYTJlZjYwNGQyOWEzZmJlYzc1YjU0OWU1YTAyYmU2NDZjN2RhY2ZkZWQxOTBhZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTVkMmIwNDkzMjkwNGExMTU3ODg3NWU2YjgxY2M2YWNjOTI4MTQ1MjQ2NzY1ZmFjOWY4MzViMGY1OWQwYmJiZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzhiZmZjMWIyODE4ZTYxODBlMjhkZDM0NjdlYTk0MDMzOTBkNDk5NmQyN2NmNGUxMjQ3NWM2MjBmNWU1MjhhYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGU2Y2MzZWJmZjhhOGNjNDQ0OWQ5Mzk5Nzg0MjcwOTZiNjQyMGQ5YzU2YTcxMzNiNTBiNWFkMDM4NmE1NGY5NSJ9"
         }
       ]
@@ -80,11 +80,11 @@
     },
     {
       "id": "claim_1d02b53117bd41da8b54a02d51fdc062",
-      "statement": "Neither node has passwordless sudo, so root-level network repair steps are handed to the operator to run in their own terminal rather than performed by automation.",
+      "statement": "Neither node has passwordless sudo except for start/stop/restart of sparkrun-proxy.service on the head, so other root-level network repair steps are handed to the operator.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L67-L67",
-          "version": "repo-lines-v1:sha256:e4b628860d5beda829666ac0e7927dc588ee29ead68ed1b2aef3089665824046:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTRiNjI4ODYwZDViZWRhODI5NjY2YWMwZTc5MjdkYzU4OGVlMjllYWQ2OGVkMWIyYWVmMzA4OTY2NTgyNDA0NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTRiNjI4ODYwZDViZWRhODI5NjY2YWMwZTc5MjdkYzU4OGVlMjllYWQ2OGVkMWIyYWVmMzA4OTY2NTgyNDA0NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjcyNWQ1ODc5NTc2NzY4MDM2NmI1NmM4OWEzY2RmZTMxNDJlYTJhYjM2ZjA0YjMxNWI5NWMyMTM0ZmJjZDVkOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTFkNWYwNzU5NDFiMDg4MDcyODFiYWRiMzhiNzUwNjk0MTY1ODRhM2MyMzZhOWE0MTM0N2YxN2IzNDJkNjAyMiJ9"
+          "resource": "repo://CLAUDE.md#L126-L128",
+          "version": "repo-lines-v1:sha256:afcbab3ebec5bcafc1dd6b552945eb5195dc0395fbf4cc9d7f4d6cbdf39d16d3:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzY1OTc0YWJjYjcxYWE4MzY1NDE3NGQyNWE3N2YxMTNjODQzMDIyMmRjZWQyNWQzNmQxNzEwNjcyNGJiODAzNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGMzYmU0NGJmMjUxNmMzYTg4ZmY0MTdjNTRlMDZmMTU0NDBlYjllMWFmNWViNDdiZjIzMWI2NzdlMzFiNWE1YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWY3NjdhMTdhNTAyMWExNTU5OTU0NGI5NDMzNDE4YTVjYjg3MGY1YWI0MjhkNmVlZmQ0YzBkMGQ5MWQzZmQ5MiJ9"
         }
       ]
     },
@@ -94,7 +94,7 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:be491927f5129be026395cfe55ad0f4bf5c1d2294beb49064a76259dc1ee0cd6"
+          "version": "repo-file-v1:sha256:e2f45aa7dad4c3ca3135e8cabfb5f59c2c52d64c8de0d012788700e63667ceee"
         },
         {
           "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md",
@@ -108,7 +108,7 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:be491927f5129be026395cfe55ad0f4bf5c1d2294beb49064a76259dc1ee0cd6"
+          "version": "repo-file-v1:sha256:e2f45aa7dad4c3ca3135e8cabfb5f59c2c52d64c8de0d012788700e63667ceee"
         }
       ]
     },
@@ -118,25 +118,21 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:be491927f5129be026395cfe55ad0f4bf5c1d2294beb49064a76259dc1ee0cd6"
+          "version": "repo-file-v1:sha256:e2f45aa7dad4c3ca3135e8cabfb5f59c2c52d64c8de0d012788700e63667ceee"
         }
       ]
     },
     {
       "id": "claim_ab4bd3171f6344a0a0ae978063893b07",
-      "statement": "Installed sparkrun is 0.4.2 (uv tool) and the active gateway is the SparkRoute plugin 0.3.4; the proxy originally bound 0.0.0.0:4000 (flagged by the 2026-11-03 audit) and was restarted bound to 127.0.0.1:4000 on 2026-11-07.",
+      "statement": "Installed sparkrun is 0.4.2 and the gateway is the SparkRoute plugin 0.3.4; it was restarted on 127.0.0.1:4000 on 2026-11-07 after the 2026-11-03 audit flagged 0.0.0.0:4000, but current CLAUDE.md again describes it as listening on 0.0.0.0:4000 with no admin token.",
       "evidence": [
         {
-          "resource": "repo://AGENTS.md#L10-L10",
-          "version": "repo-lines-v1:sha256:f690f7ffa3f48874363e91b7f5cfce2813521faf3c6d871b304943371ce8f752:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjY5MGY3ZmZhM2Y0ODg3NDM2M2U5MWI3ZjVjZmNlMjgxMzUyMWZhZjNjNmQ4NzFiMzA0OTQzMzcxY2U4Zjc1MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjY5MGY3ZmZhM2Y0ODg3NDM2M2U5MWI3ZjVjZmNlMjgxMzUyMWZhZjNjNmQ4NzFiMzA0OTQzMzcxY2U4Zjc1MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGYwZjMxZjg5Yzg1ZGM0MDRlMDM2MTMyYTIxYzUwOGNkZGNkY2ZmMjMzY2Y2YWQxMmQ0MWJlNDQ4NTQ5ZDg2OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWRmNWMzZjMyMjQ1NjIxYzNhYmIxN2Y5MjkyNjUwYjU2ZTU0YmNmMDU1NjFlZWY0YjhmNDYwYzcyNGNmN2YxZSJ9"
+          "resource": "repo://CLAUDE.md#L54-L58",
+          "version": "repo-lines-v1:sha256:18855a3b1b61df9395643e92c17230041ef30aef56581782dbac7505bd1e3189:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzk0NDI5MzBhYWI0ZDJkOTBjYTk1MTg5ODlhMGU4MGMzNTM2MGMyMzA3MWI3YTRiMDk0NzI5ZTMxZGE0Yjk5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2FlN2U3MGIzMjZhZmIxN2MzYmZjMzUzY2Q0OTk3YjI3NWZhM2I2YmRmN2VhMTgxYWMzMjAzMzQ1NjcwZmVkYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2JlYTY4ZWNmOTEwMzg1ZDJhOGJmM2Q5NTExODdlZGM0NzkzZTA0ZjkxYzVjNzdmNjM3ZjU3NmQ0NzU2NGEyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTc0MzU2N2I3OGY2ZjU0ZTQ4NmYyN2ExYTI4MDRlODE4YWFlYmIyMmMyNGE4MGNmYWQ0MzlhNzgzY2M2M2IwMyJ9"
         },
         {
           "resource": "repo://HISTORY.md#L805-L814",
           "version": "repo-lines-v1:sha256:7aed78e8b254fa8b0e88414a7862d5470737ea368a447e89db134ebdeecb03ea:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0ZTc3YmY2MDhlMThjMjI4ZjI5OTBiZjU0MGEzMzAzM2I1NTVkNjc2MjA4MzJkZjI2ZjQ5NjllZWEwMzc1MzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkZDU2ZjBhNzliYjFjNGI1MWMxZTVlZGM2ZjRkZGYzYzM0OGNhYTdmY2E1MDQwYmIxYjZjZjhkMWEyNGY1MTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFhNDc4ZTM4MDM2M2IxNDg0ZmYyNGRjNTgyYzcyMjRjZjYzMWU5YTgzNGY0NmEzOGI2Yzg5MzgxMzIxOTI2ZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM1ZjUyNGZjNWNmNzNhZThkMjM4MTY1ZWJlOTU3ZjgyZTU5MzU1YTgxMGM1ZDkxNGE3M2U1ZDhiNmI5YjI5NTcifQ"
-        },
-        {
-          "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md#L99-L102",
-          "version": "repo-lines-v1:sha256:6bb5fc85f2f09951558d19121bbaa3a0eb1ecc702e187c14752c2020dfd9c9ad:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDViOGMwMTY3NDQwMzVmOGRiOWUzN2M2NWRmMGMwODk4NGI4YWE5Mzc3M2IxNzM1ODJjZWQwNDY5ZWQwY2NlOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTM3YmVlOWZlMTYzZTVlZWY3MjU1M2VhMDM0MDBlZGFiOTMzMDBkZjc3YzIxNDc4M2E4M2FkNGZjYWI4NWM0ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWI2OWRhNTg1ZGI0ZTI0OGJjMDlmZjFhZmQyNjUzZmZhNzJiNzNlMmE2YzNmNDU4ZTU3NDk2ZGJjMWViNTViMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWNiN2MwMThhN2IwMTYyM2E2NzU4ODFhMGUwYmFlYjUxMjIzZjRjNTkwMWE0OTI3NTBlNDdmYWNjMjA0ZTBhZCJ9"
         }
       ]
     },
@@ -146,13 +142,23 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:be491927f5129be026395cfe55ad0f4bf5c1d2294beb49064a76259dc1ee0cd6"
+          "version": "repo-file-v1:sha256:e2f45aa7dad4c3ca3135e8cabfb5f59c2c52d64c8de0d012788700e63667ceee"
+        }
+      ]
+    },
+    {
+      "id": "claim_2226150d6e734e54bee61698f10a884e",
+      "statement": "On 2026-11-10 the worker gx10-spark answered on both its management address 10.10.20.11 and its CX7 address 10.99.10.11 after being unreachable earlier that day.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md#L874-L880",
+          "version": "repo-lines-v1:sha256:d89aea810313bc18ce33d61a483e0c550da0cfe3620c6ba2026f4d2deb1eede8:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTBiYzM0NzZhZjM3MGU4MDVkZTRjOGE3NWI2N2MwZTQzZTVhMTNlMzljOGY2Y2MyMjNkNDNlYjc1ODNjMDU3NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWNlMTdjN2ZjMzc2YmQwNWVlZDY3YjIwZWVhNzA2ZDc5ZDE2MzFhNTg0NGQ4Y2Y4ZTM3NjZhNGQ5ZDE4ODU2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTdkNDU5YjNjZGI3ZGJjYWY4NzNiNjg5ZjJkMjY0YTY1MDNlYzVjYzg0ZGI4MzdhNDhjMmU3NzQwOGU2OTU4MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjYxOWU0NDZjMGVkZDAwMWFiNmIwMTA2OTMxYWM5Mzc4MDNlNjE3NDc0MzU0ZmZmODFmYTU5MWIwYWQyNjlmZSJ9"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-09T21:00:11.445Z"
+    "at": "2026-11-14T21:00:11.653Z"
   }
 }

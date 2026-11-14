@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:b3db7941cb5c2b08d9a28ac6d1e27e77835adadd77ae9c9e07d98392a4f536ee",
+  "pageVersion": "sha256:28c8b756ecd57bd13e77be7b928af02fbb70618187c64faa25f492983a22210e",
   "claims": [
     {
       "id": "claim_977b881f419848fba8b33b37b14aefea",
@@ -37,8 +37,8 @@
       "statement": "Policy is immutable tags only (no :latest or floating :nightly); digest pins are otherwise strongest but sparkrun 0.3.10 fails to ship a digest-pinned image to the worker, so a dated tag is the practical right form on this pair.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L64-L66",
-          "version": "repo-lines-v1:sha256:b725d58795767680366b56c89a3cdfe3142ea2ab36f04b315b95c2134fbcd5d9:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjBhY2VhMTQ1YzBkYmIzZmNmOGQyNzU3OWEzYmNjZTFmM2RhZTNkZTgxYzE3M2ZkMTA0OGIwNmJjZGJmOGIyNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjMzNDZhNmE5Njg4MTMzYWRjZmQ5MmQ0ZjI1NGNlNzlmODUyYmRmMDUxNmMyMDAyN2Y2OTM5ZjFhMzhmNzVlOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2VmMDE4MTVkNTM5N2FmZGI4ZjAxMjQxM2U0MjcyMTU1OGQwNjhmYWYxOWU4NGU5OTcwYzYyZWIyODM5M2YxYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDEwZjgwMmJiYmRkZmRmZTEyOWFjMTdhYmU0MDNkYmJjMWYwYjMzZTM1NTJmN2FkODU3OTE0MTUyNmY2MTBiOCJ9"
+          "resource": "repo://CLAUDE.md#L119-L121",
+          "version": "repo-lines-v1:sha256:f248508b89bf59aa80fb78a01a48aa991abe91c8daf5b7cd0db6587f8d54591b:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzJhOGViNTg4NjliM2NhMmRhZDEyMDYyMmRjMmNiNzMyMDJhODgyMWUwODdkZWUzNzEwNDY0ZWQyMjdhMjA4ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzQ4NDEyODk3M2UyMmEzMmIwYjJhYTVmMGE3Nzg5NDRkZjRmZWFhYzA3ZTY4NDhiMzg4ZmI3ZjRhMjAwY2U4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2VmMDE4MTVkNTM5N2FmZGI4ZjAxMjQxM2U0MjcyMTU1OGQwNjhmYWYxOWU4NGU5OTcwYzYyZWIyODM5M2YxYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDQ0YTU0NzM5YWQ4OTRmNWE3ZGYxNzQ3MGUzNzI3Mjk5NDllZjc2ODhhOTM4NjdiN2Y3MDVjZjY5YzE5YmUzZCJ9"
         },
         {
           "resource": "repo://IMAGE-POLICY.md#L16-L18",
@@ -72,11 +72,11 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:be491927f5129be026395cfe55ad0f4bf5c1d2294beb49064a76259dc1ee0cd6"
+          "version": "repo-file-v1:sha256:e2f45aa7dad4c3ca3135e8cabfb5f59c2c52d64c8de0d012788700e63667ceee"
         },
         {
           "resource": "repo://recipes/qwen3-embedding-4b-tp1.yaml",
-          "version": "repo-file-v1:sha256:93148fc9359be79a2586ea5cfc2c1364176e330b242b6f5f7c0b106d1647d6fd"
+          "version": "repo-file-v1:sha256:634e090a36b33661b0d8b56deda2e0081d51555de8cb52956a8f2ee0d5aa79b4"
         }
       ]
     },
@@ -93,6 +93,6 @@
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-09T21:00:11.445Z"
+    "at": "2026-11-14T21:00:11.653Z"
   }
 }

@@ -3,9 +3,6 @@ type: workflow
 title: Benchmarking & Context Verification
 description: How recipes get measured — the canonical quick throughput ladder, task-mix benchmarking for speculative decoding, the needle-in-haystack full-context harness, the mem/results artifacts, and the INDEX/benchmarks recording convention.
 tags: [benchmarking, throughput, context, needle, workflow, measurement, task-mix]
-verified:
-  - by: openwiki/0.7.2
-    at: 2026-11-09T23:33:40.548Z
 sources:
   - id: openwiki-source-af5b2fc4a0830cd3de40e530
     resource: repo://benchmarks/README.md
@@ -15,6 +12,14 @@ sources:
     resource: repo://benchmarks/results_inkling-small-tp2-20261103.yaml
   - id: openwiki-source-56477e1b1ab6b670861f1147
     resource: repo://benchmarks/results_qwen38-flash-next-tp2-20261103.yaml
+  - id: openwiki-source-9991ba1238881425fc2a20ef
+    resource: repo://benchmarks/results/qwen36-35b-b12x-abtest-20261110/A_heretic_aeon_dflash.json
+  - id: openwiki-source-e2efb68dcb3fad6347e69612
+    resource: repo://benchmarks/results/qwen36-35b-b12x-abtest-20261110/B_heretic_b12x_dflash.server.log
+  - id: openwiki-source-e680e6eb3a35b5006a5e7b80
+    resource: repo://benchmarks/results/qwen36-35b-b12x-abtest-20261110/C_stock_b12x_mtp.server.log
+  - id: openwiki-source-9e5b6e112fc61e4882372478
+    resource: repo://benchmarks/scripts/qwen36-35b-b12x-abtest.sh
   - id: openwiki-source-3b7366a8b807b5d89221c480
     resource: repo://benchmarks/scripts/task_mix_bench.py
   - id: openwiki-source-39c3295efc089133e87a9c80
@@ -23,7 +28,10 @@ sources:
     resource: repo://HISTORY.md
   - id: openwiki-source-036e64f955b6e8c14e4c8d88
     resource: repo://notes/minimax-m3-sparkrun-port/README.md
-generated: { by: "antigravity", at: "2026-11-09T23:33:40.548Z" }
+generated: { by: "claude-code", at: "2026-11-10T21:00:18.041Z" }
+verified:
+  - by: openwiki/0.7.2
+    at: 2026-11-14T21:00:11.653Z
 ---
 
 # Benchmarking & Context Verification
@@ -128,6 +136,30 @@ Reports in `benchmarks/` are dated and **ordered** — a later report corrects o
 supersedes earlier ones where they disagree, so the most recent date is read
 first. Every number is measured live on `dgx-pair`; nothing is estimated from a
 spec sheet.
+
+## Task-mix decode benchmark
+
+`benchmarks/scripts/task_mix_bench.py` reports decode speed separately for three
+prompt types: prose, code and JSON. It measures single-stream speed (c=1) and
+aggregate speed at c=N against any OpenAI-compatible endpoint. Speed is
+completion tokens divided by wall time from the first content token, and TTFT
+is reported separately. The task split matters because, with speculative
+decoding, code and JSON can decode about twice as fast as prose. A single tok/s
+figure therefore misleads.
+
+The first user was `benchmarks/scripts/qwen36-35b-b12x-abtest.sh`. That script
+compared three serve setups for Qwen3.6-35B-A3B. Each ran as a raw
+`docker run` on the idle worker (port 8899), not through sparkrun. Results are
+in `benchmarks/results/qwen36-35b-b12x-abtest-20261110/`:
+
+| Config | Setup | Outcome |
+|---|---|---|
+| A | heretic weights, AEON image, DFlash-11, BF16 KV (the production binding) | c=1 decode 49.1 prose / 88.7 code / 159.0 JSON tok/s; c=8 aggregate 168.6 / 288.6 / 511.0 |
+| B | same weights + DFlash on the `dgx-vllm-eugr-nightly-b12x:20260926` image with b12x kernels | engine failed at init: the resolved KV cache layout could not be split into 16-token kernel blocks (the error suggests `--block-size 16` or a layer-compact `VLLM_KV_CACHE_LAYOUT`) |
+| C | stock `nvidia/Qwen3.6-35B-A3B-NVFP4` + b12x + MTP-2 + FP8 KV | engine core initialization failed |
+
+Only config A produced numbers, so the comparison is incomplete. The b12x
+image has not been shown faster for this model.
 
 ## Related
 

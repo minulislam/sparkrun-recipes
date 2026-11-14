@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:24fc355d76c00d736ea018317fa66753a72ee1a727948848a2ad06f4b76de454",
+  "pageVersion": "sha256:bf9cba8d447cb181d71293ceb63bf05ae32bf9ee1540a419e5582f813001b38b",
   "claims": [
     {
       "id": "claim_1f7e663125ac45009d7d858ed0513a0e",
@@ -68,7 +68,7 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:be491927f5129be026395cfe55ad0f4bf5c1d2294beb49064a76259dc1ee0cd6"
+          "version": "repo-file-v1:sha256:e2f45aa7dad4c3ca3135e8cabfb5f59c2c52d64c8de0d012788700e63667ceee"
         },
         {
           "resource": "repo://benchmarks/results_qwen38-flash-next-tp2-20261103.yaml",
@@ -82,7 +82,7 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:be491927f5129be026395cfe55ad0f4bf5c1d2294beb49064a76259dc1ee0cd6"
+          "version": "repo-file-v1:sha256:e2f45aa7dad4c3ca3135e8cabfb5f59c2c52d64c8de0d012788700e63667ceee"
         }
       ]
     },
@@ -92,7 +92,7 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:be491927f5129be026395cfe55ad0f4bf5c1d2294beb49064a76259dc1ee0cd6"
+          "version": "repo-file-v1:sha256:e2f45aa7dad4c3ca3135e8cabfb5f59c2c52d64c8de0d012788700e63667ceee"
         },
         {
           "resource": "repo://benchmarks/results_inkling-small-tp2-20261103.yaml",
@@ -119,10 +119,54 @@
           "version": "repo-lines-v1:sha256:a6fb758889e1e6cb77aaade681c31d89c8fd3fe69199189c7833516416e306f4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2ODJjYmRiNGM4YjA3NTE4YmY0ODZjNTg5OTBmYzM5MTc4M2FhMjBhOTE2YmZiMjdhZDIxMWViMWQ1YzM2NDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzN2E3MzJkODExYzE2OWZkNTFkYzU1ZjI2ZmZjNjRlZTNlZmFkMWFmNTQ3M2JkMzdjN2NlNmVmMmUyODcwNGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYxNzMyNmYxNzNjNmE5YWQ0NWQyNWUyYmU2MzMwNDgxZGUyODRmYTVjODAxMTEwYjMyNThjMzdlMDc0MDk1MDMifQ"
         }
       ]
+    },
+    {
+      "id": "claim_ae8c591d48da4b3fa7d202b8f7ab450c",
+      "statement": "task_mix_bench.py reports per-task (prose/code/JSON) decode tok/s at c=1 and aggregate at c=N, measured from the first content token with TTFT reported separately, because speculative decoding makes code and JSON decode about twice as fast as prose.",
+      "evidence": [
+        {
+          "resource": "repo://benchmarks/scripts/task_mix_bench.py#L1-L14",
+          "version": "repo-lines-v1:sha256:cc96d1a606babd69c620a8d3c064d2fdb1423bf2ae8da436a09c4b3e37978177:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2ODJjYmRiNGM4YjA3NTE4YmY0ODZjNTg5OTBmYzM5MTc4M2FhMjBhOTE2YmZiMjdhZDIxMWViMWQ1YzM2NDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzMDNlY2RkNGE0ZDEwZjE5YzczZmQ0MmZkMTI0MzdmZDMzNTRhODI2ODE2MDVkYTUyNTVhOTdhMzkwNjhkYmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjExODI4OGIwNzI0NmQwYTMxZjgzOWQzYzIyNWQ4ZjAwYzhmZmYyMTYzNTEwNDM5YjMzN2MxNzVkZjAwZTY1ZDgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e6ef9028ae2e4ca3b0b35cf24cef0d3c",
+      "statement": "qwen36-35b-b12x-abtest.sh compared three Qwen3.6-35B-A3B setups via raw docker run on the worker port 8899: A heretic+AEON image+DFlash-11, B heretic+DFlash on the b12x image, C stock nvidia NVFP4+b12x+MTP-2+FP8 KV.",
+      "evidence": [
+        {
+          "resource": "repo://benchmarks/scripts/qwen36-35b-b12x-abtest.sh",
+          "version": "repo-file-v1:sha256:bdff63529b74cadfca2cf651e83464bfbf83e266fe296a2a4e4b32fc204fb9aa"
+        }
+      ]
+    },
+    {
+      "id": "claim_849a05fe19834afdb0a205e492438647",
+      "statement": "In the 2026-11-10 A/B/C test, config A measured c=1 decode 49.1 prose / 88.7 code / 159.0 JSON tok/s and c=8 aggregate 168.6 / 288.6 / 511.0.",
+      "evidence": [
+        {
+          "resource": "repo://benchmarks/results/qwen36-35b-b12x-abtest-20261110/A_heretic_aeon_dflash.json",
+          "version": "repo-file-v1:sha256:c1a0a16d80aaba98367514467a8506dffea6412a121449417b923b1e33895f6b"
+        }
+      ]
+    },
+    {
+      "id": "claim_984cee2bd7af499cbcfc5d9e0f7d697c",
+      "statement": "Config B failed at engine init because the resolved KV cache layout (BLNHC) could not be split into 16-token kernel blocks, and config C failed engine core initialization, so only config A produced numbers.",
+      "evidence": [
+        {
+          "resource": "repo://benchmarks/results/qwen36-35b-b12x-abtest-20261110/B_heretic_b12x_dflash.server.log",
+          "version": "repo-file-v1:sha256:c609e8a1bd28316ad2a4d2166c98345bfd52ebfdc32e01ed13f5bef20bedd486"
+        },
+        {
+          "resource": "repo://benchmarks/results/qwen36-35b-b12x-abtest-20261110/C_stock_b12x_mtp.server.log",
+          "version": "repo-file-v1:sha256:ad28f6588d3fda3e939572940b3e211229e132baf517ce30dd44c1f39ca52e99"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-09T23:33:40.548Z"
+    "at": "2026-11-14T21:00:11.653Z"
   }
 }

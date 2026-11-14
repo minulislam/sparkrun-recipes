@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:6164ca840c2cbaf8a300b9ca044bf79a435a83671ad37d86e9285ff36d568451",
+  "pageVersion": "sha256:000752b29b6820a3cb723a9d9b2a6ddcae1a80684e2cffea29592b07d7d56763",
   "claims": [
     {
       "id": "claim_ce0c18a017eb45eb8fdbb33390dc963a",
       "statement": "On a GB10 node weights, KV cache, page cache, and the host OS all draw from the same ~121 GiB of unified memory, so most launch failures on the pair are memory/placement problems rather than model problems.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L55-L58",
+          "resource": "repo://CLAUDE.md#L110-L113",
           "version": "repo-lines-v1:sha256:3b7735f7ef16fac9ac2613ac6d4f2fcf715e50bc4653dceeac8dabbf67be0aa8:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdkNTU0NzgzYjEyMGMzZDU4OWU0YWZjZmVhZDdlYTFhNGViZTAyYWQzZTVjZTc5YjdjZDhmZDQ4MmRhZDdlZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTYwN2EzOTM0ODU1YWQzYzJmNWY5MWI0MWNlODE4MWNlMmE5YTIwYTFkMDliMTU0NWUwZjE0MTg0MjVkYzUxNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2NmMTI4ZmJlZjI5NTg4MWYyMGY2YjJlOTNmNmFhMzIxNDk3OTQxYjc5MTYzZTRkMTRmNTE4Y2E4NDhiMGQ2MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTAwZjY3NjgwYjE1NzMwNGUwNzI3NjhlM2NkNTVjZGE0N2ExODg5MDIyOGU4MzUyODIxMWE4NmNiOTA5YmY5ZCJ9"
         },
         {
@@ -21,7 +21,7 @@
       "statement": "The working gpu_memory_utilization range is 0.70-0.82 and 0.85 has caused NVRM OOM at boot; within the range a recipe may have its own floor below which no KV fits, so the value is tuned per recipe.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L55-L55",
+          "resource": "repo://CLAUDE.md#L110-L110",
           "version": "repo-lines-v1:sha256:67d554783b120c3d589e4afcfead7ea1a4ebe02ad3e5ce79b7cd8fd482dad7ed:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdkNTU0NzgzYjEyMGMzZDU4OWU0YWZjZmVhZDdlYTFhNGViZTAyYWQzZTVjZTc5YjdjZDhmZDQ4MmRhZDdlZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdkNTU0NzgzYjEyMGMzZDU4OWU0YWZjZmVhZDdlYTFhNGViZTAyYWQzZTVjZTc5YjdjZDhmZDQ4MmRhZDdlZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2NmMTI4ZmJlZjI5NTg4MWYyMGY2YjJlOTNmNmFhMzIxNDk3OTQxYjc5MTYzZTRkMTRmNTE4Y2E4NDhiMGQ2MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2Q2NWEyMGYyMDc3Yzk0N2ZlNjg1N2I5YzkyMDY4MGQyOGZkZjA2OTgwMDlhZDcxZmY3OWQzYWI5MGIyMTU0OCJ9"
         },
         {
@@ -49,7 +49,7 @@
       "statement": "sparkrun only sees its own containers, so any other container on a node consumes unified memory and silently shrinks an auto-sized context; docker ps and memory should be checked on both nodes before a large launch.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L56-L58",
+          "resource": "repo://CLAUDE.md#L111-L113",
           "version": "repo-lines-v1:sha256:cd65a20f2077c947fe6857b9c920680d28fdf0698009ad71ff79d3ab90b21548:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2Y5YWU5NGJmNzUyNGJmZDVlYjk2NTYzYTdkODA3YzBlMTRiYmIwY2QwMTNhNmY2M2QzZTgyYmJhOTZhYzlmOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTYwN2EzOTM0ODU1YWQzYzJmNWY5MWI0MWNlODE4MWNlMmE5YTIwYTFkMDliMTU0NWUwZjE0MTg0MjVkYzUxNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2IyNjdhYjk4NzMxYTIzNzY5NWZjZTZiMjJhNmUwYTIzY2QyN2RjMTMzZDUwODAwMGY0ZWVkZjY1MjY1NGRhYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTAwZjY3NjgwYjE1NzMwNGUwNzI3NjhlM2NkNTVjZGE0N2ExODg5MDIyOGU4MzUyODIxMWE4NmNiOTA5YmY5ZCJ9"
         }
       ]
@@ -69,18 +69,18 @@
       "statement": "sparkrun 0.3.10 has three defects to work around: self-rsync deletes symlinked HF blobs (hardlink first), digest-pinned images fail to ship to the worker (use dated tags), and --no-rm does not keep crashed containers.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L64-L66",
-          "version": "repo-lines-v1:sha256:b725d58795767680366b56c89a3cdfe3142ea2ab36f04b315b95c2134fbcd5d9:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjBhY2VhMTQ1YzBkYmIzZmNmOGQyNzU3OWEzYmNjZTFmM2RhZTNkZTgxYzE3M2ZkMTA0OGIwNmJjZGJmOGIyNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjMzNDZhNmE5Njg4MTMzYWRjZmQ5MmQ0ZjI1NGNlNzlmODUyYmRmMDUxNmMyMDAyN2Y2OTM5ZjFhMzhmNzVlOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2VmMDE4MTVkNTM5N2FmZGI4ZjAxMjQxM2U0MjcyMTU1OGQwNjhmYWYxOWU4NGU5OTcwYzYyZWIyODM5M2YxYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDEwZjgwMmJiYmRkZmRmZTEyOWFjMTdhYmU0MDNkYmJjMWYwYjMzZTM1NTJmN2FkODU3OTE0MTUyNmY2MTBiOCJ9"
+          "resource": "repo://CLAUDE.md#L119-L121",
+          "version": "repo-lines-v1:sha256:f248508b89bf59aa80fb78a01a48aa991abe91c8daf5b7cd0db6587f8d54591b:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzJhOGViNTg4NjliM2NhMmRhZDEyMDYyMmRjMmNiNzMyMDJhODgyMWUwODdkZWUzNzEwNDY0ZWQyMjdhMjA4ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzQ4NDEyODk3M2UyMmEzMmIwYjJhYTVmMGE3Nzg5NDRkZjRmZWFhYzA3ZTY4NDhiMzg4ZmI3ZjRhMjAwY2U4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2VmMDE4MTVkNTM5N2FmZGI4ZjAxMjQxM2U0MjcyMTU1OGQwNjhmYWYxOWU4NGU5OTcwYzYyZWIyODM5M2YxYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDQ0YTU0NzM5YWQ4OTRmNWE3ZGYxNzQ3MGUzNzI3Mjk5NDllZjc2ODhhOTM4NjdiN2Y3MDVjZjY5YzE5YmUzZCJ9"
         }
       ]
     },
     {
       "id": "claim_aa006e0c05154c88973022fe0dbc7f18",
-      "statement": "The three sparkrun defects (self-rsync deleting symlinked HF blobs, digest-pinned images failing on the worker, --no-rm not keeping crashed containers) were observed on 0.3.10; the installed version is now 0.4.2, and v0.4.0 PR #300 plausibly fixed the rsync gotcha but it is unverified on this pair, so hardlink-first stands.",
+      "statement": "The three sparkrun defects (self-rsync deleting symlinked HF blobs, digest-pinned images failing on the worker, --no-rm not keeping crashed containers) were observed on 0.3.10 and have not been re-checked on the installed 0.4.2; v0.4.0 PR #300 plausibly fixed the rsync gotcha but it is unverified on this pair, so hardlink-first stands.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L64-L66",
-          "version": "repo-lines-v1:sha256:b725d58795767680366b56c89a3cdfe3142ea2ab36f04b315b95c2134fbcd5d9:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjBhY2VhMTQ1YzBkYmIzZmNmOGQyNzU3OWEzYmNjZTFmM2RhZTNkZTgxYzE3M2ZkMTA0OGIwNmJjZGJmOGIyNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjMzNDZhNmE5Njg4MTMzYWRjZmQ5MmQ0ZjI1NGNlNzlmODUyYmRmMDUxNmMyMDAyN2Y2OTM5ZjFhMzhmNzVlOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2VmMDE4MTVkNTM5N2FmZGI4ZjAxMjQxM2U0MjcyMTU1OGQwNjhmYWYxOWU4NGU5OTcwYzYyZWIyODM5M2YxYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDEwZjgwMmJiYmRkZmRmZTEyOWFjMTdhYmU0MDNkYmJjMWYwYjMzZTM1NTJmN2FkODU3OTE0MTUyNmY2MTBiOCJ9"
+          "resource": "repo://CLAUDE.md#L119-L121",
+          "version": "repo-lines-v1:sha256:f248508b89bf59aa80fb78a01a48aa991abe91c8daf5b7cd0db6587f8d54591b:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzJhOGViNTg4NjliM2NhMmRhZDEyMDYyMmRjMmNiNzMyMDJhODgyMWUwODdkZWUzNzEwNDY0ZWQyMjdhMjA4ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzQ4NDEyODk3M2UyMmEzMmIwYjJhYTVmMGE3Nzg5NDRkZjRmZWFhYzA3ZTY4NDhiMzg4ZmI3ZjRhMjAwY2U4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2VmMDE4MTVkNTM5N2FmZGI4ZjAxMjQxM2U0MjcyMTU1OGQwNjhmYWYxOWU4NGU5OTcwYzYyZWIyODM5M2YxYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDQ0YTU0NzM5YWQ4OTRmNWE3ZGYxNzQ3MGUzNzI3Mjk5NDllZjc2ODhhOTM4NjdiN2Y3MDVjZjY5YzE5YmUzZCJ9"
         },
         {
           "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md",
@@ -94,7 +94,7 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:be491927f5129be026395cfe55ad0f4bf5c1d2294beb49064a76259dc1ee0cd6"
+          "version": "repo-file-v1:sha256:e2f45aa7dad4c3ca3135e8cabfb5f59c2c52d64c8de0d012788700e63667ceee"
         }
       ]
     },
@@ -113,15 +113,15 @@
       "statement": "The 0.70-0.82 gpu_memory_utilization envelope applies to full-size chat engines; the small pooling-runner recipes (Qwen3 Embedding/Reranker 4B) deliberately run at 0.3 so they can co-reside with other workloads on a node.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L57-L57",
+          "resource": "repo://CLAUDE.md#L112-L112",
           "version": "repo-lines-v1:sha256:a82e7689cbd84e786b74cf0b57b25a38c7551656fe2f105883dded656a3e1c06:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTgyZTc2ODljYmQ4NGU3ODZiNzRjZjBiNTdiMjVhMzhjNzU1MTY1NmZlMmYxMDU4ODNkZGVkNjU2YTNlMWMwNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTgyZTc2ODljYmQ4NGU3ODZiNzRjZjBiNTdiMjVhMzhjNzU1MTY1NmZlMmYxMDU4ODNkZGVkNjU2YTNlMWMwNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmFhYjlmMmRkMzNkOWEyYzAwMjQ2NjU3MTcyZWU5OTEyZDJhODY1YjQ4N2EyNTI1MzEwM2M1YTM5MmVkNjcxZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjYxMjM1MmIyNWY1M2Y2NDE3MmQxZWE5MGI3NGM5ZmNjZTczYzcxNTdjYmQ5MjE3OTY2YWM4MDhkMDcyOTEwNiJ9"
         },
         {
-          "resource": "repo://recipes/qwen3-embedding-4b-tp1.yaml#L18-L24",
+          "resource": "repo://recipes/qwen3-embedding-4b-tp1.yaml#L22-L28",
           "version": "repo-lines-v1:sha256:3132716ea7860cf61b1105b67f3cbc1c2629d513a30e330769def3270d11b207:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzI3YTA1NTg4MmZhYjdiYWQ5YTRiNmM2M2ZmY2JhZTUyMTAyOTBhZDYyNjk5YzMxZmYwY2JjODQ1ZWZiYTU2NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmM2YjJlOWVmYmQ5NGU3MjEwNjM4MzNlOWEzZTI5NWYwNWQ0OWE4Zjk0NWFlMWVkYWFlMTZlZDA1MmMzMGQyZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzBhOTczZTg2ZjYwZjc1MDc3MGFjMzdiMjBlZmJhMDFkNzA2NjQ4OWViMTFjY2ZhNzVhYjQ0NGVmZTIxMjk4OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODEyNWQ2ZjFlYmI2NDJiMzRiMWRiM2FhMjdiYzA0NDIyZmVkMzM2YmZiMzkxNDY5Yzc1ZWU0Yjk2MThmNzE0MCJ9"
         },
         {
-          "resource": "repo://recipes/qwen3-reranker-4b-tp1.yaml#L14-L20",
+          "resource": "repo://recipes/qwen3-reranker-4b-tp1.yaml#L18-L24",
           "version": "repo-lines-v1:sha256:3132716ea7860cf61b1105b67f3cbc1c2629d513a30e330769def3270d11b207:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzI3YTA1NTg4MmZhYjdiYWQ5YTRiNmM2M2ZmY2JhZTUyMTAyOTBhZDYyNjk5YzMxZmYwY2JjODQ1ZWZiYTU2NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmM2YjJlOWVmYmQ5NGU3MjEwNjM4MzNlOWEzZTI5NWYwNWQ0OWE4Zjk0NWFlMWVkYWFlMTZlZDA1MmMzMGQyZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmRhNTJlYWRjMGQxZmIxZmFjNDdlMjM0OWQ1MGM3MGI3ODE4ZThhYTA4ZWJlMDFhNmQyNjEyMWY0ZTJiOWE3MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODEyNWQ2ZjFlYmI2NDJiMzRiMWRiM2FhMjdiYzA0NDIyZmVkMzM2YmZiMzkxNDY5Yzc1ZWU0Yjk2MThmNzE0MCJ9"
         }
       ]
@@ -143,6 +143,6 @@
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-09T21:00:11.445Z"
+    "at": "2026-11-14T21:00:11.653Z"
   }
 }

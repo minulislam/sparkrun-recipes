@@ -1,18 +1,22 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:841a3babb139950de99a5da3f8f4de605f9e65af5ae3213d89d9c79171df05b5",
+  "pageVersion": "sha256:12ba1ec5fd021d7c7247eac3cf8f79b130850b26001fece9fb7e57e7ffa9b5eb",
   "claims": [
     {
       "id": "claim_9658aa4d780244c1b03da731f387b9fa",
-      "statement": "The registry's uncensored recipes are produced two ways: most point at checkpoints with refusal directions removed in the weights (abliterated/uncensored), while deepseek-v4-flash-0731-refusal-dial-tp2 serves stock weights through a locally built image that applies rank-1 refusal directions at inference time.",
+      "statement": "Most uncensored recipes point at checkpoints with refusal directions removed in the weights, while the refusal-dial recipes (qwen38-27b-nvfp4-refusal-dial, deepseek-v4-flash-0731-refusal-dial-tp2, inkling-small-nvfp4-refusal-dial-tp2) serve stock weights and apply rank-1 refusal directions at inference time.",
       "evidence": [
-        {
-          "resource": "repo://INDEX.md#L100-L100",
-          "version": "repo-lines-v1:sha256:6a5fec82d82bda8589a33fbc7c62611f6b1eae550e071872de20d9f32dd7218b:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmE1ZmVjODJkODJiZGE4NTg5YTMzZmJjN2M2MjYxMWY2YjFlYWU1NTBlMDcxODcyZGUyMGQ5ZjMyZGQ3MjE4YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmE1ZmVjODJkODJiZGE4NTg5YTMzZmJjN2M2MjYxMWY2YjFlYWU1NTBlMDcxODcyZGUyMGQ5ZjMyZGQ3MjE4YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWYxMzMzZGRkM2U4ZGI5NWYxMmVkYWNlYTcwOThjZmRkNzUzOWU0MGJhOTg1Mzc4OGVkY2E5M2YzM2U2MDVjNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2JiZDZjMzgyOGY3YzZkNjc3Mjc1ZGJlZjM2Y2FjMTFhNjdmM2Y2YzNkNDJiNzEwYWMzNDc2NDk3OGMwNTlmNyJ9"
-        },
         {
           "resource": "repo://images/deepseek-rank1/README.md#L1-L14",
           "version": "repo-lines-v1:sha256:b5003b2d148a69fc5ea1b7df48bebce2a7ec19a549abcc59b9884897a350ac86:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhMjA3ZGE5NjU2ZDY3NTVlMzM0NGU2MWVkZjljMzJkZWE3YjU4NTNiMDE3MWUzYTBmOGUyMGQ4YTlkNTE1ODYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlZTBmMDkwY2RkZjMyZjhjNGFjMjIzZGQ0MDEzMjVlYWMzZGI3YjhiMDc3NzI0MDRjYzE0ZDQzZjhlNmQxOTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJhODAzYWJkNzhkMjIwZDhmMjI4ZDVkMzBiZDkxMjBlNDFjYjEwZDEwYWQzYmIzOWU2Y2NhMmMyNDAzY2EzOGYifQ"
+        },
+        {
+          "resource": "repo://recipes/inkling-small-nvfp4-refusal-dial-tp2.yaml#L1-L8",
+          "version": "repo-lines-v1:sha256:9dc802216ec42d2ed317cd34b006fd239e48eddaa7bed624209494b696caac5a:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzY4YWIyNjc4ODBkMmY4NTQzOGI4MDNkOTA0OGJkZWYzMzc2MWZiZDQ1MDkyNzY2NjgxMDBlNWRhZjI4MzFlOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTcxNTNmYzJhMzI0NmNmMzhiM2JlZWViYjVmZmI4YzkzZTBlODgzMWJjZjU5Y2VkNjVhNDMwOGU0N2Y4YWIxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2NiOWFhMWVmZDE3MzFhMjFkOTA3MjBlY2JlYzI5NDVhOTJlODcyYzU4MmM1NTAyNzkwYzllY2FlNTAwM2NhYiJ9"
+        },
+        {
+          "resource": "repo://recipes/qwen38-27b-nvfp4-refusal-dial.yaml#L1-L20",
+          "version": "repo-lines-v1:sha256:d684fbf149ba4d3950c1235344b456d0fcdfcc3dfc7ccf6008de9bbebccdb267:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjMDUyZDc0YzY1ZDQ2ZmM2Y2RjOTI4ZGE3ODI1YWM5ZDkyNDVkYmQyODMzMTI4OWUyYmY4NmY1NWNhZmQ4MzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA4Yjg5ZTFmZDM1ZDcyYWZkNTNlYTI4ZjQ3MzAxNTBlODhjMzZkYjlkZTRkMDMzNTc5ZmRmN2U3ZmFmYzZhYzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRkMzc4NDg5NGFhYzM2MTdjMjI4ZWU4NzBkODQ4YWUwN2M5YzIwMTUxNGNkYzNjNjNlMTU0ODhiZmY2ZDBjZWQifQ"
         }
       ]
     },
@@ -77,10 +81,112 @@
           "version": "repo-lines-v1:sha256:b7f7118ac4df3cdbe9e0372ed71416cd4ee232352a6bf49ebd8533b2604729b2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ1YTI1NWQ3YzMyMjVhZmQ1MzcyMjU5ZjA4MDZmMmEyZWY1NGJmNTAzNmU0NjBmNDgxN2I0NDVmNGJjMGVlMTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3MDhkYTU4M2I5ZTZiOTBlNjIwN2MwMDhkZDBlYjg4OWQ1NzExMTYzNjgyMmE5NzhhMmM0NDg1NjgxNzBhNTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJkMjliNTQ2NzExYzc3N2FiMmI4N2U4ZmM0NDg2YTEzMDMxYTVhYmRiYTcyMmZjNWZjODMwOGQyNGQ3ZGEwYjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRhNDRmMTZlM2EyNjA1NWQyYWNhNTNhMzFhMjFmNTVjZjZlZjU1NTg5NGQ5OGZmODQzZTI0OTM5NjRlNzhhNGMifQ"
         }
       ]
+    },
+    {
+      "id": "claim_0413aa2c01794d4598223c0f828c1a6f",
+      "statement": "The pocharlies vllm-qwen38-rank1:20260815 image ignores VLLM_REFUSAL_LAMBDA_INIT and always starts at lambda 0; the qwen38-27b refusal-dial recipe sets lambda in post_exec.",
+      "evidence": [
+        {
+          "resource": "repo://recipes/qwen38-27b-nvfp4-refusal-dial.yaml#L155-L165",
+          "version": "repo-lines-v1:sha256:49ca3463ff89cc5082a6272755f9ec6322d0d7308ed935f3fa75f0f38f4fd75f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0MTYxZjBlNDM5Yjg5ZjQ0NDUxNjNkZWYwMWU0NjJkOWRiMWRjMTkwMDQ3NDA4NTdmNmNjMWZhZjgwODYzNDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3MzYwMWY3NTU1YzdkZmQ1ODFkZGVlMWFhOWE3NTBiODM3YTY4MTA0YjE2ODA3MTFiMWEyYTJmZGVhZjYwYzkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJjYzg0MmNhNzdmY2NiMzVmYTA4YzUyMTdkNTRlZThkOTI4MWQ5ZDVmN2FjNGFjYzRmOTVkMjMxN2YxMGI0MjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJjYzljMzA4MWQyMDA1NzQxNzE5ZmNhMzM0YmIxZjQwNDcwMzk3NTkyMmM3MjQxZGNiZjgzMmUzOTdjMjFkZTUifQ"
+        },
+        {
+          "resource": "repo://recipes/qwen38-27b-nvfp4-refusal-dial.yaml#L16-L20",
+          "version": "repo-lines-v1:sha256:b4d5b98e9540e60bedd3a420f3e3b948fe35de41c2273883b49c156ef51beca3:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWFmMjA3ZWZjMjViNTc2YzFiMzE3M2JiZDVhNzE0MzQzZmIyNDg5NWY0M2YxNWRiODJkYmQ3M2JmZDNiYzkxZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDhiODllMWZkMzVkNzJhZmQ1M2VhMjhmNDczMDE1MGU4OGMzNmRiOWRlNGQwMzM1NzlmZGY3ZTdmYWZjNmFjOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2Y2ZDQ2OTcxY2Y5NzNmMTYxY2UwM2E1ZDNjZTA0ZDZkNDgyYzQ3OWM2ZTQyYjI0ODZjMjAzZjQwZDgwZjNkZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGQzNzg0ODk0YWFjMzYxN2MyMjhlZTg3MGQ4NDhhZTA3YzljMjAxNTE0Y2RjM2M2M2UxNTQ4OGJmZjZkMGNlZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_8d4cd05e18ae43be86395b2de4abfa85",
+      "statement": "inkling-small-nvfp4-refusal-dial-tp2 is UNVERIFIED; it runs stock Inkling-Small-NVFP4 at TP=2 on ghcr.io/spark-arena/dgx-vllm-eugr-nightly-b12x:20260926 with the mods/inkling-refusal-dial overlay, VLLM_REFUSAL_DIRS=/opt/refusal/refusal_dirs_inkling.safetensors, and post_exec setting lambda 1 via POST /admin/refusal_lambda.",
+      "evidence": [
+        {
+          "resource": "repo://recipes/inkling-small-nvfp4-refusal-dial-tp2.yaml",
+          "version": "repo-file-v1:sha256:59e7ac47577546a65b9f8a597cbe6d8118f7524c1683ecd9bd3d5e147bd449c8"
+        }
+      ]
+    },
+    {
+      "id": "claim_fcb2647f5c884f2f8ab76d5f63e3c2e8",
+      "statement": "The inkling-refusal-dial mod's run.sh, executed in every rank's container before serve, copies the directions to /opt/refusal, installs refusal_projection.py and an admin API router into the vLLM package, runs patch_vllm.py, and runs verify_inkling_rank1.py.",
+      "evidence": [
+        {
+          "resource": "repo://recipes/mods/inkling-refusal-dial/run.sh",
+          "version": "repo-file-v1:sha256:d35506aedb7a3e796b9d6501ecb355d1542716ba506ad43b7edcc42de44303cb"
+        }
+      ]
+    },
+    {
+      "id": "claim_c18aae3fb7814e6dad6721a32c6e04c5",
+      "statement": "patch_vllm.py edits vLLM's Inkling decoder layer so a RefusalProjection is constructed when refusal is enabled and applied to the attention output in forward.",
+      "evidence": [
+        {
+          "resource": "repo://recipes/mods/inkling-refusal-dial/patch_vllm.py#L12-L50",
+          "version": "repo-lines-v1:sha256:2aa5ef96b32c95ba8cb4f94490a0cde349e7aaac8c89382e9ecc5ea89c3f492d:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhYTdiYWQyOTg1YjY0Y2Q5ZGJiODk5MjllNDE5ZDk3NDYxOTQ3OTQ0YjkxMTk2MDk3NDNmZjUzY2FmY2QyM2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJmNjUyZjU0MTVkOWVmNmJjMzFiYzc0ZGZiZTY0NWI3ZmQ0NWI3NTMyNmZjMDE4MDExNDQ1YmM1MjY5MGVkMWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNkMjZkMDAwYmZiZjhlYTE5YzY5ZmY3Y2E2NWMxODRjYWI2YzhlZmZmZDhkYmU1NjM4ZjBhYjYzOGZkYTZkODIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_54be19f1ace6431daa8a94e8b218a41f",
+      "statement": "The Inkling refusal-dial design doc states lambda 0 is bit-exact to stock and extracts per-layer directions from contrastive harmful/benign prompt pairs with benchmarks/redteam/extract_contrastive_directions.py.",
+      "evidence": [
+        {
+          "resource": "repo://docs/superpowers/specs/2026-11-10-inkling-small-refusal-dial-design.md#L12-L64",
+          "version": "repo-lines-v1:sha256:293b4f4de63ead0b851837807da9d324a6652241c1875e983a4f7ca84e06301a:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgxN2FhNWMzNjdhM2RiOWZiMTY1N2ZhNWFhZGZjMzc1OGQyNTQ1Mjk3MTUxZWVmZjliOTFhM2IyNDJiOGMzOTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNjMDk4OTM5NTNlYjg0MzhhZTI5OGExNGY4Mjc4OTY1NzY0NDE3ODFiNmIxYmU2MzdkYzYwOGQ3MTdhYjBiOWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAwMWYyZWMxNzU5M2MxMDU0ZWI0NjM2N2Q4NDUzZWYyNGExNzNjZTk2YjcxMTdkOTFmOWE2OGQ0NGZlZjhiMDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE3YjRkZWE2MGI0NjJlNzY3NWU0ZmI3NDliMDBiYTdjN2JiNGFiYjk4NDc4OTU4NjVkNzg1MWFiZmUxYWM3MzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e8d3c47cae694627a40c527370071ce0",
+      "statement": "inkling-small-nvfp4-refusal-dial-tp2 sets gpu_memory_utilization 0.85, above the house range of 0.70-0.82; 0.85 has caused NVRM OOM at boot.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L110-L110",
+          "version": "repo-lines-v1:sha256:67d554783b120c3d589e4afcfead7ea1a4ebe02ad3e5ce79b7cd8fd482dad7ed:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdkNTU0NzgzYjEyMGMzZDU4OWU0YWZjZmVhZDdlYTFhNGViZTAyYWQzZTVjZTc5YjdjZDhmZDQ4MmRhZDdlZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdkNTU0NzgzYjEyMGMzZDU4OWU0YWZjZmVhZDdlYTFhNGViZTAyYWQzZTVjZTc5YjdjZDhmZDQ4MmRhZDdlZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2NmMTI4ZmJlZjI5NTg4MWYyMGY2YjJlOTNmNmFhMzIxNDk3OTQxYjc5MTYzZTRkMTRmNTE4Y2E4NDhiMGQ2MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2Q2NWEyMGYyMDc3Yzk0N2ZlNjg1N2I5YzkyMDY4MGQyOGZkZjA2OTgwMDlhZDcxZmY3OWQzYWI5MGIyMTU0OCJ9"
+        },
+        {
+          "resource": "repo://recipes/inkling-small-nvfp4-refusal-dial-tp2.yaml#L40-L46",
+          "version": "repo-lines-v1:sha256:7d3f82b85e8bc3ff4f0f70b0cb5b80955c06dd88be70886f8dd03816d13cebef:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzI3YTA1NTg4MmZhYjdiYWQ5YTRiNmM2M2ZmY2JhZTUyMTAyOTBhZDYyNjk5YzMxZmYwY2JjODQ1ZWZiYTU2NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTlmMDMxZmMwMzM3NTE3MGUzODI1ZDYzZTIwOTIwNWE0MDQxZmNiNGQ2YjJiNWM0YjAyMWJhOWY2YTc2MDhkYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTNhMTgyYTA5YzdjNmI4NWRmNmZmNmJjZWJkMzc1MDZiMTA3NGE3N2VhMjhmZjQwMWQ0ZmI2ZjBiNGFjMjI2MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGRmYTQ2M2M1YWM0MGZiMTliMGIyZDkyZTU1ODVlMDBhMjE4MmQ5Y2U0ZDhlYjMzNDRmOWRiYjQxMDc0Y2U2YyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ff584b1c1bc34f059830d8f666ff0dd8",
+      "statement": "The inkling-refusal-dial run.sh byte-compiles the installed refusal_projection, api_router and patched vLLM Inkling model/serve modules, then runs verify_inkling_rank1.py installed under /opt/refusal/.",
+      "evidence": [
+        {
+          "resource": "repo://recipes/mods/inkling-refusal-dial/run.sh",
+          "version": "repo-file-v1:sha256:d35506aedb7a3e796b9d6501ecb355d1542716ba506ad43b7edcc42de44303cb"
+        }
+      ]
+    },
+    {
+      "id": "claim_acb6901ea3174f44a41647c5e91b5c48",
+      "statement": "tests/test_recipe_schema.py asserts the Inkling refusal-dial recipe uses TP=2 on exactly two nodes, sets VLLM_REFUSAL_DIRS and VLLM_REFUSAL_LAMBDA_INIT, includes mods/inkling-refusal-dial, and calls admin/refusal_lambda in post_exec.",
+      "evidence": [
+        {
+          "resource": "repo://recipes/inkling-small-nvfp4-refusal-dial-tp2.yaml",
+          "version": "repo-file-v1:sha256:59e7ac47577546a65b9f8a597cbe6d8118f7524c1683ecd9bd3d5e147bd449c8"
+        },
+        {
+          "resource": "repo://tests/test_recipe_schema.py",
+          "version": "repo-file-v1:sha256:6c0e4b540e90c8f1730796341b094eb6f44179251fa0237e0aaecc0e4c7fc174"
+        }
+      ]
+    },
+    {
+      "id": "claim_078dd2d50ed84b29b6473fa2417aadc7",
+      "statement": "The deepseek-v4-flash-0731-refusal-dial-tp2 recipe boots at lambda 0 and its post_exec sets lambda to 2.0 via POST /admin/refusal_lambda once the endpoint is up; its JailbreakBench run recorded 93/100 harmful complied at lambda 2.0 versus 82/100 at 1.5.",
+      "evidence": [
+        {
+          "resource": "repo://recipes/deepseek-v4-flash-0731-refusal-dial-tp2.yaml",
+          "version": "repo-file-v1:sha256:5467b050a1a434b4dd6330b358633ae71c60875652f74398c3d4ab54f8df6f86"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-09T21:00:11.445Z"
+    "at": "2026-11-14T21:00:11.653Z"
   }
 }

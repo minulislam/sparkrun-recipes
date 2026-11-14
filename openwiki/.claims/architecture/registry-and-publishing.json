@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:baf04a9a5bccde3d8da7599c422d534f4616ef561fa77e9b264e19bbbf9899b8",
+  "pageVersion": "sha256:036e6259d525f2e337913f98a881aadb6bf45a6e7b893ad1b508e9dcb359cd3c",
   "claims": [
     {
       "id": "claim_c648c3ba6a0f4c2c850b86e1bf25d498",
       "statement": "This repository is a sparkrun recipe/benchmark registry rather than an application — it has nothing to build or install and is consumed through the sparkrun CLI — and it publishes under the registry name spark-forge.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L1-L7",
+          "resource": "repo://CLAUDE.md#L5-L11",
           "version": "repo-lines-v1:sha256:dd8ea9413afb6bf8dc47e94ccf454dc175fc19309c89bfacfa1d79b70720f9fc:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWJjNzU0NmViOTc0MGM5ZWU0MmNhZjg0NWYxMzc5OGIwZTliNTdlNGNhMWRiZmFkMTk5ZWY1MGU0N2I3NGVhMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzNlZWUxMzQ1M2VjYzQzMDNmOTJiNGQ2NjI3NzQ3ZGI0NGYwNzkzMjAzZTliOWJkMGEwNjgxY2QxNzRmMzNlZCJ9"
         },
         {
@@ -21,32 +21,36 @@
       "statement": "The git repository is minulislam/sparkrun-recipes while the published registry is named spark-forge, and the name mismatch is deliberate.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L1-L7",
+          "resource": "repo://CLAUDE.md#L5-L11",
           "version": "repo-lines-v1:sha256:dd8ea9413afb6bf8dc47e94ccf454dc175fc19309c89bfacfa1d79b70720f9fc:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWJjNzU0NmViOTc0MGM5ZWU0MmNhZjg0NWYxMzc5OGIwZTliNTdlNGNhMWRiZmFkMTk5ZWY1MGU0N2I3NGVhMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzNlZWUxMzQ1M2VjYzQzMDNmOTJiNGQ2NjI3NzQ3ZGI0NGYwNzkzMjAzZTliOWJkMGEwNjgxY2QxNzRmMzNlZCJ9"
         }
       ]
     },
     {
       "id": "claim_290e506f2789418fa1fd156fd84acae8",
-      "statement": "The spark-forge registry is a local git clone of the repo's main branch, so a recipe change is invisible to sparkrun until it is committed to main and 'sparkrun registry update spark-forge' has refreshed the clone; work goes straight to main with no pull-request step.",
+      "statement": "The spark-forge registry is defined in ~/.config/sparkrun/registries.yaml as the local repo (subpath recipes) and sparkrun keeps a clone of local main at ~/.cache/sparkrun/registries/spark-forge; a recipe change is invisible until committed to main and 'sparkrun registry update spark-forge' has run, and there is no PR step.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L24-L30",
-          "version": "repo-lines-v1:sha256:6a5a8178c311913da66a90c718802bfd8fb64dbb3bdbdbd6bcb047fe8b87c4ac:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjAwODhjY2M5NTQ5OGVkZjk3OTdhZmMyNjIwM2MyMDdiNjc3NWNkNjQ5NTNiMDBjZTU5YWYwZjdiODdlMTVmNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmYzMjFmZTQ4NTU4ZmY5MzI4Y2Q2N2U0ZThlOWM0YTk4YWYyODNkYjI0NmVmYzcwZjA2MWRhODM5OWFlM2Y4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmUwMmI4ODM4NDljNjc4YTZhNjYxNWMwNmZjYjE5OGRkNGFjOWFjMTBhNDI5YTY5YzljMjRiMjgwNjFkZTc0MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGExMzM5MzEwZTExMDM3NTlkZGY1MTZhZmZhNWZjMGI5NDQ1ZmQwMjg5OTA3ZWIzMzEwODJjNzhhNzJjODFlNiJ9"
+          "resource": "repo://CLAUDE.md#L48-L53",
+          "version": "repo-lines-v1:sha256:d5f9bb00cb2d944fe1fa9a760dbe757d19aa92ebc0ee422f46a41bc3fc90b59a:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDExMTliZjQzMjM3N2UxYmVhNjNlODZiNjc1NGNhNzZmNzljMmVjOTkzMTFjMTg2NDEyZDZjNDUwMzZjODQwZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODg3MzdhOTY2Yzc1NTlhZTIyZDBiYjM3ZGY2NmMxMjNjMzJiZDg0MTE3OWI5N2Y4MDcxMTJiMThhYmNjYjY5NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTZiOTIyN2NiMTcyZDg2ZmJjMzA2Y2UxMWQyYjhmYmFlMzljMzdkNGM3NjIwMTMwYmY1MWIzNDVjZGVmODg0MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2MxNDJhZWEwNTk5YzAwNDdlNzcyNTI1ZDAxNDkzYTUxOGFmYTNhM2ZkOWU3YjBhMThkMDVmMDhiYTBkYjQ3NiJ9"
+        },
+        {
+          "resource": "repo://CLAUDE.md#L72-L75",
+          "version": "repo-lines-v1:sha256:ad55ca2327e866773d71c96b416caf40413af481b80f0435d7709541cf94d655:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWRjZTQ4ZjRjYWFmODBlYTIxYjA3MTk4NzQ5MDMxYmIyZGY2YjAyODk4MGYwZTE4MzAzOWEzNjViNDU0NDkzMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGY5Zjk4MjY1MTUxNzdmNWM2Zjk3OWMyNjllZWJkZDhmMWQ3MDI4MTNiM2RjYzdhZmU2OGFmY2VlYWEyNTA4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmUwMmI4ODM4NDljNjc4YTZhNjYxNWMwNmZjYjE5OGRkNGFjOWFjMTBhNDI5YTY5YzljMjRiMjgwNjFkZTc0MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDdhM2YwZGY0MzkxYTc5NjYzMmY1NjIzN2I2ZDhmOGRmOTVlNjExNDQ1YWM4NmJhNjliZDliNzcwMjhiMjVjNiJ9"
         }
       ]
     },
     {
       "id": "claim_a5a5634391034e78a019a4331f47c0e2",
-      "statement": "Recipes can be consumed either by local file path (sparkrun run ./recipes/<name>.yaml, which does not require a registry update) or by registry name (@spark-forge/<name>) after running sparkrun registry update spark-forge.",
+      "statement": "Recipes can be run by local file path (sparkrun run ./recipes/<name>.yaml, no registry update needed) or by registry name (@spark-forge/<name>) after sparkrun registry update spark-forge.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L24-L30",
-          "version": "repo-lines-v1:sha256:6a5a8178c311913da66a90c718802bfd8fb64dbb3bdbdbd6bcb047fe8b87c4ac:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjAwODhjY2M5NTQ5OGVkZjk3OTdhZmMyNjIwM2MyMDdiNjc3NWNkNjQ5NTNiMDBjZTU5YWYwZjdiODdlMTVmNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmYzMjFmZTQ4NTU4ZmY5MzI4Y2Q2N2U0ZThlOWM0YTk4YWYyODNkYjI0NmVmYzcwZjA2MWRhODM5OWFlM2Y4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmUwMmI4ODM4NDljNjc4YTZhNjYxNWMwNmZjYjE5OGRkNGFjOWFjMTBhNDI5YTY5YzljMjRiMjgwNjFkZTc0MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGExMzM5MzEwZTExMDM3NTlkZGY1MTZhZmZhNWZjMGI5NDQ1ZmQwMjg5OTA3ZWIzMzEwODJjNzhhNzJjODFlNiJ9"
+          "resource": "repo://CLAUDE.md#L32-L41",
+          "version": "repo-lines-v1:sha256:4fd837e07d62289bd404bdd0e947adfaede113acf4105c04d0f43aaed791c5cd:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkZTJmNTMyOGVlNmU4MDUwZThhYWZkOGRjODY5YTA2OWNkOTU4NGVkYWFmNTRmZTU4OWQ3M2MzYjdkY2Q3OTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3YzA2YzU2MWQ1YzMyNzM0MzY4NTI2OGE0NmIzMzkxZjM5OThlZWU4OTBkMmJlNTFmMGQyMWNjNGE1M2FlNmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYxMGI2YzY3ZTc2ODUwNjYyNTlhOGY3YzFiNTc2MDIxOWY2Zjc2YTcxYzVjNDNkYTkzNGU1ZWE5YjBmNWQ0NDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJkM2Q5MTAxZDcxMzA2M2NhZGJlMjg2NmY2NTYxOGI5OTJhYjkwNjQyYTA1MDRlMTAzODFjNzIyMzQxOTYzYTMifQ"
         },
         {
-          "resource": "repo://README.md#L30-L45",
-          "version": "repo-lines-v1:sha256:83e51dbad8afca5237204a1d4bf2ee0fe5b0672df31eae12ab70cf6e61e8a9c8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA1M2ZiMjQ5MTZhYTk5ZDZkNTdiMTI2NzM1ZDVjZDNlNGJkOWVlNmQwNGU3YTFhYzViYTE5MjNhNGQxMTJhMGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjMWFlNjg0NTBkOTA0MmRlNjAyNDhmZjM3ODljMzliZTUzYjQwNmMzMTM4Mzg2NjJkMDVlMDRjNmUzOTdiMDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZlZGMzYzQ0NzM4ZDExMjcxZmUwYjliOTRmZWFmMmRkNjY4YjliNmU3NzZlZDc0Mjc1MmEyNmMyYWRjMjc1NmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdmYjkzYzAwY2I4Y2U4ZTc1MzViNTQ3MGZkN2Q4OWYwYWIwNTdiMmU3ZDdkZjEzN2VhM2QwNjQ5ZTM1NWZlOTIifQ"
+          "resource": "repo://CLAUDE.md#L72-L75",
+          "version": "repo-lines-v1:sha256:ad55ca2327e866773d71c96b416caf40413af481b80f0435d7709541cf94d655:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWRjZTQ4ZjRjYWFmODBlYTIxYjA3MTk4NzQ5MDMxYmIyZGY2YjAyODk4MGYwZTE4MzAzOWEzNjViNDU0NDkzMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGY5Zjk4MjY1MTUxNzdmNWM2Zjk3OWMyNjllZWJkZDhmMWQ3MDI4MTNiM2RjYzdhZmU2OGFmY2VlYWEyNTA4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmUwMmI4ODM4NDljNjc4YTZhNjYxNWMwNmZjYjE5OGRkNGFjOWFjMTBhNDI5YTY5YzljMjRiMjgwNjFkZTc0MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDdhM2YwZGY0MzkxYTc5NjYzMmY1NjIzN2I2ZDhmOGRmOTVlNjExNDQ1YWM4NmJhNjliZDliNzcwMjhiMjVjNiJ9"
         }
       ]
     },
@@ -55,7 +59,7 @@
       "statement": "Each served model has exactly one canonical recipe file in recipes/, benchmark reports live under benchmarks/ rather than in the recipe files, and INDEX.md row numbers are stable and must not be renumbered.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L57-L63",
+          "resource": "repo://CLAUDE.md#L112-L118",
           "version": "repo-lines-v1:sha256:3d32862b99b7b977efe0c492021db40da92cc2a0a71b485ee8c3a37f524c8499:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTgyZTc2ODljYmQ4NGU3ODZiNzRjZjBiNTdiMjVhMzhjNzU1MTY1NmZlMmYxMDU4ODNkZGVkNjU2YTNlMWMwNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjAxNTZhZmFhMTFlZGRlOGM5NjliYmMyNjExNzhmYmIzNDEwZWNmMzJmNmE2MTZjNzkxYTY3ZjMyNWFkYzM1NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmFhYjlmMmRkMzNkOWEyYzAwMjQ2NjU3MTcyZWU5OTEyZDJhODY1YjQ4N2EyNTI1MzEwM2M1YTM5MmVkNjcxZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjcyNWQ1ODc5NTc2NzY4MDM2NmI1NmM4OWEzY2RmZTMxNDJlYTJhYjM2ZjA0YjMxNWI5NWMyMTM0ZmJjZDVkOSJ9"
         },
         {
@@ -86,11 +90,15 @@
     },
     {
       "id": "claim_ede7f069995346e9b31bf62c05725ef6",
-      "statement": "Brand-new recipes not yet committed to main can be bound in SparkRoute proxy.yaml by absolute file path, as done 2026-11-08 for qwen3-embedding-4b-tp1 and qwen3-reranker-4b-tp1.",
+      "statement": "qwen3-embedding-4b-tp1 and qwen3-reranker-4b-tp1 were bound in proxy.yaml by absolute path on 2026-11-08 while uncommitted, and on 2026-11-10 were switched to @spark-forge/ names after being committed to main and the registry refreshed.",
       "evidence": [
         {
-          "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:be491927f5129be026395cfe55ad0f4bf5c1d2294beb49064a76259dc1ee0cd6"
+          "resource": "repo://HISTORY.md#L839-L845",
+          "version": "repo-lines-v1:sha256:c5b2fd71b8612553840bd5e61a0efcedc1bcf4712c3a43b597f7b0831733751d:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzY5ZDVhOTM0ZjdhNGM1ZWM4ZjBiM2IzZDc0YTdkYjQyMDg0NjYwNjc0ZDg0YWU2Nzg4NWQwZWE3NzIwOGNhZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjU0YWZjZjM2NzczOWQ1YzA0ODVhMjU3YTU4MGNlOGNlMzJlZmFjMmI4ZjhjMTk1YjM5OTZlMTVkMGQ5ZmM5ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzdlZDk0MDUzNDMyNjQyY2RjYjcxOTUyMTE1NTQxOWRlYTA0NzFjODViOWJkMTUxYTIzZTk2MGU4ODVkNmY2MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjg5NjNhZWY0OTY3ZjVlYTZmMzRmZjEwZGUwNGE0YjM5N2Y2MmQ1ZjMwZmNmNzI2MDVmZmFlNmU1M2JhNjdjZCJ9"
+        },
+        {
+          "resource": "repo://HISTORY.md#L897-L901",
+          "version": "repo-lines-v1:sha256:e95a2faf024b455a730bad1674896142793405136fe5542d5b977d4707db3cf6:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjI3OWIxYTI0NTlmMDY2YmQ1NjU2OGI2MDA5ODljZDAxNWIxZDY0ZWJlNmQxNDY4ZDBmY2M3ZDJjMDA2OWM1MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjY3OWQwM2FlZWMxOWY4ODdmMzg4YWEzMWQ4Zjg2MWMxMzUwZGFmZDYwMDFmNDk4YTI4NmVlNTU3ODI5ZDU4OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTYxNmM5M2JkNDFhYmE1MWEwY2EyODFhOTdhZGQ3ZGUzMTFmYzM1NTFhOTI2ZGI0MWUyOTUwNDFiNTk5ZTcwOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiJ9"
         }
       ]
     },
@@ -103,10 +111,20 @@
           "version": "repo-file-v1:sha256:4b0d29261912baa678926f114ccc759d2ea2cbafc47e4f67cb4b9318e60b5443"
         }
       ]
+    },
+    {
+      "id": "claim_9a1964f8efbc41dd8fc879b6c0106018",
+      "statement": "The working tree is often on the develop branch, so a commit there is invisible to sparkrun until it reaches main; check git branch --show-current before committing.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L51-L53",
+          "version": "repo-lines-v1:sha256:3bea68ecf910385d2a8bf3d951187edc4793e04f91c5c77f637f576d47564a2b:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjYyYTIzNjBkNWIxNTQ2MWU0ZTBiZWRhZmQ0NjAxMWViYjZhYTcwNmFkMThjNjY5OGFiMzVmMDgyYzEyMjJhMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODg3MzdhOTY2Yzc1NTlhZTIyZDBiYjM3ZGY2NmMxMjNjMzJiZDg0MTE3OWI5N2Y4MDcxMTJiMThhYmNjYjY5NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjdkOTk0YmVhZWZmODgyZjYxMGJjYmUzNzA4ODMwZDk0Zjg0NGFlN2RmNjkxOTA4YTlmYjI0OTIwZWJlZjQ5OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2MxNDJhZWEwNTk5YzAwNDdlNzcyNTI1ZDAxNDkzYTUxOGFmYTNhM2ZkOWU3YjBhMThkMDVmMDhiYTBkYjQ3NiJ9"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-09T21:00:11.445Z"
+    "at": "2026-11-14T21:00:11.653Z"
   }
 }

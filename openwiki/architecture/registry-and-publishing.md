@@ -18,10 +18,10 @@ sources:
     resource: repo://notes/minimax-m3-sparkrun-port/README.md
   - id: openwiki-source-23775c3de52f3ab95a13cb8b
     resource: repo://README.md
-generated: { by: "claude-code", at: "2026-11-08T21:00:19.321Z" }
+generated: { by: "claude-code", at: "2026-11-10T21:00:18.041Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-09T21:00:11.445Z
+    at: 2026-11-14T21:00:11.653Z
 ---
 
 # Registry & Publishing Model
@@ -39,8 +39,13 @@ publishes is `spark-forge`. The mismatch is **deliberate** — do not try to
 
 ## The registry is a git clone of `main`
 
-The `spark-forge` registry that sparkrun reads is a local git clone of this
-repo's `main` branch. Two consequences define the entire publishing workflow:
+`~/.config/sparkrun/registries.yaml` defines `spark-forge` as
+`file:///home/devops/workspace/sparkrun-recipes` with subpath `recipes`, and
+sparkrun keeps a clone of the repo's local `main` branch at
+`~/.cache/sparkrun/registries/spark-forge`. The working tree is often on
+`develop`, so check `git branch --show-current` before committing: a commit on
+`develop` is invisible to sparkrun. Two consequences define the entire
+publishing workflow:
 
 1. **A recipe change is invisible to sparkrun until it is on `main`.** Editing a
    file in the working tree, or on any other branch, changes nothing that
@@ -74,8 +79,11 @@ registry both match.
 **Brand-new recipes can be bound by absolute file path until they land on
 `main`.** On 2026-11-08 the new `qwen3-embedding-4b-tp1` and
 `qwen3-reranker-4b-tp1` recipes were bound in `proxy.yaml` by absolute path
-while still uncommitted; once committed and the registry refreshed, such
-bindings should move to the `@spark-forge/<name>` form.
+while still uncommitted. On 2026-11-10, after both were committed to `main` and
+the registry refreshed, their bindings were switched to
+`@spark-forge/qwen3-embedding-4b-tp1` and `@spark-forge/qwen3-reranker-4b-tp1`.
+That is the expected end state for every binding: it names the registry copy,
+not the working tree.
 
 Trust follows the source: a **locally-sourced recipe is auto-trusted**, so its
 mods (injected as `pre_exec` hooks) run without a per-launch confirmation

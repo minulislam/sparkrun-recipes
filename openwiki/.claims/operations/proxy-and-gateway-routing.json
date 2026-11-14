@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:10d6632df06ed438913541384dc0bcd8796094b0fd1baa94adad8d14854f0c42",
+  "pageVersion": "sha256:5714e2aa2a98e6344089a2e06e46d7267e50d2dc96bee3eac2e6a333d0259a22",
   "claims": [
     {
       "id": "claim_ac6370c102d94140a4c199439882ef88",
@@ -44,19 +44,15 @@
     },
     {
       "id": "claim_3fd2c8ec525c408dba8e62c05d5e2244",
-      "statement": "The gateway admin API on port 4000 has no authentication — mitigated since the 2026-11-07 restart bound to 127.0.0.1 — offering GET/PUT /v1/config/managed-sets/operator, a validate endpoint, and CAS updates via expected_active_revision.",
+      "statement": "The gateway admin API on port 4000 has no authentication and offers GET/PUT /v1/config/managed-sets/operator, a validate endpoint, and CAS updates via expected_active_revision.",
       "evidence": [
         {
-          "resource": "repo://AGENTS.md#L8-L8",
-          "version": "repo-lines-v1:sha256:7959133199146198868b5d12603fd068f5e8e5116785cef873a283c3d448e8fc:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzk1OTEzMzE5OTE0NjE5ODg2OGI1ZDEyNjAzZmQwNjhmNWU4ZTUxMTY3ODVjZWY4NzNhMjgzYzNkNDQ4ZThmYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzk1OTEzMzE5OTE0NjE5ODg2OGI1ZDEyNjAzZmQwNjhmNWU4ZTUxMTY3ODVjZWY4NzNhMjgzYzNkNDQ4ZThmYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjYzMDc1MDQ3ZWI3OWEwZmJjNGZlNjJjY2M4YWNjNTdhMTQwNmNmYTc5Yzk1NTU2ZmM3NzM0NmI1Y2M1ZTA4YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWU4ZDFhYWE5NjBkODMzNjc0ODIxNWUyOTI5Mjg1OTc2ZmMwNmU3Yjc3OGEyOThhYTIwN2VlNWIxNzAzOWNlYiJ9"
+          "resource": "repo://AGENTS.md",
+          "version": "repo-file-v1:sha256:f2f1953df8b4c91f74ec62b952796964871f05b4b7cd44fe62ac92cd8bb50609"
         },
         {
-          "resource": "repo://HISTORY.md#L805-L814",
-          "version": "repo-lines-v1:sha256:7aed78e8b254fa8b0e88414a7862d5470737ea368a447e89db134ebdeecb03ea:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0ZTc3YmY2MDhlMThjMjI4ZjI5OTBiZjU0MGEzMzAzM2I1NTVkNjc2MjA4MzJkZjI2ZjQ5NjllZWEwMzc1MzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkZDU2ZjBhNzliYjFjNGI1MWMxZTVlZGM2ZjRkZGYzYzM0OGNhYTdmY2E1MDQwYmIxYjZjZjhkMWEyNGY1MTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFhNDc4ZTM4MDM2M2IxNDg0ZmYyNGRjNTgyYzcyMjRjZjYzMWU5YTgzNGY0NmEzOGI2Yzg5MzgxMzIxOTI2ZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM1ZjUyNGZjNWNmNzNhZThkMjM4MTY1ZWJlOTU3ZjgyZTU5MzU1YTgxMGM1ZDkxNGE3M2U1ZDhiNmI5YjI5NTcifQ"
-        },
-        {
-          "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md#L99-L102",
-          "version": "repo-lines-v1:sha256:6bb5fc85f2f09951558d19121bbaa3a0eb1ecc702e187c14752c2020dfd9c9ad:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDViOGMwMTY3NDQwMzVmOGRiOWUzN2M2NWRmMGMwODk4NGI4YWE5Mzc3M2IxNzM1ODJjZWQwNDY5ZWQwY2NlOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTM3YmVlOWZlMTYzZTVlZWY3MjU1M2VhMDM0MDBlZGFiOTMzMDBkZjc3YzIxNDc4M2E4M2FkNGZjYWI4NWM0ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWI2OWRhNTg1ZGI0ZTI0OGJjMDlmZjFhZmQyNjUzZmZhNzJiNzNlMmE2YzNmNDU4ZTU3NDk2ZGJjMWViNTViMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWNiN2MwMThhN2IwMTYyM2E2NzU4ODFhMGUwYmFlYjUxMjIzZjRjNTkwMWE0OTI3NTBlNDdmYWNjMjA0ZTBhZCJ9"
+          "resource": "repo://CLAUDE.md#L54-L58",
+          "version": "repo-lines-v1:sha256:18855a3b1b61df9395643e92c17230041ef30aef56581782dbac7505bd1e3189:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzk0NDI5MzBhYWI0ZDJkOTBjYTk1MTg5ODlhMGU4MGMzNTM2MGMyMzA3MWI3YTRiMDk0NzI5ZTMxZGE0Yjk5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2FlN2U3MGIzMjZhZmIxN2MzYmZjMzUzY2Q0OTk3YjI3NWZhM2I2YmRmN2VhMTgxYWMzMjAzMzQ1NjcwZmVkYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2JlYTY4ZWNmOTEwMzg1ZDJhOGJmM2Q5NTExODdlZGM0NzkzZTA0ZjkxYzVjNzdmNjM3ZjU3NmQ0NzU2NGEyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTc0MzU2N2I3OGY2ZjU0ZTQ4NmYyN2ExYTI4MDRlODE4YWFlYmIyMmMyNGE4MGNmYWQ0MzlhNzgzY2M2M2IwMyJ9"
         }
       ]
     },
@@ -82,29 +78,29 @@
     },
     {
       "id": "claim_2cbe6df139494bc589ed480017c34ead",
-      "statement": "proxy.env (mode 600) holds HF/NGC/NVIDIA/Ollama secrets and must never be printed into output or files.",
+      "statement": "Per the 2026-11-03 audit, proxy.env holds HF/NGC/NVIDIA/Ollama secrets; secrets must never be printed into output or files.",
       "evidence": [
         {
           "resource": "repo://CLAUDE.md",
-          "version": "repo-file-v1:sha256:c5b2fd11733a937f8283f39320c6e269a7e6aaa1638abdca581d89a6e2572e57"
+          "version": "repo-file-v1:sha256:ea970d15a0fe3f48f9aa468e7c359615f4ebd124a643d8bf0ed6711b6c58bc82"
         },
         {
-          "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md",
-          "version": "repo-file-v1:sha256:85c4136149356bd1a0b3fd476bdaa3416e7bb681ab3e23f7a3a32245cbda73ff"
+          "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md#L77-L78",
+          "version": "repo-lines-v1:sha256:35d1e23f554b2051189c818127f998a97d974715862b8336fe21561a7b239feb:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODI1YjAxOWY1NTMwYzcyMmY4MmQ4Mzg2MjcxZmIzYjJjODJiYTBkNzRmNjA5NWUxOWE1NjAwMTU0MGUyZTAyZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2M2NTc1YjhlYzZjYWJlNDU0MDY4YWQ2ZGEzMWRlYTI4ZmZlMzAwZjQwMWMzZTFlZTY4ODY3NjAzYjg0Y2Q0NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDRmZjI5MzRlM2MzNzAzYTNmY2E3OTZjZTg0ZGNmNTQ4ZTc0MjRhMmU1OTExMGQ3MTM2NTRhM2ZhZDAxNmU3NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODJhZGY5OTliZTBmMjg5MGVlYWZkOTgwYzE3NmY0NzBlYjRlZTIwZDk1YTZiMTUxZjRkMTJiM2VkMmFjZWFhYyJ9"
         }
       ]
     },
     {
       "id": "claim_592c3bdbc1ca4c6e82b6b0824cafea10",
-      "statement": "The active gateway is the SparkRoute plugin 0.3.4 selected via the gateway.sparkroute feature; it originally ran on 0.0.0.0:4000 (flagged by the 2026-11-03 audit) and was rebound to 127.0.0.1:4000 on 2026-11-07.",
+      "statement": "The active gateway is SparkRoute 0.3.4; it was rebound from 0.0.0.0:4000 to 127.0.0.1:4000 on 2026-11-07 after the 2026-11-03 audit, but current CLAUDE.md again describes it as listening on 0.0.0.0:4000 with no admin token.",
       "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L54-L58",
+          "version": "repo-lines-v1:sha256:18855a3b1b61df9395643e92c17230041ef30aef56581782dbac7505bd1e3189:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzk0NDI5MzBhYWI0ZDJkOTBjYTk1MTg5ODlhMGU4MGMzNTM2MGMyMzA3MWI3YTRiMDk0NzI5ZTMxZGE0Yjk5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2FlN2U3MGIzMjZhZmIxN2MzYmZjMzUzY2Q0OTk3YjI3NWZhM2I2YmRmN2VhMTgxYWMzMjAzMzQ1NjcwZmVkYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2JlYTY4ZWNmOTEwMzg1ZDJhOGJmM2Q5NTExODdlZGM0NzkzZTA0ZjkxYzVjNzdmNjM3ZjU3NmQ0NzU2NGEyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTc0MzU2N2I3OGY2ZjU0ZTQ4NmYyN2ExYTI4MDRlODE4YWFlYmIyMmMyNGE4MGNmYWQ0MzlhNzgzY2M2M2IwMyJ9"
+        },
         {
           "resource": "repo://HISTORY.md#L805-L814",
           "version": "repo-lines-v1:sha256:7aed78e8b254fa8b0e88414a7862d5470737ea368a447e89db134ebdeecb03ea:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0ZTc3YmY2MDhlMThjMjI4ZjI5OTBiZjU0MGEzMzAzM2I1NTVkNjc2MjA4MzJkZjI2ZjQ5NjllZWEwMzc1MzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkZDU2ZjBhNzliYjFjNGI1MWMxZTVlZGM2ZjRkZGYzYzM0OGNhYTdmY2E1MDQwYmIxYjZjZjhkMWEyNGY1MTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFhNDc4ZTM4MDM2M2IxNDg0ZmYyNGRjNTgyYzcyMjRjZjYzMWU5YTgzNGY0NmEzOGI2Yzg5MzgxMzIxOTI2ZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM1ZjUyNGZjNWNmNzNhZThkMjM4MTY1ZWJlOTU3ZjgyZTU5MzU1YTgxMGM1ZDkxNGE3M2U1ZDhiNmI5YjI5NTcifQ"
-        },
-        {
-          "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md#L46-L46",
-          "version": "repo-lines-v1:sha256:22742ba87b88ede55f6ba5a68300ed5930a190984a1a2ea3f348451dbbbb21f5:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjI3NDJiYTg3Yjg4ZWRlNTVmNmJhNWE2ODMwMGVkNTkzMGExOTA5ODRhMWEyZWEzZjM0ODQ1MWRiYmJiMjFmNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjI3NDJiYTg3Yjg4ZWRlNTVmNmJhNWE2ODMwMGVkNTkzMGExOTA5ODRhMWEyZWEzZjM0ODQ1MWRiYmJiMjFmNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDQwZWQwNDZlOWViMDI4Zjk1OWQ5NmU2YzdiYTE3NjhiNTU3MWMzYTgwOGY0ZDI5YjM2ZTM1MjNjMTk1MDI5ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTcwYTQ4ZjQyMWIwMGNmMTM2YzliMzU2NDk2NGVlZjNiMmMwOGU1NWE3ZGM4ZGM1NzM1ZDRlMGE0NmNhYjhhZCJ9"
         }
       ]
     },
@@ -159,10 +155,44 @@
           "version": "repo-lines-v1:sha256:949cdefac33e1ae75a1447f367c4ec37d720999d2bcb0f58f1a8688e8813eb91:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWYxNDU5MjA0OGVlYzk0MzU1MzU4MTlhMWNkNDAyZTNmOWI4ZWM0MmY1N2Q3NTg4MDdjZWQzMmEyNTllYzc2ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTA0ZjU2OTc5NjAyYjk0ZWVjYjBkMmQ4NTYyYWVhNDgzYmNhODBjZDE5MjI4YjVlYzMwMzRiOGVhNzFmYTk5NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2JiZDZjMzgyOGY3YzZkNjc3Mjc1ZGJlZjM2Y2FjMTFhNjdmM2Y2YzNkNDJiNzEwYWMzNDc2NDk3OGMwNTlmNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTYwZDFhMTBhNWQxMmJjYjRmMDI0OGY5ZmFiNmI2NDQwNjhlMTNiMDk5NjAzNWYwYmFhOWRkNjYzYThjZmE0YyJ9"
         }
       ]
+    },
+    {
+      "id": "claim_a12ac02d8b00434298f1c8895c2ae3b1",
+      "statement": "While the proxy runs under sparkrun-proxy.service, sparkrun proxy start/alias add can fail with ResourceBusy; edit proxy.yaml then sparkrun proxy sync, or restart the unit with sudo -n systemctl restart sparkrun-proxy.service, which is allowed without a password.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L122-L127",
+          "version": "repo-lines-v1:sha256:fb7ad09c1b729efe9fbe2576d2edfe9322af2bc176ed6525c9ce3f7f76b74830:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmQ4NDE2NWI3ODBiZmY5OGJlMDcyMmEzOGRiZTNmNTFlYTVlOGI3NDc4Mjc4NjBlNmE3ZDRhZGZjNmJmYjU4NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDkyYzNhMTZjYWU1MTMzZDcwNmVjY2U1OGRkYzJiOWM2OTdjMWExYTA0ZTQ0MjBhZDgwNjBkMGUzODViZTZkYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjI0ODUwOGI4OWJmNTlhYTgwZmI3OGEwMWE0OGFhOTkxYWJlOTFjOGRhZjViN2NkMGRiNjU4N2Y4ZDU0NTkxYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTFkNWYwNzU5NDFiMDg4MDcyODFiYWRiMzhiNzUwNjk0MTY1ODRhM2MyMzZhOWE0MTM0N2YxN2IzNDJkNjAyMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_22f120820f56411b949dff77be8bd4c5",
+      "statement": "The embedding and reranker bindings were switched from working-tree paths to @spark-forge/ names on 2026-11-10 after committing to main, and the embedding route returned HTTP 200 with a 2560-dim vector through the gateway on gb10-solo after readiness inference was disabled.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md#L897-L901",
+          "version": "repo-lines-v1:sha256:e95a2faf024b455a730bad1674896142793405136fe5542d5b977d4707db3cf6:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjI3OWIxYTI0NTlmMDY2YmQ1NjU2OGI2MDA5ODljZDAxNWIxZDY0ZWJlNmQxNDY4ZDBmY2M3ZDJjMDA2OWM1MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjY3OWQwM2FlZWMxOWY4ODdmMzg4YWEzMWQ4Zjg2MWMxMzUwZGFmZDYwMDFmNDk4YTI4NmVlNTU3ODI5ZDU4OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTYxNmM5M2JkNDFhYmE1MWEwY2EyODFhOTdhZGQ3ZGUzMTFmYzM1NTFhOTI2ZGI0MWUyOTUwNDFiNTk5ZTcwOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_8696b586883c4ed8be813ae31274757d",
+      "statement": "The qwen3.8-27b-fp8-mtp-tp1 gateway binding was removed when Qwen/Qwen3.8-27B-FP8 was deleted from the head on 2026-11-10.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md#L882-L887",
+          "version": "repo-lines-v1:sha256:a0c0dcd5db4044b07eb2535c52124509bd8297ec1d810c11a5e5b686b299ad93:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjg4ZWU3MDJjNTU4NTFhMGU4Zjg5MzMwYWRjNmNhNzFmNjg1NzA3NzllZWY0NmRmOWU1Njc4OWRjZTU2MTc3NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGU4NGJhMWUyZjQ2NDZkMzQ0ODAzMDZjMTE5ZGIwYTA4ODc2ZDU2OTJmNzIwODIzZTc4NzcwNWU2OWVkMjU5OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2RjNzU0NDNhNmY5MjFhNTczN2JkNTRlM2UxNDBmOTcwZDY1MGE5ZjFhNWQ2MmIxNjNmYjEyOWM1NmIzNTRhOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzFkYTUzMTRmNzU5Y2QwOTJhODhlZTQ5MWNiNTRlMDZlNTQwODA0MDk4OGUzNWQ4YWE0YWRjNzAzNWRhNzg5YyJ9"
+        },
+        {
+          "resource": "repo://MODELS.md#L131-L132",
+          "version": "repo-lines-v1:sha256:924e68ff3495fafc82d20d8cbd1ccd4a30aaaeb5340702f9ffaf982d5981265b:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGFjNjYxODdkMjczNTc2MjIxZTllNzMzYzM5MDRkODBlNGMwNjZlNjc2MjlhYzhmY2RkZDI4NTY2N2E3MmRmYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzg1NTA0NDhlNmY1MWUyMjFkNDRmZGY2MzM0ZTYxMzI0ZWYyMjViNWMwNTkxODcxMzE0MTBmMDIzMmVlOTU5ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTQyMDg4ZTVhY2RjZjgwNTVkNjJhYzk4MTBkNjA3ZmRmOTZjMTA1MjE4YzBhZDg1M2QxMjNkNjAwOTcyZWY1MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzg3YmQ2YmJhNTQ2OTJmMzMwNDJjNDdkYWU3NzE3ZDU1OGE1NTYxODYwODI3OTEzZDUzYzkyZDE4NTIzZTE2YSJ9"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-09T21:00:11.445Z"
+    "at": "2026-11-14T21:00:11.653Z"
   }
 }
