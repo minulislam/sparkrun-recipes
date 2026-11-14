@@ -16,18 +16,22 @@ sources:
     resource: repo://notes/minimax-m3-sparkrun-port/README.md
   - id: openwiki-source-67c295973f38e30669ebf01c
     resource: repo://recipes/glm-5.3-flash-exl3-abliterated-tp2.yaml
+  - id: openwiki-source-afd4b883e2d77bfe356a5248
+    resource: repo://recipes/inkling-small-nvfp4-refusal-dial-tp2.yaml
   - id: openwiki-source-5c02b2143bb9723499b2edf3
     resource: repo://recipes/mods/glm53-exl3-gb10-topk/run.sh
+  - id: openwiki-source-28bdb53b0ca2f20523767328
+    resource: repo://recipes/mods/inkling-refusal-dial/run.sh
   - id: openwiki-source-b1867d7f36dadf1642430baf
     resource: repo://recipes/qwen3-embedding-4b-tp1.yaml
   - id: openwiki-source-5c6fb7c964f2f95da074a267
     resource: repo://recipes/qwen3-reranker-4b-tp1.yaml
   - id: openwiki-source-9c55c8fb4c58db89d64b13df
     resource: repo://recipes/qwen3.8-flash-next-abliterated-nvfp4-tp2.yaml
-generated: { by: "claude-code", at: "2026-11-08T21:00:19.321Z" }
+generated: { by: "claude-code", at: "2026-11-10T21:00:18.041Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-09T21:00:11.445Z
+    at: 2026-11-14T21:00:11.653Z
 ---
 
 # Recipe Anatomy
@@ -121,6 +125,14 @@ patch), fails loudly if the target pattern is missing, and carries upstream
 attribution/licensing files when the edit is ported from another project
 (see `mods/glm53-nvfp4kv-overlays/CREDITS.upstream.md`).
 
+A mod can also add a feature to a stock image. `mods/inkling-refusal-dial`
+copies refusal-direction tensors and Python modules into the container and
+patches vLLM's Inkling model. It also mounts an `/admin/refusal_lambda` route.
+This way `inkling-small-nvfp4-refusal-dial-tp2` adds a runtime refusal dial
+without a custom image (see the abliteration page). A recipe that uses a mod
+can also carry `post_exec:` commands (run in the container after the endpoint
+is up) and `post_commands:` (echoed hints to the operator).
+
 ## `scheduler` and `distribution_config` (per-recipe placement overrides)
 
 Two less-common top-level keys appear in the MiniMax-M3 port
@@ -161,9 +173,11 @@ Two schema consequences:
   The reranker recipe carries no such block because SparkRoute 0.3.4 has no
   rerank route at all — callers hit the container endpoint directly (see the
   proxy & gateway routing page).
-- sparkrun's readiness probe expects a chat token, so it reports pooling
-  runners as **never-ready**; ignore the probe for these recipes and verify via
-  the pooling endpoint instead.
+- sparkrun's readiness and activation probe sends a chat request by default.
+  A pooling runner has no chat route, so the probe gets a 404 and the
+  activation fails. Since 2026-11-10 both pooling recipes set
+  `readiness: {inference: false}`, which makes the probe check only the endpoint.
+  Verify these recipes through the pooling endpoint, not through chat.
 
 Recipes adapted from an upstream registry open with `# >>> ADAPTED from …`
 header comments recording the source recipe, fetch date, what was changed and

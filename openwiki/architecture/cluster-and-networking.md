@@ -5,10 +5,8 @@ description: The dgx-pair two-node DGX Spark topology, the load-bearing NCCL/Glo
 tags: [cluster, networking, dgx-spark, nccl, connectx-7, topology]
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-09T21:00:11.445Z
+    at: 2026-11-14T21:00:11.653Z
 sources:
-  - id: openwiki-source-8037e2358a2c4f9b2c722a11
-    resource: repo://AGENTS.md
   - id: openwiki-source-a2371d6362e5db4bc834ad03
     resource: repo://CLAUDE.md
   - id: openwiki-source-382af0b12a087a97295aa93b
@@ -17,7 +15,7 @@ sources:
     resource: repo://INDEX.md
   - id: openwiki-source-eedd5219d6290708f61cb7bf
     resource: repo://notes/2026-11-03-sparkrun-version-config-audit.md
-generated: { by: "claude-code", at: "2026-11-07T21:00:21.382Z" }
+generated: { by: "claude-code", at: "2026-11-10T21:00:18.041Z" }
 ---
 
 # Cluster & Networking
@@ -101,9 +99,14 @@ the old "Rayan's Mesh" profile (DHCP `10.10.10.158`) mid-session, breaking
 management again — the fix is `sudo nmcli con up "Citadel LAB"` plus an
 autoconnect-priority adjustment on the worker.
 
-All of the above network repair steps require root, and there is **no
-passwordless sudo** on either node — root steps are handed to the operator to
-run in their own terminal.
+On 2026-11-10 the worker was reachable again on both its management address
+(`10.10.20.11`) and its CX7 address (`10.99.10.11`), after an earlier outage the
+same day; the wired NIC's hardware fix is not recorded as done.
+
+All of the above network repair steps require root. There is **no passwordless
+sudo** on either node; the only exception is start/stop/restart of
+`sparkrun-proxy.service` on the head. Other root steps are handed to the
+operator to run in their own terminal.
 
 ## The 2026-11-03 CX7 MTU repair
 
@@ -129,11 +132,13 @@ cables. The `dgx-pair.yaml` pin stays as-is.
 
 The CLI is **sparkrun 0.4.2** (installed as a uv tool; the 0.3.10-era gotchas
 recorded elsewhere in repo docs predate 0.4.x). The active inference gateway is
-the **SparkRoute** plugin (0.3.4), running as the proxy on the head node. It
-originally bound **0.0.0.0:4000** — reachable from any interface on the head —
-which the 2026-11-03 version audit flagged as an exposure risk; on 2026-11-07
-the proxy was restarted bound to **127.0.0.1:4000** (loopback only). See the
-proxy & gateway routing page for the binding model and current routes.
+the **SparkRoute** plugin (0.3.4), running as the proxy on the head node. The
+2026-11-03 version audit flagged its **0.0.0.0:4000** bind as an exposure risk,
+and on 2026-11-07 it was restarted on **127.0.0.1:4000**. The current
+`CLAUDE.md` again describes the gateway as listening on `0.0.0.0:4000` with no
+admin token, so treat it as reachable from any interface on the head until the
+live bind is checked. See the proxy & gateway routing page for the binding model
+and current routes.
 
 ## Related
 

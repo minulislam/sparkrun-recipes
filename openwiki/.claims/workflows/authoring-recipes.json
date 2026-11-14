@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:b66ec592bc182e0987b154590f0c330617437cda5b3e999a428274f585fa304b",
+  "pageVersion": "sha256:f19491ef46811ec47a7eb879b5ef826a3035de3d16e2846e409653dade2e2814",
   "claims": [
     {
       "id": "claim_04170aae475542d6a184179c01a297f9",
       "statement": "Before writing a recipe, run sparkrun registry update then sparkrun recipe search across every registry, and if an upstream recipe exists copy it rather than authoring from scratch.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L28-L30",
+          "resource": "repo://CLAUDE.md#L76-L78",
           "version": "repo-lines-v1:sha256:47a3f0df4391a796632f56237b6d8f8df95e611445ac86ba69bd9b77028b25c6:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWQ5YzZhZGNkNzBmZDUxNjRmYmM1MThjNjA4YTFhMTUyN2RmZTQxZjJiYTAxMzUyZWZmYTg0ZTI4ZGYxOGUzNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmYzMjFmZTQ4NTU4ZmY5MzI4Y2Q2N2U0ZThlOWM0YTk4YWYyODNkYjI0NmVmYzcwZjA2MWRhODM5OWFlM2Y4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2JhYTNlZTg0YjVkZjJjYjZkNTk3ZTliYjgzMzMyZTg2ZTdmOTQ2YTQwZGY5NGMyYzlkZDVlMzNlZjE5M2Y0NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGExMzM5MzEwZTExMDM3NTlkZGY1MTZhZmZhNWZjMGI5NDQ1ZmQwMjg5OTA3ZWIzMzEwODJjNzhhNzJjODFlNiJ9"
         }
       ]
@@ -17,18 +17,22 @@
       "statement": "A copied recipe keeps an attribution header naming the upstream source and changes only what the cluster needs, with the recipe header recording why each deviation from upstream was made.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L28-L30",
+          "resource": "repo://CLAUDE.md#L76-L78",
           "version": "repo-lines-v1:sha256:47a3f0df4391a796632f56237b6d8f8df95e611445ac86ba69bd9b77028b25c6:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWQ5YzZhZGNkNzBmZDUxNjRmYmM1MThjNjA4YTFhMTUyN2RmZTQxZjJiYTAxMzUyZWZmYTg0ZTI4ZGYxOGUzNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmYzMjFmZTQ4NTU4ZmY5MzI4Y2Q2N2U0ZThlOWM0YTk4YWYyODNkYjI0NmVmYzcwZjA2MWRhODM5OWFlM2Y4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2JhYTNlZTg0YjVkZjJjYjZkNTk3ZTliYjgzMzMyZTg2ZTdmOTQ2YTQwZGY5NGMyYzlkZDVlMzNlZjE5M2Y0NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGExMzM5MzEwZTExMDM3NTlkZGY1MTZhZmZhNWZjMGI5NDQ1ZmQwMjg5OTA3ZWIzMzEwODJjNzhhNzJjODFlNiJ9"
         }
       ]
     },
     {
       "id": "claim_4d6e257a948846b48a2ff03024baa1f8",
-      "statement": "A new or changed recipe is published only by committing to main and running sparkrun registry update spark-forge; work goes straight to main with no pull-request step, and commit/push happens only when the operator asks.",
+      "statement": "A new or changed recipe is published only by committing to main (not develop) and running sparkrun registry update spark-forge; there is no pull-request step, and commit/push happens only when asked.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L24-L27",
-          "version": "repo-lines-v1:sha256:38d8d7ee9dcf7c76a0ca236d3f6f330e7c7a7d9d98ac932e6908f8bf52e739db:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjAwODhjY2M5NTQ5OGVkZjk3OTdhZmMyNjIwM2MyMDdiNjc3NWNkNjQ5NTNiMDBjZTU5YWYwZjdiODdlMTVmNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTI0YjU1MmM4ZjMyMGI0ZTRlOTg0ZTRhZjU1NTAzNmQ1ODA0N2MyZmViY2Q3MGRlNzg1OTZmOWQwYzcyYzAwOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmUwMmI4ODM4NDljNjc4YTZhNjYxNWMwNmZjYjE5OGRkNGFjOWFjMTBhNDI5YTY5YzljMjRiMjgwNjFkZTc0MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDdhM2YwZGY0MzkxYTc5NjYzMmY1NjIzN2I2ZDhmOGRmOTVlNjExNDQ1YWM4NmJhNjliZDliNzcwMjhiMjVjNiJ9"
+          "resource": "repo://CLAUDE.md#L48-L53",
+          "version": "repo-lines-v1:sha256:d5f9bb00cb2d944fe1fa9a760dbe757d19aa92ebc0ee422f46a41bc3fc90b59a:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDExMTliZjQzMjM3N2UxYmVhNjNlODZiNjc1NGNhNzZmNzljMmVjOTkzMTFjMTg2NDEyZDZjNDUwMzZjODQwZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODg3MzdhOTY2Yzc1NTlhZTIyZDBiYjM3ZGY2NmMxMjNjMzJiZDg0MTE3OWI5N2Y4MDcxMTJiMThhYmNjYjY5NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTZiOTIyN2NiMTcyZDg2ZmJjMzA2Y2UxMWQyYjhmYmFlMzljMzdkNGM3NjIwMTMwYmY1MWIzNDVjZGVmODg0MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2MxNDJhZWEwNTk5YzAwNDdlNzcyNTI1ZDAxNDkzYTUxOGFmYTNhM2ZkOWU3YjBhMThkMDVmMDhiYTBkYjQ3NiJ9"
+        },
+        {
+          "resource": "repo://CLAUDE.md#L72-L75",
+          "version": "repo-lines-v1:sha256:ad55ca2327e866773d71c96b416caf40413af481b80f0435d7709541cf94d655:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWRjZTQ4ZjRjYWFmODBlYTIxYjA3MTk4NzQ5MDMxYmIyZGY2YjAyODk4MGYwZTE4MzAzOWEzNjViNDU0NDkzMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGY5Zjk4MjY1MTUxNzdmNWM2Zjk3OWMyNjllZWJkZDhmMWQ3MDI4MTNiM2RjYzdhZmU2OGFmY2VlYWEyNTA4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmUwMmI4ODM4NDljNjc4YTZhNjYxNWMwNmZjYjE5OGRkNGFjOWFjMTBhNDI5YTY5YzljMjRiMjgwNjFkZTc0MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDdhM2YwZGY0MzkxYTc5NjYzMmY1NjIzN2I2ZDhmOGRmOTVlNjExNDQ1YWM4NmJhNjliZDliNzcwMjhiMjVjNiJ9"
         }
       ]
     },
@@ -37,7 +41,7 @@
       "statement": "Each served model keeps exactly one canonical recipe file (distinct operating profiles get their own named files), with measured numbers in benchmarks/ and the status row in INDEX.md whose row numbers are not renumbered.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L57-L63",
+          "resource": "repo://CLAUDE.md#L112-L118",
           "version": "repo-lines-v1:sha256:3d32862b99b7b977efe0c492021db40da92cc2a0a71b485ee8c3a37f524c8499:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTgyZTc2ODljYmQ4NGU3ODZiNzRjZjBiNTdiMjVhMzhjNzU1MTY1NmZlMmYxMDU4ODNkZGVkNjU2YTNlMWMwNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjAxNTZhZmFhMTFlZGRlOGM5NjliYmMyNjExNzhmYmIzNDEwZWNmMzJmNmE2MTZjNzkxYTY3ZjMyNWFkYzM1NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmFhYjlmMmRkMzNkOWEyYzAwMjQ2NjU3MTcyZWU5OTEyZDJhODY1YjQ4N2EyNTI1MzEwM2M1YTM5MmVkNjcxZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjcyNWQ1ODc5NTc2NzY4MDM2NmI1NmM4OWEzY2RmZTMxNDJlYTJhYjM2ZjA0YjMxNWI5NWMyMTM0ZmJjZDVkOSJ9"
         }
       ]
@@ -107,10 +111,34 @@
           "version": "repo-file-v1:sha256:e0c2bbbf94a59252a87bccf48efea8ff0c801e8a8197873f6e396c69398a1ecb"
         }
       ]
+    },
+    {
+      "id": "claim_7366149fbc094b4f902ba720f3bc870c",
+      "statement": "model_revision alone does not reach vLLM; the command must also pass --revision {model_revision}, and a recipe loading a local directory sets model_path with the container path /cache/huggingface/... instead.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L59-L62",
+          "version": "repo-lines-v1:sha256:793be28ce33a7e2ea5fb5f682899b801c122c02628fc77ed93ca331fe954a27a:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODU2ZTY1OGJlY2MwZDNmZGE5MmNmYWY2ZTg2ZDk2NmNlYTM0ZGM1ODRkZjMxM2ExNzJiMWQyZDkyZGY1ZGQ3YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmZmMjRkNTIxZWFiM2YxNDQ3ZTUwZjI4Njg5ZTQyNjNkMjg1MjQzMmViOTc1NTE4OTU4Mjc4MjQ4YmE2ZDI4ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzA3Zjg1MjBhYmZjMjZlMmI3NGY0OTU2NTI3MjcwY2U5ZmIyYTgwZDA4OTllNGVmM2MzNzJkN2VlM2VlMzdlNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzQ0ZWQ1NjMyMTUxMTlmOGJiZjU3YzhiNDliZDMwZjIwYzhlZTA3ZWE5MTVkNmJlMTdjNDIxMzkwMGJiYTEzMyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_83d62df612ec4f1e8aa93ae5668d61ec",
+      "statement": "qwen36-35b-a3b-heretic-nvfp4.yaml pins model_revision a483749 and passes --revision because HF main c28027d only edits the README and has no cached weights.",
+      "evidence": [
+        {
+          "resource": "repo://recipes/qwen36-35b-a3b-heretic-nvfp4.yaml#L34-L34",
+          "version": "repo-lines-v1:sha256:5cc0c24c71d79801cf8f2ec72f6fdc3be726e34521c658551be076b4fa52fa98:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWNjMGMyNGM3MWQ3OTgwMWNmOGYyZWM3MmY2ZmRjM2JlNzI2ZTM0NTIxYzY1ODU1MWJlMDc2YjRmYTUyZmE5OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWNjMGMyNGM3MWQ3OTgwMWNmOGYyZWM3MmY2ZmRjM2JlNzI2ZTM0NTIxYzY1ODU1MWJlMDc2YjRmYTUyZmE5OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGY0ZmY4NjEwOGJkYzBjMDg5NjNkMDU1YTEzMjE4NTllNDk2OTJkMWIyMzkyNjEzZTM5NjE1Y2RjNWY3M2E5NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzRmNWVjYTIzNDg1MDg5ZTFhZTY2NjRjZDg2MzM3YmM5NTAyZGUzNDhmMTZlMmRhNzJjZTA3NjJjN2E2YmZiMSJ9"
+        },
+        {
+          "resource": "repo://recipes/qwen36-35b-a3b-heretic-nvfp4.yaml#L77-L77",
+          "version": "repo-lines-v1:sha256:ab97527d96bf2c059271d2391a5c8c1a5b1f1a4864eeafb19af2ec6ea7af661c:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWI5NzUyN2Q5NmJmMmMwNTkyNzFkMjM5MWE1YzhjMWE1YjFmMWE0ODY0ZWVhZmIxOWFmMmVjNmVhN2FmNjYxYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWI5NzUyN2Q5NmJmMmMwNTkyNzFkMjM5MWE1YzhjMWE1YjFmMWE0ODY0ZWVhZmIxOWFmMmVjNmVhN2FmNjYxYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODEyNWQ2ZjFlYmI2NDJiMzRiMWRiM2FhMjdiYzA0NDIyZmVkMzM2YmZiMzkxNDY5Yzc1ZWU0Yjk2MThmNzE0MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGQzOWMxZGI0MDE2NTAzNDExYmU0ZWFlNDljNWFiZjI5MGI0ZTMwNGJkMDMxYzAzZGQwNDkxMDBlZTkwMGVmZCJ9"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-09T21:00:11.445Z"
+    "at": "2026-11-14T21:00:11.653Z"
   }
 }

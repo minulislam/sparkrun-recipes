@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:32c6a7400d7bde1a5c06be475f2441d8601cdd3b894bc58890306de0b38ed94a",
+  "pageVersion": "sha256:4a979e4b939520b8d8a81a0acdbd20ffa91ad06fef63b5ae251412ab8b8e81a0",
   "claims": [
     {
       "id": "claim_632bfad53bbe428599bc2007d416520f",
       "statement": "sparkrun-recipes is a recipe and benchmark registry that publishes as the sparkrun registry spark-forge, serving NVFP4-quantized LLMs on a two-node DGX Spark (GB10) pair; it is consumed through the sparkrun CLI and has nothing to build or install.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L1-L7",
+          "resource": "repo://CLAUDE.md#L5-L11",
           "version": "repo-lines-v1:sha256:dd8ea9413afb6bf8dc47e94ccf454dc175fc19309c89bfacfa1d79b70720f9fc:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWJjNzU0NmViOTc0MGM5ZWU0MmNhZjg0NWYxMzc5OGIwZTliNTdlNGNhMWRiZmFkMTk5ZWY1MGU0N2I3NGVhMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzNlZWUxMzQ1M2VjYzQzMDNmOTJiNGQ2NjI3NzQ3ZGI0NGYwNzkzMjAzZTliOWJkMGEwNjgxY2QxNzRmMzNlZCJ9"
         },
         {
@@ -21,7 +21,7 @@
       "statement": "The authoritative source files are INDEX.md (recipe status/numbers), CONTEXT.md (status vocabulary), MODELS.md (on-disk checkpoint inventory), IMAGE-POLICY.md (image policy), HISTORY.md (dated work log), benchmarks/ (reports and raw artifacts), and .claude/skills/verify/SKILL.md (the verified-bar procedure).",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L9-L17",
+          "resource": "repo://CLAUDE.md#L13-L21",
           "version": "repo-lines-v1:sha256:0dfff5ae4322fa62d0b113d6832fe3ab0b2ab7d030c64be007ec846d1b93504e:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTc3NDA3N2FhMWExOThhZmQ1NWZjMWMzZjUwNGU2MDNmMWJlMTgwZDM4NmMwODkwMzQzM2JkYTAyZmUwMGVmMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2RmMzVjMTVhZmNmNjlkYzQ1YWZlZTNhN2ZmMTIyOWM5OWFiMzJhNzljZmY1NDdkYzhhZDgzMDg3N2Q5YzFjYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTM3OWEwOTRhMjQwNzEwYWE2NzZmNWNiZTAyZTZmMDBiMTg5MDNiMDZhMDhmNjIyZjdhZTk2ZmNlNzA0Y2UzNiJ9"
         }
       ]
@@ -31,32 +31,28 @@
       "statement": "The live cluster is the ultimate source of truth and docs record what was measured on a date, so they must be re-checked before acting on them.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L18-L19",
+          "resource": "repo://CLAUDE.md#L22-L23",
           "version": "repo-lines-v1:sha256:39e1cee1106ace7c6ee73c42cd99b56f0a517e287f63d8633dc7794037326264:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjViMGQzZWY5OTYzOThlNTlkNWZiMjdmNTc1NWQyOTg5YTcxNmNjNDRjNzJjNTViYTEyZDY2N2ExNzUzNTJlMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWQyNWFiMTBmYTc0NGYzOWI3OWNmMTQzZDU2ODllODE1OTlmMGNkNmUzY2RmZjgwNTkwMDQyYjliNzdhYjBjYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGE0OGViNDk3M2Y2MTVkYmJhNzI1MzJiYzkwNjU5YmJmZmYzNWE2MWJjOTI5YzUwMDkzOTBiYWY1MmEyODZiNiJ9"
         }
       ]
     },
     {
       "id": "claim_ecdb8ae1a3ab427990f170ece21c14c7",
-      "statement": "The installed sparkrun CLI is 0.4.2 (uv tool, per AGENTS.md and the 2026-11-03 audit), while CLAUDE.md's sparkrun gotchas are recorded against 0.3.10 and have not been re-verified on 0.4.x.",
+      "statement": "The installed sparkrun CLI is 0.4.2 (uv tool), while CLAUDE.md's sparkrun gotchas were seen on 0.3.10 and are marked as not re-checked on 0.4.2.",
       "evidence": [
         {
-          "resource": "repo://AGENTS.md",
-          "version": "repo-file-v1:sha256:f2f1953df8b4c91f74ec62b952796964871f05b4b7cd44fe62ac92cd8bb50609"
+          "resource": "repo://CLAUDE.md#L119-L121",
+          "version": "repo-lines-v1:sha256:f248508b89bf59aa80fb78a01a48aa991abe91c8daf5b7cd0db6587f8d54591b:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzJhOGViNTg4NjliM2NhMmRhZDEyMDYyMmRjMmNiNzMyMDJhODgyMWUwODdkZWUzNzEwNDY0ZWQyMjdhMjA4ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzQ4NDEyODk3M2UyMmEzMmIwYjJhYTVmMGE3Nzg5NDRkZjRmZWFhYzA3ZTY4NDhiMzg4ZmI3ZjRhMjAwY2U4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2VmMDE4MTVkNTM5N2FmZGI4ZjAxMjQxM2U0MjcyMTU1OGQwNjhmYWYxOWU4NGU5OTcwYzYyZWIyODM5M2YxYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDQ0YTU0NzM5YWQ4OTRmNWE3ZGYxNzQ3MGUzNzI3Mjk5NDllZjc2ODhhOTM4NjdiN2Y3MDVjZjY5YzE5YmUzZCJ9"
         },
         {
-          "resource": "repo://CLAUDE.md",
-          "version": "repo-file-v1:sha256:c5b2fd11733a937f8283f39320c6e269a7e6aaa1638abdca581d89a6e2572e57"
-        },
-        {
-          "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md",
-          "version": "repo-file-v1:sha256:85c4136149356bd1a0b3fd476bdaa3416e7bb681ab3e23f7a3a32245cbda73ff"
+          "resource": "repo://CLAUDE.md#L32-L33",
+          "version": "repo-lines-v1:sha256:1b43f786ec561b7e6ae2c9a0e9397468b3994b27933e1b683592ee3fa570f7ac:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWRlMmY1MzI4ZWU2ZTgwNTBlOGFhZmQ4ZGM4NjlhMDY5Y2Q5NTg0ZWRhYWY1NGZlNTg5ZDczYzNiN2RjZDc5OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGZmMDFhZDFhOTYzZGM5MjY5MDk5NzBhOTRkNjc5ZTA4ZDcwYWY4MDc4MjlmMDNhZjU1YTk3MDFiYTQ5OGRiNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjEwYjZjNjdlNzY4NTA2NjI1OWE4ZjdjMWI1NzYwMjE5ZjZmNzZhNzFjNWM0M2RhOTM0ZTVlYTliMGY1ZDQ0NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTk3NWFiZWFjZDBmZjAwYjUzOWVhYWE1YjhlZGZjZTQyN2RmNWI1ZjFhMmZjNmYzZTZkNWIxZjQ0YTE5YzY4OSJ9"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-09T21:00:11.445Z"
+    "at": "2026-11-14T21:00:11.653Z"
   }
 }

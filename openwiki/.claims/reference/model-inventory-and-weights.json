@@ -1,58 +1,58 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:582881373775d154d83c498060005b9f03f82cae23b5f2cd71e268db6819d7af",
+  "pageVersion": "sha256:41463f5ae371bee2b3ae2caf6e48084648e45ce409275487374e141916a8fb1f",
   "claims": [
     {
       "id": "claim_a30aa7caefc4472ab4d7b9bacb20f7f5",
-      "statement": "MODELS.md is the per-node inventory of record, recording which checkpoints are on disk, their sizes, and which recipes use them, as a dated point-in-time measurement that must be re-checked against the live cluster before acting on it.",
+      "statement": "MODELS.md is the per-node inventory of record of which checkpoints are on disk, their sizes, and which recipes use them; the current pass was measured on both nodes on 2026-11-10, replacing the 2026-10-13 pass, and must be re-checked against the live cluster before acting.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L13-L13",
-          "version": "repo-lines-v1:sha256:4098b433cbfacdd51586bcdf6824aa13c4316ec907743565f0729ae361a2937e:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDA5OGI0MzNjYmZhY2RkNTE1ODZiY2RmNjgyNGFhMTNjNDMxNmVjOTA3NzQzNTY1ZjA3MjlhZTM2MWEyOTM3ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDA5OGI0MzNjYmZhY2RkNTE1ODZiY2RmNjgyNGFhMTNjNDMxNmVjOTA3NzQzNTY1ZjA3MjlhZTM2MWEyOTM3ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzNhOTI4Y2E4NGY0NjE0NmI1Yzk1NjdhN2E4ZmI4ZjA2YTI5ZjM0NDBhMTk4YjdjMmM3NWM4YjVhY2RjMzYzNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWFiYTc5Yjc3YjEzMTM0NWJiYWE1N2QxY2UwOGUxNWNkYzdiYWRkM2Y1M2U5ZTNiMjc5ZDE2MjhiMDljMTA1YiJ9"
+          "resource": "repo://CLAUDE.md#L14-L20",
+          "version": "repo-lines-v1:sha256:428ff4f6792f50f5543fa86f76924efc2b54a053ecaee8ebec8e20e602718d9e:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDE2ODFiYWU2YzdmOWFkMjJiOTIwZmI2NGYwNzFiNjI2ZDE4YjM0ZDExYjg3MGUxMzAyYjljMTJlOGViNDJjZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjk0MjY0NWEwODM4NTJkNWU4YmJiZWUwYTA4YWE2Y2JlYWFmMWVjNWQyN2ZjYWJmM2E5ZWQ1OWM4YjNjZWExZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDk4OTFlOGQ5MTQyN2YzYTkwNDI4YzEwZmM2MWViODY0NTM5ZDBlNWY1MTNmMWYwZWU0YmViZTY3NWQ2Njg2YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmY4Y2VjYTIxYTE2Y2EyNjNlNTQzOTc1OGU3ZGU5MDljMmMxYjNjNTFmYTlmYzUxYTI4ZmY0NTg5NmMzZjZjNCJ9"
         },
         {
-          "resource": "repo://MODELS.md#L1-L7",
-          "version": "repo-lines-v1:sha256:334a4b92f983ea52ca82839ace78c5b909c1c32c6189e19e2dfeea1931926842:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGEwNmNjZTA1MmNhNmY5YTc5MWFmYTFlYWI3MzBlZDUwZWU2ZTNjNWM5MGI0ZjE4MzRiMDAwNGJiMzNlYjU0MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODQxZjU5NDAxNmQ2NmJlMWFmMmRlYjVlOWZhMzEwOGIwNTZlMmJmNjg3Nzc5ZjJiMzExMmQ0MWY2M2M2OGY5OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmJmMmVlYmY1ZjYwMTc1MWE3ZTA2OGRmYjYwZTk1ZDQyY2I0NjI4ZDIyMGRmNTU3M2I4OTJkYzNiMTQzMmNlZSJ9"
+          "resource": "repo://MODELS.md#L1-L6",
+          "version": "repo-lines-v1:sha256:14e397b258aa7d848d41dc2ababee293a8a67462acf79267fe0d88390847629d:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGEwNmNjZTA1MmNhNmY5YTc5MWFmYTFlYWI3MzBlZDUwZWU2ZTNjNWM5MGI0ZjE4MzRiMDAwNGJiMzNlYjU0MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDhlMWYzN2IwYmI1ZDkwNjI4MDUxMmY0ZmQ5NzhjZDhkMzIwODE3NWUwNzY5ZTQ0YmJkOWI0ODRhMDFiZjQxOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGJjNTAxMDllZTI3YjU0NTNjMjMzMWFiNGViNjQxYzg1YzlkYzk0N2NhMmI0ZTk1MmVlNmJlOWFhMzcwNDg5MiJ9"
         }
       ]
     },
     {
       "id": "claim_f9ed7a2b421447818827975d5bca4dc9",
-      "statement": "The inventory classifies each repo as complete (every shard in the weight index present and bytes matching metadata.total_size), partial (some shards missing), or stub (a config-only HuggingFace repo with no weight files), and judges completeness against the weight index rather than a du byte count because hardlinked blob stores under-report size.",
+      "statement": "A repo counts as complete only when every shard in model.safetensors.index.json resolves to a real file and the byte sum reaches metadata.total_size; repos with no weight files are stubs; sizes count weight files only.",
       "evidence": [
         {
-          "resource": "repo://MODELS.md#L40-L49",
-          "version": "repo-lines-v1:sha256:ba171da18a3c8578df38f26a69195a7cbd46a2eb4a878297cff3542557d866c0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZjNGQwYzE1Y2JkOTQ5MWVlNzdiMzk5ZTcyOGJhN2JmNDQ4ZWYwYmUwZjQ0ZjI2ZTVkZDZjMjQxYWE5MTFjYWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYwMTlkMGM2ZDQ5MzBhZmYxNjc2OTdkNGM1NzY3OTEzNGVlMGM0OGI2ODY0MzM4NDUwY2ViY2QyMzY1YmIyNDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMzMzJkYTY4NjEzNzlkMTIwYjJmY2RjNDM1NmE4ZmMwZmJjZjEyZWNkZThjNzNiZDZlZWI2N2M4MTRjYjljMmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZmNDdlMjIwZDJiZjczMzdkZWY4Yjc2ZDE3YjBiYzY5NTE4NWFhOTE2NTA1OGU5MjM0Nzg4YmRmN2JiN2Q3ZDYifQ"
+          "resource": "repo://MODELS.md#L16-L19",
+          "version": "repo-lines-v1:sha256:9cecacd23f56fd4dae57a299defb2aef137e67c8ed786789803e5faecf829b71:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmM0ZDBjMTVjYmQ5NDkxZWU3N2IzOTllNzI4YmE3YmY0NDhlZjBiZTBmNDRmMjZlNWRkNmMyNDFhYTkxMWNhYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGU0MDM3ODA0YzFmMDYxZGQzM2NiM2E1YzRjYzMyYmNmMTk0Yjc3MWE3ZDg5ODEzMDgyMGE2OWQyMGFiNTE2NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzM5YTJmYTVkNjExN2U4NTVhMzdjZjg2MTcxMDEyNmQyYzM1ZjU2ZTAxM2I2ZGY0ZTU4NDlkZjI1MDJiMGUwOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWM4ZmQ5NTlkNzYyYjkyM2U3MDZjOWU4NjQyYzljNjY2Y2EzZTIzMzY5YzVjYjc5ODRhODAwMzYzNzNjNmVmYyJ9"
         }
       ]
     },
     {
       "id": "claim_cdf6d8f72644434986e8056a5aa23ba0",
-      "statement": "Weight handling rules are: check MODELS.md before launching, back up a checkpoint to /mnt/nas/ai-models/model-backup/huggingface-hub/ before deleting it, deletion is the operator's call, and never run hf cache prune without --dry-run.",
+      "statement": "Weight handling rules: check MODELS.md before launching, back up to /mnt/nas/ai-models/model-backup/huggingface-hub/ before deleting, deletion is the user's call, and never run hf cache prune for real (its dry run lists about 1.2 TB including recipe-pinned detached revisions); delete with hf cache rm after a dry run.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L34-L36",
-          "version": "repo-lines-v1:sha256:78051705237925e5f32e57b0b64126786e92c4827654a00ffdf2d179ca77ee7f:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzE0YWVhMjlhYjczOGI5ZDIwYjZiZDg1NDgyZmQxMzhhZDkzYjU3Nzg2YjBlZThhNTMxNmRjZjJiYzhkODY1ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmM5ZmI1N2M5MjgyODdlMjk1ZDYxMmFkNDMyMWVmZTZjZGQ1ZWE3ZmNmMDFmMjllNWNiYzZjOTNiMDRhYTM0NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGExMzM5MzEwZTExMDM3NTlkZGY1MTZhZmZhNWZjMGI5NDQ1ZmQwMjg5OTA3ZWIzMzEwODJjNzhhNzJjODFlNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2I2N2Q1MjQ4NjEwODJiMGViNmQ5OWVkZWMxOWVlM2I3YmY1ODFkYTAxMzcyODBhNmU3ZDRlOWM0YmEyN2FlZiJ9"
+          "resource": "repo://CLAUDE.md#L82-L89",
+          "version": "repo-lines-v1:sha256:1cd885439b89bfd35b57f150fcb37d5b2f32125e6f8c93b0ab25a4e205e605e4:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzE0YWVhMjlhYjczOGI5ZDIwYjZiZDg1NDgyZmQxMzhhZDkzYjU3Nzg2YjBlZThhNTMxNmRjZjJiYzhkODY1ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzAwN2UzMTBlMmM0YTFjNzFkZDEzNjRmMjgxYTk3N2RhN2I5YjRkMWFiMmFlMDdhMzI1MTUzY2ZmZGJjZjE1ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGExMzM5MzEwZTExMDM3NTlkZGY1MTZhZmZhNWZjMGI5NDQ1ZmQwMjg5OTA3ZWIzMzEwODJjNzhhNzJjODFlNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWI0OWZkYTdlOTJkOGQwZDdkYzY2ZjYxZmIyMjczZDU0N2ZlZTljNzZkNTFiZjMwZWZjNDNhNGE0ZGMwNDNlYiJ9"
         }
       ]
     },
     {
       "id": "claim_ba2d54ef5cae4215aa335af6e23dba44",
-      "statement": "A checkpoint was once deleted without a backup because /mnt/nas was not mounted at the time, a recorded violation of the back-up-before-delete rule.",
+      "statement": "In the 2026-10-14 weight cleanup, checkpoints were deleted with no backup because /mnt/nas was not a mountpoint, a recorded violation of the back-up-before-delete rule.",
       "evidence": [
         {
-          "resource": "repo://MODELS.md#L30-L33",
-          "version": "repo-lines-v1:sha256:69b8be5c132a1153383036f3abb607e4a43771335a69da691300fc21c7b13d73:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTRmNTgwMmM1YTBjOTBlZThhZjY2MmM0NzYyNmNlMjk3OGI1YmFmYjYwOTk4NjJmYzdlOTU0ZmEwMjNmNmY0YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTFjZTE5NDI2ZTE0YTBjYzRiNGY1YWJkMDk3MWFmM2YzZGMwNjNhYmViODBlMDg1YWNiOGUzMzlkOTUxMzBhMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjM1YzUwOWNhNmQzMjcyOTQ3MmMzNWNiZTZjOTZjYzc2Y2ZkZjFmMGNiMGRjODkzM2JlMTEzMjUzN2I5Y2M3NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTVlODQ2MjNiZDczOWY4MmFkODdmM2IzN2U4ODQ4NTYxMjE0NDFlMjk0M2RiZjA4NTJiYmE5YzkzNWI5ZDg5YSJ9"
+          "resource": "repo://HISTORY.md#L531-L538",
+          "version": "repo-lines-v1:sha256:5230fab2456db3fe31ea66371b1933a2f45f45c520e854adff7b5268458cd347:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzlmMWJjYjZjMDY0NzA0MWRjZDE0Y2RlOWQ0YTMwOGNmZmU2YzNiNjFlNjMzNmUyNDk0NmQ2ZDczNjA5NjcxZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTUyYjMxNTVhY2M0MjAzNzI3YzNiYTg2OThlZTRkOWZjNDkwYTE4NDhiYmJkMDQwN2Y3MjhhNmVhNmRlYTY1MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2ZmMWQwNzRiN2MzNGVhYmFlYzZhODg4Yzk4NTFiNmQ1NWY1NjI5M2U3MmRmODc5NDg1NTI5YjE1NWZmNmFkYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmI5YWFhYzczMmQ0ZDU4N2IxZDEwZDYzNDhmYmVhZmM2MWE2ODgwNjc2NDBkYmIzM2Q1N2FkOWZhY2M5MTlkNSJ9"
         }
       ]
     },
     {
       "id": "claim_1eb3a0c899994d688d28c1a93c1f9217",
-      "statement": "Recoverability of a deleted checkpoint depends on its source: some remain published upstream and can be re-downloaded, while a partial whose upstream source no longer exists is not resumable.",
+      "statement": "Recoverability of a deleted checkpoint depends on its source; the orcarouter Qwen3.8-Flash-Next checkpoint deleted on 2026-10-14 is still published and can be re-downloaded.",
       "evidence": [
         {
-          "resource": "repo://MODELS.md#L30-L33",
-          "version": "repo-lines-v1:sha256:69b8be5c132a1153383036f3abb607e4a43771335a69da691300fc21c7b13d73:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTRmNTgwMmM1YTBjOTBlZThhZjY2MmM0NzYyNmNlMjk3OGI1YmFmYjYwOTk4NjJmYzdlOTU0ZmEwMjNmNmY0YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTFjZTE5NDI2ZTE0YTBjYzRiNGY1YWJkMDk3MWFmM2YzZGMwNjNhYmViODBlMDg1YWNiOGUzMzlkOTUxMzBhMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjM1YzUwOWNhNmQzMjcyOTQ3MmMzNWNiZTZjOTZjYzc2Y2ZkZjFmMGNiMGRjODkzM2JlMTEzMjUzN2I5Y2M3NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTVlODQ2MjNiZDczOWY4MmFkODdmM2IzN2U4ODQ4NTYxMjE0NDFlMjk0M2RiZjA4NTJiYmE5YzkzNWI5ZDg5YSJ9"
+          "resource": "repo://HISTORY.md#L533-L538",
+          "version": "repo-lines-v1:sha256:026d2bf091944efaa40457aa3123314ca8e9339d5bd42ef18bcf1eec46a0ab33:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWFjNDg0YmE3Y2RiZDVlZjhkMzM3ODYzMzI3ZGIwNGJjYmVmYTRlYjc0NDYxMTA1OWZiNmZkYjU4MmRkYWE2NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTUyYjMxNTVhY2M0MjAzNzI3YzNiYTg2OThlZTRkOWZjNDkwYTE4NDhiYmJkMDQwN2Y3MjhhNmVhNmRlYTY1MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2YxNjI3N2RlMWM2YzdmNDQxZjk1NTM1NDg1ZTI3NmYwZmMzYjVmZTVmZjVkZGM4MWYyMzNjYjEwNmE1M2U0YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmI5YWFhYzczMmQ0ZDU4N2IxZDEwZDYzNDhmYmVhZmM2MWE2ODgwNjc2NDBkYmIzM2Q1N2FkOWZhY2M5MTlkNSJ9"
         }
       ]
     },
@@ -62,7 +62,7 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:be491927f5129be026395cfe55ad0f4bf5c1d2294beb49064a76259dc1ee0cd6"
+          "version": "repo-file-v1:sha256:e2f45aa7dad4c3ca3135e8cabfb5f59c2c52d64c8de0d012788700e63667ceee"
         },
         {
           "resource": "repo://benchmarks/MIAAI-LAB-VALIDATION-RESULTS-2026-10-16.md",
@@ -72,21 +72,69 @@
     },
     {
       "id": "claim_0325af9ec2d24246b60c1d7ff35eabe8",
-      "statement": "On 2026-11-08 the Qwen3-Embedding-4B and Qwen3-Reranker-4B checkpoints (7.5 GiB each) were downloaded to both nodes with the pinned tf5 image (24.8 GB) on the head only; on 2026-11-09 the embedding checkpoint was copied to gx10-spark and MODELS.md lists it on both nodes, and the tf5 image was streamed to the worker.",
+      "statement": "As of 2026-11-10 Qwen3-Embedding-4B is complete on both nodes while Qwen3-Reranker-4B and Nemotron-3-Nano-30B are complete on the head only, so gx10-solo can serve only recipes whose weights are on the worker.",
       "evidence": [
         {
-          "resource": "repo://HISTORY.md#L839-L865",
-          "version": "repo-lines-v1:sha256:5d314fc218c751d652cdcd859ada1f4ecfa5ce31d8d9ab2549e8e7bb456b0955:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2OWQ1YTkzNGY3YTRjNWVjOGYwYjNiM2Q3NGE3ZGI0MjA4NDY2MDY3NGQ4NGFlNjc4ODVkMGVhNzcyMDhjYWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3MTljNWJiMmQ1OWJiZTI3YjRhN2M0ZThhYmYzZWY2MGE1ZTVjZGJlMTE0NDA0ZDQwMGQyMGNmNGE4YTc1MjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM3ZWQ5NDA1MzQzMjY0MmNkY2I3MTk1MjExNTU0MTlkZWEwNDcxYzg1YjliZDE1MWEyM2U5NjBlODg1ZDZmNjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIwNjY5Y2Y3Mjk4ODJjNDcwMmU2M2ViODY3MGIyYjE1NTc3ZGMzMWY2YzcwMzE0YjFhZjRkMjA5YmI5OWQwODAifQ"
+          "resource": "repo://MODELS.md#L55-L63",
+          "version": "repo-lines-v1:sha256:43cc5bebf3dfc99b4fd8d72c18daa3f5f8aeb71bfe22faf276f4fa8c19bec1d0:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmRjZjk4OTYyOTU2NzIwMGI0YzY3MDM5NzBiOTg0Mzk5YTQ1NDJlN2E0MjVkNmU1Mzk4NGRiZjllZjZkMDhhOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTk0YjJlYmIwZGYxNjZlYmQ3NGY1MzU2NWM4NWRhZGNhNTNmNmE5NmMwNzg4MTkwNzZkODM5YTM2ZjJlMjBmYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjA4ZjU3N2JlZjYyNmIyOThlZGFmYTVhMWI2NjMzMmQ5NWRhYjE0MmQ5NjJjMGZjYjkzMzE5Y2VkNWQyNzU2YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWRkMzg1ODA1MTk2YzJjMTM5MDk4ZjZhZjA1NWY3MDZjM2VmNDE3Yjg0M2RkOTdjNTNjMGQwNTAyMzhjNDNmNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_96590deca2014e378ac80437abef9b79",
+      "statement": "On 2026-11-10 the worker held only 5 checkpoints; only glm-5.3-flash-abliterated-nvfp4kv-long-tp2 among two-node recipes had weights on both nodes, and 14 two-node recipes had head-only weights; free space was 618 GiB on the head and 2.5 TiB on the worker.",
+      "evidence": [
+        {
+          "resource": "repo://MODELS.md#L3-L14",
+          "version": "repo-lines-v1:sha256:c79f7029d93479b50d331c38290696673739f344ce9c88706e1ca42038eea8a8:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhNGY5YjQyZDMzM2YyMzFhZjllOWFhYjBhM2Q2MTk2YjA0MDQyOGRjY2JlMWJlNDZhMWQyZjNiMzhjNzc4NjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0N2MxMGMzN2ZjYTUzYjFhNTcxODRhYmM4OGU1OTgwODk1MzQxNGQ0MzUyOTMxNDgwMjY0OWU3MGQxNGM5MDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjoyLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZjMTNhODM3Y2NiNTZmZTRlNWM2NTNjOWY1NzlhMjE0ODA5ZDRhNDk4ZWQ5M2IyZTgwMzRiMjMwYmM4M2E0NzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUzMTJlYjVlMjMzMTdjMWQzNmEwYTlmMTA3MTFjNGM2NTJkMDY0ZjY5NzYwZTUyNTBhZmViYTcxOTcwNTViZjgifQ"
         },
         {
-          "resource": "repo://MODELS.md",
-          "version": "repo-file-v1:sha256:71f94e8b14acda63403383601ff253f67f90a90d07cef4c00ce3d7d14319ab81"
+          "resource": "repo://MODELS.md#L65-L81",
+          "version": "repo-lines-v1:sha256:79a804ebf9cc1d59e1bd93b70d2f5b5d9a7209b842a01e219e471941f26bf21d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNmMmI3ZGEwODUwNjExN2Y2ODJhMmIzZmRlMTRjNmQ0MmMyYmJhMWM3OTg4OGZiZDA1MWE2ZjI5ZjEwNGJkMTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2NzM5ZmY5M2FjYzhiOWU1MmRjMzY3MTFkYTljMzRkNzkyOTVkMmNiZWM2NTUzYWYxMmQwNTE3ZjcxOGVmYzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMzMzc1MWZiOGQyZjAwNDM2ZmRhZDU2NjIwYjQwZjkwMDZiY2ZhODExZTMzNmZkOWQ3YmY2NmM1MmFhZTg5ODIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMxMDFhNTNlM2I3NTE0OTdjYjdlOGJiOWQzYzMyZWI3NjFjY2IzZGFlZTk4YTlkZTcwNTVmNTg0NTBmN2VjZWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_96ed482061d54f3794dfa7335fa640e9",
+      "statement": "The glm53-flash-ablit-topk2044 checkpoint was backed up to the NAS and moved on both nodes from spark-forge-local/ to hub layout at models--local--glm53-flash-ablit-topk2044/snapshots/local; a two-node launch from the new path and vLLM's acceptance of hub layout were untested.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md#L868-L880",
+          "version": "repo-lines-v1:sha256:78174ff25ba0cb267b1b3742b134fd9b365225387d915899d62aca74682add22:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlNGZmMDg5YTk1OTc3MzBmNGJlN2ZhOGQ1OGNlNzc5MjRlYzU4Nzk3NDJlMDFlNmE3NDM2YmJlNmYwNjVkYTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFjZTE3YzdmYzM3NmJkMDVlZWQ2N2IyMGVlYTcwNmQ3OWQxNjMxYTU4NDRkOGNmOGUzNzY2YTRkOWQxODg1NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyZTZjODg0M2EzZjk0NTExOWRiYmZhNGRlYTkxNDYzMTA4MjUzZTMzMWM4MmFiOTFkMTgyYjI2MzIzNTUwYTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY2MTllNDQ2YzBlZGQwMDFhYjZiMDEwNjkzMWFjOTM3ODAzZTYxNzQ3NDM1NGZmZjgxZmE1OTFiMGFkMjY5ZmUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8f3a51458ed94120b9af161392c4f66e",
+      "statement": "Repo blobs on the head hardlink (and for Qwen3-Reranker-4B symlink) into a shared store at hub/blobs/<2-char>/<sha256>, so hf cache rm frees nothing until unreferenced store files are removed; on 2026-11-10 removing 650 unreferenced store files freed 103.1 GB.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md#L890-L894",
+          "version": "repo-lines-v1:sha256:ff6024d339edb3b9bf836b38779587579a06d20461616ac7e0ba81748c8214ea:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzQ0MmU5MTYwNjkyNmM1OTNhMWJkNzU1ZGFjMmU3ZDdmZTk4YjBhNThmNWJlNWNmMjI5ZTlhYWQyZjEzNDIwMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDg0OTYyZDQ3YjU5NjIxYWYwYmMxMzgxNGNmMDY4MGY5YjVmN2E0ODQzZTA5OTI0NjA4Nzg2MDFjMWFmY2Y3YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTIwNWNkMjdmMzEzNWFmY2EwNWViZmIzMjEzMjY0YmQzNTE4ZGEwZDJkNjlhNTA3M2FhMTljOTkwMDJkOTUyYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTg3NDg3NmJmZjQ1Y2VmYWYzYjc4NWVhOGZiOTJjZGE0MTQxNjM2ZTdmNzliZTc2MzlhMTdiYWYwNmQyZDRhZiJ9"
+        },
+        {
+          "resource": "repo://MODELS.md#L21-L25",
+          "version": "repo-lines-v1:sha256:3c1c8e598ac1a550c5fbeb24f54bac5d07c3734b35d77128e02d9f646aaa5844:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjIwYTJlOWYzMTM4NDY1YzBmNzQ5ODhmODQ1NDg2YzVjNjAxZjgxOGY4ODlkYjg5OGY4MzljMThkODkwNGJkZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjA0YmY4YmEzOGE5OWFhMDQyZmFmMTEwMDI4OWQyNjkyMWU2YjM4Y2VmMTdiYzY2YWYyMGVkNGMyMDk4NGNhNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTgzZWEyMWI5MzFkYWRlYjMwYjExODg5MDgzNjFhMmNlYTJlOTdlYTBhM2ZkZjVmMzA1MDY3N2I4MzkwMDY1ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjgzMjIwNGE2ZDc1ODVmYmYwMGViZjhjZDUzOTIzODRhOGEyMzE3NTA4YTNmODgzNWUzNWQ5YTc2ODBjZmEyYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4bec2c5e78d7462abdfe2cea7973d6a7",
+      "statement": "Three repos keep weights in an older revision behind a weightless main (AEON-7 Qwen3.6-35B-A3B heretic, orcarouter DeepSeek-V4-Flash-Vision-Uncensored, orcarouter Qwen3.8-27B-Uncensored); their recipes pin model_revision and pass --revision, the heretic pin added on 2026-11-10.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md#L895-L895",
+          "version": "repo-lines-v1:sha256:d6241abb9b8ddc32b1950d21ef377729793ad2ff86f4ff74473db57d18a871eb:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDYyNDFhYmI5YjhkZGMzMmIxOTUwZDIxZWYzNzc3Mjk3OTNhZDJmZjg2ZjRmZjc0NDczZGI1N2QxOGE4NzFlYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDYyNDFhYmI5YjhkZGMzMmIxOTUwZDIxZWYzNzc3Mjk3OTNhZDJmZjg2ZjRmZjc0NDczZGI1N2QxOGE4NzFlYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWY5ZDRhOTk3NTE2ZWVmNGNkNDA4Y2UyMjhmNTNiMzlhNjNiMWRhNjI5Y2FiNmUzNGQxMzgyYzJjODA1OGRiMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjdkOTRiNWRmMmI1NjIxOTMxZmNiNzdmNzNlMWVmYmVhMGMyMmMzNjAyNmUyYjA4ODU3ZDMwOTViMTYyMGM3MCJ9"
+        },
+        {
+          "resource": "repo://MODELS.md#L30-L34",
+          "version": "repo-lines-v1:sha256:3e8139cb42dc813d678acb2183c7aa48c10685734d66591a5f19dac073d6fd3b:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzE0YWQxZjNmZjJhNThkZjI0NTJhYTY3ODcyN2RhNmQ2NjE4ZDU4MmI0ZDQwMjRmMzRiY2M3YzYxMTIzZGFmMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjE1ZTBlYzZhZWVlZjUwNjA4OGQ5NzIyZjU5MjI1YjdhOWUzMzgyNzUyODQ1NWFiZmJlN2UwYzNlNjRlZjJhNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDJkZGI4MmU4NTk0NDA2ZGU5ZmEzMTk4ODQwNWViMDBlZmFmMGU4NGI1M2QyMmExZTlmNzY1ODA1NzJiYjAxNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTlmMmE2ZWE1NmRmYzZiMzFkNzdmZjI5ZTAzMGE0MDk1NjEwOTdhMDRiODUyMzQ4NGRkYTBhNGE3NmZjNDY2ZSJ9"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-09T21:00:11.445Z"
+    "at": "2026-11-14T21:00:11.653Z"
   }
 }

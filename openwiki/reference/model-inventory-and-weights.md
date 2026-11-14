@@ -1,7 +1,7 @@
 ---
 type: reference
 title: Model Inventory & Weight Safety
-description: What MODELS.md records about which checkpoints are complete, partial, or stubs on each node and which recipes use them, and the standing rules for handling weights safely (back up before delete, deletion is the operator's call, never hf cache prune without --dry-run).
+description: What MODELS.md records about which checkpoints are complete, partial, or stubs on each node and which recipes use them, the shared HF blob store that makes deletion subtle, and the standing rules for handling weights safely (back up before delete, deletion is the operator's call, never hf cache prune).
 tags: [models, weights, inventory, storage, safety]
 sources:
   - id: openwiki-source-d844af9966f902d563fa3f52
@@ -12,77 +12,118 @@ sources:
     resource: repo://HISTORY.md
   - id: openwiki-source-456fceaa0ae7a8e901be70bf
     resource: repo://MODELS.md
-generated: { by: "claude-code", at: "2026-11-09T21:00:11.445Z" }
+generated: { by: "claude-code", at: "2026-11-10T21:00:18.041Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-09T21:00:11.445Z
+    at: 2026-11-14T21:00:11.653Z
 ---
 
 # Model Inventory & Weight Safety
 
-A recipe only serves if its checkpoint is actually present and complete on the
-nodes it launches on. `MODELS.md` is the inventory of record for that, and a
-small set of rules governs the weights because they are expensive to replace.
+A recipe serves only if its checkpoint is present and complete on every node it
+launches on. `MODELS.md` is the inventory of record for that. A small set of
+rules governs the weights, because they are expensive to replace.
 
 ## The inventory (`MODELS.md`)
 
-`MODELS.md` records, per node, which checkpoints are on disk, how large they
-are, and which recipe(s) use them. It is a **point-in-time measurement** — each
-pass is dated (the current tables were measured on both nodes 2026-10-13, with
-an evening addendum of same-day changes that were *not* re-measured) — so it is
-read as "what was true on that date", and the live cluster is re-checked before
-acting on it.
+`MODELS.md` records which checkpoints are on disk on each node, their size, and
+which recipes use them. Each pass is a dated measurement. The current pass was
+measured on both nodes on **2026-11-10** with the script in its *Regenerate*
+section, and it replaces the 2026-10-13 pass. Treat it as "what was true on
+that date" and re-check the live cluster before acting on it.
 
-The inventory classifies each repo precisely, which is why it is trustworthy:
+Each repo gets one status:
 
-- **Complete** — every shard named in the weight index is present and the
-  on-disk bytes match the index's `metadata.total_size`.
-- **Partial** — some but not all shards present (may or may not be resumable
-  depending on whether the source still exists).
-- **Stub** — a config-only HuggingFace repo with no weight files at all.
+- **Complete**: every shard named in `model.safetensors.index.json` resolves to
+  a real file, and the byte sum reaches `metadata.total_size`.
+- **Partial**: some shards are missing.
+- **Stub**: the repo has no weight files at all.
 
-A subtlety the inventory flags: hardlinked blob stores mean a plain `du` can
-under-report a complete checkpoint's size, so completeness is judged against the
-weight index, not a byte count. The inventory also notes shared/hardlinked
-variant copies (for example a `config.json`-patched copy of a checkpoint for a
-planned recipe) that occupy no extra space.
+Sizes are GiB of weight files only (`.safetensors`, `.gguf`, `.bin`), not the
+size of the cache directory. One known false positive: the script reports
+`local-inference-lab/Qwen3.8-Flash-Next-NVFP4` as SHORT, but all 40 shards match
+the Hub byte for byte. The publisher's index overstates the total.
 
-Because `MODELS.md` lags the live cluster, newer arrivals are recorded in
-`HISTORY.md` first: on 2026-11-08 `Qwen/Qwen3-Embedding-4B` and
-`Qwen/Qwen3-Reranker-4B` (7.5 GiB each) were downloaded to **both** nodes for
-the new pooling recipes (rows 65–66). On 2026-11-09 the embedding checkpoint was
-copied to `gx10-spark` over CX7, and `MODELS.md` now lists it on both nodes. Their
-pinned container (`dgx-vllm-eugr-nightly-tf5:2026092702`, 24.8 GB) was streamed
-to the worker the same day.
+## Where the weights are (2026-11-10)
+
+- **The worker holds only 5 checkpoints.** A TP2/EP2 recipe needs its weights on
+  **both** nodes. Only one two-node recipe has that today:
+  `glm-5.3-flash-abliterated-nvfp4kv-long-tp2`. The other 14 two-node recipes
+  have weights on the head only. That includes the recipes behind several
+  gateway bindings (Flash-Next abliterated, GLM-5.3 abliterated and EXL3, both
+  DeepSeek-V4-Vision recipes). Their first cold start has to copy or download
+  the weights to the worker first. The worker had about 2.5 TiB free, enough
+  for all of them (about 1.5 TiB in total).
+- Free space after the 2026-11-10 cleanup: head **618 GiB**, worker **2.5 TiB**.
+- Single-node recipes that list `gx10-solo` as a gateway candidate can use the
+  worker only where their weights are there. On 2026-11-10 that held for the
+  embedding model and the 35B-A3B heretic checkpoint, but not for the reranker
+  or the Nemotron Nano 30B checkpoint.
+- Auxiliary artifacts (speculative-decode drafters, refusal-direction tensors)
+  must be **pre-cached**, because serve containers run with `HF_HUB_OFFLINE=1`.
+
+### The GLM topk2044 checkpoint moved to hub layout
+
+The locally built `glm53-flash-ablit-topk2044` checkpoint used to sit outside
+the hub, under `~/.cache/huggingface/spark-forge-local/`. On 2026-11-10 it was
+first backed up to the NAS. It was then moved on both nodes into hub layout at
+`~/.cache/huggingface/hub/models--local--glm53-flash-ablit-topk2044/snapshots/local`.
+The recipe's `model_path` now points at the container path for that location.
+Two-node launches of the recipe from the new path, and vLLM's acceptance of the
+hub layout, had not been tested as of that entry.
+
+## The shared blob store makes deletion subtle
+
+On the head, repo blobs are hardlinks into a shared content store at
+`~/.cache/huggingface/hub/blobs/<2-char>/<sha256>`; for
+`Qwen/Qwen3-Reranker-4B` they are symlinks. Two consequences follow:
+
+- **`du -sh` on a `models--*` directory is misleading.** Judge completeness
+  against the weight index, not a byte count.
+- **`hf cache rm` alone frees nothing.** It removes the repo side only. On
+  2026-11-10, removing a superseded revision of
+  `local-inference-lab/Qwen3.8-Flash-Next-NVFP4` freed no space until the 650
+  store files that nothing still referenced were deleted (103.1 GB). Before you
+  delete from the store, exclude every file that a hardlink or a symlink still
+  references.
+
+Several repos keep more than one snapshot revision. Three have a weightless
+`main` and keep their weights in an older revision:
+`AEON-7/Qwen3.6-35B-A3B-heretic-NVFP4`,
+`orcarouter/DeepSeek-V4-Flash-Vision-Uncensored` and
+`orcarouter/Qwen3.8-27B-Uncensored-NVFP4`. Their recipes pin that revision with
+`model_revision:` and pass `--revision {model_revision}` to vLLM. The heretic
+pin was added on 2026-11-10; without it, a launch resolved to a snapshot that
+held only `config.json`.
 
 ## Weight-safety rules
 
-Weights are hard to replace, so handling them is deliberately conservative:
+- **Check `MODELS.md` before launching.** Confirm the checkpoint is complete on
+  the target nodes first.
+- **Back up before deleting.** Back up a checkpoint to
+  `/mnt/nas/ai-models/model-backup/huggingface-hub/` before removing it. The
+  2026-10-14 cleanup broke this rule: `/mnt/nas` was not a mountpoint, so
+  checkpoints were deleted with no backup. That case is why the rule is
+  explicit. The 2026-11-10 deletions were each checked against the NAS copy by
+  name and size first.
+- **Deleting weights is the operator's call**, not a decision for automation.
+- **Never run `hf cache prune` for real.** Its dry run on 2026-11-10 listed about
+  1.2 TB, including detached revisions that recipes pin. Delete specific
+  revisions with `hf cache rm`, dry run first.
 
-- **Check `MODELS.md` before launching** — confirm the checkpoint is complete on
-  the target node(s) first.
-- **Back up before deleting.** A checkpoint is backed up to
-  `/mnt/nas/ai-models/model-backup/huggingface-hub/` before it is removed. (The history records a
-  violation of this rule — a delete done while `/mnt/nas` was unmounted, so no
-  backup was taken — as a cautionary case, which is exactly why the rule is
-  explicit.)
-- **Deletion is the operator's call**, not something automation decides.
-- **Never run `hf cache prune` without `--dry-run`** first.
-
-Whether a deleted checkpoint is recoverable depends on the source: some live
-upstream and can be re-downloaded, while a partial whose source repo has since
-disappeared is gone for good — another reason the inventory tracks source
-availability alongside completeness.
+Whether a deleted checkpoint can be recovered depends on its source. One that
+is still published upstream (for example the orcarouter Flash-Next checkpoint
+deleted on 2026-10-14) can be downloaded again.
 
 ## Preserved external validation record
 
-`benchmarks/MIAAI-LAB-VALIDATION-RESULTS-2026-10-16.md` preserves the MiaAI-Lab
-abliterated-recipe validation report (3 PASS serve-only, 4 blocked/gated, with
-per-recipe patches and checkpoint cache status on both nodes). It was copied
-into this repo before the external `miaai-runner` repo was deleted, so it is
-now the only surviving copy of that evidence — including which drowzeys/keys
-checkpoints were HF-gated (HTTP 403) at the time. The GLM-5.3-Flash EXL3
-abliterated recipe adopted into this registry (row 64) traces back to that set.
+`benchmarks/MIAAI-LAB-VALIDATION-RESULTS-2026-10-16.md` keeps the MiaAI-Lab
+abliterated-recipe validation report (3 PASS serve-only, 4 blocked or gated).
+It also records per-recipe patches and the checkpoint cache status on both
+nodes. The report was copied into this repo before the external `miaai-runner`
+repo was deleted, so it is now the only copy of that evidence. The GLM-5.3-Flash
+EXL3 abliterated recipe adopted into this registry (row 64) comes from that
+validated set.
 
 ## Related
 

@@ -19,7 +19,7 @@ sources:
 generated: { by: "claude-code", at: "2026-11-09T21:00:11.445Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-09T21:00:11.445Z
+    at: 2026-11-14T21:00:11.653Z
 ---
 
 # Launching & Verifying a Recipe

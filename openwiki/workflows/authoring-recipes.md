@@ -18,10 +18,12 @@ sources:
     resource: repo://recipes/glm-5.3-flash-exl3-abliterated-tp2.yaml
   - id: openwiki-source-5c02b2143bb9723499b2edf3
     resource: repo://recipes/mods/glm53-exl3-gb10-topk/run.sh
-generated: { by: "claude-code", at: "2026-11-08T21:00:19.321Z" }
+  - id: openwiki-source-b00adbe31ccd87dfcfd31feb
+    resource: repo://recipes/qwen36-35b-a3b-heretic-nvfp4.yaml
+generated: { by: "claude-code", at: "2026-11-10T21:00:18.041Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-09T21:00:11.445Z
+    at: 2026-11-14T21:00:11.653Z
 ---
 
 # Authoring & Changing Recipes
@@ -61,6 +63,17 @@ Pick the `container:` by the selection order (spark-arena first), use an
 **immutable tag** — a dated tag rather than a digest pin, since the worker
 cannot receive digest-pinned images — and prefer an image already on disk.
 
+## 3a. Pin the weights revision when `main` is not the weights
+
+`model:` names the HF repo, which resolves to `main` by default. If `main` is
+not the snapshot that holds the weights, set `model_revision:` to the commit
+that does. The `command:` must also pass `--revision {model_revision}`, because
+`model_revision:` alone does not reach vLLM. Example:
+`qwen36-35b-a3b-heretic-nvfp4.yaml` pins `a483749…`, because HF `main` there only
+edits the README and has no cached weights. A recipe that loads a local
+directory sets `model_path:` instead, using the container path
+`/cache/huggingface/...`.
+
 ## 3b. Patch the image with a mod, not a rebuild
 
 When a prebuilt image needs a platform fix (a GB10/SM121 kernel workaround, an
@@ -88,8 +101,9 @@ launch-and-verify workflow for that procedure.
 
 Publishing is the registry mechanism: the change is invisible to sparkrun until
 it is **committed to `main`** and `sparkrun registry update spark-forge` has
-refreshed the clone. Work goes straight to `main`; there is no pull-request
-step. **Commit and push only when the operator asks** — authoring and verifying
+refreshed the clone. The working tree is often on `develop`, so check
+`git branch --show-current` before committing: a commit on `develop` is
+invisible to sparkrun. There is no pull-request step. **Commit and push only when the operator asks** — authoring and verifying
 a recipe does not imply permission to commit it.
 
 An uncommitted recipe is still usable before it lands: `sparkrun run` takes a

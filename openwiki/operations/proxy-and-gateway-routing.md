@@ -12,12 +12,14 @@ sources:
     resource: repo://HISTORY.md
   - id: openwiki-source-d731ee870c7c4da596ac3b0a
     resource: repo://INDEX.md
+  - id: openwiki-source-456fceaa0ae7a8e901be70bf
+    resource: repo://MODELS.md
   - id: openwiki-source-eedd5219d6290708f61cb7bf
     resource: repo://notes/2026-11-03-sparkrun-version-config-audit.md
-generated: { by: "claude-code", at: "2026-11-07T21:00:21.382Z" }
+generated: { by: "claude-code", at: "2026-11-10T21:00:18.041Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-09T21:00:11.445Z
+    at: 2026-11-14T21:00:11.653Z
 ---
 
 # Proxy & Gateway Routing (SparkRoute)
@@ -25,10 +27,17 @@ verified:
 Requests reach served models through a gateway on the head node. The active
 gateway is the **SparkRoute** plugin (0.3.4, external, git-sourced), selected
 via the `gateway.sparkroute` feature; LiteLLM remains sparkrun's upstream
-default but is not what runs here. The proxy originally listened on
-**0.0.0.0:4000** — any interface on the head — which the 2026-11-03 audit
-flagged as an exposure risk; on 2026-11-07 it was restarted bound to
-**127.0.0.1:4000** (loopback only).
+default but is not what runs here. The 2026-11-03 audit flagged its
+**0.0.0.0:4000** bind (any interface on the head) as an exposure risk, and on
+2026-11-07 it was restarted on **127.0.0.1:4000**. The current `CLAUDE.md`
+again describes the gateway as listening on `0.0.0.0:4000` with no admin token.
+Check the live bind before relying on loopback-only exposure.
+
+The proxy runs under `sparkrun-proxy.service` on the head. While the unit is up,
+`sparkrun proxy start` and `alias add` can fail with `ResourceBusy`. In that
+case edit `proxy.yaml` and run `sparkrun proxy sync`, or restart the unit with
+`sudo -n systemctl restart sparkrun-proxy.service`. This is the one root
+command allowed without a password.
 
 ## Bindings live only in `proxy.yaml`
 
@@ -41,15 +50,17 @@ Recipe references in bindings must use the **qualified** form
 `@spark-forge/<recipe>`. Plain recipe names are ambiguous — the local checkout
 and the `spark-forge` registry both match — and the resolver demands an exact
 recipe. A recipe not yet committed to `main` (invisible to the registry) can be
-bound by **absolute file path** until it lands — the 2026-11-08
-embedding/reranker recipes were bound this way.
+bound by **absolute file path** until it lands. The 2026-11-08
+embedding/reranker recipes were bound this way. On 2026-11-10, after they were
+committed to `main`, they were switched to `@spark-forge/` names.
 
 Beware: **`sparkrun proxy unload` deletes the recipe's binding from
 `proxy.yaml`**, not just the running deployment. After using it, restore the
 binding by hand and re-sync.
 
-Companion file `proxy.env` holds secrets (HF/NGC/NVIDIA/Ollama API keys, mode
-600). Never print its contents into output or files.
+The companion file `proxy.env` holds secrets (HF/NGC/NVIDIA/Ollama API keys,
+mode 600), according to the 2026-11-03 audit. Never print secrets into output
+or files.
 
 ## Binding schema
 
@@ -99,6 +110,10 @@ were added, bringing the gateway to **9 routes**:
 | `Qwen/Qwen3-Embedding-4B` | row 65, new | RAG/agent-memory embeddings |
 | `Qwen/Qwen3-Reranker-4B` | row 66, new | reranking (direct endpoint only — see below) |
 
+The `Qwen/Qwen3.8-27B-FP8` route was removed on 2026-11-10, when that
+checkpoint was deleted from the head (backup on the NAS). That leaves 8 routes.
+Before relying on this table, check it against the live `proxy.yaml`.
+
 ## Embedding and rerank: what the gateway can and cannot route
 
 - An embedding binding only routes if its recipe declares
@@ -107,6 +122,10 @@ were added, bringing the gateway to **9 routes**:
 - The gateway's **embedding activation wait (~160 s) is shorter than the
   ~3–4 min cold boot**, so the first cold embedding request returns a 503
   (`activation_failed`) while the launch continues; a retry succeeds.
+- sparkrun's activation probe sends a chat request by default, which pooling
+  runners 404. Both pooling recipes therefore set `readiness: {inference: false}`
+  (2026-11-10). The embedding route was re-tested on `gb10-solo` through the
+  gateway after that change: HTTP 200, 2560-dim vector.
 - **SparkRoute 0.3.4 has no `/v1/rerank` (score) route** — confirmed in the
   plugin source. The gateway 404s rerank calls even though the binding lists
   and cold-starts the model; callers (e.g. RAGFlow) must hit the serving
@@ -115,9 +134,9 @@ were added, bringing the gateway to **9 routes**:
 
 ## Admin API and operator routes
 
-The gateway exposes an admin API on port 4000 with **no authentication**
-(mitigated since 2026-11-07 by the 127.0.0.1 bind, but anything on the head
-node can still drive it):
+The gateway exposes an admin API on port 4000 with **no authentication**. A
+loopback bind limits this to the head node; on a `0.0.0.0` bind, anything that
+can reach the head can drive it:
 
 - `GET`/`PUT /v1/config/managed-sets/operator` — read/replace operator routes
 - a validate endpoint
