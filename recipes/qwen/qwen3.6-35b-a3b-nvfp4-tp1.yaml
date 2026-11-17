@@ -1,5 +1,10 @@
-# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/Qwen3.6-35B-A3B-NVFP4-vLLM
-# >>> Please test and run --dry-run first, then update with your verified launch facts.
+# >>> VERIFIED 2026-11-17 on gx10-solo with nvidia/Qwen3.6-35B-A3B-NVFP4: ready in 337 s,
+# >>>   max_model_len 262144, correct answer, reasoning split into its own field (qwen3 parser).
+# >>>   Single stream: 512 tokens in 6.8 s = 75.5 tok/s end-to-end. No benchmark ladder yet.
+# >>> Source: https://github.com/MiaAI-Lab/Qwen3.6-35B-A3B-NVFP4-vLLM
+# >>> 2026-11-17: repointed from unsloth/Qwen3.6-35B-A3B-NVFP4 (never downloaded here) to
+# >>>   nvidia/Qwen3.6-35B-A3B-NVFP4, which is complete on both nodes (21.8 GiB). vLLM reads its
+# >>>   modelopt NVFP4 config itself. gpu_memory_utilization 0.90 -> 0.80 (repo ceiling 0.82).
 
 # =============================================================================
 # sparkrun recipe — Qwen3.6-35B-A3B NVFP4 via vLLM   [MiaAI-Lab]
@@ -12,16 +17,20 @@
 # =============================================================================
 
 recipe_version: "2"
-model: unsloth/Qwen3.6-35B-A3B-NVFP4
+model: nvidia/Qwen3.6-35B-A3B-NVFP4
 runtime: vllm
 container: vllm/vllm-openai:v0.24.0
 min_nodes: 1
 max_nodes: 1
 
+# The image bakes ENTRYPOINT ["vllm","serve"], which would swallow sparkrun's command.
+executor_config:
+  entrypoint: ""
+
 metadata:
   description: >-
-    Unsloth Qwen3.6-35B-A3B NVFP4 via vLLM on single DGX Spark. 256k context.
-    Source-validated by MiaAI-Lab.
+    NVIDIA Qwen3.6-35B-A3B NVFP4 via vLLM on single DGX Spark. 256k context.
+    Recipe from MiaAI-Lab (written for the unsloth build).
   maintainer: MiaAI-Lab (https://github.com/MiaAI-Lab)
   model_params: 35B
   model_dtype: nvfp4
@@ -32,7 +41,7 @@ defaults:
   host: 0.0.0.0
   port: 8000
   tensor_parallel: 1
-  gpu_memory_utilization: 0.90
+  gpu_memory_utilization: 0.80
   max_model_len: 262144
   served_model_name: qwen3.6-35b-a3b-nvfp4
 
@@ -44,4 +53,5 @@ command: |
     --tensor-parallel-size {tensor_parallel} \
     --gpu-memory-utilization {gpu_memory_utilization} \
     --max-model-len {max_model_len} \
+    --reasoning-parser qwen3 \
     --trust-remote-code

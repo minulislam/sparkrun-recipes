@@ -924,3 +924,19 @@ Gateway now lists: `qwen3.8-flash-next-abliterated`, `deepseek-v4-coder`,
   Qwen3.8-27B dial now use plain braces (ccb2723); the rendered command was checked with sparkrun's
   renderer and set lambda 2.0 on both ranks. A mild borderline prompt answered at both 0 and 2.0;
   at 0 it led with a legal disclaimer, at 2.0 it did not.
+
+## 2026-11-17: Bolt-74B recipe added; Qwen3.6-35B repointed to the NVIDIA checkpoint
+
+- `recipes/nemotron/nemotron-3.5-bolt-74b-a9b-24gb-tp1.yaml`: copy of `@eugr/nemotron-3.5-bolt-24gb`
+  on the pinned `dgx-vllm-eugr-nightly:20260927` image (architecture, nemotron_v3 parser, DFlash and
+  instanttensor checked inside the image). First boot on gb10-solo beside the spark-pinned
+  embed/rerank (~28 GiB) at util 0.5 hit NV_ERR_NO_MEMORY during load; earlyoom killed it and the
+  embed/rerank containers, which then crash-looped until restarted one at a time. UNVERIFIED.
+- `recipes/qwen/qwen3.6-35b-a3b-nvfp4-tp1.yaml` and `-unofficial-tp1.yaml`: model
+  unsloth/Qwen3.6-35B-A3B-NVFP4 (never downloaded) -> nvidia/Qwen3.6-35B-A3B-NVFP4 (both nodes),
+  util 0.90 -> 0.80, `--reasoning-parser qwen3` added. The tp1 recipe also needed
+  `executor_config.entrypoint: ""` (vllm-openai:v0.24.0 bakes ENTRYPOINT). VERIFIED on gx10-solo:
+  ready 337 s, 262,144 context, correct answer, 75.5 tok/s end-to-end on a 512-token stream. The
+  unofficial recipe's b12x image is on neither node, so it stays lint-only.
+- The spark-pinned embed/rerank containers (vLLM, util 0.1 each) crash-loop with "No available memory
+  for the cache blocks" when both start at once; start them one after the other.

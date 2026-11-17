@@ -1,5 +1,8 @@
 # >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/Unsloth-Qwen3.6-35b-NVFP4-DGX-Spark
 # >>> Please test and run --dry-run first, then update with your verified launch facts.
+# >>> 2026-11-17: repointed from unsloth/Qwen3.6-35B-A3B-NVFP4 (never downloaded here) to
+# >>>   nvidia/Qwen3.6-35B-A3B-NVFP4, complete on both nodes. The b12x image was tuned on the unsloth
+# >>>   build, so speed may differ. gpu_memory_utilization 0.90 -> 0.80 (repo ceiling 0.82).
 
 # =============================================================================
 # sparkrun recipe — Unsloth Qwen3.6-35B-A3B NVFP4 (b12x)   [MiaAI-Lab]
@@ -13,7 +16,7 @@
 # =============================================================================
 
 recipe_version: "2"
-model: unsloth/Qwen3.6-35B-A3B-NVFP4
+model: nvidia/Qwen3.6-35B-A3B-NVFP4
 runtime: vllm
 container: ghcr.io/miaai-lab/mia-vllm-gb10-linear-b12x@sha256:19627342e1da2607f4db50745dca30e57d7dd0ebff06062f03fd69b43a252931  # pinned by digest 2026-10-01 — upstream publishes ONLY :latest (ghcr tag list confirms). Safe here: single-node recipe, so sparkrun 0.3.10's digest-ship defect on workers does not apply. Mirror to spark-arena when push creds exist.
 min_nodes: 1
@@ -34,7 +37,7 @@ defaults:
   host: 0.0.0.0
   port: 8000
   tensor_parallel: 1
-  gpu_memory_utilization: 0.90
+  gpu_memory_utilization: 0.80
   max_model_len: 262144
   served_model_name: qwen3.6-35b-b12x
 
@@ -46,4 +49,5 @@ command: |
     --tensor-parallel-size {tensor_parallel} \
     --gpu-memory-utilization {gpu_memory_utilization} \
     --max-model-len {max_model_len} \
+    --reasoning-parser qwen3 \
     --trust-remote-code

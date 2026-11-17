@@ -1,0 +1,57 @@
+# >>> UNVERIFIED. 2026-11-17 first boot on gb10-solo beside the spark-pinned embed/rerank
+# >>>   containers (~28 GiB), overrides port 8002 and gpu_memory_utilization 0.5: NV_ERR_NO_MEMORY
+# >>>   while loading, earlyoom killed it and the co-resident embed/rerank. Needs the head to itself
+# >>>   (or a smaller budget and safetensors loading) before the next try.
+# >>> COPY of @eugr/nemotron-3.5-bolt-24gb (fetched 2026-11-17). Upstream serves it on one DGX Spark
+# >>> with the LiLiCorr draft model and DFlash speculation. Local changes, nothing else:
+# >>>   - container: eugr's local `vllm-node` build -> pinned spark-arena rebuild 20260927
+# >>>     (IMAGE-POLICY.md); checked 2026-11-17 that it registers NemotronH_Omni_Reasoning_V3, the
+# >>>     nemotron_v3 reasoning parser, DFlash, instanttensor and both mamba prefix-cache flags.
+# >>>   - recipe_version 2 fields (runtime, max_nodes, served name) and {model} in the command.
+# >>> Weights: nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB (22.4 GiB, modelopt MIXED_PRECISION) and
+# >>>   the -LiLiCorr drafter (0.9 GiB) are complete on gb10-spark only, so run it on gb10-solo.
+recipe_version: "2"
+model: nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB
+runtime: vllm
+min_nodes: 1
+max_nodes: 1
+container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly:20260927
+
+metadata:
+  description: NVIDIA Nemotron 3.5 Bolt 74B-A9B 24GB on one DGX Spark, LiLiCorr DFlash speculative decoding
+  maintainer: eugr (recipe) / NVIDIA (model) — adapted for this cluster
+  draft_model: nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB-LiLiCorr
+
+defaults:
+  port: 8000
+  host: 0.0.0.0
+  tensor_parallel: 1
+  gpu_memory_utilization: 0.8
+  max_model_len: auto
+  max_num_seqs: 8
+  max_num_batched_tokens: 8192
+  num_speculative_tokens: 7
+  served_model_name: nemotron-3.5-bolt
+
+command: |
+  vllm serve {model} \
+    --served-model-name {served_model_name} \
+    --host {host} \
+    --port {port} \
+    --tensor-parallel-size {tensor_parallel} \
+    --kv-cache-dtype fp8 \
+    --max-num-seqs {max_num_seqs} \
+    --trust-remote-code \
+    --max-model-len {max_model_len} \
+    --gpu-memory-utilization {gpu_memory_utilization} \
+    --max-num-batched-tokens {max_num_batched_tokens} \
+    --speculative_config.model nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB-LiLiCorr \
+    --speculative_config.method dflash \
+    --speculative_config.num_speculative_tokens {num_speculative_tokens} \
+    --load-format instanttensor \
+    --enable-auto-tool-choice \
+    --tool-call-parser qwen3_coder \
+    --reasoning-parser nemotron_v3 \
+    --enable-mamba-shared-prefix-checkpoint \
+    --block-size 64 \
+    --prefix-match-unit 64
