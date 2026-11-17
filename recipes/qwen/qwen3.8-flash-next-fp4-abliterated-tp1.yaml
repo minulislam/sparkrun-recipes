@@ -1,0 +1,102 @@
+# >>> NOT YET VERIFIED — weights downloading to gx10-spark (2026-11-18).
+# >>> Uncensored single-node Flash-Next: DevelopingDad/Qwen3.8-Flash-Next-FP4-Local-Abliterated (95.2 GiB),
+# >>>   a Heretic-style abliteration baked into nvidia/Qwen3.8-Flash-Next-FP4-Local rev b9ce18a, same
+# >>>   FP4-Local storage format. Picked from an HF search of ~300 abliterated/uncensored Flash-Next repos
+# >>>   as the best-documented single-Spark vLLM build. Publisher's card (rev fe8c47f): refusals detected
+# >>>   on 0/100 development and 6/100 holdout prompts (base: 99 and 100); single-Spark median decode
+# >>>   38.0 tok/s prose / 54.3 code (base 39.4 / 50.7); image, tool, thinking and MTP checks passed.
+# >>> COPY of qwen3.8-flash-next-fp4-b12x-tp1.yaml (verified 2026-11-17 on gx10-solo): the publisher's
+# >>>   serve-spark.sh uses the same image digest (eugr/spark-vllm-b12x@sha256:03a95654… =
+# >>>   nightly-20261015) and the same env/flags, so only the model, revision pin and served name change.
+# >>> UNCENSORED: refusal removed in the weights. Keep the endpoint off any public ingress and away from
+# >>>   untrusted input. License: NVIDIA Open Model + Qwen Community (see the model card).
+
+recipe_version: "2"
+model: DevelopingDad/Qwen3.8-Flash-Next-FP4-Local-Abliterated
+model_revision: fe8c47ff55d0692e28dbcad2c53df2f51294be46
+runtime: vllm
+container: eugr/spark-vllm-b12x:nightly-20261015
+min_nodes: 1
+max_nodes: 1
+
+readiness:
+  port_timeout_s: 2400
+  health_timeout_s: 2400
+  inference_timeout_s: 600
+
+executor_config:
+  security_opt:
+    - seccomp=unconfined
+    - apparmor=unconfined
+  ulimit:
+    - memlock=-1:-1
+    - stack=67108864:67108864
+    - nofile=65535:65535
+
+env:
+  # Bound PyTorch CUDA reservation during A16 weight preparation on shared RAM (from the eugr recipe).
+  PYTORCH_ALLOC_CONF: "per_process_memory_fraction:0.8"
+  VLLM_PLE_TABLE_MEMORY: "disk"
+  B12X_DISK_BACKEND: "io_uring"
+  CUTE_DSL_ARCH: "sm_121a"
+  SAFETENSORS_FAST_GPU: "1"
+  VLLM_WORKER_MULTIPROC_METHOD: "spawn"
+  VLLM_SSM_CONV_STATE_LAYOUT: "DS"
+  VLLM_USE_AOT_COMPILE: "1"
+  VLLM_USE_MEGA_AOT_ARTIFACT: "1"
+  VLLM_USE_V2_MODEL_RUNNER: "1"
+  B12X_POLICY_MODE: "auto"
+  VLLM_MXFP8_LM_HEAD: "1"
+  VLLM_B12X_MOE_FP4_LAYER_MAX_INPUT_SCALE: "w13"
+  VLLM_B12X_MOE_FP4_FORCE_A16: "1"
+  B12X_W4A16_A4_PREFILL: "1"
+
+defaults:
+  port: 8000
+  host: 0.0.0.0
+  tensor_parallel: 1
+  pipeline_parallel: 1
+  block_size: 16
+  max_model_len: 262144
+  max_num_seqs: 8
+  max_num_batched_tokens: 4096
+  num_speculative_tokens: 4
+  gpu_memory_utilization: 0.8
+  served_model_name: qwen3.8-flash-next-abliterated-tp1
+
+command: |
+  vllm serve {model} \
+    --served-model-name {served_model_name} \
+    --revision {model_revision} \
+    --host {host} \
+    --port {port} \
+    --tensor-parallel-size {tensor_parallel} \
+    --pipeline-parallel-size {pipeline_parallel} \
+    --mamba-cache-mode align \
+    --enable-prefix-caching \
+    --enable-chunked-prefill \
+    --dtype bfloat16 \
+    --kv-cache-dtype fp8 \
+    --quantization modelopt_mixed \
+    --block-size {block_size} \
+    --load-format b12x \
+    --max-model-len {max_model_len} \
+    --max-num-seqs {max_num_seqs} \
+    --max-num-batched-tokens {max_num_batched_tokens} \
+    --speculative-config '{"method":"mtp","num_speculative_tokens":{num_speculative_tokens}}' \
+    --gdn-decode-kernel b12x \
+    --linear-backend b12x \
+    --moe-backend b12x \
+    --no-enable-flashinfer-autotune \
+    --mm-encoder-tp-mode data \
+    --reasoning-parser qwen3 \
+    --tool-call-parser qwen3_xml \
+    --enable-auto-tool-choice \
+    --compilation-config '{"pass_config":{"fuse_act_quant":true}}' \
+    --gpu-memory-utilization {gpu_memory_utilization}
+
+metadata:
+  description: >-
+    Qwen3.8 Flash Next abliterated (DevelopingDad, Heretic-style edit of nvidia FP4-Local) on one
+    DGX Spark with the B12X stack: PLE tables on disk, fp8 KV, native MTP x4, 262k context. Uncensored.
+  maintainer: DevelopingDad (abliteration) / nvidia (base) / eugr (recipe)
