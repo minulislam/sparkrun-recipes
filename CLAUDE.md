@@ -139,6 +139,9 @@ section on each node (copy it to the worker first).
 - Gateway admin API on 127.0.0.1:4000 (bound 0.0.0.0, NO auth): GET/PUT /v1/config/managed-sets/operator, validate endpoint, CAS via expected_active_revision
 - SparkRoute plugin source (installed 0.3.4) at ~/.config/sparkrun/plugins/sparkroute/*/payload/ is authoritative; upstream docs omit binding schema (fields: recipe, cluster/cluster_candidates, cold_start wait|reject, model, overrides, capabilities)
 - sparkrun 0.4.2 via uv tool; always rtk-prefix shell commands; worker gx10-spark mgmt 10.10.20.11 flaky, CX7 data 10.99.10.11
+- spark-forge registry clones the LOCAL repo's main branch (file:// URL), not GitHub: after pushing main, fast-forward local main too, then `sparkrun registry update spark-forge`
+- Recipe name = filename stem; registry scan is recursive, so recipes/<family>/<name>.yaml works but stems must stay unique; mods resolve via mods_subpath recipes/mods
+- In worktree-isolated agent sessions call /usr/bin/git directly; the rtk rewrite of `git` is refused by the worktree guard
 
 ### Key Decisions
 - Decision: bindings qualified as @spark-forge/<recipe> — Reason: plain names ambiguous (local checkout and spark-forge registry both match); resolver demands exact recipe

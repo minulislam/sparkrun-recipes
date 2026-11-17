@@ -8,3 +8,10 @@ session-exports/
 
 # Stakpak session files
 .stakpak/session*
+
+# Python caches
+__pycache__/
+.pytest_cache/
+
+# Local tool symlink into the plugin cache (machine-specific)
+/supertool
