@@ -45,9 +45,6 @@ defaults:
   max_model_len: 262144
   served_model_name: inkling-small
 
-pre_exec:
-  - python3 /opt/refusal/verify_inkling_rank1.py
-
 post_exec:
   - curl -s localhost:{port}/v1/models
   - 'curl -s -XPOST localhost:{port}/admin/refusal_lambda -H ''Content-Type: application/json'' -d ''{{"lambda": 1}}'''

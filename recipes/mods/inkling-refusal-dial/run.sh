@@ -27,4 +27,7 @@ python3 -m py_compile /usr/local/lib/python3.12/dist-packages/vllm/entrypoints/s
 python3 -m py_compile /usr/local/lib/python3.12/dist-packages/vllm/models/inkling/nvidia/model.py
 python3 -m py_compile /usr/local/lib/python3.12/dist-packages/vllm/entrypoints/serve/__init__.py
 
+# Verify refusal directions and rank-1 projection math
+python3 /opt/refusal/verify_inkling_rank1.py
+
 echo "[INFO] Inkling refusal dial overlay mod fully installed and verified."

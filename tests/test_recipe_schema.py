@@ -15,5 +15,5 @@ def test_inkling_refusal_dial_recipe_structure():
     assert recipe["defaults"]["tensor_parallel"] == 2
     assert "VLLM_REFUSAL_DIRS" in recipe["env"]
     assert "VLLM_REFUSAL_LAMBDA_INIT" in recipe["env"]
-    assert any("verify_inkling_rank1.py" in cmd for cmd in recipe["pre_exec"])
+    assert "mods/inkling-refusal-dial" in recipe["mods"]
     assert any("admin/refusal_lambda" in cmd for cmd in recipe["post_exec"])
