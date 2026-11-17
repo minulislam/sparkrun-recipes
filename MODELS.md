@@ -87,13 +87,13 @@ marked **W**.
 | `nvidia/MiniMax-M2.7-NVFP4` | H | 130.3 | `minimax-m2.7-nvfp4-vllm-tp2` |
 | `lukealonso/MiniMax-M2.7-NVFP4` | H | 125.3 | `minimax-m2.7-nvfp4-atlas-ep2` |
 | `stepfun-ai/Step-3.7-Flash-NVFP4` | H | 120.4 | `step-3.7-flash-nvfp4-tp2-miaai` |
-| `local-inference-lab/Qwen3.8-Flash-Next-NVFP4` | H | 99.0 | `qwen3.8-flash-next-nvfp4-tp2` |
+| `local-inference-lab/Qwen3.8-Flash-Next-NVFP4` | H | 99.0 | `qwen3.8-flash-next-nvfp4-tp2`, `qwen3.8-flash-next-nvfp4-lil-tp1` |
 | `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4` | H | 74.8 | `nemotron-3-super-120b-nvfp4-tp2` |
 
 The worker has 1.9 TiB free, so all of these fit there (about 1.03 TiB in total).
 `local-inference-lab/Qwen3.8-Flash-Next-NVFP4` also documents a single-node profile
-(`tp: 1` override in the lil catalog: one sequence, 64K context, PLE offload); no
-recipe here uses it yet.
+(`tp: 1` override in the lil catalog: one sequence, 64K context, PLE offload);
+`qwen3.8-flash-next-nvfp4-lil-tp1` implements it (verified 2026-11-17 on gb10-solo).
 
 ## Auxiliary artifacts (drafters, ablation tensors)
 

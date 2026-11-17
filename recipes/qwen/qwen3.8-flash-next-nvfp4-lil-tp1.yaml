@@ -1,0 +1,113 @@
+# >>> VERIFIED 2026-11-17 on gb10-solo (boot 2): ready in 795 s (weights 492 s, engine init 233 s);
+# >>>   /v1/models max_model_len 65536; KV 2.5 GiB = 74,021 tokens (1.13x concurrency at 64K).
+# >>>   17*23 -> "391"; 512-token answer in 15.0 s = 34.0 tok/s end-to-end, single stream, thinking off.
+# >>>   Host MemAvailable low-water 21 GiB during boot, ~28 GiB once serving (page cache included).
+# >>>   NOT measured: llama-benchy ladder, needle, vision, tool calls.
+# >>> Boot 1 (PLE table in ram, KV 1.5 GiB) loaded all weights, then failed: "65536 needs 2.21 GiB KV,
+# >>>   1.5 available (max ~9024)", with host MemAvailable down to 3 GiB. Moving the PLE table to disk
+# >>>   (io_uring; seccomp/apparmor unconfined + memlock ulimits) cut the engine's GPU footprint from
+# >>>   ~102 to ~74 GiB at the same load stage and made room for the 2.5 GiB KV pin.
+# >>> Single-node profile of local-inference-lab/Qwen3.8-Flash-Next-NVFP4 (99 GiB of weights).
+# >>> Registry searched first (2026-11-17): only @lil/Qwen3.8-Flash-Next-NVFP4 covers this checkpoint at
+# >>>   TP1. Its catalog (lil.yaml) carries a `when: tp: 1` override that sparkrun 0.4.2 does not apply
+# >>>   (`recipe show --tp 1` still renders 4 seqs / auto ctx), so the override is written out here:
+# >>>   max_num_seqs 1, max_model_len 65536, max_num_batched_tokens 2048, KV pinned (lil: 1.5 GiB, here 2.5),
+# >>>   VLLM_PLE_CPU_OFFLOAD=1, fuse_act_quant, MTP 3.
+# >>> Everything else is our verified TP2 recipe (qwen3.8-flash-next-nvfp4-tp2.yaml): the pinned b12x image
+# >>>   and safetensors loader; unlike it, the PLE table lives on disk (see above).
+# >>> MEMORY EXCEPTION (user-approved 2026-11-17): the weights alone are ~0.82 of the 121 GiB node, the
+# >>>   repo's utilisation ceiling. With kv_cache_memory_bytes set, this vLLM build uses
+# >>>   gpu_memory_utilization only for its startup MemFree admission check (gpu_worker.request_memory),
+# >>>   not for sizing, so it is set low enough to pass with page cache present. Real footprint is about
+# >>>   weights + 2.5 GiB KV + graphs (~93 GiB used while serving). Needs the node to itself: no pinned embed/rerank, no
+# >>>   other engine. Launch on gb10-solo (weights are head-only).
+
+recipe_version: "2"
+model: local-inference-lab/Qwen3.8-Flash-Next-NVFP4
+runtime: vllm
+container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly-b12x:20260926  # same pinned build as the TP2 recipe
+min_nodes: 1
+max_nodes: 1
+
+executor_config:
+  security_opt:
+    - seccomp=unconfined
+    - apparmor=unconfined
+  ulimit:
+    - memlock=-1:-1
+    - stack=67108864:67108864
+    - nofile=65535:65535
+
+readiness:
+  port_timeout_s: 2400
+  health_timeout_s: 2400
+  inference_timeout_s: 600
+
+metadata:
+  description: >-
+    Qwen3.8 Flash Next (local-inference-lab NVFP4, modelopt_mixed) on one DGX Spark:
+    single sequence, 64K context, pinned 2.5 GiB KV, PLE table on disk, MTP speculative decoding.
+  maintainer: local-inference-lab (model, lil TP1 profile) / eugr (flags) — adapted for this cluster
+  model_dtype: nvfp4
+  model_vram: 106
+
+env:
+  VLLM_PLE_TABLE_MEMORY: "disk"
+  B12X_DISK_BACKEND: "io_uring"
+  VLLM_PLE_CPU_OFFLOAD: "1"
+  CUTE_DSL_ARCH: "sm_121a"
+  SAFETENSORS_FAST_GPU: "1"
+  VLLM_WORKER_MULTIPROC_METHOD: "spawn"
+  VLLM_SSM_CONV_STATE_LAYOUT: "DS"
+  VLLM_USE_AOT_COMPILE: "1"
+  VLLM_USE_MEGA_AOT_ARTIFACT: "1"
+  VLLM_USE_V2_MODEL_RUNNER: "1"
+  B12X_POLICY_MODE: "auto"
+
+defaults:
+  host: 0.0.0.0
+  port: 8000
+  tensor_parallel: 1
+  gpu_memory_utilization: 0.6  # admission check only; see header
+  kv_cache_memory_bytes: 2684354560
+  max_model_len: 65536
+  max_num_seqs: 1
+  kv_cache_dtype: fp8
+  max_num_batched_tokens: 2048
+  block_size: 16
+  moe_backend: b12x
+  linear_backend: b12x
+  load_format: safetensors
+  num_speculative_tokens: 3
+  served_model_name: qwen3.8-flash-next-tp1
+
+command: |
+  vllm serve {model} \
+    --served-model-name {served_model_name} \
+    --host {host} \
+    --port {port} \
+    --trust-remote-code \
+    --tensor-parallel-size {tensor_parallel} \
+    --mamba-cache-mode align \
+    --enable-prefix-caching \
+    --enable-chunked-prefill \
+    --dtype bfloat16 \
+    --kv-cache-dtype {kv_cache_dtype} \
+    --kv-cache-memory-bytes {kv_cache_memory_bytes} \
+    --quantization modelopt_mixed \
+    --block-size {block_size} \
+    --load-format {load_format} \
+    --max-model-len {max_model_len} \
+    --max-num-seqs {max_num_seqs} \
+    --max-num-batched-tokens {max_num_batched_tokens} \
+    --speculative-config '{"method":"mtp","num_speculative_tokens":{num_speculative_tokens}}' \
+    --gdn-decode-kernel b12x \
+    --linear-backend {linear_backend} \
+    --moe-backend {moe_backend} \
+    --no-enable-flashinfer-autotune \
+    --mm-encoder-tp-mode data \
+    --reasoning-parser qwen3 \
+    --tool-call-parser qwen3_xml \
+    --enable-auto-tool-choice \
+    --compilation-config '{"pass_config":{"fuse_act_quant":true}}' \
+    --gpu-memory-utilization {gpu_memory_utilization}

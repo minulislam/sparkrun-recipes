@@ -974,3 +974,18 @@ Gateway now lists: `qwen3.8-flash-next-abliterated`, `deepseek-v4-coder`,
   (from a container, 2026-11-16) and blocked `hf download`; moved aside to `.locks.root-20261116`.
 - After a big download the page cache fills unified memory (gx10 MemFree 31.5 GiB); vLLM and the
   loader both need `sparkrun setup clear-cache --cluster <c>` before a large launch (passwordless on gx10).
+
+## 2026-11-17: Flash-Next NVFP4 single-node profile verified on the head
+
+- `recipes/qwen/qwen3.8-flash-next-nvfp4-lil-tp1.yaml` (INDEX row 68): `local-inference-lab/Qwen3.8-Flash-Next-NVFP4`
+  (99 GiB) on one node. Registry search found only `@lil/Qwen3.8-Flash-Next-NVFP4`, whose catalog `when: tp: 1`
+  override (1 seq, 64K, 1.5 GiB KV, PLE CPU offload) sparkrun 0.4.2 does not apply, so it is written out over our
+  TP2 recipe's image and loader. User approved a one-off memory exception (weights alone ~0.82 of the node).
+- With `kv_cache_memory_bytes` set, this vLLM build uses `gpu_memory_utilization` only for the startup MemFree
+  check (`gpu_worker.request_memory`), so util 0.6 passes with page cache present; no cache drop needed.
+- Boot 1 (PLE table in RAM, KV 1.5 GiB): weights loaded, then "65536 needs 2.21 GiB KV, 1.5 available"; host
+  MemAvailable fell to 3 GiB, so the pin could not grow. Boot 2 moved the PLE table to disk (io_uring, seccomp/
+  apparmor unconfined, memlock ulimits): 24 shards loaded instead of 40, GPU ~74 vs ~102 GiB at the same stage,
+  KV 2.5 GiB = 74,021 tokens. VERIFIED on gb10-solo: ready 795 s, max_model_len 65536, 17*23 -> 391, 34.0 tok/s
+  end-to-end on a 512-token answer, host low-water 21 GiB. First launch waited ~6 min on sparkrun's global
+  reservation, held by the daemon while spark-loader's gx10 job booted.
