@@ -1,6 +1,6 @@
 # spark-forge/vllm-dsv4-rank1
 
-Local image behind `recipes/deepseek-v4-flash-0731-refusal-dial-tp2.yaml`. Upstream
+Local image behind `recipes/deepseek/deepseek-v4-flash-0731-refusal-dial-tp2.yaml`. Upstream
 publishes no image, so it was built here. It exists only on the two nodes.
 
 | | |

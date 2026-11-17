@@ -31,14 +31,14 @@ Both nodes are GB10 with 121 GB unified memory.
 
 ```bash
 # from a local recipe file
-sparkrun run ./recipes/diffusiongemma-26b-a4b-nvfp4.yaml --cluster dgx-pair --tp 1 --no-follow
+sparkrun run ./recipes/gemma/diffusiongemma-26b-a4b-nvfp4.yaml --cluster dgx-pair --tp 1 --no-follow
 
 # or, after registering the registry, by name
 sparkrun registry update spark-forge
 sparkrun run @spark-forge/diffusiongemma-26b-a4b-nvfp4 --cluster dgx-pair --tp 1
 
 # stop (same flags as run)
-sparkrun stop ./recipes/<file>.yaml --cluster dgx-pair --tp 1
+sparkrun stop ./recipes/<family>/<file>.yaml --cluster dgx-pair --tp 1
 ```
 
 > [!TIP]
@@ -55,11 +55,11 @@ sparkrun stop ./recipes/<file>.yaml --cluster dgx-pair --tp 1
 Quick launch example:
 ```bash
 # Single-node (TP=1)
-sparkrun run ./recipes/qwen3.8-27b-nvfp4-tp1.yaml --cluster dgx-pair --tp 1 --dry-run
+sparkrun run ./recipes/qwen/qwen3.8-27b-nvfp4-tp1.yaml --cluster dgx-pair --tp 1 --dry-run
 # Multi-node (TP=2)
-sparkrun run ./recipes/deepseek-v4-flash-0731-tp2.yaml --cluster dgx-pair --tp 2 --dry-run
+sparkrun run ./recipes/deepseek/deepseek-v4-flash-0731-tp2.yaml --cluster dgx-pair --tp 2 --dry-run
 # SGLang
-sparkrun run ./recipes/qwen3.8-27b-nvfp4-tp1-sglang.yaml --cluster dgx-pair --tp 1 --dry-run
+sparkrun run ./recipes/qwen/qwen3.8-27b-nvfp4-tp1-sglang.yaml --cluster dgx-pair --tp 1 --dry-run
 ```
 
 Full details for all 48 recipes are in [`INDEX.md`](INDEX.md).

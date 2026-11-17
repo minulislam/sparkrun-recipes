@@ -185,6 +185,6 @@ for d in sorted(glob.glob(hub+"/models--*")):
 PY
 ```
 
-Then map models to recipes with `grep -l '^model: <repo>' recipes/*.yaml`. One recipe
+Then map models to recipes with `grep -l '^model: <repo>' recipes/*/*.yaml`. One recipe
 loads from a local path instead: `glm-5.3-flash-abliterated-nvfp4kv-long-tp2` sets
 `model_path` to the `local/glm53-flash-ablit-topk2044` snapshot.

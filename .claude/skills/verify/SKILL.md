@@ -69,7 +69,7 @@ digraph recipe_flow {
 
 ## Required Contract: Normalized `spark-forge` Recipe YAML
 
-Every recipe committed to `~/workspace/sparkrun-recipes/recipes/<name>.yaml` MUST contain these sections in order:
+Every recipe committed to `~/workspace/sparkrun-recipes/recipes/<family>/<name>.yaml` MUST contain these sections in order:
 
 1. **Evidence Header Block (`# >>> ...`):**
    - Top of file: `# >>> VERIFIED <YYYY-MM-DD> on <cluster>` (or `# >>> UNFIT <date>` / `# >>> UNBENCHMARKED — <reason>`) recording measured `max_model_len` from `/v1/models`, boot time, per-rank GiB, single-stream and 8-way tok/s, and required mods/caveats.
@@ -206,25 +206,25 @@ EOF
    Do not launch a large model while another container holds significant GB10 unified memory (a co-tenant either triggers NVRM/earlyoom OOM or silently shrinks `max_model_len: auto` to a few hundred tokens). Never stop protected baseline services (`sparkrun-ui`, `spark-searxng`, `sovereign-qdrant`, host `llama-server` on `:18434`).
 2. **Validate & Dry-Run:**
    ```bash
-   rtk sparkrun recipe validate recipes/<name>.yaml
-   rtk sparkrun run ./recipes/<name>.yaml --cluster dgx-pair --dry-run
+   rtk sparkrun recipe validate recipes/<family>/<name>.yaml
+   rtk sparkrun run ./recipes/<family>/<name>.yaml --cluster dgx-pair --dry-run
    ```
 3. **Live Launch (`--no-follow` + inline `HF_TOKEN`):**
    Non-interactive shells exit `~/.bashrc` early and do not inherit `HF_TOKEN`. Pass it inline (budget ~25 min on a large MoE if image sync, weight load, and CUDA-graph/DSpark capture all run cold):
    ```bash
    HF_TOKEN=$(sed -n 's/^export HF_TOKEN="\(.*\)"/\1/p' ~/.bashrc | head -1) \
-     rtk sparkrun run ./recipes/<name>.yaml --cluster dgx-pair --no-follow
+     rtk sparkrun run ./recipes/<family>/<name>.yaml --cluster dgx-pair --no-follow
    ```
 4. **Monitor `/tmp/sparkrun_serve.log` & Probe Endpoint:**
    - vLLM/SGLang output is in `/tmp/sparkrun_serve.log` inside the container (`docker exec <node_0_container> tail -25 /tmp/sparkrun_serve.log`), NOT `docker logs`. On TP2 failures, check **node_1** (`ssh devops@10.99.10.11 docker exec ...`) for the root-cause traceback (node_0 only logs `Engine core initialization failed`).
    - Verify `/v1/models` (confirm `max_model_len` was not silently shrunk) and `/v1/chat/completions` (confirm coherent output, not `!` or garbage; probe vision `image_url`, tool calling, and over-limit prompt -> HTTP 400 when applicable).
-   - Tear down cleanly with `rtk sparkrun stop ./recipes/<name>.yaml --cluster dgx-pair` (or `rtk sparkrun cluster status` + `rtk sparkrun stop <cluster_id>`, since a crashed vLLM inside a container still leaves both containers running) and confirm 0 leftover `sparkrun_*` containers on both nodes.
+   - Tear down cleanly with `rtk sparkrun stop ./recipes/<family>/<name>.yaml --cluster dgx-pair` (or `rtk sparkrun cluster status` + `rtk sparkrun stop <cluster_id>`, since a crashed vLLM inside a container still leaves both containers running) and confirm 0 leftover `sparkrun_*` containers on both nodes.
 
 ### 3. Required 4-Place Recording, Registry Update & Safe Cleanup
 
 When merging or verifying a recipe in `~/workspace/sparkrun-recipes`:
 1. **Update 4 places in the repo:**
-   - `recipes/<canonical-name>.yaml` (`# >>> VERIFIED` header + normalized YAML)
+   - `recipes/<family>/<canonical-name>.yaml` (`# >>> VERIFIED` header + normalized YAML)
    - `benchmarks/<report>.md` (raw benchmark/validation artifacts)
    - `INDEX.md` (do not renumber existing rows; append new row or update existing row's Notes)
    - `MODELS.md` and `HISTORY.md` (append dated section to `HISTORY.md`)

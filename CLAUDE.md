@@ -30,12 +30,12 @@ There is nothing to build. The work is YAML recipes run through the `sparkrun`
 CLI (0.4.2, uv tool).
 
 ```bash
-sparkrun recipe validate recipes/<name>.yaml        # one file per call; warnings do not block
-sparkrun recipe show ./recipes/<name>.yaml          # render the working-tree copy
+sparkrun recipe validate recipes/<family>/<name>.yaml        # one file per call; warnings do not block
+sparkrun recipe show ./recipes/<family>/<name>.yaml          # render the working-tree copy
 sparkrun recipe show @spark-forge/<name>            # render what the registry (= main) serves
-sparkrun run ./recipes/<name>.yaml --cluster <c> --dry-run
-sparkrun run ./recipes/<name>.yaml --cluster <c> --no-follow
-sparkrun stop ./recipes/<name>.yaml --cluster <c>
+sparkrun run ./recipes/<family>/<name>.yaml --cluster <c> --dry-run
+sparkrun run ./recipes/<family>/<name>.yaml --cluster <c> --no-follow
+sparkrun stop ./recipes/<family>/<name>.yaml --cluster <c>
 sparkrun registry update spark-forge                # after committing to main
 sparkrun proxy sync                                 # make the gateway match proxy.yaml
 ```
@@ -89,6 +89,11 @@ section on each node (copy it to the worker first).
   nothing until the unreferenced store files go too.
 - **A TP2/EP2 recipe needs its weights on both nodes.** `MODELS.md` lists which
   ones have them; as of 2026-11-10 most two-node checkpoints are head-only.
+- **Layout:** `recipes/<family>/<recipe-name>.yaml` (deepseek, gemma, glm,
+  qwen, nemotron, minimax, inkling, and one folder per single-recipe family).
+  The filename stem is the recipe name sparkrun resolves, so keep it unique
+  across families and never rename it to `recipe.yaml`. Shared mods stay in
+  `recipes/mods/` via `mods_subpath` in `.sparkrun/registry.yaml`.
 - **Keep what runs on two nodes; drop what needs three.**
 - **One canonical copy of each recipe.** Benchmark reports live in
   `benchmarks/`.

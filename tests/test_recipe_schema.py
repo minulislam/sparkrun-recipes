@@ -3,7 +3,7 @@ import yaml
 import pytest
 
 def test_inkling_refusal_dial_recipe_structure():
-    recipe_path = "recipes/inkling-small-nvfp4-refusal-dial-tp2.yaml"
+    recipe_path = "recipes/inkling/inkling-small-nvfp4-refusal-dial-tp2.yaml"
     assert os.path.exists(recipe_path), f"Recipe file {recipe_path} does not exist"
     with open(recipe_path) as f:
         recipe = yaml.safe_load(f)

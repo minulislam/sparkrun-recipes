@@ -116,11 +116,11 @@ the `@eugr`/`@official` registries.
 
 ```bash
 # interactive default
-sparkrun run ./recipes/diffusiongemma-26b-a4b-nvfp4.yaml --cluster dgx-pair --tp 1 --no-follow
+sparkrun run ./recipes/gemma/diffusiongemma-26b-a4b-nvfp4.yaml --cluster dgx-pair --tp 1 --no-follow
 # fleet default
-sparkrun run ./recipes/nemotron3-nano-omni-aeon-nvfp4.yaml --cluster dgx-pair --tp 1 --no-follow
+sparkrun run ./recipes/nemotron/nemotron3-nano-omni-aeon-nvfp4.yaml --cluster dgx-pair --tp 1 --no-follow
 # stop (same flags as run)
-sparkrun stop ./recipes/<file>.yaml --cluster dgx-pair --tp 1
+sparkrun stop ./recipes/<family>/<file>.yaml --cluster dgx-pair --tp 1
 ```
 
 By registry name (after `sparkrun registry update spark-forge`):
