@@ -940,3 +940,15 @@ Gateway now lists: `qwen3.8-flash-next-abliterated`, `deepseek-v4-coder`,
   unofficial recipe's b12x image is on neither node, so it stays lint-only.
 - The spark-pinned embed/rerank containers (vLLM, util 0.1 each) crash-loop with "No available memory
   for the cache blocks" when both start at once; start them one after the other.
+
+## 2026-11-17: Flash-Next FP4-Local b12x solo recipe; gateway docs updated for spark-loader
+
+- `recipes/qwen/qwen3.8-flash-next-fp4-b12x-tp1.yaml` (INDEX row 67): port of the user's hand-run
+  `docker run eugr/spark-vllm-b12x:nightly-20261015 ... vllm serve nvidia/Qwen3.8-Flash-Next-FP4-Local`.
+  Registry search found `@eugr/qwen3.8-flash-next-nvfp4-solo` with identical flags/env/defaults but the
+  unpinned build alias `vllm-node-b12x`; this recipe copies it and pins the user's dated image.
+  `executor_config` mirrors the user's docker flags (seccomp/apparmor unconfined, memlock/stack
+  ulimits); sparkrun 0.4.2's default seccomp profile already allows io_uring for `--load-format b12x`.
+  v2 plain-brace JSON in `command:`. LINT ONLY: image and weights absent on both nodes.
+- CLAUDE.md/AGENTS.md: gateway is now spark-loader on :4000 -> LiteLLM 127.0.0.1:4001 (SparkRoute
+  removed); pinned embed/rerank run outside sparkrun; corrected "gx10 mgmt down" (ssh works again).

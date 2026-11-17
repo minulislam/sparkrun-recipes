@@ -51,11 +51,14 @@ section on each node (copy it to the worker first).
   `~/.cache/sparkrun/registries/spark-forge`. The working tree is often on
   `develop`, so a commit there is invisible to sparkrun until it reaches `main`.
   Check `git branch --show-current` before committing.
-- **Registry → gateway.** `~/.config/sparkrun/proxy.yaml` holds the SparkRoute
-  bindings (`recipe: '@spark-forge/<name>'`, `cluster` or `cluster_candidates`,
-  `cold_start: wait`) and aliases (`default` → `qwen3.8-27b-uncensored`). The
-  gateway listens on `0.0.0.0:4000` with no admin token. Bindings name the
-  registry copy, not the working tree.
+- **Registry → gateway.** `spark-loader` (`~/workspace/llm/serving/spark-loader`,
+  user unit `spark-loader.service`) listens on `0.0.0.0:4000`. Its catalog
+  `~/.config/spark-loader/catalog.yaml` names `@spark-forge/<name>` recipes; a
+  request for a catalog model that isn't running loads it through the sparkrun
+  daemon, else falls back to `default` (largest running chat model). It forwards
+  to LiteLLM (`sparkrun-proxy.service`, `127.0.0.1:4001`), whose model list
+  comes from sparkrun discovery. `proxy.yaml` keeps only aliases and proxy
+  settings; SparkRoute and its bindings were removed 2026-11-17.
 - **Recipe → weights.** `model:` names the HF repo. `model_revision:` alone does
   not reach vLLM; the `command:` must also pass `--revision {model_revision}`.
   A recipe that loads a local directory sets `model_path:` instead, using the
@@ -137,20 +140,20 @@ section on each node (copy it to the worker first).
 ## Session Learnings (auto-updated by handoff)
 
 ### Implicit Rules
-- Bindings live ONLY in proxy.yaml; no CLI add/remove command; sparkrun proxy sync makes gateway match file atomically
-- Gateway admin API on 127.0.0.1:4000 (bound 0.0.0.0, NO auth): GET/PUT /v1/config/managed-sets/operator, validate endpoint, CAS via expected_active_revision
-- SparkRoute plugin source (installed 0.3.4) at ~/.config/sparkrun/plugins/sparkroute/*/payload/ is authoritative; upstream docs omit binding schema (fields: recipe, cluster/cluster_candidates, cold_start wait|reject, model, overrides, capabilities)
-- sparkrun 0.4.2 via uv tool; always rtk-prefix shell commands; worker gx10-spark mgmt 10.10.20.11 flaky, CX7 data 10.99.10.11
-- spark-forge registry clones the LOCAL repo's main branch (file:// URL), not GitHub: after pushing main, fast-forward local main too, then `sparkrun registry update spark-forge`
-- Recipe name = filename stem; registry scan is recursive, so recipes/<family>/<name>.yaml works but stems must stay unique; mods resolve via mods_subpath recipes/mods
-- In worktree-isolated agent sessions call /usr/bin/git directly; the rtk rewrite of `git` is refused by the worktree guard
+- spark-forge registry clones LOCAL main (file://); after pushing main also fast-forward local main then sparkrun registry update spark-forge
+- Worker gx10-spark: mgmt 10.10.20.11 works again (ssh OK 2026-11-17) but has been flaky; CX7 data 10.99.10.11 for rsync
+- Gateway: spark-loader on 0.0.0.0:4000 (on-demand load, default = largest running chat model, 30 min idle stop) in front of LiteLLM on 127.0.0.1:4001; SparkRoute removed 2026-11-17. Repo ~/workspace/llm/serving/spark-loader
+- Embedder :8000 + reranker :8001 run OUTSIDE sparkrun (docker compose `spark-pinned` on gb10) because sparkrun 0.4.2 reserves a whole GPU per workload
+- gh active account minulislam (rehanpatwary also logged in)
 
 ### Key Decisions
-- Decision: bindings qualified as @spark-forge/<recipe> — Reason: plain names ambiguous (local checkout and spark-forge registry both match); resolver demands exact recipe
-- Decision: cold_start: wait on all bindings — Reason: requests queue through multi-minute model swaps instead of erroring
-- Decision: idle-node-first policy encoded via cluster_candidates order (TP1 recipe: gb10-solo then gx10-solo) — Reason: SparkRoute 0.3.4 has no preempt-on-demand; eviction only via gateway idle timers on gateway-owned jobs
-- Decision: removed 3 operator virtual models (qwen3.8-flash-next, bullerwins/GLM-5.3-Flash-exl3-4bpw-ablit, deepseek-v4-flash-vision-uncensored) and their stale adopted deployments via admin API CAS replace — Reason: strict validation rejects a sparkrun binding whose public name an operator route owns; backup at ~/.config/sparkrun/sparkroute/operator-set-backup-2026-11-03.json
-- Decision: kept qwen38-27b and :low as operator routes — Reason: :low is a manual request profile; no recipe sparkroute block exists
+- Decision: layout recipes/<family>/<name>.yaml, filename stem unchanged — Reason: sparkrun recipe name = file stem; recipe.yaml everywhere would collide
+- Decision: local mods referenced as ../mods/<name> — Reason: sparkrun resolves mods adjacent to recipe file; mods/<name> broke after reorg (fell to eugr fallback)
+- Decision: Inkling refusal-dial text-only via --limit-mm-per-prompt image 0 — Reason: b12x image's mark_b12x_eager_shapes crashes on Inkling (encoder_rows None)
+- Decision: Inkling mod run.sh chmod 0644 refusal dirs — Reason: cp kept 0600 as root; vLLM uid 1000 PermissionError
+- Decision: Inkling gpu_memory_utilization 0.82 — Reason: 0.85 above repo ceiling, NVRM OOM risk
+- Decision: Throughput artifact rows in db collection recipes (owner-write, view-read) + built-in fallback — Reason: update numbers without republish
+- Decision: Flash-Next solo 73.7 from HISTORY.md:784 — Reason: post-MTU-fix figure; raw file holds only c=8 row
 
 <!-- handoff:learnings:end -->
 
