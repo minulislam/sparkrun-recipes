@@ -1,17 +1,19 @@
 # Model inventory — what is actually on disk, and which recipes use it
 
-Measured live on both nodes **2026-11-10** with the script under *Regenerate*:
-head `gb10-spark` (10.10.20.10) and worker `gx10-spark` (10.10.20.11), both GB10 /
-121 GB unified memory. Free space after today's cleanup: head **618 GiB**, worker
-**2.5 TiB**. The previous full pass was 2026-10-13; this page replaces it.
+Measured live on both nodes **2026-11-17** with the script under *Regenerate*:
+head `gb10-spark` (10.10.20.10) and worker `gx10-spark` (10.10.20.11; audited over
+CX7 10.99.10.11), both GB10 / 121 GB unified memory. Free
+space: head **508 GiB**, worker **1.9 TiB**. The previous pass was 2026-11-10; this
+page replaces it.
 
-> **Read first: the worker holds only 5 checkpoints.** Every TP2/EP2 recipe needs its
-> weights on **both** nodes, and only one of them (`glm-5.3-flash-abliterated-nvfp4kv-long-tp2`)
-> has that today. The other 14 two-node recipes have weights on the head only, including
-> five gateway bindings in `~/.config/sparkrun/proxy.yaml` (Flash-Next abliterated, GLM-5.3
-> abliterated and EXL3, both DeepSeek-V4-Vision recipes). Their first cold start has to copy
-> or download the weights to the worker first. This page does not record when the worker
-> copies went away; it records what is there on 2026-11-10.
+> **Read first: five two-node recipes are ready on both nodes, ten are head-only.**
+> Since 2026-11-10 the worker gained `deepseek-ai/DeepSeek-V4-Flash-0731`,
+> `thinkingmachines/Inkling-Small-NVFP4`, `dealignai/Qwen3.8-Flash-Next-ABLITERATED-NVFP4`,
+> `unsloth/Qwen3.8-27B-NVFP4`, `nvidia/Qwen3.6-35B-A3B-NVFP4` and
+> `BAAI/bge-reranker-v2-m3`, so it now holds 12 repos. The ten head-only two-node
+> recipes (both MiniMax routes, the three DeepSeek-V4-Vision recipes, GLM-5.3 NVFP4 and
+> EXL3, Nemotron Super, Step-3.7, Flash-Next NVFP4) must copy or download their weights
+> to the worker before a two-node launch.
 
 A repo counts as **complete** only when every shard named in
 `model.safetensors.index.json` resolves to a real file *and* the byte sum reaches
@@ -38,47 +40,57 @@ of weight files only (`.safetensors` / `.gguf` / `.bin`), not the cache director
 
 Legend: **H** = complete on head, **W** = complete on worker.
 
-## Ready — weights on every node the recipe needs (20 recipes)
+## Ready — weights on every node the recipe needs (28 recipes)
+
+### Two-node recipes (5)
 
 | Model | Nodes | GiB | Recipes |
 |---|---|---|---|
-| `local/glm53-flash-ablit-topk2044` | H W | 184.3 | `glm-5.3-flash-abliterated-nvfp4kv-long-tp2` (the only two-node recipe ready) |
+| `local/glm53-flash-ablit-topk2044` | H W | 184.3 | `glm-5.3-flash-abliterated-nvfp4kv-long-tp2` (loads this snapshot via `model_path`) |
+| `thinkingmachines/Inkling-Small-NVFP4` | H W | 159.0 | `inkling-small-nvfp4-tp2-sglang` (drafter `RadixArk/Inkling-Small-DSpark-Preview` is head-only) |
+| `deepseek-ai/DeepSeek-V4-Flash-0731` | H W | 155.4 | `deepseek-v4-flash-0731-tp2`, `deepseek-v4-flash-0731-refusal-dial-tp2` |
+| `dealignai/Qwen3.8-Flash-Next-ABLITERATED-NVFP4` | H W | 125.9 | `qwen3.8-flash-next-abliterated-nvfp4-tp2` |
+
+### Single-node recipes (23)
+
+| Model | Nodes | GiB | Recipes |
+|---|---|---|---|
 | `poolside/Laguna-S-2.1-NVFP4` | H | 92.9 | `laguna-s-2.1-nvfp4-tp1` |
 | `AEON-7/Qwen3.6-27B-AEON-Ultimate-Uncensored-NVFP4` | H | 25.8 | `qwen36-27b-aeon-ultimate-nvfp4`, `qwen36-27b-aeon-colocate` |
-| `orcarouter/Qwen3.8-27B-Uncensored-NVFP4` | H | 23.0 | `qwen3.8-27b-uncensored-nvfp4-tp1` (gateway `default` alias) |
+| `orcarouter/Qwen3.8-27B-Uncensored-NVFP4` | H | 23.0 | `qwen3.8-27b-uncensored-nvfp4-tp1` |
+| `nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB` | H | 22.4 | `nemotron-3.5-bolt-74b-a9b-24gb-tp1` (develop; drafter `-LiLiCorr` on head) |
 | `orcarouter/Nex-N2.5-mini-Uncensored-NVFP4` | H | 22.3 | `nex-n2.5-mini-uncensored-nvfp4-tp1` (UNFIT 2026-10-16, garbage output) |
 | `AEON-7/Qwen3.6-35B-A3B-heretic-NVFP4` | H W | 21.8 | `qwen36-35b-a3b-heretic-nvfp4`, `qwen36-35b-a3b-heretic-nvfp4-batch` |
-| `unsloth/Qwen3.8-27B-NVFP4` | H | 21.8 | `qwen3.8-27b-nvfp4-tp1`, `qwen38-27b-nvfp4-refusal-dial` |
+| `nvidia/Qwen3.6-35B-A3B-NVFP4` | H W | 21.8 | `qwen3.6-35b-a3b-nvfp4-tp1`, `qwen3.6-35b-a3b-nvfp4-unofficial-tp1` (repointed here on develop, 2026-11-17) |
+| `unsloth/Qwen3.8-27B-NVFP4` | H W | 21.8 | `qwen3.8-27b-nvfp4-tp1`, `qwen38-27b-nvfp4-refusal-dial` (directions repo head-only) |
 | `AEON-7/Nemotron-3-Nano-Omni-AEON-Ultimate-Uncensored-NVFP4` | H | 20.4 | `nemotron3-nano-omni-aeon-nvfp4` |
+| `nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4` | H | 20.1 | `nemotron-3.5-lightning-30b-a3b-nvfp4-tp1-sglang` (never launched) |
 | `AEON-7/Gemma-4-31B-it-DECKARD-HERETIC-Uncensored-NVFP4` | H | 19.0 | `gemma4-31b-deckard-heretic-nvfp4` |
 | `cyankiwi/GLM-4.7-Flash-AWQ-4bit` | H | 18.8 | `glm-4.7-flash-awq-tp1` |
-| `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4` | H | 18.0 | `nemotron-3-nano-30b-nvfp4-tp1` |
+| `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4` | H W | 18.0 | `nemotron-3-nano-30b-nvfp4-tp1` |
 | `nvidia/diffusiongemma-26B-A4B-it-NVFP4` | H | 17.5 | `diffusiongemma-26b-a4b-nvfp4` |
 | `AEON-7/Gemma-4-26B-A4B-it-Uncensored-NVFP4` | H | 15.3 | `gemma4-26b-aeon-vllm`, `gemma4-26b-stock-vllm` |
 | `AEON-7/Gemma-4-12B-it-AEON-Abliterated-K4-NVFP4-FP8` | H | 8.7 | `gemma4-12b-k4-nvfp4-fp8` |
 | `Qwen/Qwen3-Embedding-4B` | H W | 7.5 | `qwen3-embedding-4b-tp1` |
-| `Qwen/Qwen3-Reranker-4B` | H | 7.5 | `qwen3-reranker-4b-tp1` |
+| `Qwen/Qwen3-Reranker-4B` | H W | 7.5 | `qwen3-reranker-4b-tp1` |
 
-Single-node recipes that list `gx10-solo` as a gateway candidate (Nemotron Nano 30B,
-embedding, reranker) can only use the worker where the weights are marked **W**.
+Single-node recipes can run on the worker (`gx10-solo`) only where the weights are
+marked **W**.
 
-## Two-node recipes with weights on the head only (14 recipes)
+## Two-node recipes with weights on the head only (10 recipes)
 
 | Model | Nodes | GiB | Recipes |
 |---|---|---|---|
-| `drowzeys/keys-GLM-5.3-Flash-NVFP4-ablit-l15-43-mtp-l45` | H | 184.3 | `glm-5.3-flash-abliterated-nvfp4-tp2` |
+| `drowzeys/keys-GLM-5.3-Flash-NVFP4-ablit-l15-43-mtp-l45` | H | 184.3 | `glm-5.3-flash-abliterated-nvfp4-tp2` (drafter `incoai/GLM-5.3-Flash-DFlash2` head-only too) |
 | `bullerwins/GLM-5.3-Flash-exl3-4bpw-ablit` | H | 163.6 | `glm-5.3-flash-exl3-abliterated-tp2` |
-| `thinkingmachines/Inkling-Small-NVFP4` | H | 159.0 | `inkling-small-nvfp4-tp2-sglang` |
 | `orcarouter/DeepSeek-V4-Flash-Vision-Uncensored` | H | 156.3 | `deepseek-v4-flash-vision-uncensored-tp2`, `-coder-tp2`, `-ep2` (ep2 UNFIT) |
-| `deepseek-ai/DeepSeek-V4-Flash-0731` | H | 155.4 | `deepseek-v4-flash-0731-tp2`, `deepseek-v4-flash-0731-refusal-dial-tp2` |
 | `nvidia/MiniMax-M2.7-NVFP4` | H | 130.3 | `minimax-m2.7-nvfp4-vllm-tp2` |
-| `dealignai/Qwen3.8-Flash-Next-ABLITERATED-NVFP4` | H | 125.9 | `qwen3.8-flash-next-abliterated-nvfp4-tp2` |
 | `lukealonso/MiniMax-M2.7-NVFP4` | H | 125.3 | `minimax-m2.7-nvfp4-atlas-ep2` |
 | `stepfun-ai/Step-3.7-Flash-NVFP4` | H | 120.4 | `step-3.7-flash-nvfp4-tp2-miaai` |
 | `local-inference-lab/Qwen3.8-Flash-Next-NVFP4` | H | 99.0 | `qwen3.8-flash-next-nvfp4-tp2` |
 | `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4` | H | 74.8 | `nemotron-3-super-120b-nvfp4-tp2` |
 
-The worker has 2.5 TiB free, so all of these fit there again (about 1.5 TiB in total).
+The worker has 1.9 TiB free, so all of these fit there (about 1.03 TiB in total).
 `local-inference-lab/Qwen3.8-Flash-Next-NVFP4` also documents a single-node profile
 (`tp: 1` override in the lil catalog: one sequence, 64K context, PLE offload); no
 recipe here uses it yet.
@@ -86,7 +98,8 @@ recipe here uses it yet.
 ## Auxiliary artifacts (drafters, ablation tensors)
 
 Not servable on their own; each is pulled in by a recipe's `--speculative-config`
-or equivalent. They must be **pre-cached** — serve containers run `HF_HUB_OFFLINE=1`.
+or equivalent. They must be **pre-cached** on every node that loads them — serve
+containers run `HF_HUB_OFFLINE=1`.
 
 | Artifact | Nodes | GiB | Used by |
 |---|---|---|---|
@@ -94,6 +107,8 @@ or equivalent. They must be **pre-cached** — serve containers run `HF_HUB_OFFL
 | `z-lab/gemma-4-31B-it-DFlash` | H | 2.9 | `gemma4-31b-deckard-heretic-nvfp4` |
 | `incoai/GLM-5.3-Flash-DFlash2` | H | 2.2 | `glm-5.3-flash-abliterated-nvfp4-tp2` |
 | `RadixArk/Inkling-Small-DSpark-Preview` | H | 1.7 | `inkling-small-nvfp4-tp2-sglang` |
+| `nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4-DSpark` | H | 1.3 | Nothing: the Lightning recipe's command passes no speculative flags |
+| `nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB-LiLiCorr` | H | 0.9 | `nemotron-3.5-bolt-74b-a9b-24gb-tp1` (DFlash, 7 tokens) |
 | `z-lab/gemma-4-26B-A4B-it-DFlash` | H | 0.8 | `gemma4-26b-aeon-vllm` |
 | `z-lab/Qwen3.6-35B-A3B-DFlash` | H W | 0.7 | `qwen36-35b-a3b-heretic-nvfp4` |
 | `pocharlies/qwen38-27b-uncensored-abliterated-refusal-directions` | H | 0.003 | `qwen38-27b-nvfp4-refusal-dial` |
@@ -106,16 +121,30 @@ ablation, not a checkpoint.
 | Model | Nodes | GiB | Note |
 |---|---|---|---|
 | `openai/gpt-oss-20b` | H | 38.4 | The tp1 `gpt-oss-120b` attempts in `FLEET-2026-09-27.md` used a different checkpoint |
-| `nvidia/Qwen3.6-35B-A3B-NVFP4` | H W | 21.8 | Has no `main` ref. The `qwen3.6-35b-a3b-nvfp4*` recipes point at `unsloth/Qwen3.6-35B-A3B-NVFP4` instead |
 | `nvidia/Qwen3.8-27B-NVFP4` | H | 20.4 | Every Qwen3.8-27B recipe uses the `unsloth` or `orcarouter` repo |
 | `sakamakismile/Huihui-Qwen3.6-27B-abliterated-NVFP4-MTP` | H | 19.1 | No recipe was ever written for it |
-| `Qwen/Qwen3-VL-Embedding-8B` | H | 15.2 | — |
+| `Qwen/Qwen3-VL-Embedding-8B` | H | 15.2 | `@official/qwen3-vl-embedding-8b-vllm` exists to copy |
 | `google/gemma-4-E4B-it` | H | 14.9 | Base BF16, not a serving target here |
 | `Qwen/Qwen2.5-3B-Instruct` | H | 5.7 | — |
+| `BAAI/bge-reranker-v2-m3` | W | 2.1 | Worker only; new since 2026-11-10 |
 | `Qwen/Qwen3-Embedding-0.6B` | H | 1.1 | Gateway embedding model, not a recipe target |
 
-## Recipes whose checkpoint is not cached on either node (16 recipes)
+## Stubs and unfinished downloads on the head (5)
 
+The head held none on 2026-11-10. None has a weight file yet; do not count any of them
+as present.
+
+| Repo | State | Last change | Note |
+|---|---|---|---|
+| `nvidia/Qwen3.8-Flash-Next-FP4-Local` | config + index only | 2026-11-17 | Model of the new `qwen3.8-flash-next-fp4-b12x-tp1` (develop, not verified); download not started |
+| `local-inference-lab/GLM-5.3-Flash-NVFP4` | config + 2 `.incomplete` blobs | 2026-11-16 | Stalled download; no recipe |
+| `nvidia/GLM-5.3-Flash-FP4-Local` | config + 2 `.incomplete` blobs | 2026-11-16 | Stalled download; no recipe |
+| `nvidia/magpie_tts_multilingual_357m` | empty snapshot | 2026-11-12 | TTS model; no recipe |
+| `Qwen/Qwen3-1.7B` | `config.json` only | 2026-11-10 | No recipe |
+
+## Recipes whose checkpoint is not cached on either node (14 recipes)
+
+- **Stub only:** `qwen3.8-flash-next-fp4-b12x-tp1` (`nvidia/Qwen3.8-Flash-Next-FP4-Local`, see above).
 - **Deleted 2026-11-10** (only the FP8 was a complete checkpoint; the rest were stubs,
   which were removed from the NAS too): `qwen3.8-27b-fp8-mtp-tp1` (`Qwen/Qwen3.8-27B-FP8`, 28.7 GiB, backup at
   `/mnt/nas/ai-models/model-backup/huggingface-hub/models--Qwen--Qwen3.8-27B-FP8`),
@@ -124,9 +153,7 @@ ablation, not a checkpoint.
   `qwen3.8-27b-nvfp4-tp1-alt`, `qwen3.8-27b-nvfp4-tp1-sglang`.
 - **Never downloaded:** `leanstral-1.5-119b-a6b-tp2`, `gemma-4-26b-a4b-nvfp4-tp1`,
   `gemma-4-31b-it-nvfp4-tp1`, `muse-glimmer-30b-nvfp4-tp1`,
-  `nemotron-3.5-lightning-30b-a3b-nvfp4-tp1-sglang`,
-  `nemotron-labs-3-puzzle-75b-nvfp4-tp1`, `qwen3.6-27b-nvfp4-tp1`,
-  `qwen3.6-35b-a3b-nvfp4-tp1`, `qwen3.6-35b-a3b-nvfp4-unofficial-tp1`.
+  `nemotron-labs-3-puzzle-75b-nvfp4-tp1`, `qwen3.6-27b-nvfp4-tp1`.
 
 The `qwen3.8-27b-fp8-mtp-tp1` binding was removed from the gateway when its weights
 were deleted.
@@ -150,7 +177,8 @@ were deleted.
   `hub/models--local--glm53-flash-ablit-topk2044/snapshots/local` (NAS backup at
   `model-backup/huggingface-hub/spark-forge-local/glm53-flash-ablit-topk2044/`).
 
-The head now holds no stubs and no partial downloads. Earlier deletions (2026-10-13/14)
+That left the head with no stubs or partial downloads on 2026-11-10; the five above
+appeared since. Earlier deletions (2026-10-13/14)
 are recorded in `HISTORY.md`.
 
 ## Regenerate

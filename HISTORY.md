@@ -952,3 +952,15 @@ Gateway now lists: `qwen3.8-flash-next-abliterated`, `deepseek-v4-coder`,
   v2 plain-brace JSON in `command:`. LINT ONLY: image and weights absent on both nodes.
 - CLAUDE.md/AGENTS.md: gateway is now spark-loader on :4000 -> LiteLLM 127.0.0.1:4001 (SparkRoute
   removed); pinned embed/rerank run outside sparkrun; corrected "gx10 mgmt down" (ssh works again).
+
+## 2026-11-17: MODELS.md regenerated
+
+- Re-ran the *Regenerate* audit on both nodes (the 2026-11-10 page was stale). Worker now holds 12
+  repos: DeepSeek-V4-Flash-0731, Inkling-Small, Flash-Next ABLITERATED, unsloth Qwen3.8-27B,
+  nvidia Qwen3.6-35B and bge-reranker-v2-m3 are new there. Five two-node recipes are ready on both
+  nodes (0731 tp2 and refusal dial, Inkling, Flash-Next abliterated, GLM long); ten are head-only.
+- New on the head: Bolt-74B + LiLiCorr drafter, Lightning-30B + DSpark drafter. The Lightning
+  recipe's command passes no speculative flags, so its drafter is unused.
+- Five stubs appeared on the head since 11-10 (two stalled GLM-5.3 FP4 downloads with
+  `.incomplete` blobs, the FP4-Local index for row 67, magpie TTS, Qwen3-1.7B). Not deleted.
+- Free space: head 508 GiB, worker 1.9 TiB. Recipe count is 52 (51 before row 67).
