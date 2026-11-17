@@ -900,3 +900,20 @@ Gateway now lists: `qwen3.8-flash-next-abliterated`, `deepseek-v4-coder`,
 - Tested on `gb10-solo` via gateway `:4000/v1/embeddings` (HTTP 200, 2560-dim vector returned).
 - Switched `proxy.yaml` bindings from temporary working-tree paths to `@spark-forge/qwen3-embedding-4b-tp1` and `@spark-forge/qwen3-reranker-4b-tp1` after committing to `main` and refreshing registry.
 
+
+## 2026-11-17: Recipes grouped by family; mod refs fixed; Inkling refusal dial dropped
+
+- `recipes/*.yaml` moved to `recipes/<family>/<name>.yaml` (a9468d3); filename stems unchanged, so
+  `@spark-forge/<name>` lookups and gateway bindings still resolve.
+- Mods resolve next to the recipe file, so the move broke `mods/<name>` refs (dry-run: "Could not
+  resolve mod"). Local mods are now referenced as `../mods/<name>` (414d559).
+- Inkling refusal dial, first live boots on dgx-pair: (1) PermissionError on the 0600 directions file
+  (fixed with chmod in run.sh), (2) b12x warmup crash `mark_b12x_eager_shapes` with encoder_rows=None
+  in `dgx-vllm-eugr-nightly-b12x:20260926` (worked around text-only). It never served; the third boot
+  was stopped when another session needed the pair.
+- Dropped on request: `recipes/inkling/inkling-small-nvfp4-refusal-dial-tp2.yaml`,
+  `recipes/mods/inkling-refusal-dial/` and its three tests. Inkling's serving recipe stays
+  `recipes/inkling/inkling-small-nvfp4-tp2-sglang.yaml`. The 2026-11-10 design and plan under
+  `docs/superpowers/` are kept as records; the directions file remains in git history.
+- DeepSeek-V4-Flash-0731 weights rsynced to gx10-spark over CX7 (48/48 shards, 155.4 GiB) for the
+  refusal-dial TP2 recipe.
