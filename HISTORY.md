@@ -917,3 +917,10 @@ Gateway now lists: `qwen3.8-flash-next-abliterated`, `deepseek-v4-coder`,
   `docs/superpowers/` are kept as records; the directions file remains in git history.
 - DeepSeek-V4-Flash-0731 weights rsynced to gx10-spark over CX7 (48/48 shards, 155.4 GiB) for the
   refusal-dial TP2 recipe.
+- DeepSeek-V4-Flash-0731 refusal dial re-served on dgx-pair from the new path (head freed by stopping
+  the qwen38-27b dial job and the spark-pinned embed/rerank containers): ready in 323 s, 393,216
+  context, chat correct. The new post_exec hook ran but left lambda at 0: sparkrun keeps `{{` literal
+  in hooks (`orchestration/hooks.py`), so it posted invalid JSON. Hooks in this recipe and the
+  Qwen3.8-27B dial now use plain braces (ccb2723); the rendered command was checked with sparkrun's
+  renderer and set lambda 2.0 on both ranks. A mild borderline prompt answered at both 0 and 2.0;
+  at 0 it led with a legal disclaimer, at 2.0 it did not.

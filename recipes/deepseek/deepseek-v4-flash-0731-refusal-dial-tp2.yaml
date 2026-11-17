@@ -1,4 +1,6 @@
 # >>> VERIFIED 2026-10-13 on dgx-pair (pair to itself). USE LAMBDA 2.0, not upstream's 1.5.
+# >>>   Re-served 2026-11-17 from recipes/deepseek/: ready in 323 s, max_model_len 393216, chat OK.
+# >>>   post_exec now sets lambda 2.0 at boot (hook payload uses plain braces; {{ }} stayed literal).
 # >>>   Context: /v1/models reports max_model_len 393216; over-limit prompt returns HTTP 400.
 # >>>   Boot: ready in ~7 min; 79.17 GiB/rank loaded in 212 s; KV pool 1,346,626 tokens (3.4 full
 # >>>     393k requests); 46 directions loaded; boots at lambda 0 on both ranks.
