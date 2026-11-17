@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "dgx-spark-skills": {
+      "source": "NVIDIA/skills",
+      "sourceType": "github",
+      "skillPath": "skills/dgx-spark-skills/SKILL.md",
+      "computedHash": "8d4e66424c5f437a045d7c43b957f79e8f267df4c7fee317e93377e9a90b69a7"
+    },
+    "nemo-rl-session-memory": {
+      "source": "NVIDIA/skills",
+      "sourceType": "github",
+      "skillPath": "skills/nemo-rl-session-memory/SKILL.md",
+      "computedHash": "227fc965ec35b69731af6e8a967de5d7a75d87d2327cffcb903f032c78ac4247"
+    }
+  }
+}
