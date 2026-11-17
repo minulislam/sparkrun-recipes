@@ -1,78 +1,18 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:5714e2aa2a98e6344089a2e06e46d7267e50d2dc96bee3eac2e6a333d0259a22",
+  "pageVersion": "sha256:678917f23b8011ab9cccc67956b368036458e3d9783099833426cafb2dba70bd",
   "claims": [
     {
-      "id": "claim_ac6370c102d94140a4c199439882ef88",
-      "statement": "SparkRoute bindings live only in ~/.config/sparkrun/proxy.yaml; there is no CLI add/remove command, and sparkrun proxy sync makes the running gateway match the file atomically.",
-      "evidence": [
-        {
-          "resource": "repo://AGENTS.md",
-          "version": "repo-file-v1:sha256:f2f1953df8b4c91f74ec62b952796964871f05b4b7cd44fe62ac92cd8bb50609"
-        }
-      ]
-    },
-    {
-      "id": "claim_fd2d49edcc334518b61b0f7f6388f3ec",
-      "statement": "The SparkRoute binding schema (fields: recipe, cluster/cluster_candidates, cold_start wait|reject, model, overrides, capabilities) is documented authoritatively by the installed plugin source at ~/.config/sparkrun/plugins/sparkroute/*/payload/, not upstream docs.",
-      "evidence": [
-        {
-          "resource": "repo://AGENTS.md",
-          "version": "repo-file-v1:sha256:f2f1953df8b4c91f74ec62b952796964871f05b4b7cd44fe62ac92cd8bb50609"
-        }
-      ]
-    },
-    {
       "id": "claim_8bfd6ee6b3764936852bbbd36dbd910d",
-      "statement": "Bindings reference recipes in qualified @spark-forge/<recipe> form because plain names are ambiguous between the local checkout and the spark-forge registry.",
+      "statement": "Gateway configuration references recipes in qualified @spark-forge/<recipe> form (spark-loader's catalog, and formerly SparkRoute bindings) because plain names are ambiguous between the local checkout and the spark-forge registry.",
       "evidence": [
         {
-          "resource": "repo://AGENTS.md",
-          "version": "repo-file-v1:sha256:f2f1953df8b4c91f74ec62b952796964871f05b4b7cd44fe62ac92cd8bb50609"
-        }
-      ]
-    },
-    {
-      "id": "claim_0aa6b153127e48ec9a89c0583f1c29d4",
-      "statement": "All bindings use cold_start: wait so requests queue through multi-minute model swaps instead of erroring; idle-node-first placement is encoded via cluster_candidates order because SparkRoute 0.3.4 has no preempt-on-demand and eviction happens only via gateway idle timers on gateway-owned jobs.",
-      "evidence": [
-        {
-          "resource": "repo://AGENTS.md",
-          "version": "repo-file-v1:sha256:f2f1953df8b4c91f74ec62b952796964871f05b4b7cd44fe62ac92cd8bb50609"
-        }
-      ]
-    },
-    {
-      "id": "claim_3fd2c8ec525c408dba8e62c05d5e2244",
-      "statement": "The gateway admin API on port 4000 has no authentication and offers GET/PUT /v1/config/managed-sets/operator, a validate endpoint, and CAS updates via expected_active_revision.",
-      "evidence": [
-        {
-          "resource": "repo://AGENTS.md",
-          "version": "repo-file-v1:sha256:f2f1953df8b4c91f74ec62b952796964871f05b4b7cd44fe62ac92cd8bb50609"
+          "resource": "repo://CLAUDE.md#L55-L57",
+          "version": "repo-lines-v1:sha256:3c99fdda2556ea7691880894b3afd57f69018dab7a90b089b494e7af011f9d96:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTIwMmJjNTU2ODZhYThhZDc5M2NjMzczYmJlOTgzNGViMGJlMGY4NTE2YTRiNzUyZThkMDYwZGFkZDU2ZGFlYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2U5YWIwMTk2ZTZiNjMzYzEyZTg0ZDEwMjYyNTQwMDZiZGQyMWZiMTg4NDY3NTA3YTRkMzA1YzFjMGUzYzQyZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDE0NzRhMzcxMjBiZjFlMjgyNGI4NjE1ODY4NmE0NzQ4ZDU1YWYyMzAwZTRhZGZlOTQzMWQ4ZDBlMThmZmZlMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmRlNzQwYWZhNzBlNzBjZTBkMjhmZThmY2UxNjY1YmE5MjIyMTI4Yzc0MTA0ZDBkZmQxODljYzdjYTAxZWIxNCJ9"
         },
         {
-          "resource": "repo://CLAUDE.md#L54-L58",
-          "version": "repo-lines-v1:sha256:18855a3b1b61df9395643e92c17230041ef30aef56581782dbac7505bd1e3189:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzk0NDI5MzBhYWI0ZDJkOTBjYTk1MTg5ODlhMGU4MGMzNTM2MGMyMzA3MWI3YTRiMDk0NzI5ZTMxZGE0Yjk5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2FlN2U3MGIzMjZhZmIxN2MzYmZjMzUzY2Q0OTk3YjI3NWZhM2I2YmRmN2VhMTgxYWMzMjAzMzQ1NjcwZmVkYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2JlYTY4ZWNmOTEwMzg1ZDJhOGJmM2Q5NTExODdlZGM0NzkzZTA0ZjkxYzVjNzdmNjM3ZjU3NmQ0NzU2NGEyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTc0MzU2N2I3OGY2ZjU0ZTQ4NmYyN2ExYTI4MDRlODE4YWFlYmIyMmMyNGE4MGNmYWQ0MzlhNzgzY2M2M2IwMyJ9"
-        }
-      ]
-    },
-    {
-      "id": "claim_b971e2204ed84db49f0e3a059738bd46",
-      "statement": "Strict validation rejects a sparkrun binding whose public model name an operator route owns; on 2026-11-03 three stale operator virtual models were removed via admin-API CAS replace with a backup at ~/.config/sparkrun/sparkroute/operator-set-backup-2026-11-03.json, keeping qwen38-27b and qwen38-27b:low as operator routes.",
-      "evidence": [
-        {
-          "resource": "repo://AGENTS.md",
-          "version": "repo-file-v1:sha256:f2f1953df8b4c91f74ec62b952796964871f05b4b7cd44fe62ac92cd8bb50609"
-        }
-      ]
-    },
-    {
-      "id": "claim_0cb4dc55e58f4ccf8ae2797742fa2726",
-      "statement": "The proxy advertises model routes without live backends (5 routes exposed while both hosts were idle on 2026-11-03), autodiscovery sweeps dgx-pair every 30 s, and a discovered model name can collide with a reserved operator route of the same name.",
-      "evidence": [
-        {
-          "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md",
-          "version": "repo-file-v1:sha256:85c4136149356bd1a0b3fd476bdaa3416e7bb681ab3e23f7a3a32245cbda73ff"
+          "resource": "repo://HISTORY.md",
+          "version": "repo-file-v1:sha256:937ad6ff1ff48084fc20ae7e20811c1220acb7d89600679bd7ee2b9f14b81e11"
         }
       ]
     },
@@ -82,7 +22,7 @@
       "evidence": [
         {
           "resource": "repo://CLAUDE.md",
-          "version": "repo-file-v1:sha256:ea970d15a0fe3f48f9aa468e7c359615f4ebd124a643d8bf0ed6711b6c58bc82"
+          "version": "repo-file-v1:sha256:a32448c3d490f6aef56034fe886d472cd2f195a49376a812a3b0bae526985446"
         },
         {
           "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md#L77-L78",
@@ -92,21 +32,21 @@
     },
     {
       "id": "claim_592c3bdbc1ca4c6e82b6b0824cafea10",
-      "statement": "The active gateway is SparkRoute 0.3.4; it was rebound from 0.0.0.0:4000 to 127.0.0.1:4000 on 2026-11-07 after the 2026-11-03 audit, but current CLAUDE.md again describes it as listening on 0.0.0.0:4000 with no admin token.",
+      "statement": "Since 2026-11-17 the head's gateway on 0.0.0.0:4000 is spark-loader (user unit spark-loader.service, repo ~/workspace/llm/serving/spark-loader), which forwards to LiteLLM (sparkrun-proxy.service) on 127.0.0.1:4001; SparkRoute and its bindings were removed.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L54-L58",
-          "version": "repo-lines-v1:sha256:18855a3b1b61df9395643e92c17230041ef30aef56581782dbac7505bd1e3189:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzk0NDI5MzBhYWI0ZDJkOTBjYTk1MTg5ODlhMGU4MGMzNTM2MGMyMzA3MWI3YTRiMDk0NzI5ZTMxZGE0Yjk5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2FlN2U3MGIzMjZhZmIxN2MzYmZjMzUzY2Q0OTk3YjI3NWZhM2I2YmRmN2VhMTgxYWMzMjAzMzQ1NjcwZmVkYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2JlYTY4ZWNmOTEwMzg1ZDJhOGJmM2Q5NTExODdlZGM0NzkzZTA0ZjkxYzVjNzdmNjM3ZjU3NmQ0NzU2NGEyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTc0MzU2N2I3OGY2ZjU0ZTQ4NmYyN2ExYTI4MDRlODE4YWFlYmIyMmMyNGE4MGNmYWQ0MzlhNzgzY2M2M2IwMyJ9"
+          "resource": "repo://AGENTS.md#L9-L9",
+          "version": "repo-lines-v1:sha256:13f5917a23682aca1350a31747ba6cc2d10c12f2e1578b0846fe027d5089bb1f:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTNmNTkxN2EyMzY4MmFjYTEzNTBhMzE3NDdiYTZjYzJkMTBjMTJmMmUxNTc4YjA4NDZmZTAyN2Q1MDg5YmIxZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTNmNTkxN2EyMzY4MmFjYTEzNTBhMzE3NDdiYTZjYzJkMTBjMTJmMmUxNTc4YjA4NDZmZTAyN2Q1MDg5YmIxZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmRiNzJlY2E2ZTRhMTZkNjJhMTk4OWI3YTFiODlhMzFmMTY4NDQ3M2NlYTViZDI4Yzk5ZGNhMzg3M2YzZmU5ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmYzYzI4NjViZjc0YTJmNGFiOGIyMmY3ZGJhMzg4MzYyNWM1YjZlNGU2YTFjMzVmZDY0MDg5MDc4ZGQzMjEwNiJ9"
         },
         {
-          "resource": "repo://HISTORY.md#L805-L814",
-          "version": "repo-lines-v1:sha256:7aed78e8b254fa8b0e88414a7862d5470737ea368a447e89db134ebdeecb03ea:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0ZTc3YmY2MDhlMThjMjI4ZjI5OTBiZjU0MGEzMzAzM2I1NTVkNjc2MjA4MzJkZjI2ZjQ5NjllZWEwMzc1MzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkZDU2ZjBhNzliYjFjNGI1MWMxZTVlZGM2ZjRkZGYzYzM0OGNhYTdmY2E1MDQwYmIxYjZjZjhkMWEyNGY1MTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFhNDc4ZTM4MDM2M2IxNDg0ZmYyNGRjNTgyYzcyMjRjZjYzMWU5YTgzNGY0NmEzOGI2Yzg5MzgxMzIxOTI2ZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM1ZjUyNGZjNWNmNzNhZThkMjM4MTY1ZWJlOTU3ZjgyZTU5MzU1YTgxMGM1ZDkxNGE3M2U1ZDhiNmI5YjI5NTcifQ"
+          "resource": "repo://CLAUDE.md#L54-L61",
+          "version": "repo-lines-v1:sha256:410073fd3bd54291faf08b29c54c7d1c80cfe8897b35638772fe7abba867cad9:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmFiMGRhN2JlYzY1NTU0YTUxMzYyYzQ5NGNlZTk4ZDM4ZmQxMjMwZDM0ZDJlNTI3MzVlZTRmNmUzM2U1MjQwMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWI4M2Q4ZTBjNDcwNjZiNWMwY2QxZTIzM2RjNzgxY2VlOTgyY2M3ZGMwNGVjMGMwMTI2ZGVjYzg5MzEyNTIzNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2JlYTY4ZWNmOTEwMzg1ZDJhOGJmM2Q5NTExODdlZGM0NzkzZTA0ZjkxYzVjNzdmNjM3ZjU3NmQ0NzU2NGEyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTc0MzU2N2I3OGY2ZjU0ZTQ4NmYyN2ExYTI4MDRlODE4YWFlYmIyMmMyNGE4MGNmYWQ0MzlhNzgzY2M2M2IwMyJ9"
         }
       ]
     },
     {
       "id": "claim_c90e33b2bd8846d6801ce111c1b90acb",
-      "statement": "cold_start: wait is proven in practice: a 2026-11-08 request to the cold glm-5.3-flash-abliterated binding held the HTTP connection through the entire boot and returned 200 with the expected completion after 584 s.",
+      "statement": "Under the former SparkRoute gateway, cold_start: wait held a 2026-11-08 request to the cold glm-5.3-flash-abliterated binding open through the entire boot, returning 200 after 584 s.",
       "evidence": [
         {
           "resource": "repo://HISTORY.md#L836-L838",
@@ -115,84 +55,52 @@
       ]
     },
     {
-      "id": "claim_6a2031762404450bb70582f626ac3856",
-      "statement": "The gateway's binding list was rebuilt on 2026-11-07 after console edits had excluded all five sparkrun deployments (exclusions cleared via admin-API CAS replace, backup at operator-set-backup-2026-11-07.json), and expanded on 2026-11-08 to 9 routes including the new Qwen3 Embedding-4B and Reranker-4B bindings.",
-      "evidence": [
-        {
-          "resource": "repo://HISTORY.md#L805-L833",
-          "version": "repo-lines-v1:sha256:a84fa29d7ed8c5775445148b82a8ad20c354df77edbe96dbc189685c7bd90288:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0ZTc3YmY2MDhlMThjMjI4ZjI5OTBiZjU0MGEzMzAzM2I1NTVkNjc2MjA4MzJkZjI2ZjQ5NjllZWEwMzc1MzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFhNDc4ZTM4MDM2M2IxNDg0ZmYyNGRjNTgyYzcyMjRjZjYzMWU5YTgzNGY0NmEzOGI2Yzg5MzgxMzIxOTI2ZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ0MzZhNzdmYjZkODJmMDg5ZDU5NjA2MmQwMzM4YTVjMDQyNmM5ZGMzOGVlNGUyYTNhOTkzZmFiODUzNmI0MDgifQ"
-        },
-        {
-          "resource": "repo://HISTORY.md#L834-L859",
-          "version": "repo-lines-v1:sha256:74bec0c888a3567e1c72ff5d9353e1e1d4755086897b7b9f686d6ef1f9ee8d5f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0NThiOTM1ZGFlMzE5MDMzOGY4ZWVlMDMyMDlhZTY4Y2U4YjNlODFjNTAzMzFlZjcyNGIzMjZmZmU0MmE2NTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRhOTBkMTU3ODUyMTdmYzAzZDY3MzVhM2Q3MWZhMGM2ZTVlZmU2NTcwZDA2OTJlZWNlYzY2ZGIzNDI3MzI5YWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzZDIzN2ViMjAwMjUwZWFkYzUxZjIzMzYwZjY4YjQ2ODA2YzAwZDJhYzQwYzQwYTUyN2I3MDhiMDc1ZWRhMTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
-        }
-      ]
-    },
-    {
-      "id": "claim_3fc3f886155c488ebd90432de6cf0715",
-      "statement": "sparkrun proxy unload deletes the recipe's binding from proxy.yaml rather than just the running deployment, so the binding must be restored by hand afterwards; recipes not yet committed to main can be bound by absolute file path.",
-      "evidence": [
-        {
-          "resource": "repo://HISTORY.md#L843-L845",
-          "version": "repo-lines-v1:sha256:9d67ca16e9c2333a91fdf78ed96c773929a2ac863ec4a2d8fc7dbf371d84cdef:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmFkMTY2OGFkYWMzNWQzNzkxYThlYzk0MGEyNDNlNzIxNGJiMzFlNDcwMWRkOWIyZGJhOTY4NWVkMzI1MTQzNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjU0YWZjZjM2NzczOWQ1YzA0ODVhMjU3YTU4MGNlOGNlMzJlZmFjMmI4ZjhjMTk1YjM5OTZlMTVkMGQ5ZmM5ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGE2NGY2NWJiNmI3OTcwNTI2NDVkMGE4ODRlODk1NTg5MDBhZjJjY2ViOWFmODgxYzU2YjcyYTc2MGQ0NmRlZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjg5NjNhZWY0OTY3ZjVlYTZmMzRmZjEwZGUwNGE0YjM5N2Y2MmQ1ZjMwZmNmNzI2MDVmZmFlNmU1M2JhNjdjZCJ9"
-        },
-        {
-          "resource": "repo://HISTORY.md#L848-L850",
-          "version": "repo-lines-v1:sha256:c3af6be7f0c71553f566bdba2d0bd19e0f919f857a6aaf58293424741f4985a0:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTQ0YzQzZmI3YjM5MjViMTI1YzExODU2NGMxNmM0MzMyMjIyZjBhOTQzYTYwZGE5MWViOWM4OTY2OThlOGZjNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2QzZWUzMTY3OWRjODc1ZTZhZGQxZTYyMWI3M2E1YmQwN2Q1ZTViMzYwOWI4MzU1NTM5MmZiZWNhYmYxMTI4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTQ4YmNiYzI3MGZhY2RjN2FjZGFiNzc5NzBlMDA2NWI5ZDMyZTlhZWRhYTg0NjYwYjAxNmQxM2QyYTE2ZTk4MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGYyNTMzOWM2OTA1MWNkOGEwZGQ0YWJlYTc1Y2MxNWE2MGQxYTNiNTRmYWIyMWFhZDRkYjc5ODVhYzg5MDQxOCJ9"
-        }
-      ]
-    },
-    {
-      "id": "claim_05e8287109734944a2110a525b0c81e4",
-      "statement": "The gateway's embedding activation wait (~160 s) is shorter than the ~3-4 min cold boot, so the first cold embedding request returns 503 activation_failed and a retry succeeds; SparkRoute 0.3.4 has no /v1/rerank route, so rerank callers must hit the serving container's endpoint directly.",
-      "evidence": [
-        {
-          "resource": "repo://HISTORY.md#L846-L852",
-          "version": "repo-lines-v1:sha256:2f234aeed9b851e0f0e44d288e70da89d8f96f57caafb4a75b649bd65056e8bb:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWE3NGExNDU1YTYwYzdmY2IwM2I4MTc3MTY3ZDQ3OWU1M2RiNTYyOWYzMWE1NWEzZTllNGViODlhMGEzZTAyNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2Q4NTljMmY1YTZmM2RlMmRhMzkzYjc3OTEzZjYxNjVkZjdmZWZjYzUyNWU5YTUxZDk1Y2E2MTFmYjFlOTVjOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWQ2N2NhMTZlOWMyMzMzYTkxZmRmNzhlZDk2Yzc3MzkyOWEyYWM4NjNlYzRhMmQ4ZmM3ZGJmMzcxZDg0Y2RlZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODNmMTU4NDZjYjY3MjVkOGE3YjA3MWQ2OWYwYWU0NDQ0ZjYyMDdlZGJkYTlkMGI0ZmM5ZTA5NjdjNTVlOGMxZSJ9"
-        },
-        {
-          "resource": "repo://INDEX.md#L104-L105",
-          "version": "repo-lines-v1:sha256:949cdefac33e1ae75a1447f367c4ec37d720999d2bcb0f58f1a8688e8813eb91:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWYxNDU5MjA0OGVlYzk0MzU1MzU4MTlhMWNkNDAyZTNmOWI4ZWM0MmY1N2Q3NTg4MDdjZWQzMmEyNTllYzc2ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTA0ZjU2OTc5NjAyYjk0ZWVjYjBkMmQ4NTYyYWVhNDgzYmNhODBjZDE5MjI4YjVlYzMwMzRiOGVhNzFmYTk5NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2JiZDZjMzgyOGY3YzZkNjc3Mjc1ZGJlZjM2Y2FjMTFhNjdmM2Y2YzNkNDJiNzEwYWMzNDc2NDk3OGMwNTlmNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTYwZDFhMTBhNWQxMmJjYjRmMDI0OGY5ZmFiNmI2NDQwNjhlMTNiMDk5NjAzNWYwYmFhOWRkNjYzYThjZmE0YyJ9"
-        }
-      ]
-    },
-    {
       "id": "claim_a12ac02d8b00434298f1c8895c2ae3b1",
       "statement": "While the proxy runs under sparkrun-proxy.service, sparkrun proxy start/alias add can fail with ResourceBusy; edit proxy.yaml then sparkrun proxy sync, or restart the unit with sudo -n systemctl restart sparkrun-proxy.service, which is allowed without a password.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L122-L127",
-          "version": "repo-lines-v1:sha256:fb7ad09c1b729efe9fbe2576d2edfe9322af2bc176ed6525c9ce3f7f76b74830:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmQ4NDE2NWI3ODBiZmY5OGJlMDcyMmEzOGRiZTNmNTFlYTVlOGI3NDc4Mjc4NjBlNmE3ZDRhZGZjNmJmYjU4NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDkyYzNhMTZjYWU1MTMzZDcwNmVjY2U1OGRkYzJiOWM2OTdjMWExYTA0ZTQ0MjBhZDgwNjBkMGUzODViZTZkYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjI0ODUwOGI4OWJmNTlhYTgwZmI3OGEwMWE0OGFhOTkxYWJlOTFjOGRhZjViN2NkMGRiNjU4N2Y4ZDU0NTkxYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTFkNWYwNzU5NDFiMDg4MDcyODFiYWRiMzhiNzUwNjk0MTY1ODRhM2MyMzZhOWE0MTM0N2YxN2IzNDJkNjAyMiJ9"
+          "resource": "repo://CLAUDE.md#L132-L135",
+          "version": "repo-lines-v1:sha256:f8d9e175fdafd8e9c964c680cd0abc83a746b46b1b27b6f4fa8e8aa9722194d6:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmQ4NDE2NWI3ODBiZmY5OGJlMDcyMmEzOGRiZTNmNTFlYTVlOGI3NDc4Mjc4NjBlNmE3ZDRhZGZjNmJmYjU4NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTA5N2UzZjJhMzBjNDYwNGVjZDdiNTIxMDk2YTIyYjk1MzBkYjdkOGVjOWZmNzI2YzFmMjYzYjdmNzk5YTFjNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjI0ODUwOGI4OWJmNTlhYTgwZmI3OGEwMWE0OGFhOTkxYWJlOTFjOGRhZjViN2NkMGRiNjU4N2Y4ZDU0NTkxYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWZjYmFiM2ViZWM1YmNhZmMxZGQ2YjU1Mjk0NWViNTE5NWRjMDM5NWZiZjRjYzlkN2Y0ZDZjYmRmMzlkMTZkMyJ9"
         }
       ]
     },
     {
-      "id": "claim_22f120820f56411b949dff77be8bd4c5",
-      "statement": "The embedding and reranker bindings were switched from working-tree paths to @spark-forge/ names on 2026-11-10 after committing to main, and the embedding route returned HTTP 200 with a 2560-dim vector through the gateway on gb10-solo after readiness inference was disabled.",
+      "id": "claim_c3e20983db5a48f9863a924a193c1153",
+      "statement": "spark-loader's catalog (~/.config/spark-loader/catalog.yaml) names @spark-forge/<name> recipes; a request for a catalog model that is not running is loaded through the sparkrun daemon, otherwise the request falls back to default, the largest running chat model, and loaded models stop after about 30 minutes idle.",
       "evidence": [
         {
-          "resource": "repo://HISTORY.md#L897-L901",
-          "version": "repo-lines-v1:sha256:e95a2faf024b455a730bad1674896142793405136fe5542d5b977d4707db3cf6:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjI3OWIxYTI0NTlmMDY2YmQ1NjU2OGI2MDA5ODljZDAxNWIxZDY0ZWJlNmQxNDY4ZDBmY2M3ZDJjMDA2OWM1MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjY3OWQwM2FlZWMxOWY4ODdmMzg4YWEzMWQ4Zjg2MWMxMzUwZGFmZDYwMDFmNDk4YTI4NmVlNTU3ODI5ZDU4OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTYxNmM5M2JkNDFhYmE1MWEwY2EyODFhOTdhZGQ3ZGUzMTFmYzM1NTFhOTI2ZGI0MWUyOTUwNDFiNTk5ZTcwOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiJ9"
-        }
-      ]
-    },
-    {
-      "id": "claim_8696b586883c4ed8be813ae31274757d",
-      "statement": "The qwen3.8-27b-fp8-mtp-tp1 gateway binding was removed when Qwen/Qwen3.8-27B-FP8 was deleted from the head on 2026-11-10.",
-      "evidence": [
-        {
-          "resource": "repo://HISTORY.md#L882-L887",
-          "version": "repo-lines-v1:sha256:a0c0dcd5db4044b07eb2535c52124509bd8297ec1d810c11a5e5b686b299ad93:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjg4ZWU3MDJjNTU4NTFhMGU4Zjg5MzMwYWRjNmNhNzFmNjg1NzA3NzllZWY0NmRmOWU1Njc4OWRjZTU2MTc3NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGU4NGJhMWUyZjQ2NDZkMzQ0ODAzMDZjMTE5ZGIwYTA4ODc2ZDU2OTJmNzIwODIzZTc4NzcwNWU2OWVkMjU5OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2RjNzU0NDNhNmY5MjFhNTczN2JkNTRlM2UxNDBmOTcwZDY1MGE5ZjFhNWQ2MmIxNjNmYjEyOWM1NmIzNTRhOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzFkYTUzMTRmNzU5Y2QwOTJhODhlZTQ5MWNiNTRlMDZlNTQwODA0MDk4OGUzNWQ4YWE0YWRjNzAzNWRhNzg5YyJ9"
+          "resource": "repo://CLAUDE.md#L145-L145",
+          "version": "repo-lines-v1:sha256:13f5917a23682aca1350a31747ba6cc2d10c12f2e1578b0846fe027d5089bb1f:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTNmNTkxN2EyMzY4MmFjYTEzNTBhMzE3NDdiYTZjYzJkMTBjMTJmMmUxNTc4YjA4NDZmZTAyN2Q1MDg5YmIxZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTNmNTkxN2EyMzY4MmFjYTEzNTBhMzE3NDdiYTZjYzJkMTBjMTJmMmUxNTc4YjA4NDZmZTAyN2Q1MDg5YmIxZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmRiNzJlY2E2ZTRhMTZkNjJhMTk4OWI3YTFiODlhMzFmMTY4NDQ3M2NlYTViZDI4Yzk5ZGNhMzg3M2YzZmU5ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmYzYzI4NjViZjc0YTJmNGFiOGIyMmY3ZGJhMzg4MzYyNWM1YjZlNGU2YTFjMzVmZDY0MDg5MDc4ZGQzMjEwNiJ9"
         },
         {
-          "resource": "repo://MODELS.md#L131-L132",
-          "version": "repo-lines-v1:sha256:924e68ff3495fafc82d20d8cbd1ccd4a30aaaeb5340702f9ffaf982d5981265b:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGFjNjYxODdkMjczNTc2MjIxZTllNzMzYzM5MDRkODBlNGMwNjZlNjc2MjlhYzhmY2RkZDI4NTY2N2E3MmRmYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzg1NTA0NDhlNmY1MWUyMjFkNDRmZGY2MzM0ZTYxMzI0ZWYyMjViNWMwNTkxODcxMzE0MTBmMDIzMmVlOTU5ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTQyMDg4ZTVhY2RjZjgwNTVkNjJhYzk4MTBkNjA3ZmRmOTZjMTA1MjE4YzBhZDg1M2QxMjNkNjAwOTcyZWY1MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzg3YmQ2YmJhNTQ2OTJmMzMwNDJjNDdkYWU3NzE3ZDU1OGE1NTYxODYwODI3OTEzZDUzYzkyZDE4NTIzZTE2YSJ9"
+          "resource": "repo://CLAUDE.md#L55-L58",
+          "version": "repo-lines-v1:sha256:6d6f63f70e9e6140a611beb033dc4e80333044d70f5a7dab2cc33fb8127f8b05:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTIwMmJjNTU2ODZhYThhZDc5M2NjMzczYmJlOTgzNGViMGJlMGY4NTE2YTRiNzUyZThkMDYwZGFkZDU2ZGFlYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTY4NDAwZWI0YzhjZDBjMjVjY2FiYThlMWQ1MzNhZWY3NTM1MjY2ZWVmODM1ZmE2OWQ2NTYyZjEyY2MyNTNkYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDE0NzRhMzcxMjBiZjFlMjgyNGI4NjE1ODY4NmE0NzQ4ZDU1YWYyMzAwZTRhZGZlOTQzMWQ4ZDBlMThmZmZlMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTFkY2ZjMzUyZDZlNmFjNWYyOTc5YTRjYTM3MjE5ZWRmZmE3YWNjN2JlZTg1OTg4YTU0NzgyNDk1ZGZlMjY0NiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c72ccd76197145129eb606189f581ead",
+      "statement": "LiteLLM's model list comes from sparkrun discovery, and ~/.config/sparkrun/proxy.yaml now holds only aliases and proxy settings.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L58-L61",
+          "version": "repo-lines-v1:sha256:c76cbb98688a8614faa8cf17b18c6594dbce732ee32564bb8df65953fd1155c3:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTY4NDAwZWI0YzhjZDBjMjVjY2FiYThlMWQ1MzNhZWY3NTM1MjY2ZWVmODM1ZmE2OWQ2NTYyZjEyY2MyNTNkYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWI4M2Q4ZTBjNDcwNjZiNWMwY2QxZTIzM2RjNzgxY2VlOTgyY2M3ZGMwNGVjMGMwMTI2ZGVjYzg5MzEyNTIzNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2M5OWZkZGEyNTU2ZWE3NjkxODgwODk0YjNhZmQ1N2Y2OTAxOGRhYjdhOTBiMDg5YjQ5NGU3YWYwMTFmOWQ5NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTc0MzU2N2I3OGY2ZjU0ZTQ4NmYyN2ExYTI4MDRlODE4YWFlYmIyMmMyNGE4MGNmYWQ0MzlhNzgzY2M2M2IwMyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_dc1909b8ae484c0b80ed7cf00d6a63c7",
+      "statement": "The embedder (:8000) and reranker (:8001) are not sparkrun workloads but the spark-pinned docker compose stack on gb10, because sparkrun 0.4.2 reserves a whole GPU per workload.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L146-L146",
+          "version": "repo-lines-v1:sha256:fdf82afe5ce32125f151d006db89cf092fe0ca32adc4315911cacc31ebec4c86:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmRmODJhZmU1Y2UzMjEyNWYxNTFkMDA2ZGI4OWNmMDkyZmUwY2EzMmFkYzQzMTU5MTFjYWNjMzFlYmVjNGM4NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmRmODJhZmU1Y2UzMjEyNWYxNTFkMDA2ZGI4OWNmMDkyZmUwY2EzMmFkYzQzMTU5MTFjYWNjMzFlYmVjNGM4NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWIzM2E2Y2NiNDU0OTQ0Zjk3NWNlZGNjYzEzOWU0MTBkZWFmMzA5YjlkMTljMTFiYmYyZDhmZWY0ZjQ4ZWEyYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzU3OTIxMThjZjU0OGY5ZjRjMzJlNjk3NzkzZDVjOTM4YTdiMTdmMWIyYzQzZTJmYTQ5OTEyNWNlOTZiZWU0MiJ9"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-14T21:00:11.653Z"
+    "at": "2026-11-17T14:41:15.503Z"
   }
 }

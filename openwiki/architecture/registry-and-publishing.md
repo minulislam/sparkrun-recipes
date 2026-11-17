@@ -4,6 +4,8 @@ title: Registry & Publishing Model
 description: How sparkrun-recipes operates as the spark-forge sparkrun registry — the git-clone-of-main publishing model, the commit-then-update visibility rule, consumption by @registry/name, and the one-canonical-copy discipline.
 tags: [registry, sparkrun, publishing, workflow, git]
 sources:
+  - id: openwiki-source-048793832532c9756376e4df
+    resource: repo://.sparkrun/registry.yaml
   - id: openwiki-source-8037e2358a2c4f9b2c722a11
     resource: repo://AGENTS.md
   - id: openwiki-source-a2371d6362e5db4bc834ad03
@@ -18,10 +20,10 @@ sources:
     resource: repo://notes/minimax-m3-sparkrun-port/README.md
   - id: openwiki-source-23775c3de52f3ab95a13cb8b
     resource: repo://README.md
-generated: { by: "claude-code", at: "2026-11-10T21:00:18.041Z" }
+generated: { by: "claude-code", at: "2026-11-17T14:41:15.503Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-14T21:00:11.653Z
+    at: 2026-11-17T14:41:15.503Z
 ---
 
 # Registry & Publishing Model
@@ -56,6 +58,25 @@ publishing workflow:
 
 Work goes **straight to `main`** — there is no pull-request step in this repo's
 workflow. (Committing and pushing is still done only when the operator asks.)
+Because the registry clones the *local* `main` over `file://`, a commit that
+reaches `main` only on the remote is also invisible: after pushing, fast-forward
+the local `main` too, then run `sparkrun registry update spark-forge`.
+
+## Family layout and mods
+
+Since the 2026-11-17 reorg, recipes live at `recipes/<family>/<name>.yaml`
+(`deepseek/`, `gemma/`, `glm/`, `qwen/`, `nemotron/`, `minimax/`, `inkling/`,
+and one folder per single-recipe family). sparkrun names a recipe after its
+filename stem, not its folder, so `@spark-forge/<name>` lookups and gateway
+catalog entries kept working through the move. Two rules follow: stems must
+stay unique across families, and no file may be renamed to a generic
+`recipe.yaml`.
+
+Shared runtime patches stay in `recipes/mods/`, which the in-repo
+`.sparkrun/registry.yaml` declares as `mods_subpath`. sparkrun resolves a mod
+relative to the recipe file, so recipes reference them as `../mods/<name>`. The
+reorg briefly broke bare `mods/<name>` references (the dry run reported "Could
+not resolve mod" or fell through to the eugr fallback) until they were rewritten.
 
 ## Consuming recipes
 
@@ -63,7 +84,7 @@ A recipe can be run two ways:
 
 - **By local file**, straight from the working tree, which does not require the
   registry to be updated:
-  `sparkrun run ./recipes/<name>.yaml --cluster dgx-pair --tp 1 --no-follow`
+  `sparkrun run ./recipes/<family>/<name>.yaml --cluster dgx-pair --tp 1 --no-follow`
 - **By registry name**, after the clone is refreshed:
   `sparkrun registry update spark-forge` then
   `sparkrun run @spark-forge/<name>`
@@ -71,19 +92,14 @@ A recipe can be run two ways:
 The local-file path is how a change is verified before it is committed; the
 registry-name path is how the published recipe is consumed afterward.
 
-When a recipe is referenced from gateway configuration (SparkRoute bindings in
-`proxy.yaml`), the **qualified** `@spark-forge/<recipe>` form is required —
-plain names are ambiguous because the local checkout and the `spark-forge`
-registry both match.
-
-**Brand-new recipes can be bound by absolute file path until they land on
-`main`.** On 2026-11-08 the new `qwen3-embedding-4b-tp1` and
-`qwen3-reranker-4b-tp1` recipes were bound in `proxy.yaml` by absolute path
-while still uncommitted. On 2026-11-10, after both were committed to `main` and
-the registry refreshed, their bindings were switched to
-`@spark-forge/qwen3-embedding-4b-tp1` and `@spark-forge/qwen3-reranker-4b-tp1`.
-That is the expected end state for every binding: it names the registry copy,
-not the working tree.
+Gateway configuration always names the **registry copy**. spark-loader's catalog
+(`~/.config/spark-loader/catalog.yaml`, outside this repo) lists models as
+`@spark-forge/<name>`, so a recipe is servable through the gateway only once it
+is on `main` and the clone is refreshed. The earlier SparkRoute bindings in
+`proxy.yaml` followed the same qualified-name rule, because a plain name matched
+both the local checkout and the registry. Those bindings were removed with
+SparkRoute on 2026-11-17, and `proxy.yaml` now holds only aliases and proxy
+settings.
 
 Trust follows the source: a **locally-sourced recipe is auto-trusted**, so its
 mods (injected as `pre_exec` hooks) run without a per-launch confirmation
@@ -103,7 +119,7 @@ from them warrant review before launch.
 
 ## One canonical copy per recipe
 
-Each served model has exactly **one** canonical recipe file in `recipes/`.
+Each served model has exactly **one** canonical recipe file under `recipes/<family>/`.
 Variants that differ only in a tuning parameter are still expressed as their own
 named files (for example a long-context profile or a coder-agent profile of the
 same checkpoint), but there is never more than one file claiming to be the same
@@ -115,3 +131,4 @@ in `INDEX.md` (whose row numbers are stable and must not be renumbered).
 
 - [Recipe Anatomy](../concepts/recipe-anatomy.md)
 - [Authoring & Changing Recipes](../workflows/authoring-recipes.md)
+- [Gateway Routing (spark-loader)](../operations/proxy-and-gateway-routing.md)

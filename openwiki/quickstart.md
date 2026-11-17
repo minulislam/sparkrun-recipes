@@ -4,14 +4,20 @@ title: Quickstart & Task Routing
 description: What the sparkrun-recipes (spark-forge) registry is, the source files that are authoritative, and where to go for each task — launch, verify, benchmark, author, or debug a recipe.
 tags: [quickstart, overview, routing, registry]
 sources:
+  - id: openwiki-source-01cb0b49f3e974bd03fec0b9
+    resource: repo://.agents/skills/dgx-spark-skills/SKILL.md
   - id: openwiki-source-a2371d6362e5db4bc834ad03
     resource: repo://CLAUDE.md
+  - id: openwiki-source-382af0b12a087a97295aa93b
+    resource: repo://HISTORY.md
   - id: openwiki-source-23775c3de52f3ab95a13cb8b
     resource: repo://README.md
-generated: { by: "claude-code", at: "2026-11-08T21:00:19.321Z" }
+  - id: openwiki-source-453611660ffbf02a66fa4bf3
+    resource: repo://skills-lock.json
+generated: { by: "claude-code", at: "2026-11-17T14:41:15.503Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-14T21:00:11.653Z
+    at: 2026-11-17T14:41:15.503Z
 ---
 
 # Quickstart & Task Routing
@@ -25,6 +31,35 @@ the `sparkrun` CLI — currently **0.4.2**, installed as a uv tool. (The
 "sparkrun 0.3.10" gotchas listed in `CLAUDE.md` are from the earlier pinned
 version; their workarounds stand until re-verified on 0.4.x — see the
 pitfalls page and `notes/2026-11-03-sparkrun-version-config-audit.md`.)
+
+## Repository layout
+
+- `recipes/<family>/<name>.yaml` — one canonical recipe per served model,
+  grouped by model family (`qwen/`, `glm/`, `deepseek/`, `gemma/`, `nemotron/`,
+  `minimax/`, `inkling/`, …). The filename stem is the recipe name, so
+  `recipes/qwen/qwen3.8-27b-nvfp4-tp1.yaml` is `@spark-forge/qwen3.8-27b-nvfp4-tp1`.
+- `recipes/mods/<name>/` — runtime patches, referenced from recipes as
+  `../mods/<name>`.
+- `images/<name>/` — locally built images and their provenance.
+- `benchmarks/` — reports, raw results and driver scripts.
+- `.agents/skills/` — vendored NVIDIA agent skills (`dgx-spark-skills`,
+  `nemo-rl-session-memory`), pinned by hash in `skills-lock.json` and symlinked
+  into each agent's skill directory (`.claude/skills/`, `.roo/skills/`, …).
+  They are reference tooling, not recipes.
+
+There is no automated test suite. The pytest files that covered the Inkling
+refusal dial were deleted with it on 2026-11-17. A recipe is checked with
+`sparkrun recipe validate`, a dry run and a live verification.
+
+Core commands:
+
+```bash
+sparkrun recipe validate recipes/<family>/<name>.yaml
+sparkrun run ./recipes/<family>/<name>.yaml --cluster <c> --dry-run
+sparkrun run ./recipes/<family>/<name>.yaml --cluster <c> --no-follow
+sparkrun stop ./recipes/<family>/<name>.yaml --cluster <c>
+sparkrun registry update spark-forge        # after the change is on local main
+```
 
 ## Authoritative source files
 
@@ -63,13 +98,14 @@ out of this wiki — it points at `INDEX.md` and `benchmarks/` as the evidence.
   [Authoring & Changing Recipes](workflows/authoring-recipes.md)
 - **Debug a launch that OOMs, wedges, or won't place** →
   [Memory, Placement & Known Pitfalls](operations/memory-placement-and-pitfalls.md)
-- **Route requests to a served model / manage gateway bindings** →
-  [Proxy & Gateway Routing (SparkRoute)](operations/proxy-and-gateway-routing.md)
-  — the active gateway is the SparkRoute plugin 0.3.4 on the head node's
-  loopback port 4000
+- **Route requests to a served model / understand the gateway** →
+  [Gateway Routing (spark-loader)](operations/proxy-and-gateway-routing.md)
+  — spark-loader on the head's `0.0.0.0:4000` loads `@spark-forge` catalog
+  models on demand in front of LiteLLM on `127.0.0.1:4001`; SparkRoute was
+  removed on 2026-11-17
 - **Pick or vet a container image** →
   [Container Images & Provenance](reference/images-and-provenance.md)
 - **Check what's on disk / handle weights safely** →
   [Model Inventory & Weight Safety](reference/model-inventory-and-weights.md)
-- **Work with the uncensored models / run a refusal eval** →
+- **Work with the uncensored models, the refusal dial, or a refusal eval** →
   [Abliteration & Refusal Evaluation](concepts/abliteration-and-refusal-eval.md)

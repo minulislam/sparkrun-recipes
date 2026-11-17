@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:4a979e4b939520b8d8a81a0acdbd20ffa91ad06fef63b5ae251412ab8b8e81a0",
+  "pageVersion": "sha256:c1b76785bbcf9738edc7024438cd360018c4b3c770e9ee4133264acae6a30465",
   "claims": [
     {
       "id": "claim_632bfad53bbe428599bc2007d416520f",
@@ -41,18 +41,42 @@
       "statement": "The installed sparkrun CLI is 0.4.2 (uv tool), while CLAUDE.md's sparkrun gotchas were seen on 0.3.10 and are marked as not re-checked on 0.4.2.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L119-L121",
+          "resource": "repo://CLAUDE.md#L129-L131",
           "version": "repo-lines-v1:sha256:f248508b89bf59aa80fb78a01a48aa991abe91c8daf5b7cd0db6587f8d54591b:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzJhOGViNTg4NjliM2NhMmRhZDEyMDYyMmRjMmNiNzMyMDJhODgyMWUwODdkZWUzNzEwNDY0ZWQyMjdhMjA4ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzQ4NDEyODk3M2UyMmEzMmIwYjJhYTVmMGE3Nzg5NDRkZjRmZWFhYzA3ZTY4NDhiMzg4ZmI3ZjRhMjAwY2U4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2VmMDE4MTVkNTM5N2FmZGI4ZjAxMjQxM2U0MjcyMTU1OGQwNjhmYWYxOWU4NGU5OTcwYzYyZWIyODM5M2YxYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDQ0YTU0NzM5YWQ4OTRmNWE3ZGYxNzQ3MGUzNzI3Mjk5NDllZjc2ODhhOTM4NjdiN2Y3MDVjZjY5YzE5YmUzZCJ9"
         },
         {
-          "resource": "repo://CLAUDE.md#L32-L33",
-          "version": "repo-lines-v1:sha256:1b43f786ec561b7e6ae2c9a0e9397468b3994b27933e1b683592ee3fa570f7ac:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWRlMmY1MzI4ZWU2ZTgwNTBlOGFhZmQ4ZGM4NjlhMDY5Y2Q5NTg0ZWRhYWY1NGZlNTg5ZDczYzNiN2RjZDc5OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGZmMDFhZDFhOTYzZGM5MjY5MDk5NzBhOTRkNjc5ZTA4ZDcwYWY4MDc4MjlmMDNhZjU1YTk3MDFiYTQ5OGRiNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjEwYjZjNjdlNzY4NTA2NjI1OWE4ZjdjMWI1NzYwMjE5ZjZmNzZhNzFjNWM0M2RhOTM0ZTVlYTliMGY1ZDQ0NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTk3NWFiZWFjZDBmZjAwYjUzOWVhYWE1YjhlZGZjZTQyN2RmNWI1ZjFhMmZjNmYzZTZkNWIxZjQ0YTE5YzY4OSJ9"
+          "resource": "repo://CLAUDE.md#L29-L30",
+          "version": "repo-lines-v1:sha256:be6c83d5174697d3468402ae99c9e3c2695815bf5128741eda3db53b42242e35:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2NmZDI4NmM0NzMyOGQ3NDQ5OGQxMTJjN2M0YWQxZjVjZjIxMDYzYzJhZWM2MzdmYmYyZjk4Y2M1YjNhNjg5YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjY1MzQzZWY0OTdmMDJjMGUzMDRhOGE4NGMyNjQyMGZiYzI4NjhkMTk3NmFhYzY3NmU3MjAwNjVkNzBjNWY4ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGNkY2Q3ZWQyNWM4YWQ5YjQ3MDg4MTczMTk3Y2Y2OGU3M2I4ZTY1Y2Q3YTdjNmZjMDYxODYyNjAxZmJiM2JkYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjc1MTk3Nzg2MTNlMTRkZTJkMTY2MTVjMDE0NGQ4NGNhZmYzY2Q2ZDM5NmEzMWNkMjk4OWYwNGRkMzYyOWEzMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7fb37a303c704e3ab6bfe3c674b2bb64",
+      "statement": "Vendored NVIDIA agent skills dgx-spark-skills and nemo-rl-session-memory are pinned by hash in skills-lock.json and symlinked from .agents/skills into per-agent skill directories such as .claude/skills.",
+      "evidence": [
+        {
+          "resource": "repo://.agents/skills/dgx-spark-skills/SKILL.md",
+          "version": "repo-file-v1:sha256:9309411f6abb0876cc4d410df343f25e12a1d7832b1687710d9a923f8ae87159"
+        },
+        {
+          "resource": "repo://skills-lock.json",
+          "version": "repo-file-v1:sha256:4b30e7b64c2e206d1a6095d386f1cffd3f444ffdb88b503cbe4fc1a8a323d9dc"
+        }
+      ]
+    },
+    {
+      "id": "claim_3cab77fda7c14ffab3de82a11820c602",
+      "statement": "The repo has no automated test suite since the Inkling refusal-dial tests (tests/test_recipe_schema.py, test_refusal_extractor.py, test_vllm_refusal_projection.py) were deleted with that recipe on 2026-11-17.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md#L913-L917",
+          "version": "repo-lines-v1:sha256:c684dff9a90040b82c504902aac627e3f5e48003b2d1309dcfd8a1ced77e91fc:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTM0MzE0YzQ1NTA0Njc2MTNlYzk0YTZkZDBlZmU1ZjdkZGYxMjQyYTQ5ZDk5OWMzYTM1NDI5ZDMxNzg3ZmI4MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjkyNjNlYzQ5MzAxY2ZiNTZhZjBkM2E3M2UwMjE1YjNlNWJjNzNhZDIyZWZlZGNiZTgyNzU2YmIwOWQ5NzExYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGNjZTg4ZDUyN2EwNDRmMzdlZWE0MDlhNTZhNjQyYjNlNTRmN2I0ZGNlYzZiMTEwYjlkMTFhOGUyM2Q3Yjg5OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTZmOTNjMjA3YTNiZWRiMTg4NjgzNmM5NjgzODY3MTVjNGEwNGUzNjhiMDYxYmJhMGE5OWNlMjg4NWIwZDFiMyJ9"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-14T21:00:11.653Z"
+    "at": "2026-11-17T14:41:15.503Z"
   }
 }

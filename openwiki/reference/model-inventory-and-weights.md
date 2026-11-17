@@ -10,12 +10,14 @@ sources:
     resource: repo://CLAUDE.md
   - id: openwiki-source-382af0b12a087a97295aa93b
     resource: repo://HISTORY.md
+  - id: openwiki-source-d731ee870c7c4da596ac3b0a
+    resource: repo://INDEX.md
   - id: openwiki-source-456fceaa0ae7a8e901be70bf
     resource: repo://MODELS.md
-generated: { by: "claude-code", at: "2026-11-10T21:00:18.041Z" }
+generated: { by: "claude-code", at: "2026-11-17T14:41:15.503Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-14T21:00:11.653Z
+    at: 2026-11-17T14:41:15.503Z
 ---
 
 # Model Inventory & Weight Safety
@@ -49,11 +51,17 @@ the Hub byte for byte. The publisher's index overstates the total.
 - **The worker holds only 5 checkpoints.** A TP2/EP2 recipe needs its weights on
   **both** nodes. Only one two-node recipe has that today:
   `glm-5.3-flash-abliterated-nvfp4kv-long-tp2`. The other 14 two-node recipes
-  have weights on the head only. That includes the recipes behind several
-  gateway bindings (Flash-Next abliterated, GLM-5.3 abliterated and EXL3, both
+  have weights on the head only. That includes several recipes that were
+  SparkRoute gateway bindings at the time (Flash-Next abliterated, GLM-5.3 abliterated and EXL3, both
   DeepSeek-V4-Vision recipes). Their first cold start has to copy or download
   the weights to the worker first. The worker had about 2.5 TiB free, enough
   for all of them (about 1.5 TiB in total).
+- **Changes recorded since that pass (2026-11-17, in `HISTORY.md`, not yet in
+  `MODELS.md`):** `deepseek-ai/DeepSeek-V4-Flash-0731` was rsynced to the
+  worker over CX7 (48/48 shards, 155.4 GiB), so the DeepSeek refusal-dial TP2
+  recipe now has its weights on both nodes. `nvidia/Qwen3.6-35B-A3B-NVFP4` is on
+  both nodes and replaced the `unsloth` build, which was never downloaded. The
+  new `nvidia/Qwen3.8-Flash-Next-FP4-Local` recipe has no weights on either node.
 - Free space after the 2026-11-10 cleanup: head **618 GiB**, worker **2.5 TiB**.
 - Single-node recipes that list `gx10-solo` as a gateway candidate can use the
   worker only where their weights are there. On 2026-11-10 that held for the

@@ -14,14 +14,16 @@ sources:
     resource: repo://notes/minimax-m3-sparkrun-port/minimax-m3-w4a16-gptq-b12x-nvfp4-eagle3.yaml
   - id: openwiki-source-036e64f955b6e8c14e4c8d88
     resource: repo://notes/minimax-m3-sparkrun-port/README.md
-  - id: openwiki-source-b1867d7f36dadf1642430baf
-    resource: repo://recipes/qwen3-embedding-4b-tp1.yaml
-  - id: openwiki-source-5c6fb7c964f2f95da074a267
-    resource: repo://recipes/qwen3-reranker-4b-tp1.yaml
-generated: { by: "claude-code", at: "2026-11-08T21:00:19.321Z" }
+  - id: openwiki-source-bf78f00455e290922f3c9c07
+    resource: repo://recipes/nemotron/nemotron-3.5-bolt-74b-a9b-24gb-tp1.yaml
+  - id: openwiki-source-3fcde95f4e5b0b195a25eaa7
+    resource: repo://recipes/qwen/qwen3-embedding-4b-tp1.yaml
+  - id: openwiki-source-ad697f05b25c2571616100f0
+    resource: repo://recipes/qwen/qwen3-reranker-4b-tp1.yaml
+generated: { by: "claude-code", at: "2026-11-17T14:41:15.503Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-14T21:00:11.653Z
+    at: 2026-11-17T14:41:15.503Z
 ---
 
 # Memory, Placement & Known Pitfalls
@@ -41,6 +43,26 @@ The range is for full-size chat engines. Small pooling-runner recipes (the
 2026-11-08 embedding/reranker pair, 7.5 GiB of weights each) deliberately run at
 **0.3** so they can sit beside other work on a node — the envelope is an upper
 bound driven by boot stability, not a target.
+
+## The pinned embedder and reranker on the head
+
+The embedder (`:8000`) and reranker (`:8001`) currently run **outside sparkrun**
+as the `spark-pinned` docker compose stack on `gb10-spark`. sparkrun 0.4.2
+reserves a whole GPU per workload, so running them as sparkrun jobs would have
+blocked the head for anything else. They are vLLM pooling runners at
+`gpu_memory_utilization` 0.1 each, and together they hold about **28 GiB** of the
+head's unified memory. Two consequences were recorded on 2026-11-17:
+
+- **They are invisible co-tenants to sparkrun.** A first boot of
+  `nemotron-3.5-bolt-74b-a9b-24gb-tp1` on `gb10-solo` beside them, at util 0.5,
+  hit `NV_ERR_NO_MEMORY` while loading. earlyoom then killed both the new engine
+  *and* the embed/rerank containers. A large solo launch on the head needs either
+  the head to itself or a budget that leaves room for the pinned pair. The
+  DeepSeek refusal-dial re-serve the same day stopped the pinned containers first
+  to free the head.
+- **Start them one at a time.** If both containers start at once, each sizes its
+  KV against memory the other is still claiming, and they crash-loop with
+  "No available memory for the cache blocks". Restart them sequentially.
 
 ## Head-node earlyoom pressure
 

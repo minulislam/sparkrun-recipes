@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:41463f5ae371bee2b3ae2caf6e48084648e45ce409275487374e141916a8fb1f",
+  "pageVersion": "sha256:910f6ac3d4c35cae07a5475add7201531b4f3b4568d96d1b2865769c565ce15f",
   "claims": [
     {
       "id": "claim_a30aa7caefc4472ab4d7b9bacb20f7f5",
@@ -31,7 +31,7 @@
       "statement": "Weight handling rules: check MODELS.md before launching, back up to /mnt/nas/ai-models/model-backup/huggingface-hub/ before deleting, deletion is the user's call, and never run hf cache prune for real (its dry run lists about 1.2 TB including recipe-pinned detached revisions); delete with hf cache rm after a dry run.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L82-L89",
+          "resource": "repo://CLAUDE.md#L85-L92",
           "version": "repo-lines-v1:sha256:1cd885439b89bfd35b57f150fcb37d5b2f32125e6f8c93b0ab25a4e205e605e4:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzE0YWVhMjlhYjczOGI5ZDIwYjZiZDg1NDgyZmQxMzhhZDkzYjU3Nzg2YjBlZThhNTMxNmRjZjJiYzhkODY1ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzAwN2UzMTBlMmM0YTFjNzFkZDEzNjRmMjgxYTk3N2RhN2I5YjRkMWFiMmFlMDdhMzI1MTUzY2ZmZGJjZjE1ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGExMzM5MzEwZTExMDM3NTlkZGY1MTZhZmZhNWZjMGI5NDQ1ZmQwMjg5OTA3ZWIzMzEwODJjNzhhNzJjODFlNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWI0OWZkYTdlOTJkOGQwZDdkYzY2ZjYxZmIyMjczZDU0N2ZlZTljNzZkNTFiZjMwZWZjNDNhNGE0ZGMwNDNlYiJ9"
         }
       ]
@@ -62,7 +62,7 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:e2f45aa7dad4c3ca3135e8cabfb5f59c2c52d64c8de0d012788700e63667ceee"
+          "version": "repo-file-v1:sha256:937ad6ff1ff48084fc20ae7e20811c1220acb7d89600679bd7ee2b9f14b81e11"
         },
         {
           "resource": "repo://benchmarks/MIAAI-LAB-VALIDATION-RESULTS-2026-10-16.md",
@@ -131,10 +131,38 @@
           "version": "repo-lines-v1:sha256:3e8139cb42dc813d678acb2183c7aa48c10685734d66591a5f19dac073d6fd3b:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzE0YWQxZjNmZjJhNThkZjI0NTJhYTY3ODcyN2RhNmQ2NjE4ZDU4MmI0ZDQwMjRmMzRiY2M3YzYxMTIzZGFmMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjE1ZTBlYzZhZWVlZjUwNjA4OGQ5NzIyZjU5MjI1YjdhOWUzMzgyNzUyODQ1NWFiZmJlN2UwYzNlNjRlZjJhNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDJkZGI4MmU4NTk0NDA2ZGU5ZmEzMTk4ODQwNWViMDBlZmFmMGU4NGI1M2QyMmExZTlmNzY1ODA1NzJiYjAxNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTlmMmE2ZWE1NmRmYzZiMzFkNzdmZjI5ZTAzMGE0MDk1NjEwOTdhMDRiODUyMzQ4NGRkYTBhNGE3NmZjNDY2ZSJ9"
         }
       ]
+    },
+    {
+      "id": "claim_6cc163c0749e4b8f990a60fe639e1540",
+      "statement": "After the 2026-11-10 MODELS.md pass, DeepSeek-V4-Flash-0731 was rsynced to the worker over CX7 (48/48 shards, 155.4 GiB) so its refusal-dial TP2 recipe has weights on both nodes, and nvidia/Qwen3.6-35B-A3B-NVFP4 (on both nodes) replaced the never-downloaded unsloth build in the Qwen3.6-35B recipes.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md#L918-L919",
+          "version": "repo-lines-v1:sha256:f6e44f4b5b4aa89aa64f186765db14479704c6ef2128146c7cd96afea7f4caad:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjRmNjg0ZTg4ZWNmYzVmZmU1YTQ3NjkxNzkxNTg4NzAyZWZmZDE4YWM3ZGE3OTcwNmE4Mzk2MzM0NDA0YzczMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzMwZDM2NDlmNDJiYzNiZmRmOTQyODZiODViYzhjMjI5NTcwYTk5ODc4MTI1NGNhMDUyMjljODBkODBhZWYwOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjA3YTYyNTY2MmFhNjgzMDI4ZGZiMzg5M2VmOTk2ZjZlZDg0ZmIxZDE4MTg0NDA2NTBmODI5YTk5Y2FmOTcyMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTBiMzY5OTRkNzQxNzM2Y2FjZDM3ODFkMWQwZDkyMmZmNmY5ZTZiNTM1NDA1N2M3NzE0Yzg1MzNlNWY0M2M2NCJ9"
+        },
+        {
+          "resource": "repo://HISTORY.md#L935-L940",
+          "version": "repo-lines-v1:sha256:dacd8dd15ec6b06b7806f9e8f595e55ed292b27e9ee6ef5ff3b0a70d12b0a0ec:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWE1YmZmYWRhYjAxMzQ4OTdkYmVhYThjZWQ1N2E4NGZkMWI2N2M2M2I5YzQ3NWVlZjc3MDI4ODJjNjhlNmZhZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2NhZGY1MWI3MDQ5NGVhYjY5NTZlNzg2ZmUzMTlhZjZlMjE4ZThhY2Q4MjFlYWUzZGE4ZDc3ZWNhYjk3NzRjNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmFiOTA1NjBlMmNhNWNlMTYwNTBiMDllZjRjM2ExMjk0MDIwMjhjMTg4YTY1ZGIwMTA1NjllZDllZGU1MTM5YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWQzYmJjNDQxNzQ0ODk2ZDE2NThlZTNhN2MwNGMyYzQxODVmMjRjN2M0ODU4NDZkNTBmM2E1YTAwZDIzYTM4ZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_a0096f209c7546a39e577f1df24da639",
+      "statement": "The 2026-11-17 qwen3.8-flash-next-fp4-b12x-tp1 recipe is lint-only because neither its image nor nvidia/Qwen3.8-Flash-Next-FP4-Local weights are on either node.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md#L952-L952",
+          "version": "repo-lines-v1:sha256:78e83b61026c8d4f03f6d75024b708003527b8584dc7d7a64080fc6bb831895b:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzhlODNiNjEwMjZjOGQ0ZjAzZjZkNzUwMjRiNzA4MDAzNTI3Yjg1ODRkYzdkN2E2NDA4MGZjNmJiODMxODk1YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzhlODNiNjEwMjZjOGQ0ZjAzZjZkNzUwMjRiNzA4MDAzNTI3Yjg1ODRkYzdkN2E2NDA4MGZjNmJiODMxODk1YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2I5OWFhNDhlODcwNmQwNDYwYzIwMzc3MzhmNDY1NzcyNTU0MDBiNjljY2Q4N2Y3MTgwMzdiOWRhMzU2ZjliYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWY1NmY0OGM2YjE5ZmQ1ZmFjZjVjMjJlOWUxMDMyYTM4YmIwODFkYzhjYTAxYzFmOWZhODVjMmExYTJkN2UzZiJ9"
+        },
+        {
+          "resource": "repo://INDEX.md#L106-L106",
+          "version": "repo-lines-v1:sha256:f971d945ab9aa8dd0a716e6f5591d148d4612b2d8245e62caf741614238dceb9:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjk3MWQ5NDVhYjlhYThkZDBhNzE2ZTZmNTU5MWQxNDhkNDYxMmIyZDgyNDVlNjJjYWY3NDE2MTQyMzhkY2ViOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjk3MWQ5NDVhYjlhYThkZDBhNzE2ZTZmNTU5MWQxNDhkNDYxMmIyZDgyNDVlNjJjYWY3NDE2MTQyMzhkY2ViOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTc0YmJhNTJiNWQ4MzRiMGU5YjQxMWYzYjI1YzQyNGZkY2VhNzQyODA2YTFjYzAyNWRjMWM1YTVkZjk4NDJhMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTYwZDFhMTBhNWQxMmJjYjRmMDI0OGY5ZmFiNmI2NDQwNjhlMTNiMDk5NjAzNWYwYmFhOWRkNjYzYThjZmE0YyJ9"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-14T21:00:11.653Z"
+    "at": "2026-11-17T14:41:15.503Z"
   }
 }

@@ -16,10 +16,10 @@ sources:
     resource: repo://INDEX.md
   - id: openwiki-source-eedd5219d6290708f61cb7bf
     resource: repo://notes/2026-11-03-sparkrun-version-config-audit.md
-generated: { by: "claude-code", at: "2026-11-09T21:00:11.445Z" }
+generated: { by: "claude-code", at: "2026-11-17T14:41:15.503Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-14T21:00:11.653Z
+    at: 2026-11-17T14:41:15.503Z
 ---
 
 # Launching & Verifying a Recipe
@@ -31,12 +31,12 @@ end is specific: a recipe is verified only when the **model answers a request** 
 
 ## Launch sequence
 
-1. **Lint** — `sparkrun recipe validate recipes/<name>.yaml`. Cheap; proves only
+1. **Lint** — `sparkrun recipe validate recipes/<family>/<name>.yaml`. Cheap; proves only
    that the file is well-formed.
-2. **Dry-run the fit** — `sparkrun run ./recipes/<name>.yaml --dry-run`. Shows
+2. **Dry-run the fit** — `sparkrun run ./recipes/<family>/<name>.yaml --dry-run`. Shows
    the per-host VRAM estimate so you catch a model that will not fit before
    spending a boot.
-3. **Run** — `sparkrun run ./recipes/<name>.yaml --no-follow`.
+3. **Run** — `sparkrun run ./recipes/<family>/<name>.yaml --no-follow`.
 
 `--no-follow` is required for launches (`CLAUDE.md`); readiness is then checked
 separately through the serve log and the endpoint, not by following the launch
@@ -77,13 +77,16 @@ sufficient, because a recipe can serve and still return garbage (which is the
 `sparkrun setup check --cluster dgx-pair` before a two-node launch. From here, a
 verified recipe can go on to be benchmarked.
 
-A launch does not have to be driven by `sparkrun run` directly: a request sent
-to a **gateway binding with `cold_start: wait`** boots the recipe and holds the
-HTTP connection through the entire multi-minute swap. This is proven — a
-2026-11-08 request to the cold `glm-5.3-flash-abliterated` binding returned
-200 with the expected completion after **584 s (~9.7 min)** — so a
-gateway-mediated answer clears the verified bar the same as a direct one, and
-the access path is recorded alongside the status (see status vocabulary).
+A launch does not have to be driven by `sparkrun run` directly. The
+spark-loader gateway on `:4000` loads a catalog model (`@spark-forge/<name>`)
+on demand when a request names it and the model is not running, so a request
+through the gateway can also trigger a boot. An answer obtained that way clears
+the verified bar the same as a direct one, as long as the access path is recorded
+alongside the status (see status vocabulary). Only published recipes are in
+that catalog. A working-tree change has to be launched by file path. Under the
+earlier SparkRoute gateway, a `cold_start: wait` binding did the same: a
+2026-11-08 request to the cold `glm-5.3-flash-abliterated` binding returned 200
+after **584 s (~9.7 min)**.
 
 ## Verifying pooling runners (embedding / rerank)
 
@@ -96,12 +99,13 @@ Pooling-runner recipes break two assumptions above:
   verified **through the gateway** (`/v1/embeddings` → 200 with a 2560-dim
   vector, 1.7 s warm); the reranker had to be verified **direct against the
   container's `/v1/rerank`** because SparkRoute 0.3.4 has no rerank route (the
-  gateway 404s it). Expect the first cold gateway embedding request to 503
-  while the backend boots; retry after the launch completes.
+  gateway 404s it). Today neither runs as a sparkrun workload: the embedder
+  (`:8000`) and reranker (`:8001`) are the `spark-pinned` docker compose stack
+  on gb10. Re-verify them by calling those ports directly.
 
 ## Related
 
 - [Recipe Status Vocabulary](../concepts/status-vocabulary.md)
 - [Benchmarking & Context Verification](./benchmarking.md)
-- [Proxy & Gateway Routing (SparkRoute)](../operations/proxy-and-gateway-routing.md) — how requests reach the served model after launch
+- [Gateway Routing (spark-loader)](../operations/proxy-and-gateway-routing.md) — how requests reach the served model after launch
 - [Cluster & Networking](../architecture/cluster-and-networking.md)

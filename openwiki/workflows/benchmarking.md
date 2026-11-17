@@ -28,10 +28,10 @@ sources:
     resource: repo://HISTORY.md
   - id: openwiki-source-036e64f955b6e8c14e4c8d88
     resource: repo://notes/minimax-m3-sparkrun-port/README.md
-generated: { by: "claude-code", at: "2026-11-10T21:00:18.041Z" }
+generated: { by: "claude-code", at: "2026-11-17T14:41:15.503Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-14T21:00:11.653Z
+    at: 2026-11-17T14:41:15.503Z
 ---
 
 # Benchmarking & Context Verification
@@ -108,6 +108,12 @@ with pp2048 roughly unchanged. Raw:
 `benchmarks/results_qwen38-flash-next-tp2-20261103.{json,csv,yaml}`. Earlier
 two-node decode numbers therefore understate the recipes measured before the
 fix.
+
+Recorded figures get corrected against the raw files when they disagree. On
+2026-11-17 the 8-way peak for this post-MTU-fix Flash-Next run was changed in
+`HISTORY.md` from 206.7 to **250.0** tok/s. 250.0 comes from the raw file, whose
+three runs read 243, 242 and 265. When a summary number and a raw artifact disagree, the
+raw artifact wins and the summary is edited to cite it.
 
 Two caveats from that session:
 

@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:4df5de6c0e13e00d055894f4a734457bb5c91476a21a74bdec1e051047541e56",
+  "pageVersion": "sha256:53cde8e5672ec5012c34c7bcf7159be58a0ed2640861a3b7f6f3da634e9e5db8",
   "claims": [
     {
       "id": "claim_56ca71812db34cf382140bbc4fdd28cb",
-      "statement": "The launch sequence is lint (sparkrun recipe validate), then a --dry-run per-host fit check, then sparkrun run with --no-follow; validate and --dry-run are lint and do not constitute verification.",
+      "statement": "The launch sequence is lint (sparkrun recipe validate recipes/<family>/<name>.yaml), then a --dry-run per-host fit check, then sparkrun run with --no-follow; validate and --dry-run are lint and do not constitute verification.",
       "evidence": [
         {
-          "resource": "repo://.claude/skills/verify/SKILL.md#L207-L211",
-          "version": "repo-lines-v1:sha256:60ba49456af80a3fce8e1f20c56e3f2d6cc37b083c369998b16e4a5d4f46c652:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGMzZGJmYTJkMjVjNjNjMDQ0MzQ5MTU5OGI2MmFiOWU5ZTEwMTljNDYwOGMzOGMwZGY4YmYxNjJiMjY0ZmUzYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDU5NmY2YjkzM2Q2YmEwMTg4NDY2ZjQwZWQ5YWEwNjlhM2FlNTlhNmNhMDYyZmE3ZGE0ZDhjMjEzOGM3YmM1NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjUyMThlODk4YTY1NTg1MTE4NTNiNjY2ZjY1MThmMDUzZjYzY2VkNmZkYzU1MmIwMjY2MzQzM2E4MGM2ODI1NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTY4OTM2YTg5NDQzYTk0ZjZkMzQxMDFhN2UyNWJmZTVkMGU3NzQ2ZTE0YTQ1ZWJlMDRmOTI1NzU5NjYxNzk1YSJ9"
+          "resource": "repo://.claude/skills/verify/SKILL.md#L207-L217",
+          "version": "repo-lines-v1:sha256:f3a9c2447d296a923279b69b60805c062f1584787bbbb3390df9374086e791a1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjM2RiZmEyZDI1YzYzYzA0NDM0OTE1OThiNjJhYjllOWUxMDE5YzQ2MDhjMzhjMGRmOGJmMTYyYjI2NGZlM2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA1OTZmNmI5MzNkNmJhMDE4ODQ2NmY0MGVkOWFhMDY5YTNhZTU5YTZjYTA2MmZhN2RhNGQ4YzIxMzhjN2JjNTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY1MjE4ZTg5OGE2NTU4NTExODUzYjY2NmY2NTE4ZjA1M2Y2M2NlZDZmZGM1NTJiMDI2NjM0MzNhODBjNjgyNTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAxNGQ2OGE1Y2I2MWRmYmJiNDFkNTA5ZWMzZTI0NzY1M2QxYjk5MjM5ZThmZmE5MDMyNjExZGZmNDQwY2U3NTcifQ"
         },
         {
           "resource": "repo://.claude/skills/verify/SKILL.md#L22-L22",
@@ -21,12 +21,12 @@
       "statement": "Launches use --no-follow (required by CLAUDE.md), and readiness is checked through the in-container serve log and the endpoint rather than by following the launch output.",
       "evidence": [
         {
-          "resource": "repo://.claude/skills/verify/SKILL.md#L212-L217",
-          "version": "repo-lines-v1:sha256:46e07c7acaab02a8b3008ae42a3a641130eb9d49ed8ddb14d908c7e85c779549:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTY3MDhiNzZmZTczMDRmZTBhNzIwOTEyMmFmYjM0MjU2N2ZiMDY2NDNmNjg2YzczNzUzMDRhMjkyNTljZTk1YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDU5NmY2YjkzM2Q2YmEwMTg4NDY2ZjQwZWQ5YWEwNjlhM2FlNTlhNmNhMDYyZmE3ZGE0ZDhjMjEzOGM3YmM1NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzdhNGQzMTlmYzk0MjExZTc0MDdjMTA5OGJjYWU4N2VlOTQ0NDEwMDRjNjEyNWNkOGMzOGEwYzZmMjI2ZmFjNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDE0ZDY4YTVjYjYxZGZiYmI0MWQ1MDllYzNlMjQ3NjUzZDFiOTkyMzllOGZmYTkwMzI2MTFkZmY0NDBjZTc1NyJ9"
+          "resource": "repo://.claude/skills/verify/SKILL.md#L212-L221",
+          "version": "repo-lines-v1:sha256:f235486714ac4ccfb377d0e89ceeac077102684e42e6d443fb415358081e99b9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2NzA4Yjc2ZmU3MzA0ZmUwYTcyMDkxMjJhZmIzNDI1NjdmYjA2NjQzZjY4NmM3Mzc1MzA0YTI5MjU5Y2U5NWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ1MTBiY2ZhNGM2ZGYwMjMyY2E1NzJjNzRlYjYyYmM3YmQxYTIwNGRkZWQ4NTFiYWMxOWY2NTc5NzZjNTBjZTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNiMWM5YTlmOTdjODBhNjY5YmUzYTRkYTcxYzZhMGUyMzQzNjc5MDgxYjBiY2RmNTVjNWVhZTBiOTE0ZDk5ZDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdlYWJhNDJlZmY1OGQ2MTQ4NjJiOWM5MmUzYTkwZDZhZGM4Njk2Y2YwMzFlNjE1NjNlMmY5NTdjN2JlMTE3MzAifQ"
         },
         {
-          "resource": "repo://CLAUDE.md#L117-L118",
-          "version": "repo-lines-v1:sha256:01d7fcc78aacd3c6e7ed0265b47537618e2f31f969f58b6129b2f648d2cf5c7c:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWYwNmIwY2ExMTQ3ZmY2MTFhZTExNmY2ZThlNTE1MjA1NzI2YzRjNjE2Y2IyZjQ1YjI3Mzk2OWNmZTY3M2RmMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjAxNTZhZmFhMTFlZGRlOGM5NjliYmMyNjExNzhmYmIzNDEwZWNmMzJmNmE2MTZjNzkxYTY3ZjMyNWFkYzM1NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTAwZjY3NjgwYjE1NzMwNGUwNzI3NjhlM2NkNTVjZGE0N2ExODg5MDIyOGU4MzUyODIxMWE4NmNiOTA5YmY5ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjcyNWQ1ODc5NTc2NzY4MDM2NmI1NmM4OWEzY2RmZTMxNDJlYTJhYjM2ZjA0YjMxNWI5NWMyMTM0ZmJjZDVkOSJ9"
+          "resource": "repo://CLAUDE.md#L127-L128",
+          "version": "repo-lines-v1:sha256:01d7fcc78aacd3c6e7ed0265b47537618e2f31f969f58b6129b2f648d2cf5c7c:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWYwNmIwY2ExMTQ3ZmY2MTFhZTExNmY2ZThlNTE1MjA1NzI2YzRjNjE2Y2IyZjQ1YjI3Mzk2OWNmZTY3M2RmMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjAxNTZhZmFhMTFlZGRlOGM5NjliYmMyNjExNzhmYmIzNDEwZWNmMzJmNmE2MTZjNzkxYTY3ZjMyNWFkYzM1NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTAwZjY3NjgwYjE1NzMwNGUwNzI3NjhlM2NkNTVjZGE0N2ExODg5MDIyOGU4MzUyODIxMWE4NmNiOTA5YmY5ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjI0ODUwOGI4OWJmNTlhYTgwZmI3OGEwMWE0OGFhOTkxYWJlOTFjOGRhZjViN2NkMGRiNjU4N2Y4ZDU0NTkxYiJ9"
         }
       ]
     },
@@ -39,7 +39,7 @@
           "version": "repo-lines-v1:sha256:1182db2887e7246d99d3bb758e2f735a8e20d3553868a5edf19306879a683fb1:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTY3MDhiNzZmZTczMDRmZTBhNzIwOTEyMmFmYjM0MjU2N2ZiMDY2NDNmNjg2YzczNzUzMDRhMjkyNTljZTk1YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDVmOTU4ODJhOTRhYTA0NWNkNTAyMGYyODM3ZGQzZjk5YTZmMjA1ZmU4NTkzMzg5MzRjNGQ5YzJmOTMyYjdiZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzdhNGQzMTlmYzk0MjExZTc0MDdjMTA5OGJjYWU4N2VlOTQ0NDEwMDRjNjEyNWNkOGMzOGEwYzZmMjI2ZmFjNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTEzMjZiN2JjYzc3NzkzMGY5NmZhZmVjMTcxOGY4ZmQ4MzZlN2E1MzliNDNjYTczOGUyYjE3MGMxNGNlNzJiZiJ9"
         },
         {
-          "resource": "repo://CLAUDE.md#L97-L97",
+          "resource": "repo://CLAUDE.md#L107-L107",
           "version": "repo-lines-v1:sha256:c614711147c6555a062f299b55ba70371851e13f0f99ee30d4730218ce58f8a4:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzYxNDcxMTE0N2M2NTU1YTA2MmYyOTliNTViYTcwMzcxODUxZTEzZjBmOTllZTMwZDQ3MzAyMThjZTU4ZjhhNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzYxNDcxMTE0N2M2NTU1YTA2MmYyOTliNTViYTcwMzcxODUxZTEzZjBmOTllZTMwZDQ3MzAyMThjZTU4ZjhhNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWNjNjExYmE0OTU4MTVjZmE2NmY4MjMyZjE2YTc4ZDNjZWVhNmJjZDE1MjFiMzE3ZDI5MTZiNGVhYWUzNGYzYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzgyOTkwYjE2YTdlZDMzNmQ4MWJkMDVkYjIxNTVhZGRlMjY4ZDkxOGY1M2IxOWU0MDFiYjQ3Mzg0MWJmOGExMyJ9"
         }
       ]
@@ -50,11 +50,11 @@
       "evidence": [
         {
           "resource": "repo://.claude/skills/verify/SKILL.md#L218-L221",
-          "version": "repo-lines-v1:sha256:fad139ee4dba202634d5a63bfb3317f30fe2994c710eccd96960186f841c9538:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDc2ZTQwNzBlNjFhMDM1MGE5YjBhZTA2YjY0OGE1OGZjYmY3MjU5OTIwOTllNDU4ZTRiODBmZTAxMjI2ZGE3ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDllN2M5ZjQzODg0ZjNjNDdjNzYzYTZmNDFlMDhmNDIwZGM5YjVkMzU5NzNmZmFmNGJkNzA3NGI5ZTNlMjEwYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTIwMzQwZGI3NmE1ZGUwODMzZmRhODY0MzgwYjlhZTI4ODExOTBlZGNlMDAyN2E4NDEwZjM1N2FiZDVhMTIyOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2VhYmE0MmVmZjU4ZDYxNDg2MmI5YzkyZTNhOTBkNmFkYzg2OTZjZjAzMWU2MTU2M2UyZjk1N2M3YmUxMTczMCJ9"
+          "version": "repo-lines-v1:sha256:bdb6bba2c2f7647e803319dc24b78da25f436d248f6500ae6d1084629294d34a:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDc2ZTQwNzBlNjFhMDM1MGE5YjBhZTA2YjY0OGE1OGZjYmY3MjU5OTIwOTllNDU4ZTRiODBmZTAxMjI2ZGE3ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDUxMGJjZmE0YzZkZjAyMzJjYTU3MmM3NGViNjJiYzdiZDFhMjA0ZGRlZDg1MWJhYzE5ZjY1Nzk3NmM1MGNlMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjYyOWQ2Y2Q4NDk1MGY0OTEwNzgxNmQ0YzYzMDk0YzNjYmFiOWQ2NmQyY2RiOTAyN2QxZmNiZmVhOTJlZGNlNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2VhYmE0MmVmZjU4ZDYxNDg2MmI5YzkyZTNhOTBkNmFkYzg2OTZjZjAzMWU2MTU2M2UyZjk1N2M3YmUxMTczMCJ9"
         },
         {
-          "resource": "repo://CLAUDE.md#L116-L116",
-          "version": "repo-lines-v1:sha256:3cf70d8d09aa8afd12e6c367480aae76504bcb3567f60974f3ae3ec47ebb94b8:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2NmNzBkOGQwOWFhOGFmZDEyZTZjMzY3NDgwYWFlNzY1MDRiY2IzNTY3ZjYwOTc0ZjNhZTNlYzQ3ZWJiOTRiOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2NmNzBkOGQwOWFhOGFmZDEyZTZjMzY3NDgwYWFlNzY1MDRiY2IzNTY3ZjYwOTc0ZjNhZTNlYzQ3ZWJiOTRiOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjYxMjM1MmIyNWY1M2Y2NDE3MmQxZWE5MGI3NGM5ZmNjZTczYzcxNTdjYmQ5MjE3OTY2YWM4MDhkMDcyOTEwNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmM3ZWJlZmIxMTZjMjdjYTc5MGI2M2RhMTJjZjk3ODI2YzgxNmFlMGEzMjMyNjhmZWI1YTYzZDFiZmYwNjAwOSJ9"
+          "resource": "repo://CLAUDE.md#L126-L126",
+          "version": "repo-lines-v1:sha256:3cf70d8d09aa8afd12e6c367480aae76504bcb3567f60974f3ae3ec47ebb94b8:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2NmNzBkOGQwOWFhOGFmZDEyZTZjMzY3NDgwYWFlNzY1MDRiY2IzNTY3ZjYwOTc0ZjNhZTNlYzQ3ZWJiOTRiOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2NmNzBkOGQwOWFhOGFmZDEyZTZjMzY3NDgwYWFlNzY1MDRiY2IzNTY3ZjYwOTc0ZjNhZTNlYzQ3ZWJiOTRiOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjYxMjM1MmIyNWY1M2Y2NDE3MmQxZWE5MGI3NGM5ZmNjZTczYzcxNTdjYmQ5MjE3OTY2YWM4MDhkMDcyOTEwNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2YxODMzYTg4ZDE5ODljNzAwNDM3ODdmYjYyNzhlNjJiNDY5YTJlYTg4OWRjZmUxNTE1NzIzY2U5YjQzMGIwNyJ9"
         }
       ]
     },
@@ -108,17 +108,31 @@
     },
     {
       "id": "claim_f5c1d3617db7458cbdce208a0abe69f3",
-      "statement": "A gateway binding with cold_start: wait boots the recipe and holds the HTTP connection through the swap (GLM cold start returned 200 after 584 s on 2026-11-08), so a gateway-mediated answered request clears the verified bar.",
+      "statement": "A request through the spark-loader gateway for a catalog (@spark-forge/<name>) model that is not running loads it on demand, so a gateway-mediated answered request can clear the verified bar; under the earlier SparkRoute gateway a cold_start: wait binding returned 200 after 584 s on 2026-11-08.",
       "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L54-L58",
+          "version": "repo-lines-v1:sha256:8076985fb2f844bcfb9adc8cca84002863bb35b6acdf6e2bda7dc1cda4b9cd30:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmFiMGRhN2JlYzY1NTU0YTUxMzYyYzQ5NGNlZTk4ZDM4ZmQxMjMwZDM0ZDJlNTI3MzVlZTRmNmUzM2U1MjQwMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTY4NDAwZWI0YzhjZDBjMjVjY2FiYThlMWQ1MzNhZWY3NTM1MjY2ZWVmODM1ZmE2OWQ2NTYyZjEyY2MyNTNkYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2JlYTY4ZWNmOTEwMzg1ZDJhOGJmM2Q5NTExODdlZGM0NzkzZTA0ZjkxYzVjNzdmNjM3ZjU3NmQ0NzU2NGEyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTFkY2ZjMzUyZDZlNmFjNWYyOTc5YTRjYTM3MjE5ZWRmZmE3YWNjN2JlZTg1OTg4YTU0NzgyNDk1ZGZlMjY0NiJ9"
+        },
         {
           "resource": "repo://HISTORY.md#L836-L838",
           "version": "repo-lines-v1:sha256:37ed94053432642cdcb719521155419dea0471c85b9bd151a23e960e885d6f60:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWVlZGE3OGQ0MTliMTY2NzkzNzZlZmM5NTBlZTYxODA1MDQwN2IyMGFhYTY5NGEyNjA1NTllYTU0NTk2MmUyZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWExOTBjNzAxOTU3MmQxMjcyYjE3YWNhNWFjODkyZGE3ODhhZTkzYjFkZjUxNjlmMGY5MWEzYWYyN2Y5NWM3MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWJmM2Y3OWM3MzU2ZDlhNmZkYzdhZmUxZjE1MjgyOGJlNDE1NzhkZTBkNzVkMGE4NzcyZWE0NDhiMmFlYzBjMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTMzMTNlY2YzMmI4OTU1ODc1OWMxZmE4M2MyNDI1N2JmYWUyMTE1YzZlMzFmYTI5MTVkMzc2NjQ2OWJlNTg1MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e089de4c776d4b92844442d3603f3ec7",
+      "statement": "The embedder (:8000) and reranker (:8001) currently run outside sparkrun as the spark-pinned docker compose stack on gb10, so they are re-verified by calling those ports directly.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L146-L146",
+          "version": "repo-lines-v1:sha256:fdf82afe5ce32125f151d006db89cf092fe0ca32adc4315911cacc31ebec4c86:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmRmODJhZmU1Y2UzMjEyNWYxNTFkMDA2ZGI4OWNmMDkyZmUwY2EzMmFkYzQzMTU5MTFjYWNjMzFlYmVjNGM4NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmRmODJhZmU1Y2UzMjEyNWYxNTFkMDA2ZGI4OWNmMDkyZmUwY2EzMmFkYzQzMTU5MTFjYWNjMzFlYmVjNGM4NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWIzM2E2Y2NiNDU0OTQ0Zjk3NWNlZGNjYzEzOWU0MTBkZWFmMzA5YjlkMTljMTFiYmYyZDhmZWY0ZjQ4ZWEyYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzU3OTIxMThjZjU0OGY5ZjRjMzJlNjk3NzkzZDVjOTM4YTdiMTdmMWIyYzQzZTJmYTQ5OTEyNWNlOTZiZWU0MiJ9"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-14T21:00:11.653Z"
+    "at": "2026-11-17T14:41:15.503Z"
   }
 }

@@ -8,28 +8,20 @@ sources:
     resource: repo://benchmarks/redteam/README.md
   - id: openwiki-source-21849df8eea39edddabaddba
     resource: repo://benchmarks/redteam/RESULTS-qwen3.8-27b-uncensored-2026-10-01.md
-  - id: openwiki-source-a2371d6362e5db4bc834ad03
-    resource: repo://CLAUDE.md
   - id: openwiki-source-032573fa0676b71689223dc4
     resource: repo://docs/superpowers/specs/2026-11-10-inkling-small-refusal-dial-design.md
+  - id: openwiki-source-382af0b12a087a97295aa93b
+    resource: repo://HISTORY.md
   - id: openwiki-source-7845db45164b8996bda8b203
     resource: repo://images/deepseek-rank1/README.md
-  - id: openwiki-source-47b542f6d1c02a514532bbb4
-    resource: repo://recipes/deepseek-v4-flash-0731-refusal-dial-tp2.yaml
-  - id: openwiki-source-afd4b883e2d77bfe356a5248
-    resource: repo://recipes/inkling-small-nvfp4-refusal-dial-tp2.yaml
-  - id: openwiki-source-6f45ee15500398be92731378
-    resource: repo://recipes/mods/inkling-refusal-dial/patch_vllm.py
-  - id: openwiki-source-28bdb53b0ca2f20523767328
-    resource: repo://recipes/mods/inkling-refusal-dial/run.sh
-  - id: openwiki-source-d617492bf9fc1cb81eb1dadd
-    resource: repo://recipes/qwen38-27b-nvfp4-refusal-dial.yaml
-  - id: openwiki-source-5b4bfb81d2ac388e627c6d62
-    resource: repo://tests/test_recipe_schema.py
-generated: { by: "claude-code", at: "2026-11-12T21:00:08.984Z" }
+  - id: openwiki-source-8ecf4234b6f64fce2b52016c
+    resource: repo://recipes/deepseek/deepseek-v4-flash-0731-refusal-dial-tp2.yaml
+  - id: openwiki-source-ab401ad6d69429e93d3b021b
+    resource: repo://recipes/qwen/qwen38-27b-nvfp4-refusal-dial.yaml
+generated: { by: "claude-code", at: "2026-11-17T14:41:15.503Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-14T21:00:11.653Z
+    at: 2026-11-17T14:41:15.503Z
 ---
 
 # Abliteration & Refusal Evaluation
@@ -67,29 +59,43 @@ serving parameter rather than a fixed property of the weights:
   `post_exec` then sets lambda to 2.0 once the endpoint is up, matching the
   header's "use lambda 2.0, not upstream's 1.5" note (the JailbreakBench run
   recorded 93/100 harmful complied at 2.0 versus 82/100 at 1.5).
-- `inkling-small-nvfp4-refusal-dial-tp2` (added 2026-11-10, **UNVERIFIED**) serves
-  stock `thinkingmachines/Inkling-Small-NVFP4` at TP=2 on the stock
-  `ghcr.io/spark-arena/dgx-vllm-eugr-nightly-b12x:20260926` image. It needs no
-  custom image. Instead it uses a **mod overlay**, `recipes/mods/inkling-refusal-dial/`.
-  Before serve, that mod's `run.sh` runs in every rank's container. It copies
-  `refusal_dirs_inkling.safetensors` to `/opt/refusal/`, installs
-  `refusal_projection.py` and an admin API router into the vLLM package, and runs
-  `patch_vllm.py`. The patch edits vLLM's Inkling decoder layer so that the
-  attention output passes through the rank-1 projection. Finally, `run.sh`
-  byte-compiles the installed and patched modules and runs a self-check
-  (`verify_inkling_rank1.py`, installed to `/opt/refusal/`). Lambda is set with
-  `POST /admin/refusal_lambda`, and the recipe's `post_exec` sets it to 1.
-  The design doc gives lambda 0 as bit-exact to stock. It also describes how the
-  per-layer directions were extracted, using contrastive harmful/benign prompt
-  pairs and `benchmarks/redteam/extract_contrastive_directions.py`.
-  Two cautions apply before a first launch. First, the recipe sets
-  `gpu_memory_utilization: 0.85`, above the house range of 0.70–0.82; 0.85 has
-  caused NVRM OOM at boot here. Second, Inkling-Small's weights are on the head
-  only (see the model inventory page).
-  `tests/test_recipe_schema.py` pins the recipe's shape: TP=2 on exactly two
-  nodes, the `VLLM_REFUSAL_DIRS` and `VLLM_REFUSAL_LAMBDA_INIT` env vars, the
-  `mods/inkling-refusal-dial` mod, and an `admin/refusal_lambda` call in
-  `post_exec`.
+Both dial recipes live under their family folders:
+`recipes/qwen/qwen38-27b-nvfp4-refusal-dial.yaml` and
+`recipes/deepseek/deepseek-v4-flash-0731-refusal-dial-tp2.yaml`. The DeepSeek
+dial was re-served from its new path on 2026-11-17 (ready in 323 s with a
+393,216-token context) after its weights were also synced to the worker.
+
+### The Inkling dial was dropped
+
+A third dial, `inkling-small-nvfp4-refusal-dial-tp2`, was added on 2026-11-10.
+It patched stock Inkling-Small at runtime through a mod overlay
+(`recipes/mods/inkling-refusal-dial/`) instead of a custom image. **It never
+served.** Its first live boot on dgx-pair hit a `PermissionError` because the
+copied directions file stayed at mode 0600. The second boot crashed in the b12x
+image's multimodal warmup (`mark_b12x_eager_shapes` with `encoder_rows=None`),
+which was then worked around by serving text-only. The third boot was stopped
+when the pair was needed elsewhere. On 2026-11-17 the recipe, the mod and their
+three pytest files were deleted on request. Inkling stays on its SGLang recipe
+(`recipes/inkling/inkling-small-nvfp4-tp2-sglang.yaml`). The design and plan
+under `docs/superpowers/` are kept as records, and the directions file remains
+in git history.
+
+## Setting lambda from a hook: use plain braces
+
+Both remaining dials set lambda in `post_exec` with a JSON body posted to
+`/admin/refusal_lambda`. **Write that JSON with single braces.** sparkrun's hook
+renderer (`orchestration/hooks.py`) does not unescape `{{` inside hooks, so a
+doubled-brace payload is posted literally as `{{"lambda": 2.0}}`. That is
+invalid JSON, and the dial silently stays at 0. This happened on the
+2026-11-17 DeepSeek re-serve. Both dial recipes were fixed the same day, and
+the rendered command was checked to set lambda 2.0 on both ranks. Always read
+the dial back with `GET /admin/refusal_lambda` after boot (both recipes do this
+in `post_exec`) rather than trusting the hook ran.
+
+The `/admin/refusal_lambda` endpoint has **no auth**, and a lambda above 0 also
+weakens resistance to prompt injection. Keep dial endpoints off public ingress.
+Changing lambda invalidates the prefix cache, so the first request after a
+switch re-prefills.
 
 ## Refusal evaluation: both splits are scored
 
@@ -137,3 +143,5 @@ artifacts are the scorecards and result summaries.
 
 - [Benchmarking & Context Verification](../workflows/benchmarking.md)
 - [Model Inventory & Weight Safety](../reference/model-inventory-and-weights.md)
+- [Recipe Anatomy](../concepts/recipe-anatomy.md)
+- [Images & Provenance](../reference/images-and-provenance.md)

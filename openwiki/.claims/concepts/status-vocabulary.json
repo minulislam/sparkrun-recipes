@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:0191f9b5ac728ea13a1f69962b6696334710490610a9c4813dfe871e044d7340",
+  "pageVersion": "sha256:0f40a0aeeb9b2fac4217e90e5c4241ce4fdad673cd0078cea9add549b07d4e74",
   "claims": [
     {
       "id": "claim_7a484415a4934974b377c0fbbd6ea436",
@@ -54,21 +54,35 @@
     },
     {
       "id": "claim_6428b17068c24a1690e8242e9229e6b4",
-      "statement": "Verification records the access path proven: row 65 qwen3-embedding-4b-tp1 was verified through the SparkRoute gateway while row 66 qwen3-reranker-4b-tp1 was verified direct against the container's /v1/rerank because the gateway has no rerank route.",
+      "statement": "Verification records the access path proven: row 65 qwen3-embedding-4b-tp1 was verified through the SparkRoute gateway (and re-verified direct on gx10-solo) while row 66 qwen3-reranker-4b-tp1 was verified direct against the container's /v1/rerank because SparkRoute had no rerank route; SparkRoute has since been removed.",
       "evidence": [
         {
-          "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:e2f45aa7dad4c3ca3135e8cabfb5f59c2c52d64c8de0d012788700e63667ceee"
+          "resource": "repo://CLAUDE.md#L54-L61",
+          "version": "repo-lines-v1:sha256:410073fd3bd54291faf08b29c54c7d1c80cfe8897b35638772fe7abba867cad9:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmFiMGRhN2JlYzY1NTU0YTUxMzYyYzQ5NGNlZTk4ZDM4ZmQxMjMwZDM0ZDJlNTI3MzVlZTRmNmUzM2U1MjQwMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWI4M2Q4ZTBjNDcwNjZiNWMwY2QxZTIzM2RjNzgxY2VlOTgyY2M3ZGMwNGVjMGMwMTI2ZGVjYzg5MzEyNTIzNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2JlYTY4ZWNmOTEwMzg1ZDJhOGJmM2Q5NTExODdlZGM0NzkzZTA0ZjkxYzVjNzdmNjM3ZjU3NmQ0NzU2NGEyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTc0MzU2N2I3OGY2ZjU0ZTQ4NmYyN2ExYTI4MDRlODE4YWFlYmIyMmMyNGE4MGNmYWQ0MzlhNzgzY2M2M2IwMyJ9"
         },
         {
-          "resource": "repo://INDEX.md",
-          "version": "repo-file-v1:sha256:9ec1baf2cd4e419895ee15c34c643d581d24f5e34aac81df9cd59f243c74c5d2"
+          "resource": "repo://INDEX.md#L104-L105",
+          "version": "repo-lines-v1:sha256:949cdefac33e1ae75a1447f367c4ec37d720999d2bcb0f58f1a8688e8813eb91:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWYxNDU5MjA0OGVlYzk0MzU1MzU4MTlhMWNkNDAyZTNmOWI4ZWM0MmY1N2Q3NTg4MDdjZWQzMmEyNTllYzc2ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTA0ZjU2OTc5NjAyYjk0ZWVjYjBkMmQ4NTYyYWVhNDgzYmNhODBjZDE5MjI4YjVlYzMwMzRiOGVhNzFmYTk5NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2JiZDZjMzgyOGY3YzZkNjc3Mjc1ZGJlZjM2Y2FjMTFhNjdmM2Y2YzNkNDJiNzEwYWMzNDc2NDk3OGMwNTlmNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzQyN2FiN2FhYmM0NTQ3OWFjOTVjMGI1MGUyNGU3YjFhYjE1OWZkZWVkYzk0ZmNkNWIyNzE0OWVkNDdhYjY0OSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2f1c7fcee2bf41f9820d74beebfa4c7f",
+      "statement": "Recipes that validate but whose image or weights are on neither node are recorded as LINT ONLY (e.g. INDEX row 67 qwen3.8-flash-next-fp4-b12x-tp1), and recipes that booted but never answered are marked UNVERIFIED with the failure recorded in the header (e.g. nemotron-3.5-bolt-74b-a9b-24gb-tp1's NV_ERR_NO_MEMORY first boot).",
+      "evidence": [
+        {
+          "resource": "repo://INDEX.md#L106-L106",
+          "version": "repo-lines-v1:sha256:f971d945ab9aa8dd0a716e6f5591d148d4612b2d8245e62caf741614238dceb9:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjk3MWQ5NDVhYjlhYThkZDBhNzE2ZTZmNTU5MWQxNDhkNDYxMmIyZDgyNDVlNjJjYWY3NDE2MTQyMzhkY2ViOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjk3MWQ5NDVhYjlhYThkZDBhNzE2ZTZmNTU5MWQxNDhkNDYxMmIyZDgyNDVlNjJjYWY3NDE2MTQyMzhkY2ViOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTc0YmJhNTJiNWQ4MzRiMGU5YjQxMWYzYjI1YzQyNGZkY2VhNzQyODA2YTFjYzAyNWRjMWM1YTVkZjk4NDJhMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTYwZDFhMTBhNWQxMmJjYjRmMDI0OGY5ZmFiNmI2NDQwNjhlMTNiMDk5NjAzNWYwYmFhOWRkNjYzYThjZmE0YyJ9"
+        },
+        {
+          "resource": "repo://recipes/nemotron/nemotron-3.5-bolt-74b-a9b-24gb-tp1.yaml#L1-L4",
+          "version": "repo-lines-v1:sha256:a83ba0c435d312e3e1f387b2067f0cb400adbc34799ef50bb2ea2f2bfed50de3:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzIxYWFhNDZjNGQ5MjI5OWNjMzk3MjJjNjJiZjIyNGQ5YjEyYzM4NTAxZjlhOTI2YTEzY2Q1MGU0M2NkYjVmZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2Q3ODMwNmE5NGQ0ZDQyYzY3YjVhYzkyMDY0MmMzMmVlZTk5M2JjYzkwMzMyNGZmZjlhOGQ3YTFmODBjNDkxNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYThhMGE3YmZiOGNjODU2Mzc0OTlkZmNhNzM1NWJkMGQ4NmM3ZmFlZTY3ZmRlZmU3MDdhMTQ1YTdlOTJlZWUwYyJ9"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-14T21:00:11.653Z"
+    "at": "2026-11-17T14:41:15.503Z"
   }
 }

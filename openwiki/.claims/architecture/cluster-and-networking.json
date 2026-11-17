@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:a70ac8ea7ca6bec30040db59f9787373507e87ed791e3ad371057f6221b3554f",
+  "pageVersion": "sha256:1a9a70bad710f03a19f19a07553fd8c8cec6aabfcbcfaed5fbbdaf44aaae968c",
   "claims": [
     {
       "id": "claim_3b0ca6ee679d4566b81277271e99fc08",
       "statement": "The dgx-pair cluster is the sparkrun default and spans two GB10 DGX Spark nodes — head gb10-spark (10.10.20.10) and worker gx10-spark (10.10.20.11), each ~121 GiB unified memory — with sibling clusters dgx-pair-ep, gb10-solo, and gx10-solo; there is no cluster literally named 'default'.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L100-L102",
+          "resource": "repo://CLAUDE.md#L110-L112",
           "version": "repo-lines-v1:sha256:15d4af8e8da05342580e042336ac4350ff186e2f5e48301d72f815323d860300:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTg4ZDhmMzM5ZjcwZTkzMjM2NzQ1ZjFhYzdkZWFkNWMyMGJkNzFmNGVlZTQ3MTA4ZjViY2QyMWVkYmVlYzA5NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODgxYzVkZmRlNTA4YjRkMzlhNjJiNmNmZjQ2NjE4YzFlOTNhZmRlYWM0ZDc3ZWViYWIyNGVjYTBkYjhjNGJmZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDJiZmE5Y2IzMTIxZmE2MDUwZDk5Y2NkMjI0MDgzNzcyZWJhY2VmNjM5NDhlMWRkMWQzNGUwMzQwYmY4YmQyYSJ9"
         },
         {
@@ -21,7 +21,7 @@
       "statement": "Two-node NCCL/Gloo/TCP-store interface bindings (NCCL_IB_HCA, NCCL_SOCKET_IFNAME, GLOO_SOCKET_IFNAME, TP_SOCKET_IFNAME) are pinned in the cluster definition at ~/.config/sparkrun/clusters/dgx-pair.yaml under env:, are load-bearing, and must not be moved into recipes (doing so trips the managed-comm-env validator).",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L103-L104",
+          "resource": "repo://CLAUDE.md#L113-L114",
           "version": "repo-lines-v1:sha256:87f6248ecf70d792df4ba7ef80d2ef4490c73dfa6e7d148b8e2fc9cc8ad71d55:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2Q0NGY5MDc5YTI3MmMyZDE3NzViMTNkMjI5YmM2NDJmYWE5ZWRjOWI1YmQyOGMyNDc5NTJmYjE1NDM2NzQ1NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjU5ZGQ5Mzk2ZDZlOTUxMWYyYzYxYjUyNzFkY2E4MmZiNzI1MjUwMjMwMjBjNzUwNDgxYmQzZjNhYjY2MTAxYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTVkNGFmOGU4ZGEwNTM0MjU4MGUwNDIzMzZhYzQzNTBmZjE4NmUyZjVlNDgzMDFkNzJmODE1MzIzZDg2MDMwMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2UxODFjZTIyMzJjYWY2ZWVjOTU1MDc0OTVmZDUwOThjZGQ5YTQ1OGMxMmUzYmE2NTkwY2ZmYzkyMjUzZTQzMCJ9"
         },
         {
@@ -45,7 +45,7 @@
       "statement": "sparkrun setup cx7 and the setup wizard must never be run on dgx-pair because they can rewrite the intentional duplicate-IP layout and drop the load-bearing comm pins; after a worker reboot, sparkrun setup check --cluster dgx-pair should be run before a two-node launch.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L105-L109",
+          "resource": "repo://CLAUDE.md#L115-L119",
           "version": "repo-lines-v1:sha256:8f47e5117c780ec99c8daabc541569d6f69ff0897c3db4d3e129451a6a5848be:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDdmOWM5ZGRiOTlmYmVjMWZhYTJlZjYwNGQyOWEzZmJlYzc1YjU0OWU1YTAyYmU2NDZjN2RhY2ZkZWQxOTBhZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTVkMmIwNDkzMjkwNGExMTU3ODg3NWU2YjgxY2M2YWNjOTI4MTQ1MjQ2NzY1ZmFjOWY4MzViMGY1OWQwYmJiZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzhiZmZjMWIyODE4ZTYxODBlMjhkZDM0NjdlYTk0MDMzOTBkNDk5NmQyN2NmNGUxMjQ3NWM2MjBmNWU1MjhhYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGU2Y2MzZWJmZjhhOGNjNDQ0OWQ5Mzk5Nzg0MjcwOTZiNjQyMGQ5YzU2YTcxMzNiNTBiNWFkMDM4NmE1NGY5NSJ9"
         }
       ]
@@ -83,7 +83,7 @@
       "statement": "Neither node has passwordless sudo except for start/stop/restart of sparkrun-proxy.service on the head, so other root-level network repair steps are handed to the operator.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L126-L128",
+          "resource": "repo://CLAUDE.md#L136-L138",
           "version": "repo-lines-v1:sha256:afcbab3ebec5bcafc1dd6b552945eb5195dc0395fbf4cc9d7f4d6cbdf39d16d3:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzY1OTc0YWJjYjcxYWE4MzY1NDE3NGQyNWE3N2YxMTNjODQzMDIyMmRjZWQyNWQzNmQxNzEwNjcyNGJiODAzNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGMzYmU0NGJmMjUxNmMzYTg4ZmY0MTdjNTRlMDZmMTU0NDBlYjllMWFmNWViNDdiZjIzMWI2NzdlMzFiNWE1YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWY3NjdhMTdhNTAyMWExNTU5OTU0NGI5NDMzNDE4YTVjYjg3MGY1YWI0MjhkNmVlZmQ0YzBkMGQ5MWQzZmQ5MiJ9"
         }
       ]
@@ -94,7 +94,7 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:e2f45aa7dad4c3ca3135e8cabfb5f59c2c52d64c8de0d012788700e63667ceee"
+          "version": "repo-file-v1:sha256:937ad6ff1ff48084fc20ae7e20811c1220acb7d89600679bd7ee2b9f14b81e11"
         },
         {
           "resource": "repo://notes/2026-11-03-sparkrun-version-config-audit.md",
@@ -104,11 +104,15 @@
     },
     {
       "id": "claim_44bfdaf050324279af3414103321b166",
-      "statement": "The worker's management NIC enP7s7 has a pending physical cable/switch-port fault; the current workaround is a \"Citadel LAB\" WiFi SSID bridged onto 10.10.20.0/24 with static 10.10.20.11 and ipv4.route-metric 200, and NetworkManager has flipped back to the old \"Rayan's Mesh\" profile mid-session.",
+      "statement": "The worker's wired management NIC enP7s7 had a physical cable/switch-port fault worked around on 2026-11-03 with a \"Citadel LAB\" WiFi SSID (static 10.10.20.11, route-metric 200); as of 2026-11-17 SSH to 10.10.20.11 works again but is still described as flaky, and bulk rsyncs use the CX7 address 10.99.10.11.",
       "evidence": [
         {
-          "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:e2f45aa7dad4c3ca3135e8cabfb5f59c2c52d64c8de0d012788700e63667ceee"
+          "resource": "repo://AGENTS.md#L8-L8",
+          "version": "repo-lines-v1:sha256:54b6f10d0eb02e4b518fc29d62c527ee6d43291dcccbac93a747484ac86ea5a3:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTRiNmYxMGQwZWIwMmU0YjUxOGZjMjlkNjJjNTI3ZWU2ZDQzMjkxZGNjY2JhYzkzYTc0NzQ4NGFjODZlYTVhMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTRiNmYxMGQwZWIwMmU0YjUxOGZjMjlkNjJjNTI3ZWU2ZDQzMjkxZGNjY2JhYzkzYTc0NzQ4NGFjODZlYTVhMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTBjODM2MjQxNTU5YmJlYTgwN2YwNzY4MmUxMTdhOTE1ZTVjYzU4NmQ1NTI3MGE2MjQxOWYyMjY2NmY0ZmYyNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmJhZWY4MThkOTMxMGI1ZDc5YWQ3MGRkMTMzMjRjY2NjMjExMzAxYWU5MTNmZTM3MTcxMzQwZTMwNGVkMTE4MCJ9"
+        },
+        {
+          "resource": "repo://HISTORY.md#L766-L771",
+          "version": "repo-lines-v1:sha256:727c683de8e6c8e154141aa8db0d3eeac1dcc0eec65e8bcb36c80617ac0df626:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWRhNzkxYTU3MDM5ODEzNDhkZDc0NWFkZTljZDIxYzZlM2I2ZTdkZjBlZmRmOWQ3ZDczYWNmMGY4YjBkYTNlOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2Q1YjBlZGI1OTVkYTNlMjY3YWNjNmFlMGI0MjA2YTlmNWE3MzVkZTU3MWMzZTBiNjc1MmE4MzkyZDFlYmVjZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzZlNzQ5NmE4MmU0YjFiZTcwZTA1MWUyMTA3YWRjODE1MTczNzEzYWY2MmEwOGE1YmVlZjAxZmRjZTFlYTQyZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTBmNDAzZGEyNTk1OTEyOWUwNzFiZTE4YTBjNGM2M2ExZTUyYWI1MWEzZTk1ZDcyY2E0ZDBiNThjODBhODI4NiJ9"
         }
       ]
     },
@@ -118,21 +122,21 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:e2f45aa7dad4c3ca3135e8cabfb5f59c2c52d64c8de0d012788700e63667ceee"
+          "version": "repo-file-v1:sha256:937ad6ff1ff48084fc20ae7e20811c1220acb7d89600679bd7ee2b9f14b81e11"
         }
       ]
     },
     {
       "id": "claim_ab4bd3171f6344a0a0ae978063893b07",
-      "statement": "Installed sparkrun is 0.4.2 and the gateway is the SparkRoute plugin 0.3.4; it was restarted on 127.0.0.1:4000 on 2026-11-07 after the 2026-11-03 audit flagged 0.0.0.0:4000, but current CLAUDE.md again describes it as listening on 0.0.0.0:4000 with no admin token.",
+      "statement": "Installed sparkrun is 0.4.2; the head's gateway on 0.0.0.0:4000 is spark-loader in front of LiteLLM on 127.0.0.1:4001, and the SparkRoute plugin that previously held port 4000 was removed on 2026-11-17.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L54-L58",
-          "version": "repo-lines-v1:sha256:18855a3b1b61df9395643e92c17230041ef30aef56581782dbac7505bd1e3189:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzk0NDI5MzBhYWI0ZDJkOTBjYTk1MTg5ODlhMGU4MGMzNTM2MGMyMzA3MWI3YTRiMDk0NzI5ZTMxZGE0Yjk5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2FlN2U3MGIzMjZhZmIxN2MzYmZjMzUzY2Q0OTk3YjI3NWZhM2I2YmRmN2VhMTgxYWMzMjAzMzQ1NjcwZmVkYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2JlYTY4ZWNmOTEwMzg1ZDJhOGJmM2Q5NTExODdlZGM0NzkzZTA0ZjkxYzVjNzdmNjM3ZjU3NmQ0NzU2NGEyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTc0MzU2N2I3OGY2ZjU0ZTQ4NmYyN2ExYTI4MDRlODE4YWFlYmIyMmMyNGE4MGNmYWQ0MzlhNzgzY2M2M2IwMyJ9"
+          "resource": "repo://AGENTS.md#L9-L9",
+          "version": "repo-lines-v1:sha256:13f5917a23682aca1350a31747ba6cc2d10c12f2e1578b0846fe027d5089bb1f:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTNmNTkxN2EyMzY4MmFjYTEzNTBhMzE3NDdiYTZjYzJkMTBjMTJmMmUxNTc4YjA4NDZmZTAyN2Q1MDg5YmIxZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTNmNTkxN2EyMzY4MmFjYTEzNTBhMzE3NDdiYTZjYzJkMTBjMTJmMmUxNTc4YjA4NDZmZTAyN2Q1MDg5YmIxZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmRiNzJlY2E2ZTRhMTZkNjJhMTk4OWI3YTFiODlhMzFmMTY4NDQ3M2NlYTViZDI4Yzk5ZGNhMzg3M2YzZmU5ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmYzYzI4NjViZjc0YTJmNGFiOGIyMmY3ZGJhMzg4MzYyNWM1YjZlNGU2YTFjMzVmZDY0MDg5MDc4ZGQzMjEwNiJ9"
         },
         {
-          "resource": "repo://HISTORY.md#L805-L814",
-          "version": "repo-lines-v1:sha256:7aed78e8b254fa8b0e88414a7862d5470737ea368a447e89db134ebdeecb03ea:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0ZTc3YmY2MDhlMThjMjI4ZjI5OTBiZjU0MGEzMzAzM2I1NTVkNjc2MjA4MzJkZjI2ZjQ5NjllZWEwMzc1MzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkZDU2ZjBhNzliYjFjNGI1MWMxZTVlZGM2ZjRkZGYzYzM0OGNhYTdmY2E1MDQwYmIxYjZjZjhkMWEyNGY1MTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFhNDc4ZTM4MDM2M2IxNDg0ZmYyNGRjNTgyYzcyMjRjZjYzMWU5YTgzNGY0NmEzOGI2Yzg5MzgxMzIxOTI2ZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM1ZjUyNGZjNWNmNzNhZThkMjM4MTY1ZWJlOTU3ZjgyZTU5MzU1YTgxMGM1ZDkxNGE3M2U1ZDhiNmI5YjI5NTcifQ"
+          "resource": "repo://CLAUDE.md#L54-L61",
+          "version": "repo-lines-v1:sha256:410073fd3bd54291faf08b29c54c7d1c80cfe8897b35638772fe7abba867cad9:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmFiMGRhN2JlYzY1NTU0YTUxMzYyYzQ5NGNlZTk4ZDM4ZmQxMjMwZDM0ZDJlNTI3MzVlZTRmNmUzM2U1MjQwMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWI4M2Q4ZTBjNDcwNjZiNWMwY2QxZTIzM2RjNzgxY2VlOTgyY2M3ZGMwNGVjMGMwMTI2ZGVjYzg5MzEyNTIzNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2JlYTY4ZWNmOTEwMzg1ZDJhOGJmM2Q5NTExODdlZGM0NzkzZTA0ZjkxYzVjNzdmNjM3ZjU3NmQ0NzU2NGEyYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTc0MzU2N2I3OGY2ZjU0ZTQ4NmYyN2ExYTI4MDRlODE4YWFlYmIyMmMyNGE4MGNmYWQ0MzlhNzgzY2M2M2IwMyJ9"
         }
       ]
     },
@@ -142,7 +146,7 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:e2f45aa7dad4c3ca3135e8cabfb5f59c2c52d64c8de0d012788700e63667ceee"
+          "version": "repo-file-v1:sha256:937ad6ff1ff48084fc20ae7e20811c1220acb7d89600679bd7ee2b9f14b81e11"
         }
       ]
     },
@@ -159,6 +163,6 @@
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-14T21:00:11.653Z"
+    "at": "2026-11-17T14:41:15.503Z"
   }
 }

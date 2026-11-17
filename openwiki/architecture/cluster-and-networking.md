@@ -5,8 +5,10 @@ description: The dgx-pair two-node DGX Spark topology, the load-bearing NCCL/Glo
 tags: [cluster, networking, dgx-spark, nccl, connectx-7, topology]
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-14T21:00:11.653Z
+    at: 2026-11-17T14:41:15.503Z
 sources:
+  - id: openwiki-source-8037e2358a2c4f9b2c722a11
+    resource: repo://AGENTS.md
   - id: openwiki-source-a2371d6362e5db4bc834ad03
     resource: repo://CLAUDE.md
   - id: openwiki-source-382af0b12a087a97295aa93b
@@ -15,7 +17,7 @@ sources:
     resource: repo://INDEX.md
   - id: openwiki-source-eedd5219d6290708f61cb7bf
     resource: repo://notes/2026-11-03-sparkrun-version-config-audit.md
-generated: { by: "claude-code", at: "2026-11-10T21:00:18.041Z" }
+generated: { by: "claude-code", at: "2026-11-17T14:41:15.503Z" }
 ---
 
 # Cluster & Networking
@@ -91,7 +93,7 @@ even though the CX7 fabric is fine. During one outage, launches fell back to
 the CX7 addresses directly (`--hosts 10.99.10.10,10.99.10.11` plus
 `HF_HUB_OFFLINE=1`) instead of `--cluster dgx-pair`.
 
-The current workaround (2026-11-03) is a dedicated WiFi SSID **"Citadel LAB"**
+The workaround recorded on 2026-11-03 was a dedicated WiFi SSID **"Citadel LAB"**
 bridged onto `10.10.20.0/24`, configured on the worker with static
 `10.10.20.11` and `ipv4.route-metric 200` so the wired path auto-wins once the
 cable/port is repaired. Beware: the worker's NetworkManager has flipped back to
@@ -101,7 +103,10 @@ autoconnect-priority adjustment on the worker.
 
 On 2026-11-10 the worker was reachable again on both its management address
 (`10.10.20.11`) and its CX7 address (`10.99.10.11`), after an earlier outage the
-same day; the wired NIC's hardware fix is not recorded as done.
+same day. As of 2026-11-17 SSH to `10.10.20.11` works again, but the link is
+still described as flaky and the wired NIC's hardware fix is not recorded as
+done. Bulk transfers such as weight rsyncs go over the CX7 address
+`10.99.10.11` rather than the management address.
 
 All of the above network repair steps require root. There is **no passwordless
 sudo** on either node; the only exception is start/stop/restart of
@@ -131,17 +136,18 @@ cables. The `dgx-pair.yaml` pin stays as-is.
 ## sparkrun version and gateway
 
 The CLI is **sparkrun 0.4.2** (installed as a uv tool; the 0.3.10-era gotchas
-recorded elsewhere in repo docs predate 0.4.x). The active inference gateway is
-the **SparkRoute** plugin (0.3.4), running as the proxy on the head node. The
-2026-11-03 version audit flagged its **0.0.0.0:4000** bind as an exposure risk,
-and on 2026-11-07 it was restarted on **127.0.0.1:4000**. The current
-`CLAUDE.md` again describes the gateway as listening on `0.0.0.0:4000` with no
-admin token, so treat it as reachable from any interface on the head until the
-live bind is checked. See the proxy & gateway routing page for the binding model
-and current routes.
+recorded elsewhere in repo docs predate 0.4.x).
+
+The head node's inference gateway on **`0.0.0.0:4000`** is now
+**spark-loader**, a separate project (`~/workspace/llm/serving/spark-loader`)
+that sits in front of LiteLLM on `127.0.0.1:4001`. The SparkRoute plugin that
+used to hold port 4000 was removed on 2026-11-17. Before that, a 2026-11-03
+audit flagged its `0.0.0.0` bind as an exposure risk, and it was briefly
+rebound to `127.0.0.1` on 2026-11-07. The new gateway is again bound to all
+interfaces. See the gateway routing page for how requests are resolved.
 
 ## Related
 
 - [Memory, Placement & Known Pitfalls](../operations/memory-placement-and-pitfalls.md)
 - [Launching & Verifying a Recipe](../workflows/launching-and-verifying.md)
-- [Proxy & Gateway Routing (SparkRoute)](../operations/proxy-and-gateway-routing.md)
+- [Gateway Routing (spark-loader)](../operations/proxy-and-gateway-routing.md)

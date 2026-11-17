@@ -1,8 +1,8 @@
 ---
 type: operations
-title: Proxy & Gateway Routing (SparkRoute)
-description: How the SparkRoute gateway on the head node's port 4000 routes model requests — proxy.yaml as the single source of bindings, the sync-based workflow, the binding schema, proven cold_start behavior, the current 9-route model list, embedding/rerank limitations, the unauthenticated admin API, and the operator-route vs recipe-binding name conflict.
-tags: [proxy, gateway, sparkroute, routing, operations, bindings]
+title: Gateway Routing (spark-loader)
+description: How requests reach served models on the head node — spark-loader on :4000 loads catalog recipes on demand and forwards to LiteLLM on 127.0.0.1:4001; the embedder and reranker run outside sparkrun; SparkRoute was removed on 2026-11-17.
+tags: [proxy, gateway, spark-loader, litellm, routing, operations, sparkroute]
 sources:
   - id: openwiki-source-8037e2358a2c4f9b2c722a11
     resource: repo://AGENTS.md
@@ -10,157 +10,104 @@ sources:
     resource: repo://CLAUDE.md
   - id: openwiki-source-382af0b12a087a97295aa93b
     resource: repo://HISTORY.md
-  - id: openwiki-source-d731ee870c7c4da596ac3b0a
-    resource: repo://INDEX.md
-  - id: openwiki-source-456fceaa0ae7a8e901be70bf
-    resource: repo://MODELS.md
   - id: openwiki-source-eedd5219d6290708f61cb7bf
     resource: repo://notes/2026-11-03-sparkrun-version-config-audit.md
-generated: { by: "claude-code", at: "2026-11-10T21:00:18.041Z" }
+generated: { by: "claude-code", at: "2026-11-17T14:41:15.503Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-14T21:00:11.653Z
+    at: 2026-11-17T14:41:15.503Z
 ---
 
-# Proxy & Gateway Routing (SparkRoute)
+# Gateway Routing (spark-loader)
 
-Requests reach served models through a gateway on the head node. The active
-gateway is the **SparkRoute** plugin (0.3.4, external, git-sourced), selected
-via the `gateway.sparkroute` feature; LiteLLM remains sparkrun's upstream
-default but is not what runs here. The 2026-11-03 audit flagged its
-**0.0.0.0:4000** bind (any interface on the head) as an exposure risk, and on
-2026-11-07 it was restarted on **127.0.0.1:4000**. The current `CLAUDE.md`
-again describes the gateway as listening on `0.0.0.0:4000` with no admin token.
-Check the live bind before relying on loopback-only exposure.
+Requests reach served models through a two-layer gateway on the head node
+(`gb10-spark`). Since **2026-11-17** the front door is **spark-loader**. The
+SparkRoute plugin that used to own port 4000 has been removed, along with its
+bindings.
 
-The proxy runs under `sparkrun-proxy.service` on the head. While the unit is up,
-`sparkrun proxy start` and `alias add` can fail with `ResourceBusy`. In that
-case edit `proxy.yaml` and run `sparkrun proxy sync`, or restart the unit with
-`sudo -n systemctl restart sparkrun-proxy.service`. This is the one root
-command allowed without a password.
+```
+client ──► spark-loader  0.0.0.0:4000   (spark-loader.service, user unit)
+              │  catalog: ~/.config/spark-loader/catalog.yaml
+              │  loads missing catalog models via the sparkrun daemon
+              ▼
+           LiteLLM       127.0.0.1:4001 (sparkrun-proxy.service)
+              │  model list from sparkrun discovery
+              ▼
+           running sparkrun workloads (dgx-pair / gb10-solo / gx10-solo)
+```
 
-## Bindings live only in `proxy.yaml`
+## spark-loader: on-demand loading in front of LiteLLM
 
-There is **no CLI command to add or remove a binding**. The single source of
-truth is `~/.config/sparkrun/proxy.yaml`; `sparkrun proxy sync` makes the
-running gateway match the file **atomically**. The workflow is always:
-edit `proxy.yaml`, then `sparkrun proxy sync`.
+spark-loader is a separate project (`~/workspace/llm/serving/spark-loader`), not
+part of this repo. It runs as the user unit `spark-loader.service` and listens
+on **`0.0.0.0:4000`**, which is every interface on the head. Treat it as
+reachable from the LAN.
 
-Recipe references in bindings must use the **qualified** form
-`@spark-forge/<recipe>`. Plain recipe names are ambiguous — the local checkout
-and the `spark-forge` registry both match — and the resolver demands an exact
-recipe. A recipe not yet committed to `main` (invisible to the registry) can be
-bound by **absolute file path** until it lands. The 2026-11-08
-embedding/reranker recipes were bound this way. On 2026-11-10, after they were
-committed to `main`, they were switched to `@spark-forge/` names.
+- **Catalog.** `~/.config/spark-loader/catalog.yaml` lists the models it may
+  load, each named by a qualified registry recipe, `@spark-forge/<name>`. A
+  recipe is therefore loadable through the gateway only after it is on `main` and
+  `sparkrun registry update spark-forge` has run (see the registry page).
+- **On-demand load.** A request for a catalog model that is not running is
+  loaded through the sparkrun daemon.
+- **Default fallback.** A request for a model that is neither running nor
+  in the catalog falls back to `default`, which spark-loader resolves to the
+  **largest running chat model**.
+- **Idle stop.** Models spark-loader started are stopped after about 30 minutes
+  idle.
 
-Beware: **`sparkrun proxy unload` deletes the recipe's binding from
-`proxy.yaml`**, not just the running deployment. After using it, restore the
-binding by hand and re-sync.
+Behind it, **LiteLLM** runs as `sparkrun-proxy.service` on `127.0.0.1:4001`,
+loopback only. Its model list comes from sparkrun's own discovery of running
+workloads. `~/.config/sparkrun/proxy.yaml` now holds only aliases and proxy
+settings; there are no bindings left in it.
+
+### Operating the LiteLLM layer
+
+While `sparkrun-proxy.service` is up, `sparkrun proxy start` and `alias add` can
+fail with `ResourceBusy`. Edit `proxy.yaml` and run `sparkrun proxy sync`, or
+restart the unit with `sudo -n systemctl restart sparkrun-proxy.service`. That
+restart is the one root command allowed without a password.
 
 The companion file `proxy.env` holds secrets (HF/NGC/NVIDIA/Ollama API keys,
 mode 600), according to the 2026-11-03 audit. Never print secrets into output
 or files.
 
-## Binding schema
+## Embeddings and reranking bypass the gateway path
 
-Upstream docs omit the binding schema; the **installed plugin source** at
-`~/.config/sparkrun/plugins/sparkroute/*/payload/` is authoritative. The fields
-are:
+The embedder (`:8000`) and reranker (`:8001`) are **not** sparkrun workloads.
+They run as the `spark-pinned` docker compose stack on `gb10-spark`, because
+sparkrun 0.4.2 reserves a whole GPU per workload. Callers reach them on those
+ports directly. Their recipes (`recipes/qwen/qwen3-embedding-4b-tp1.yaml`,
+`recipes/qwen/qwen3-reranker-4b-tp1.yaml`) remain the record of the verified
+serve shape. The memory page covers how this stack interacts with large
+launches on the head.
 
-- `recipe` — qualified recipe reference
-- `cluster` or `cluster_candidates` — placement target(s)
-- `cold_start` — `wait` or `reject`
-- `model` — public model name exposed by the gateway
-- `overrides`, `capabilities`
+## History: SparkRoute (removed 2026-11-17)
 
-## Cold start and placement policy
+From early November until 2026-11-17, port 4000 was the SparkRoute plugin
+(0.3.4). Its model was different. Each served model was a **binding** in
+`proxy.yaml` (`recipe: '@spark-forge/<name>'`, `cluster` or
+`cluster_candidates`, `cold_start: wait`), and changes were applied with
+`sparkrun proxy sync`. Several lessons from that era are recorded in
+`HISTORY.md` and `INDEX.md`:
 
-- **`cold_start: wait`** is used on all bindings here: a request for a model
-  that is not currently serving **queues through the multi-minute model swap**
-  instead of erroring. `reject` would fail fast instead. This is **proven in
-  practice**: a 2026-11-08 test request to the cold GLM-5.3-flash-abliterated
-  binding held the HTTP connection through the entire boot and returned 200
-  with the expected completion after **584 s (~9.7 min)**.
-- **Idle-node-first** placement is encoded by `cluster_candidates` **order**
-  (e.g. a TP1 recipe listing `gb10-solo` then `gx10-solo`). SparkRoute 0.3.4
-  has no preempt-on-demand; eviction happens only via gateway idle timers on
-  gateway-owned jobs.
+- Bindings had to name recipes as `@spark-forge/<name>`, because a plain name
+  matched both the working tree and the registry. spark-loader's catalog keeps
+  the same convention.
+- `cold_start: wait` held a request open through a full cold boot. In a
+  2026-11-08 test, a request returned 200 after 584 s.
+- SparkRoute had no rerank route, and its embedding activation wait was shorter
+  than a cold boot. The embedding recipe still carries the
+  `sparkroute: {capabilities: [single_vector_embedding]}` block that SparkRoute
+  required. That block is now vestigial.
+- The 2026-11-03 audit flagged the `0.0.0.0:4000` bind. SparkRoute was briefly
+  rebound to loopback on 2026-11-07. spark-loader is again bound to all
+  interfaces.
 
-## The current model list (2026-11-08: 9 routes)
-
-The binding list was rebuilt on 2026-11-07 ("pick models carefully"): the
-gateway had been left with **zero routable models** because console edits had
-put all five sparkrun deployments into the operator set's
-`excluded_deployments`. The exclusions were cleared via an admin-API CAS
-replace (backup at
-`~/.config/sparkrun/sparkroute/operator-set-backup-2026-11-07.json`) and the
-list was re-picked to five VERIFIED recipes; on 2026-11-08 four more bindings
-were added, bringing the gateway to **9 routes**:
-
-| Route | Recipe (INDEX row) | Role |
-|---|---|---|
-| `qwen3.8-flash-next-abliterated` | row 59, dgx-pair | primary general chat |
-| `glm-5.3-flash-abliterated` | row 62, dgx-pair | GLM lane — one long request at a time |
-| `deepseek-v4-coder` | row 47, dgx-pair | coding agents |
-| `deepseek-v4-flash-vision-uncensored` | row 43, dgx-pair | 1M context + vision |
-| `Qwen/Qwen3.8-27B-FP8` | `qwen3.8-27b-fp8-mtp-tp1`, gb10-solo | head-only weights |
-| `qwen36-35b-a3b` | heretic NVFP4, both solos | only complete-weights 35B-A3B MoE |
-| `nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4` | row 54, gb10-solo → gx10-solo | fast interactive lane |
-| `Qwen/Qwen3-Embedding-4B` | row 65, new | RAG/agent-memory embeddings |
-| `Qwen/Qwen3-Reranker-4B` | row 66, new | reranking (direct endpoint only — see below) |
-
-The `Qwen/Qwen3.8-27B-FP8` route was removed on 2026-11-10, when that
-checkpoint was deleted from the head (backup on the NAS). That leaves 8 routes.
-Before relying on this table, check it against the live `proxy.yaml`.
-
-## Embedding and rerank: what the gateway can and cannot route
-
-- An embedding binding only routes if its recipe declares
-  `sparkroute: {capabilities: [single_vector_embedding]}` (see recipe anatomy).
-  Embedding through the gateway is VERIFIED (2560-dim vector, 1.7 s warm).
-- The gateway's **embedding activation wait (~160 s) is shorter than the
-  ~3–4 min cold boot**, so the first cold embedding request returns a 503
-  (`activation_failed`) while the launch continues; a retry succeeds.
-- sparkrun's activation probe sends a chat request by default, which pooling
-  runners 404. Both pooling recipes therefore set `readiness: {inference: false}`
-  (2026-11-10). The embedding route was re-tested on `gb10-solo` through the
-  gateway after that change: HTTP 200, 2560-dim vector.
-- **SparkRoute 0.3.4 has no `/v1/rerank` (score) route** — confirmed in the
-  plugin source. The gateway 404s rerank calls even though the binding lists
-  and cold-starts the model; callers (e.g. RAGFlow) must hit the serving
-  container's endpoint directly. Reranking was verified direct on the node
-  (test pair scored 0.726 vs 0.684).
-
-## Admin API and operator routes
-
-The gateway exposes an admin API on port 4000 with **no authentication**. A
-loopback bind limits this to the head node; on a `0.0.0.0` bind, anything that
-can reach the head can drive it:
-
-- `GET`/`PUT /v1/config/managed-sets/operator` — read/replace operator routes
-- a validate endpoint
-- compare-and-swap updates via `expected_active_revision`
-
-Operator (static) routes and sparkrun recipe bindings share one namespace:
-**strict validation rejects a sparkrun binding whose public name an operator
-route already owns**. On 2026-11-03 three stale operator virtual models were
-removed via an admin-API CAS replace for exactly this reason (backup kept at
-`~/.config/sparkrun/sparkroute/operator-set-backup-2026-11-03.json`);
-`qwen38-27b` and `qwen38-27b:low` were kept as operator routes.
-
-## Routes are not backends
-
-The proxy advertises model routes regardless of whether anything is serving.
-The 2026-11-03 audit caught the proxy exposing 5 routes while **both hosts were
-idle with no sparkrun containers** — requests to such routes fail (or, with
-`cold_start: wait`, block) until a workload launches. Autodiscovery sweeps the
-`dgx-pair` cluster every 30 s to pick up live backends, and a discovered model
-name can collide with a reserved operator route of the same name (observed with
-`qwen38-27b`).
+Do not try to manage spark-loader through SparkRoute commands or the old admin
+API (`/v1/config/managed-sets/operator`). Those no longer exist on this host.
 
 ## Related
 
+- [Registry & Publishing](../architecture/registry-and-publishing.md)
+- [Memory, Placement & Known Pitfalls](../operations/memory-placement-and-pitfalls.md)
 - [Cluster & Networking](../architecture/cluster-and-networking.md)
-- [Launching & Verifying a Recipe](../workflows/launching-and-verifying.md)
-- [Recipe Anatomy](../concepts/recipe-anatomy.md)

@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:3e66847ed9630efdeba635e75ea50e2fa08be060c70ad0b5183b12209201a88c",
+  "pageVersion": "sha256:7457a594235b5e93b0d567df44e0c20bbdb65e10527a0a780346993e9ec9abc7",
   "claims": [
     {
       "id": "claim_cf69e2682a8340baad49b751cefd401f",
-      "statement": "A recipe is a single sparkrun v2 YAML in recipes/ declaring identity (model checkpoint, runtime, immutable-tagged container) and placement (min_nodes/max_nodes), where a 2/2 recipe is a two-node tensor-parallel workload and a 1/1 recipe is launched with --tp 1.",
+      "statement": "A recipe is a single sparkrun v2 YAML under recipes/<family>/ declaring identity (model checkpoint, runtime, immutable-tagged container) and placement (min_nodes/max_nodes), where a 2/2 recipe is a two-node tensor-parallel workload and a 1/1 recipe is launched with --tp 1.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L112-L113",
-          "version": "repo-lines-v1:sha256:e9164e8d869e4998a46e9e7e91bca7594757b0261add41f4036efeeb0e3cff07:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTgyZTc2ODljYmQ4NGU3ODZiNzRjZjBiNTdiMjVhMzhjNzU1MTY1NmZlMmYxMDU4ODNkZGVkNjU2YTNlMWMwNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTYwN2EzOTM0ODU1YWQzYzJmNWY5MWI0MWNlODE4MWNlMmE5YTIwYTFkMDliMTU0NWUwZjE0MTg0MjVkYzUxNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmFhYjlmMmRkMzNkOWEyYzAwMjQ2NjU3MTcyZWU5OTEyZDJhODY1YjQ4N2EyNTI1MzEwM2M1YTM5MmVkNjcxZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTAwZjY3NjgwYjE1NzMwNGUwNzI3NjhlM2NkNTVjZGE0N2ExODg5MDIyOGU4MzUyODIxMWE4NmNiOTA5YmY5ZCJ9"
+          "resource": "repo://CLAUDE.md#L95-L97",
+          "version": "repo-lines-v1:sha256:78280a20061a24417b5e798a840cdce4e5bf6068ed99e17be2d031af0d09170c:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODFkMGY2ZDViMDllZjk5ZGExZWRiZjI2ZWEzYmZkYzhhMDQ3MGZhM2U5YTgzMjkwZTcyMzc3ZDM4MzI3YmVmMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2JkNmZiOTc4MDI2ZjBjYzA0MDNjZWE3YzA1NGEyYWM2ZTczZDMzMWRkNGI3MzQ3OGM0ZjFjZDk1NTRmMThhNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDRmZDYwNTJlNmQ0NWU4ZjE1NjQ3NjE3ZGJjMjRjOThlZjFlYTI5OTg2NjE0ZDQwNDA4ZWNhNmI0NGQzNGRlYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2E5ZWZlYmY0MDRmNzg4MTUwMjI2NGQ5MTk3MTkwMDJmYjg2NjgyMmNjNmUyNGVlYWI0YWE2ZjhkZjlhZmE3MyJ9"
         },
         {
-          "resource": "repo://recipes/qwen3.8-flash-next-abliterated-nvfp4-tp2.yaml#L32-L37",
+          "resource": "repo://recipes/qwen/qwen3.8-flash-next-abliterated-nvfp4-tp2.yaml#L32-L37",
           "version": "repo-lines-v1:sha256:4521f48641e59aa4bdae6f86b90bd4adffc209ed5b0ab657cbf2defede7bec7e:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWYxZmNjMGJhZDk2Y2I3NzkwNmI3YmQ5ZjNmMzk5YTUwZmQ0MjU2NjM0NzIzNzQxYmQwNTMyOWNlZjJkNWE0ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTdhNjhlNTliNDE3MWI3MDg0Y2UyYTI0OTUxNzVjNmE0NzgxMjY1ZmUwNjQzODAyNTFhYTUwYjZmNTIxOTVlYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDVmMDdiOTFjZGY0MzZmYzQ3NmQzODFmMjc5ZWVkZmExOTg5YjEyYjBlNWQ0YzBmMWY0ZjAyNDE2YWQ0YmY3ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGNkOWExNGVjNGM1YTAwMGQ5N2UwNDM2OGYwOGYxMGQ3MjZiYzM3NGZhOTk4NTg5MjFjZjEzYmE4YThjYmEzMCJ9"
         }
       ]
@@ -21,7 +21,7 @@
       "statement": "The defaults block holds tunables as keys and the command block is the literal engine invocation containing {placeholder} tokens that sparkrun substitutes from defaults and CLI/-o overrides at launch, so any default can be overridden from the command line without editing the file.",
       "evidence": [
         {
-          "resource": "repo://recipes/qwen3.8-flash-next-abliterated-nvfp4-tp2.yaml#L74-L119",
+          "resource": "repo://recipes/qwen/qwen3.8-flash-next-abliterated-nvfp4-tp2.yaml#L74-L119",
           "version": "repo-lines-v1:sha256:443b119234a2bacc3dd5503b1dd1ce3c21e1f0cb208c2aec607118aae6f689bf:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyN2EwNTU4ODJmYWI3YmFkOWE0YjZjNjNmZmNiYWU1MjEwMjkwYWQ2MjY5OWMzMWZmMGNiYzg0NWVmYmE1NjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhMGY0N2Y3OWU1M2NjMDYwMTg2ZTNhMTgxYTk1YjI0ZjBlZWE1OWQ2MTcyY2I0N2MzNGEzNWYxODNjYWY0OTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImViOTdkZGYwZWE4Mjc3MTYxNGFiOTgzMDUyOWVhZDg2MDQxNDgyNmVhODRkOTVhODAwZTc2NzM1YzFjYjNiY2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         }
       ]
@@ -31,7 +31,7 @@
       "statement": "The served_model_name set in a recipe is the model id the endpoint advertises, which benchmark and needle harnesses must target.",
       "evidence": [
         {
-          "resource": "repo://recipes/qwen3.8-flash-next-abliterated-nvfp4-tp2.yaml#L89-L93",
+          "resource": "repo://recipes/qwen/qwen3.8-flash-next-abliterated-nvfp4-tp2.yaml#L89-L93",
           "version": "repo-lines-v1:sha256:0f5f8b9adaa6554dfd67e1a7e44a976a7c813feb5805ad32ba3d4e3e9de0887e:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjNiNmZkOTYzN2FkMzY2MGQ3MDVlY2M2YzgwOGI4MzliZGMxMWFhYjU0YjIwYzJhNTgyOTE2Y2FlM2Q0OGZkMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGYwZjY3ZGJjOGRiMGFiYTMzMTVhMjgwZTY4NTBhODI0NTgwYmE4Njk0MWJlYmMyMTFiYTgyZjNiMDA0NTU5NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDc4MjgzNTMyYWFhMGExYTk4YWZiNmQyODcyNWYzOTRkNjkyOTBhMmQ4YjQyNDI3Mjk2NTcxNWNmZGYzMjY4ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjg4N2VhZmZhYzNjNWY4ZTZlYWY2MzRlYjlhNmJjOWViNTFjMDhlNTY5NjQyOGNiNTEzMjQ0YjkzMzdjZDIzMSJ9"
         }
       ]
@@ -41,11 +41,11 @@
       "statement": "A recipe's env block sets container environment variables that tune the engine or work around platform quirks, and these are distinct from the cluster-level communication pins which live in the cluster definition rather than in recipes.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L103-L104",
+          "resource": "repo://CLAUDE.md#L113-L114",
           "version": "repo-lines-v1:sha256:87f6248ecf70d792df4ba7ef80d2ef4490c73dfa6e7d148b8e2fc9cc8ad71d55:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2Q0NGY5MDc5YTI3MmMyZDE3NzViMTNkMjI5YmM2NDJmYWE5ZWRjOWI1YmQyOGMyNDc5NTJmYjE1NDM2NzQ1NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjU5ZGQ5Mzk2ZDZlOTUxMWYyYzYxYjUyNzFkY2E4MmZiNzI1MjUwMjMwMjBjNzUwNDgxYmQzZjNhYjY2MTAxYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTVkNGFmOGU4ZGEwNTM0MjU4MGUwNDIzMzZhYzQzNTBmZjE4NmUyZjVlNDgzMDFkNzJmODE1MzIzZDg2MDMwMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2UxODFjZTIyMzJjYWY2ZWVjOTU1MDc0OTVmZDUwOThjZGQ5YTQ1OGMxMmUzYmE2NTkwY2ZmYzkyMjUzZTQzMCJ9"
         },
         {
-          "resource": "repo://recipes/qwen3.8-flash-next-abliterated-nvfp4-tp2.yaml#L53-L73",
+          "resource": "repo://recipes/qwen/qwen3.8-flash-next-abliterated-nvfp4-tp2.yaml#L53-L73",
           "version": "repo-lines-v1:sha256:87d014c17d5ef56d52a48dae9ec286628a181a58896b9b9c86e6d942b032a3c5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEwYTU5NGYzNGI3ZjBlYTU3M2RhNzg3MDNlMjc0OTMwZGI3MThjOTQyY2FmM2MwNDI1MTc1NWY2MjNjNjBkNWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNiMGVlMTY3NjYwNWFhOTg1NTQ4ODYxOGRiYjU4ZGQ2ZjhmNzNiNGEzNWU1MWJjMWRkNDY0ZjM2ZjQxNDA2M2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIxNjI4OWI3NzkwMmQ0NDFiYTg5Y2QzYTk1ZmViZGU4NzQzYTM4MjVhYzE2ODVhNWRlZTQ3MjMwNjdjOGQyNzIifQ"
         }
       ]
@@ -55,7 +55,7 @@
       "statement": "Images that bake ENTRYPOINT [\"vllm\",\"serve\"] require the recipe to clear it with executor_config: {entrypoint: \"\"}, otherwise the re-invoked serve command stacks and the container fails to start.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L114-L115",
+          "resource": "repo://CLAUDE.md#L124-L125",
           "version": "repo-lines-v1:sha256:cfec55cf4361503c57dcd72102171fe1e897bb72e6a80b2b6e23fc48133270a6:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTRkNzc2MTVjZTBlNDhkN2M5MTY1MDc4NWYxZDJmOGU5ZWIxYzhiYWIwZTFhMTllNjkxZjljZWMyMjJkOTA2ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2QxYmQzNmMwODgyMTM2M2MzOGI1NjE4ZWUwY2QzNjYyYmQyNjYyNDI4MmUxZDJkY2FjMGUwMjk2NWU2NGViYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2Q2NWEyMGYyMDc3Yzk0N2ZlNjg1N2I5YzkyMDY4MGQyOGZkZjA2OTgwMDlhZDcxZmY3OWQzYWI5MGIyMTU0OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2VmMDE4MTVkNTM5N2FmZGI4ZjAxMjQxM2U0MjcyMTU1OGQwNjhmYWYxOWU4NGU5OTcwYzYyZWIyODM5M2YxYyJ9"
         }
       ]
@@ -65,11 +65,11 @@
       "statement": "Because GB10 is unified memory, fit is governed together by gpu_memory_utilization (working range 0.70-0.82; 0.85 has caused NVRM OOM at boot), max_model_len (explicit number or auto to the checkpoint's native maximum), and the KV cache controls (kv_cache_dtype and an optional kv_cache_bytes pin), with a smaller max_model_len or KV pin trading per-request context for batch headroom.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L110-L110",
+          "resource": "repo://CLAUDE.md#L120-L120",
           "version": "repo-lines-v1:sha256:67d554783b120c3d589e4afcfead7ea1a4ebe02ad3e5ce79b7cd8fd482dad7ed:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdkNTU0NzgzYjEyMGMzZDU4OWU0YWZjZmVhZDdlYTFhNGViZTAyYWQzZTVjZTc5YjdjZDhmZDQ4MmRhZDdlZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdkNTU0NzgzYjEyMGMzZDU4OWU0YWZjZmVhZDdlYTFhNGViZTAyYWQzZTVjZTc5YjdjZDhmZDQ4MmRhZDdlZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2NmMTI4ZmJlZjI5NTg4MWYyMGY2YjJlOTNmNmFhMzIxNDk3OTQxYjc5MTYzZTRkMTRmNTE4Y2E4NDhiMGQ2MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2Q2NWEyMGYyMDc3Yzk0N2ZlNjg1N2I5YzkyMDY4MGQyOGZkZjA2OTgwMDlhZDcxZmY3OWQzYWI5MGIyMTU0OCJ9"
         },
         {
-          "resource": "repo://recipes/qwen3.8-flash-next-abliterated-nvfp4-tp2.yaml#L79-L82",
+          "resource": "repo://recipes/qwen/qwen3.8-flash-next-abliterated-nvfp4-tp2.yaml#L79-L82",
           "version": "repo-lines-v1:sha256:290eaf45d469ee033c168d0145cd3340a6168d506331352a47089dd6ea8ae214:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmJlYzczNzQyOTQ0YTFiYzQ2OGRmNThlYjNlNGQyOGQ5MGYyNDhiYTVkOTQxNjQ1MWI2MGZjYTk1YTAxNzY0MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDFhMDc3ZTYyNDEwZGJmNTA3ZmE2NDY1NGRkZDMxMjE1Yjk3ZjI2ZTgxZDg1NzA3ZDAyYjQ0MzhiMjgxZWQ4NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjY2MmM3NTQ5ZWQ4ZDFlZDJkNzljZjczNWU0MzgzY2Y1MWIyZDc1YTQ1MmY5YjBkY2Q3ZTBiMzFhYWNjNDBjOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjhmMTU4MzYzZDc4ZjNjMjc2MDA1MWQzZjczMTllZTliNjgxODE0ZjE3NWZhYzU5ZjYwZDUyZWQ1ZmZiMDk2MSJ9"
         }
       ]
@@ -79,22 +79,26 @@
       "statement": "After launch the engine's effective max_model_len should be read back from /v1/models, and the vLLM serve log is at /tmp/sparkrun_serve.log inside the container rather than in docker logs.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L116-L116",
-          "version": "repo-lines-v1:sha256:3cf70d8d09aa8afd12e6c367480aae76504bcb3567f60974f3ae3ec47ebb94b8:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2NmNzBkOGQwOWFhOGFmZDEyZTZjMzY3NDgwYWFlNzY1MDRiY2IzNTY3ZjYwOTc0ZjNhZTNlYzQ3ZWJiOTRiOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2NmNzBkOGQwOWFhOGFmZDEyZTZjMzY3NDgwYWFlNzY1MDRiY2IzNTY3ZjYwOTc0ZjNhZTNlYzQ3ZWJiOTRiOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjYxMjM1MmIyNWY1M2Y2NDE3MmQxZWE5MGI3NGM5ZmNjZTczYzcxNTdjYmQ5MjE3OTY2YWM4MDhkMDcyOTEwNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmM3ZWJlZmIxMTZjMjdjYTc5MGI2M2RhMTJjZjk3ODI2YzgxNmFlMGEzMjMyNjhmZWI1YTYzZDFiZmYwNjAwOSJ9"
+          "resource": "repo://CLAUDE.md#L126-L126",
+          "version": "repo-lines-v1:sha256:3cf70d8d09aa8afd12e6c367480aae76504bcb3567f60974f3ae3ec47ebb94b8:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2NmNzBkOGQwOWFhOGFmZDEyZTZjMzY3NDgwYWFlNzY1MDRiY2IzNTY3ZjYwOTc0ZjNhZTNlYzQ3ZWJiOTRiOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2NmNzBkOGQwOWFhOGFmZDEyZTZjMzY3NDgwYWFlNzY1MDRiY2IzNTY3ZjYwOTc0ZjNhZTNlYzQ3ZWJiOTRiOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjYxMjM1MmIyNWY1M2Y2NDE3MmQxZWE5MGI3NGM5ZmNjZTczYzcxNTdjYmQ5MjE3OTY2YWM4MDhkMDcyOTEwNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2YxODMzYTg4ZDE5ODljNzAwNDM3ODdmYjYyNzhlNjJiNDY5YTJlYTg4OWRjZmUxNTE1NzIzY2U5YjQzMGIwNyJ9"
         },
         {
-          "resource": "repo://recipes/qwen3.8-flash-next-abliterated-nvfp4-tp2.yaml#L2-L2",
+          "resource": "repo://recipes/qwen/qwen3.8-flash-next-abliterated-nvfp4-tp2.yaml#L2-L2",
           "version": "repo-lines-v1:sha256:59936ea2f2b19b04bec3240ec9af4787027fd1e94c34da589c410cec6580d7c2:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk5MzZlYTJmMmIxOWIwNGJlYzMyNDBlYzlhZjQ3ODcwMjdmZDFlOTRjMzRkYTU4OWM0MTBjZWM2NTgwZDdjMiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTk5MzZlYTJmMmIxOWIwNGJlYzMyNDBlYzlhZjQ3ODcwMjdmZDFlOTRjMzRkYTU4OWM0MTBjZWM2NTgwZDdjMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjEsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGQ2YTkzM2Q5YzA0MjVhNzZhYjA3YmYxNjIwOTNiMGFhNDhmYTI5NGVmYzA0ODVhZDAzMzc0NGM5YmQ0ZTZmYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDhkY2E5NmFmYjBiMzBmZGIwYmU1Y2NkY2M0MTU2YTdkYzEzM2U4ZDA0OTgxZGYzMjA0NDc1YTJiZmI0ZTcyZiJ9"
         }
       ]
     },
     {
       "id": "claim_f51cdce0b6614b158360c5010832fb37",
-      "statement": "A recipe can list directories under a top-level mods: key (e.g. mods/glm53-exl3-gb10-topk); each mod's run.sh executes inside every rank's container before serve to patch the prebuilt image, as with the GB10 persistent_topk disable for the :exl3 GLM image.",
+      "statement": "A recipe can list directories under a top-level mods: key written as ../mods/<name> (e.g. ../mods/glm53-exl3-gb10-topk); each mod's run.sh executes inside every rank's container before serve to patch the prebuilt image, as with the GB10 persistent_topk disable for the :exl3 GLM image.",
       "evidence": [
         {
-          "resource": "repo://recipes/glm-5.3-flash-exl3-abliterated-tp2.yaml",
-          "version": "repo-file-v1:sha256:e5d76111cf8814f85261e200d472189d806c70019113fde1f111628cb29c4bfd"
+          "resource": "repo://recipes/glm/glm-5.3-flash-exl3-abliterated-tp2.yaml#L17-L21",
+          "version": "repo-lines-v1:sha256:70da57abab693d12d5a8b2b9e7273cad20c02efb0c94bb1ae26a94a39dcb1e55:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjg2NzQ1ODUxZjQyNWQyZmY2NjhlMDI0OGE5ZjA4ODNlYWVhZjZkMzkyNzNmOGY2M2UxZDU3ZTAxMGFjNzViZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTZmMTYwYmNiNjJmZmRkZThjMzk0ZWMzNGJiYjc2YjljNmVjZmNmN2E4ODY3YWYwNDZmZjE1ODkwYzYxZTg4OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTgzZTUyNzkwNmZiYzYxMzI0ZTdlZDMzMjI0N2Q1ZmEyMDU5YmE5N2RhYzQ1MzgzNTdmOTRmY2JhYjgwNzc4YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjAyYTBmNWE3OGI2YzEzZDU1OGE5ZDRiZGYzMWNkMzgyZWRlNTJiYmFhMzJhNDhjOWE2YmE0OGVmNzE0NjM1MiJ9"
+        },
+        {
+          "resource": "repo://recipes/glm/glm-5.3-flash-exl3-abliterated-tp2.yaml#L38-L39",
+          "version": "repo-lines-v1:sha256:87742ec1b606e3224b359e8878c9d597a77b621d8fc73959cc3eb245a34779ba:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTVlMTExZjViOGRmYTg2NThmZGE1NzVjYmQ1ZmJmNDU4Y2Q4YWY1MmEyMWEwNzQ0ZWUyN2I4MzUyZjUwNzc1YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGUzMzU3ZTQzZTdkMTVmNzlkOWNjNDhjZjQ4MTNjMmQ4NGZlOTNhMjMzZmI2ZTBlMGEwZWFkYjAyY2UzNDQ5YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWNjZTYwYjU4NDhhYjUxYThhOThiNzRjNjFiOGQ0Y2NhMDZmMzdlYzlkM2Q1MzEyNDQwZmJhYzE0YjY1ZTA2YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmZkNjhiNWU3MmY2OWZhNzU2MDg3NTY2MWQ4Mjc2ZjJlMTQ5MTZjMzZkOGVmMDk5YzA1ZWRiMzM1ZmY5OTZkNyJ9"
         },
         {
           "resource": "repo://recipes/mods/glm53-exl3-gb10-topk/run.sh",
@@ -107,43 +111,21 @@
       "statement": "The embedding and reranker recipes (qwen3-embedding-4b-tp1, qwen3-reranker-4b-tp1) serve vLLM's pooling runner via --runner pooling at gpu_memory_utilization 0.3, answering /v1/embeddings and /v1/rerank instead of chat completions.",
       "evidence": [
         {
-          "resource": "repo://recipes/qwen3-embedding-4b-tp1.yaml#L22-L39",
+          "resource": "repo://recipes/qwen/qwen3-embedding-4b-tp1.yaml#L22-L39",
           "version": "repo-lines-v1:sha256:7b433b15cf34ba5fec3201edf0d6ce15aa4fa549a36a4221475c7edd7b7d0587:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyN2EwNTU4ODJmYWI3YmFkOWE0YjZjNjNmZmNiYWU1MjEwMjkwYWQ2MjY5OWMzMWZmMGNiYzg0NWVmYmE1NjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzODE3NWU3NGZkOTM3ZmY4NDczNzJkZDJmMjBkMTEyMzhkZWFhNjRkMTllZjQxNTBjM2E4MzJhZTFlMWYwN2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM2ZDNhMjE5NTVkZjI3ZDhiOWI4NWM0NGMyZDQ4NjU1ZWI1NDA3ZmFkMjA1MTA1ODdmYWM4NDgwOTk5ZGUwYzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
         },
         {
-          "resource": "repo://recipes/qwen3-reranker-4b-tp1.yaml",
+          "resource": "repo://recipes/qwen/qwen3-reranker-4b-tp1.yaml",
           "version": "repo-file-v1:sha256:a3e806fab284f8aa26f12c9bf2a59845ed719502d08e27fe2f5808efdd11e8cd"
         }
       ]
     },
     {
-      "id": "claim_a601aaccb9a84a4fa677b2334bed26fc",
-      "statement": "An embedding recipe must declare sparkroute: {capabilities: [single_vector_embedding]} or the SparkRoute gateway refuses the route; the reranker recipe carries no capability block because SparkRoute 0.3.4 has no rerank route and callers must hit the container endpoint directly.",
-      "evidence": [
-        {
-          "resource": "repo://HISTORY.md#L846-L852",
-          "version": "repo-lines-v1:sha256:2f234aeed9b851e0f0e44d288e70da89d8f96f57caafb4a75b649bd65056e8bb:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWE3NGExNDU1YTYwYzdmY2IwM2I4MTc3MTY3ZDQ3OWU1M2RiNTYyOWYzMWE1NWEzZTllNGViODlhMGEzZTAyNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2Q4NTljMmY1YTZmM2RlMmRhMzkzYjc3OTEzZjYxNjVkZjdmZWZjYzUyNWU5YTUxZDk1Y2E2MTFmYjFlOTVjOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWQ2N2NhMTZlOWMyMzMzYTkxZmRmNzhlZDk2Yzc3MzkyOWEyYWM4NjNlYzRhMmQ4ZmM3ZGJmMzcxZDg0Y2RlZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODNmMTU4NDZjYjY3MjVkOGE3YjA3MWQ2OWYwYWU0NDQ0ZjYyMDdlZGJkYTlkMGI0ZmM5ZTA5NjdjNTVlOGMxZSJ9"
-        },
-        {
-          "resource": "repo://INDEX.md#L104-L105",
-          "version": "repo-lines-v1:sha256:949cdefac33e1ae75a1447f367c4ec37d720999d2bcb0f58f1a8688e8813eb91:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWYxNDU5MjA0OGVlYzk0MzU1MzU4MTlhMWNkNDAyZTNmOWI4ZWM0MmY1N2Q3NTg4MDdjZWQzMmEyNTllYzc2ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTA0ZjU2OTc5NjAyYjk0ZWVjYjBkMmQ4NTYyYWVhNDgzYmNhODBjZDE5MjI4YjVlYzMwMzRiOGVhNzFmYTk5NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2JiZDZjMzgyOGY3YzZkNjc3Mjc1ZGJlZjM2Y2FjMTFhNjdmM2Y2YzNkNDJiNzEwYWMzNDc2NDk3OGMwNTlmNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTYwZDFhMTBhNWQxMmJjYjRmMDI0OGY5ZmFiNmI2NDQwNjhlMTNiMDk5NjAzNWYwYmFhOWRkNjYzYThjZmE0YyJ9"
-        },
-        {
-          "resource": "repo://recipes/qwen3-embedding-4b-tp1.yaml#L15-L16",
-          "version": "repo-lines-v1:sha256:4f4147f77fe278110c9d0a12474596ce7fe6c931377a35b57c64681d4da7f2cd:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDEwMzU3ZWM1Yjk4Y2NiMjQyYjYwNGY3YzI3MGE2MWE5Njk0MzBiZTFhOGIyYTZhMzgzMzlmMjk4Y2JmNzA2ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDEwZmE2NzE4YmIwMjg0M2FmNzhiMjhkMGVkNDgwMzY1MTQxYWZkMTVlN2RlYzk2NGJlZWJkMzc3YjM2NTk0YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDJiZjQ1ODQ0ZTRmNmUxN2NkODZhMWE1NjIwNjk3NDhkODM4MzIwZDAxYTdlZGYzYTliMDQ5Y2Q5MWE5NGQ2NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTZkYTYwMmM5M2UyMjQ0ZDFmY2FhZjUzNjQ5ZmNjZTc2OTE4MDRhMDM3NWQ2MmJlOGIyNmExMTVlYzI1MzRjOCJ9"
-        }
-      ]
-    },
-    {
       "id": "claim_b364b18cc40c46f3a67a061ffc7e64e7",
-      "statement": "sparkrun's readiness/activation probe sends a chat request by default, which 404s on pooling runners and fails activation; since 2026-11-10 both pooling recipes set readiness: {inference: false} so only the endpoint is checked, and they are verified via the pooling endpoint.",
+      "statement": "sparkrun's readiness/activation probe sends a chat request by default, which 404s on pooling runners and fails activation; both pooling recipes set readiness: {inference: false} so only the endpoint is checked, and they are verified via the pooling endpoint.",
       "evidence": [
         {
-          "resource": "repo://HISTORY.md#L897-L900",
-          "version": "repo-lines-v1:sha256:cfb3b454b9bbaee81bae34ffd54c96bb9096bedb252badfd8b322b1a999ce250:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjI3OWIxYTI0NTlmMDY2YmQ1NjU2OGI2MDA5ODljZDAxNWIxZDY0ZWJlNmQxNDY4ZDBmY2M3ZDJjMDA2OWM1MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOWU5NTJiNjgxMzY3ZWFmYzY1ZDM1ODhiYzNmMWY0ZmVlYWNkYzMwYWY3MjUxMmU2OWJlMThhNmVjMTBiNjE3ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTYxNmM5M2JkNDFhYmE1MWEwY2EyODFhOTdhZGQ3ZGUzMTFmYzM1NTFhOTI2ZGI0MWUyOTUwNDFiNTk5ZTcwOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTQ1ZjNmMDYyMjMxYzMwZGRmOTlmNWY1YTAxMDM3MjNiNGFjMTE4YTY2MGIwMjdmNmM4NjQwY2YwMTcwNzkwOSJ9"
-        },
-        {
-          "resource": "repo://recipes/qwen3-embedding-4b-tp1.yaml#L18-L20",
+          "resource": "repo://recipes/qwen/qwen3-embedding-4b-tp1.yaml#L18-L20",
           "version": "repo-lines-v1:sha256:2f102c6dc25609cf01b1717ff1ef5612544d579a41994fa954439444bf8ebf9d:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjk0YmUxMGZiZDUzM2Q5NWY2ZTcyMjNmMTZlYmQ4N2UwOGZkZWIwMjMyNjg2M2MxOTU5NDFkMjM2ZTkxNTI1ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjkxYzU0MWViYzY4MmRkNWJmYjg1OTRkZDY2MDAzZGMwMmUwNDgzNjAxZDM5Zjg5YWUwZTdlYjk0NGZiY2U5YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzBhOTczZTg2ZjYwZjc1MDc3MGFjMzdiMjBlZmJhMDFkNzA2NjQ4OWViMTFjY2ZhNzVhYjQ0NGVmZTIxMjk4OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTZkYTYwMmM5M2UyMjQ0ZDFmY2FhZjUzNjQ5ZmNjZTc2OTE4MDRhMDM3NWQ2MmJlOGIyNmExMTVlYzI1MzRjOCJ9"
         }
       ]
@@ -153,11 +135,11 @@
       "statement": "Recipes adapted from upstream registries open with '# >>> ADAPTED from' header comments recording the source recipe, fetch date, changes made, and verification status, as on the two pooling recipes adapted from the @official Qwen3-VL 8B pair.",
       "evidence": [
         {
-          "resource": "repo://recipes/qwen3-embedding-4b-tp1.yaml#L1-L6",
+          "resource": "repo://recipes/qwen/qwen3-embedding-4b-tp1.yaml#L1-L6",
           "version": "repo-lines-v1:sha256:63510c4fdfc232bd7d8d6c20729cdc39275b39a4fab7d22629e6a8ce4b6c9b3b:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2U1MTYxZDY2NDE5NWY2NDY5MTBjYzA4NWY2NTZhMmEyMDkzMmJlNDdjNmE5ZjUyZTQ5YTJlMGViNTQ5NzZmZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGZmMjYxMTIyNDMyM2NhZmI0ODQ2YzBhY2EwMGMzYTUwYTY2MGNlOTk5YjViOGFmMjBkOTkxZDQ2ZDY1YWFmOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzJlZjc3MDNmYWFmZmJjY2MyOGRjNjdiZDVkZmVlNDI4ZTdkZjdjNTY4NDM4Y2M1MmJjNTM4ZWNhMTNjMWZiOSJ9"
         },
         {
-          "resource": "repo://recipes/qwen3-reranker-4b-tp1.yaml",
+          "resource": "repo://recipes/qwen/qwen3-reranker-4b-tp1.yaml",
           "version": "repo-file-v1:sha256:a3e806fab284f8aa26f12c9bf2a59845ed719502d08e27fe2f5808efdd11e8cd"
         }
       ]
@@ -187,22 +169,50 @@
       ]
     },
     {
-      "id": "claim_fa76d549acd9419aac2223ad42a92235",
-      "statement": "The mods/inkling-refusal-dial overlay adds a runtime refusal dial to a stock image by copying direction tensors and Python modules into the container, patching vLLM's Inkling model, and mounting an /admin/refusal_lambda route; its recipe also uses post_exec and post_commands.",
+      "id": "claim_e0ef75fd4d5c4e749ebf67e42b859063",
+      "statement": "sparkrun names a recipe by its filename stem rather than its family folder, so stems must be unique across recipes/<family>/ folders and files must never be renamed to a generic recipe.yaml.",
       "evidence": [
         {
-          "resource": "repo://recipes/inkling-small-nvfp4-refusal-dial-tp2.yaml#L32-L55",
-          "version": "repo-lines-v1:sha256:9268a7dfd0032a393710bed3e28b6bd788e2172ddac93a91349528c7b48256f1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZTExMWY1YjhkZmE4NjU4ZmRhNTc1Y2JkNWZiZjQ1OGNkOGFmNTJhMjFhMDc0NGVlMjdiODM1MmY1MDc3NWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljYWI0NzdjYzMxMGVmM2UyZWY2ZDk1MjI0MTZkZTQ4NmJkZTk4MmY3YjQzM2MxMjhjMzBjMWRmODkxNjE4MjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJmNDZjZTlhZmRmN2ExNWVmZmViNGFiMGE4NGQ0OGVlZWQ0OTBiOGNmZGZjMTg0MzM4MjJkZjA0MmMxNjEyYTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxMjVkNmYxZWJiNjQyYjM0YjFkYjNhYTI3YmMwNDQyMmZlZDMzNmJmYjM5MTQ2OWM3NWVlNGI5NjE4ZjcxNDAifQ"
+          "resource": "repo://CLAUDE.md#L95-L98",
+          "version": "repo-lines-v1:sha256:31c6914b9a0be1a8d412ea1cc715c436914b2a9b573008cc2feeae2e3f899ee6:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODFkMGY2ZDViMDllZjk5ZGExZWRiZjI2ZWEzYmZkYzhhMDQ3MGZhM2U5YTgzMjkwZTcyMzc3ZDM4MzI3YmVmMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTQ0NmRlYzRjZTY0OGIyZjJhMThmNjZhMDU1NjI2MGE1NmQ1ZTIwMTJmMDVjZGQ4ZTc4NzliMGVkNGFmNGNjNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDRmZDYwNTJlNmQ0NWU4ZjE1NjQ3NjE3ZGJjMjRjOThlZjFlYTI5OTg2NjE0ZDQwNDA4ZWNhNmI0NGQzNGRlYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTNjNzIyNDdlMTc4NmE3MjM5YzM4ZTU5ODgyMzVmYjlmN2NiZmNhOTVhOTM3NWI0OGE2NjFjM2MyNzM5M2MwNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_350309ad7c454d2cbd5109e3c49fa873",
+      "statement": "Mods live in recipes/mods/ (the registry's mods_subpath) and resolve relative to the recipe file, so family-folder recipes reference them as ../mods/<name>; bare mods/<name> references stopped resolving after the 2026-11-17 reorg.",
+      "evidence": [
+        {
+          "resource": "repo://.sparkrun/registry.yaml#L1-L5",
+          "version": "repo-lines-v1:sha256:d1a587f3283de9402e78b98b8d3e17a8e939cc4fa48679a5894743cbb752239a:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2UzMmJjODQ3ZmJjOTJhODljMDcxMGI4YzIzZGI3YjBjMjIxZTkxMzg0NWU3ZDQ5NjMzMDNkODk3NDIwYjVjMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODVlNTgwNDU4Y2U5MDU0ZGRmNmNkOGM2ZGNjYjFmYWNlNTRlMTMzM2E3MmMxYzE0YTU2YzI0YTliNmIzYTcwNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
         },
         {
-          "resource": "repo://recipes/mods/inkling-refusal-dial/run.sh",
-          "version": "repo-file-v1:sha256:d35506aedb7a3e796b9d6501ecb355d1542716ba506ad43b7edcc42de44303cb"
+          "resource": "repo://CLAUDE.md#L98-L101",
+          "version": "repo-lines-v1:sha256:58517cf94b4368e63d2400a07d286f5279d41b927125a4de55b38552afe9ea86:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTQ0NmRlYzRjZTY0OGIyZjJhMThmNjZhMDU1NjI2MGE1NmQ1ZTIwMTJmMDVjZGQ4ZTc4NzliMGVkNGFmNGNjNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjM4MjMwNGRiMDEzOTc4ZDIwMGQ4NTcwMGE5YzE3ODFiZDkzNDBlNTI4NjllOTc1MzYyY2MwODI1NDBmZGE0NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzgyODBhMjAwNjFhMjQ0MTdiNWU3OThhODQwY2RjZTRlNWJmNjA2OGVkOTllMTdiZTJkMDMxYWYwZDA5MTcwYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2I2N2Q1MjQ4NjEwODJiMGViNmQ5OWVkZWMxOWVlM2I3YmY1ODFkYTAxMzcyODBhNmU3ZDRlOWM0YmEyN2FlZiJ9"
+        },
+        {
+          "resource": "repo://HISTORY.md#L904-L909",
+          "version": "repo-lines-v1:sha256:d4bf88200d6585802cb5cf64eca59ec79e2756bb13170e123036860a31b2fd96:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmVlNWZlZjhkMTg1MTQ2M2YwNWUzNzRkMjQ1OGYyNWI4NTI2OThhOTFlYWEyY2RhOTUxMzFlMTQwZjFiMGZiYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2RkY2YxYTMzYTBkZDgwNjM2ZGMwMmM3MzY3N2Q2MDdkNjI1YTUyZDVjZWQ2YmZmZDUxOGFjNzllOGFjODRlMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTZmZDRjZDUzODgyMDhkNDc4MTdkNzQ5NzY1N2Q4OWJlMTU5YWVmMGU4YTlmNjZhNzdmNDdkZmJjMjFhYjQ2NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGNjZTg4ZDUyN2EwNDRmMzdlZWE0MDlhNTZhNjQyYjNlNTRmN2I0ZGNlYzZiMTEwYjlkMTFhOGUyM2Q3Yjg5OSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e324f6151c06480e8074cc2f64c42bc7",
+      "statement": "The embedding recipe's sparkroute capabilities block is vestigial since SparkRoute was removed on 2026-11-17; the embedder (:8000) and reranker (:8001) currently run outside sparkrun as the spark-pinned docker compose stack on gb10 because sparkrun 0.4.2 reserves a whole GPU per workload.",
+      "evidence": [
+        {
+          "resource": "repo://CLAUDE.md#L146-L146",
+          "version": "repo-lines-v1:sha256:fdf82afe5ce32125f151d006db89cf092fe0ca32adc4315911cacc31ebec4c86:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmRmODJhZmU1Y2UzMjEyNWYxNTFkMDA2ZGI4OWNmMDkyZmUwY2EzMmFkYzQzMTU5MTFjYWNjMzFlYmVjNGM4NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmRmODJhZmU1Y2UzMjEyNWYxNTFkMDA2ZGI4OWNmMDkyZmUwY2EzMmFkYzQzMTU5MTFjYWNjMzFlYmVjNGM4NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWIzM2E2Y2NiNDU0OTQ0Zjk3NWNlZGNjYzEzOWU0MTBkZWFmMzA5YjlkMTljMTFiYmYyZDhmZWY0ZjQ4ZWEyYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzU3OTIxMThjZjU0OGY5ZjRjMzJlNjk3NzkzZDVjOTM4YTdiMTdmMWIyYzQzZTJmYTQ5OTEyNWNlOTZiZWU0MiJ9"
+        },
+        {
+          "resource": "repo://recipes/qwen/qwen3-embedding-4b-tp1.yaml#L15-L16",
+          "version": "repo-lines-v1:sha256:4f4147f77fe278110c9d0a12474596ce7fe6c931377a35b57c64681d4da7f2cd:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDEwMzU3ZWM1Yjk4Y2NiMjQyYjYwNGY3YzI3MGE2MWE5Njk0MzBiZTFhOGIyYTZhMzgzMzlmMjk4Y2JmNzA2ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDEwZmE2NzE4YmIwMjg0M2FmNzhiMjhkMGVkNDgwMzY1MTQxYWZkMTVlN2RlYzk2NGJlZWJkMzc3YjM2NTk0YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDJiZjQ1ODQ0ZTRmNmUxN2NkODZhMWE1NjIwNjk3NDhkODM4MzIwZDAxYTdlZGYzYTliMDQ5Y2Q5MWE5NGQ2NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDYyYzVmYzc2ZThlMGQ3NGQxMmJmNTY1MWUyZTEwOWZjODgxNjcyNDVmNjkwZmZiMGU5NDgwOWE5NDIwYTYzYSJ9"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-14T21:00:11.653Z"
+    "at": "2026-11-17T14:41:15.503Z"
   }
 }

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:bf9cba8d447cb181d71293ceb63bf05ae32bf9ee1540a419e5582f813001b38b",
+  "pageVersion": "sha256:01c48a9933febc91b24cd77c90fd3f6e858f59800ad7cc5fc65d64ffc76eef66",
   "claims": [
     {
       "id": "claim_1f7e663125ac45009d7d858ed0513a0e",
@@ -68,7 +68,7 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:e2f45aa7dad4c3ca3135e8cabfb5f59c2c52d64c8de0d012788700e63667ceee"
+          "version": "repo-file-v1:sha256:937ad6ff1ff48084fc20ae7e20811c1220acb7d89600679bd7ee2b9f14b81e11"
         },
         {
           "resource": "repo://benchmarks/results_qwen38-flash-next-tp2-20261103.yaml",
@@ -82,7 +82,7 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:e2f45aa7dad4c3ca3135e8cabfb5f59c2c52d64c8de0d012788700e63667ceee"
+          "version": "repo-file-v1:sha256:937ad6ff1ff48084fc20ae7e20811c1220acb7d89600679bd7ee2b9f14b81e11"
         }
       ]
     },
@@ -92,7 +92,7 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:e2f45aa7dad4c3ca3135e8cabfb5f59c2c52d64c8de0d012788700e63667ceee"
+          "version": "repo-file-v1:sha256:937ad6ff1ff48084fc20ae7e20811c1220acb7d89600679bd7ee2b9f14b81e11"
         },
         {
           "resource": "repo://benchmarks/results_inkling-small-tp2-20261103.yaml",
@@ -163,10 +163,20 @@
           "version": "repo-file-v1:sha256:ad28f6588d3fda3e939572940b3e211229e132baf517ce30dd44c1f39ca52e99"
         }
       ]
+    },
+    {
+      "id": "claim_41e3b51b3e41436f80dfab8eee6b274f",
+      "statement": "The post-MTU-fix qwen3.8-flash-next-nvfp4-tp2 8-way peak was corrected on 2026-11-17 from 206.7 to 250.0 tok/s to match the raw file (243/242/265 per run); summary figures are edited to cite the raw artifact when they disagree.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md#L783-L787",
+          "version": "repo-lines-v1:sha256:407610af1018d4dbc1ddd6929da2a4e8c7ff0c46bcf3bbefde9a5abac87732fe:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTE5NmM1YjJjYzcxZTRiYWNkODZmODhkZjczZDgyZjAwMjExYTVmNDU3OTA0NTgzNWNjZmM2OWRjZjRlNTZiOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjAyODhkNjgzNmUwZGRlMGY1NjEyNzUyNjkwY2NmY2Y4NWVkYjk2MTRiZDNhMTVlNWViZjQzMWU5NjQ5MGRhMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzk2OGUxNDc0OTIyZDUwZTc2MmM1MmRhMDQ2MzkwNjZmOGJlYTA3MjhiY2FiZWVlODkzY2E5NTY0NzRjOGMyNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDQzYmQ1MmFjOTVmYzBlMjY3Mzg1Y2VlMzMxNjc2YjM3YmU1NDAxNjhmMWZjNjA3NTc0MzhiMjk4ZmMxMTI0NSJ9"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-14T21:00:11.653Z"
+    "at": "2026-11-17T14:41:15.503Z"
   }
 }

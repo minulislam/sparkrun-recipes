@@ -4,43 +4,50 @@ title: Recipe Anatomy
 description: The structure of a sparkrun v2 recipe YAML in this registry — identity (model/container/runtime), placement (min/max_nodes), readiness, the defaults block, the command template with its {placeholder} substitution, the env block, the executor_config entrypoint rule, and the memory-fit knobs.
 tags: [recipe, yaml, schema, vllm, configuration]
 sources:
+  - id: openwiki-source-048793832532c9756376e4df
+    resource: repo://.sparkrun/registry.yaml
   - id: openwiki-source-a2371d6362e5db4bc834ad03
     resource: repo://CLAUDE.md
   - id: openwiki-source-382af0b12a087a97295aa93b
     resource: repo://HISTORY.md
-  - id: openwiki-source-d731ee870c7c4da596ac3b0a
-    resource: repo://INDEX.md
   - id: openwiki-source-c60867cd14827f47e426d16c
     resource: repo://notes/minimax-m3-sparkrun-port/minimax-m3-w4a16-gptq-b12x-nvfp4-eagle3.yaml
   - id: openwiki-source-036e64f955b6e8c14e4c8d88
     resource: repo://notes/minimax-m3-sparkrun-port/README.md
-  - id: openwiki-source-67c295973f38e30669ebf01c
-    resource: repo://recipes/glm-5.3-flash-exl3-abliterated-tp2.yaml
-  - id: openwiki-source-afd4b883e2d77bfe356a5248
-    resource: repo://recipes/inkling-small-nvfp4-refusal-dial-tp2.yaml
+  - id: openwiki-source-0b4daa01fa5e3095917b2425
+    resource: repo://recipes/glm/glm-5.3-flash-exl3-abliterated-tp2.yaml
   - id: openwiki-source-5c02b2143bb9723499b2edf3
     resource: repo://recipes/mods/glm53-exl3-gb10-topk/run.sh
-  - id: openwiki-source-28bdb53b0ca2f20523767328
-    resource: repo://recipes/mods/inkling-refusal-dial/run.sh
-  - id: openwiki-source-b1867d7f36dadf1642430baf
-    resource: repo://recipes/qwen3-embedding-4b-tp1.yaml
-  - id: openwiki-source-5c6fb7c964f2f95da074a267
-    resource: repo://recipes/qwen3-reranker-4b-tp1.yaml
-  - id: openwiki-source-9c55c8fb4c58db89d64b13df
-    resource: repo://recipes/qwen3.8-flash-next-abliterated-nvfp4-tp2.yaml
-generated: { by: "claude-code", at: "2026-11-10T21:00:18.041Z" }
+  - id: openwiki-source-3fcde95f4e5b0b195a25eaa7
+    resource: repo://recipes/qwen/qwen3-embedding-4b-tp1.yaml
+  - id: openwiki-source-ad697f05b25c2571616100f0
+    resource: repo://recipes/qwen/qwen3-reranker-4b-tp1.yaml
+  - id: openwiki-source-0ccc9ea7c88075d2fbefebb1
+    resource: repo://recipes/qwen/qwen3.8-flash-next-abliterated-nvfp4-tp2.yaml
+generated: { by: "claude-code", at: "2026-11-17T14:41:15.503Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-14T21:00:11.653Z
+    at: 2026-11-17T14:41:15.503Z
 ---
 
 # Recipe Anatomy
 
-A recipe is a single YAML file in `recipes/` that fully specifies one served
-model: its checkpoint, container, runtime flags, and fit. This page describes
-the fields using `recipes/qwen3.8-flash-next-abliterated-nvfp4-tp2.yaml` as the
-worked example; the specific values there are that recipe's, not defaults for
-every recipe.
+A recipe is a single YAML file under `recipes/<family>/` that fully specifies
+one served model: its checkpoint, container, runtime flags, and fit. This page
+describes the fields using
+`recipes/qwen/qwen3.8-flash-next-abliterated-nvfp4-tp2.yaml` as the worked
+example; the specific values there are that recipe's, not defaults for every
+recipe.
+
+## Where a recipe lives and how it is named
+
+Recipes are grouped by model family (`recipes/qwen/`, `recipes/glm/`,
+`recipes/deepseek/`, and one folder per single-recipe family). sparkrun names a
+recipe after its **filename stem**, not its folder, so
+`recipes/qwen/qwen3.8-27b-nvfp4-tp1.yaml` is `@spark-forge/qwen3.8-27b-nvfp4-tp1`.
+Stems must therefore be unique across families, and a file must never be renamed
+to a generic `recipe.yaml`. Local launches use the full path
+(`sparkrun run ./recipes/<family>/<name>.yaml …`).
 
 ## Identity and placement
 
@@ -112,8 +119,16 @@ A recipe can list directories under a top-level `mods:` key:
 
 ```yaml
 mods:
-  - mods/glm53-exl3-gb10-topk
+  - ../mods/glm53-exl3-gb10-topk
 ```
+
+Mod directories live in `recipes/mods/`, which `.sparkrun/registry.yaml`
+declares as the registry's `mods_subpath`. sparkrun resolves a mod path
+**relative to the recipe file**, so a recipe in `recipes/<family>/` must write
+`../mods/<name>`. That form resolves for both `./recipes/...` and
+`@spark-forge/...` launches. A bare `mods/<name>` stopped resolving after the
+2026-11-17 family reorg. The dry run reported "Could not resolve mod", or the
+lookup fell through to the eugr registry's fallback copy.
 
 Each mod directory holds a `run.sh` that sparkrun executes **inside every
 rank's container before serve**. Mods exist to patch a prebuilt image for this
@@ -125,13 +140,13 @@ patch), fails loudly if the target pattern is missing, and carries upstream
 attribution/licensing files when the edit is ported from another project
 (see `mods/glm53-nvfp4kv-overlays/CREDITS.upstream.md`).
 
-A mod can also add a feature to a stock image. `mods/inkling-refusal-dial`
-copies refusal-direction tensors and Python modules into the container and
-patches vLLM's Inkling model. It also mounts an `/admin/refusal_lambda` route.
-This way `inkling-small-nvfp4-refusal-dial-tp2` adds a runtime refusal dial
-without a custom image (see the abliteration page). A recipe that uses a mod
-can also carry `post_exec:` commands (run in the container after the endpoint
-is up) and `post_commands:` (echoed hints to the operator).
+A mod can also add a feature to a stock image instead of fixing a bug. The
+short-lived Inkling refusal dial did this, but it never served and was deleted
+on 2026-11-17 (see the abliteration page). Separately from mods, a recipe can
+carry `post_exec:` commands, which run in the container after the endpoint is
+up, and `post_commands:`, which are echoed hints to the operator. Both refusal-dial
+recipes use `post_exec` to set and read back the dial. Inside hooks, JSON must
+use **single** braces, because sparkrun does not unescape `{{` there.
 
 ## `scheduler` and `distribution_config` (per-recipe placement overrides)
 
@@ -153,8 +168,8 @@ Two less-common top-level keys appear in the MiniMax-M3 port
 
 ## Pooling-runner recipes and the `sparkroute` capabilities block
 
-Not every recipe serves chat. `recipes/qwen3-embedding-4b-tp1.yaml` and
-`recipes/qwen3-reranker-4b-tp1.yaml` (rows 65–66, added 2026-11-08) serve
+Not every recipe serves chat. `recipes/qwen/qwen3-embedding-4b-tp1.yaml` and
+`recipes/qwen/qwen3-reranker-4b-tp1.yaml` (rows 65–66, added 2026-11-08) serve
 vLLM's **pooling runner** instead — the command passes `--runner pooling`, and
 the endpoint answers `/v1/embeddings` (embedding) or `/v1/rerank` (reranker)
 rather than chat completions. They are deliberately small fits
@@ -162,17 +177,14 @@ rather than chat completions. They are deliberately small fits
 
 Two schema consequences:
 
-- An **embedding** recipe must declare its capability to the gateway, or
-  SparkRoute refuses to route it:
-
-  ```yaml
-  sparkroute:
-    capabilities: [single_vector_embedding]
-  ```
-
-  The reranker recipe carries no such block because SparkRoute 0.3.4 has no
-  rerank route at all — callers hit the container endpoint directly (see the
-  proxy & gateway routing page).
+- The embedding recipe still carries a `sparkroute:` block
+  (`capabilities: [single_vector_embedding]`). The SparkRoute gateway required
+  it before routing an embedding model, and had no rerank route at all, so the
+  reranker recipe has no such block. SparkRoute was removed on 2026-11-17, so
+  the block is now vestigial. In practice the embedder (`:8000`) and reranker
+  (`:8001`) currently run **outside sparkrun**, as the `spark-pinned` docker
+  compose stack on gb10, because sparkrun 0.4.2 reserves a whole GPU per
+  workload. The recipes remain the record of the verified serve shape.
 - sparkrun's readiness and activation probe sends a chat request by default.
   A pooling runner has no chat route, so the probe gets a 404 and the
   activation fails. Since 2026-11-10 both pooling recipes set
@@ -208,3 +220,5 @@ container** (not in `docker logs`).
 
 - [Container Images & Provenance](../reference/images-and-provenance.md)
 - [Authoring & Changing Recipes](../workflows/authoring-recipes.md)
+- [Abliteration & Refusal Evaluation](../concepts/abliteration-and-refusal-eval.md)
+- [Registry & Publishing](../architecture/registry-and-publishing.md)

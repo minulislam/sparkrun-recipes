@@ -14,12 +14,16 @@ sources:
     resource: repo://images/deepseek-rank1/README.md
   - id: openwiki-source-036e64f955b6e8c14e4c8d88
     resource: repo://notes/minimax-m3-sparkrun-port/README.md
-  - id: openwiki-source-b1867d7f36dadf1642430baf
-    resource: repo://recipes/qwen3-embedding-4b-tp1.yaml
-generated: { by: "claude-code", at: "2026-11-09T21:00:11.445Z" }
+  - id: openwiki-source-3fcde95f4e5b0b195a25eaa7
+    resource: repo://recipes/qwen/qwen3-embedding-4b-tp1.yaml
+  - id: openwiki-source-ad282243fab4b1e573dc4c7a
+    resource: repo://recipes/qwen/qwen3.6-35b-a3b-nvfp4-tp1.yaml
+  - id: openwiki-source-6762b00fda0dc4208823fbf9
+    resource: repo://recipes/qwen/qwen3.8-flash-next-fp4-b12x-tp1.yaml
+generated: { by: "claude-code", at: "2026-11-17T14:41:15.503Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-14T21:00:11.653Z
+    at: 2026-11-17T14:41:15.503Z
 ---
 
 # Container Images & Provenance
@@ -74,6 +78,21 @@ reuse-on-disk-images rule at once. The worker did not hold that image (24.8 GB)
 at adoption; on 2026-11-09 it was streamed to `gx10-spark` with `docker save |
 ssh docker load`, so `gx10-solo` activations no longer need a pull.
 
+Two 2026-11-17 recipes show the other tiers in use:
+
+- `recipes/qwen/qwen3.8-flash-next-fp4-b12x-tp1.yaml` pins
+  `eugr/spark-vllm-b12x:nightly-20261015`, which is the image the user ran by
+  hand. It is a **direct eugr** image, tier 2, because no spark-arena rebuild of
+  that nightly exists yet. eugr images carry no provenance labels, and the
+  recipe header says so. The upstream `@eugr` recipe it copies names the
+  unpinned build alias `vllm-node-b12x`, which is exactly what the
+  immutable-tag rule replaces with a dated tag. The recipe is lint-only until
+  the image is pulled.
+- `recipes/qwen/qwen3.6-35b-a3b-nvfp4-tp1.yaml` uses official
+  `vllm/vllm-openai:v0.24.0`. That image bakes an `ENTRYPOINT`, so the recipe
+  must also set `executor_config: {entrypoint: ""}`. Without it, the recipe's
+  own `vllm serve` command stacks on top of the baked entrypoint.
+
 ## Images that must be built from source
 
 The MiniMax-M3 port (`notes/minimax-m3-sparkrun-port/`) names an image that
@@ -88,7 +107,7 @@ the port's PROVENANCE notes rather than in a registry.
 ## The locally built deepseek-rank1 image
 
 One recipe needs an image upstream does not publish. `spark-forge/vllm-dsv4-rank1`
-is built locally for `deepseek-v4-flash-0731-refusal-dial-tp2`: it layers the
+is built locally for `recipes/deepseek/deepseek-v4-flash-0731-refusal-dial-tp2.yaml`: it layers the
 pocharlies rank-1 refusal-projection patch and its direction file onto an anemll
 dspark-vLLM base, and exists only on the two nodes. Its README records the exact
 source commit, base image, direction-file hash, and a reproducible rebuild +

@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:f19491ef46811ec47a7eb879b5ef826a3035de3d16e2846e409653dade2e2814",
+  "pageVersion": "sha256:65c83d81ed2612716614b34e8d951b68ecf99f224930c699a44d96366e9dc261",
   "claims": [
     {
       "id": "claim_04170aae475542d6a184179c01a297f9",
       "statement": "Before writing a recipe, run sparkrun registry update then sparkrun recipe search across every registry, and if an upstream recipe exists copy it rather than authoring from scratch.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L76-L78",
+          "resource": "repo://CLAUDE.md#L79-L81",
           "version": "repo-lines-v1:sha256:47a3f0df4391a796632f56237b6d8f8df95e611445ac86ba69bd9b77028b25c6:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWQ5YzZhZGNkNzBmZDUxNjRmYmM1MThjNjA4YTFhMTUyN2RmZTQxZjJiYTAxMzUyZWZmYTg0ZTI4ZGYxOGUzNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmYzMjFmZTQ4NTU4ZmY5MzI4Y2Q2N2U0ZThlOWM0YTk4YWYyODNkYjI0NmVmYzcwZjA2MWRhODM5OWFlM2Y4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2JhYTNlZTg0YjVkZjJjYjZkNTk3ZTliYjgzMzMyZTg2ZTdmOTQ2YTQwZGY5NGMyYzlkZDVlMzNlZjE5M2Y0NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGExMzM5MzEwZTExMDM3NTlkZGY1MTZhZmZhNWZjMGI5NDQ1ZmQwMjg5OTA3ZWIzMzEwODJjNzhhNzJjODFlNiJ9"
         }
       ]
@@ -17,7 +17,7 @@
       "statement": "A copied recipe keeps an attribution header naming the upstream source and changes only what the cluster needs, with the recipe header recording why each deviation from upstream was made.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L76-L78",
+          "resource": "repo://CLAUDE.md#L79-L81",
           "version": "repo-lines-v1:sha256:47a3f0df4391a796632f56237b6d8f8df95e611445ac86ba69bd9b77028b25c6:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWQ5YzZhZGNkNzBmZDUxNjRmYmM1MThjNjA4YTFhMTUyN2RmZTQxZjJiYTAxMzUyZWZmYTg0ZTI4ZGYxOGUzNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmYzMjFmZTQ4NTU4ZmY5MzI4Y2Q2N2U0ZThlOWM0YTk4YWYyODNkYjI0NmVmYzcwZjA2MWRhODM5OWFlM2Y4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiY2JhYTNlZTg0YjVkZjJjYjZkNTk3ZTliYjgzMzMyZTg2ZTdmOTQ2YTQwZGY5NGMyYzlkZDVlMzNlZjE5M2Y0NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGExMzM5MzEwZTExMDM3NTlkZGY1MTZhZmZhNWZjMGI5NDQ1ZmQwMjg5OTA3ZWIzMzEwODJjNzhhNzJjODFlNiJ9"
         }
       ]
@@ -31,7 +31,7 @@
           "version": "repo-lines-v1:sha256:d5f9bb00cb2d944fe1fa9a760dbe757d19aa92ebc0ee422f46a41bc3fc90b59a:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDExMTliZjQzMjM3N2UxYmVhNjNlODZiNjc1NGNhNzZmNzljMmVjOTkzMTFjMTg2NDEyZDZjNDUwMzZjODQwZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODg3MzdhOTY2Yzc1NTlhZTIyZDBiYjM3ZGY2NmMxMjNjMzJiZDg0MTE3OWI5N2Y4MDcxMTJiMThhYmNjYjY5NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTZiOTIyN2NiMTcyZDg2ZmJjMzA2Y2UxMWQyYjhmYmFlMzljMzdkNGM3NjIwMTMwYmY1MWIzNDVjZGVmODg0MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2MxNDJhZWEwNTk5YzAwNDdlNzcyNTI1ZDAxNDkzYTUxOGFmYTNhM2ZkOWU3YjBhMThkMDVmMDhiYTBkYjQ3NiJ9"
         },
         {
-          "resource": "repo://CLAUDE.md#L72-L75",
+          "resource": "repo://CLAUDE.md#L75-L78",
           "version": "repo-lines-v1:sha256:ad55ca2327e866773d71c96b416caf40413af481b80f0435d7709541cf94d655:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWRjZTQ4ZjRjYWFmODBlYTIxYjA3MTk4NzQ5MDMxYmIyZGY2YjAyODk4MGYwZTE4MzAzOWEzNjViNDU0NDkzMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGY5Zjk4MjY1MTUxNzdmNWM2Zjk3OWMyNjllZWJkZDhmMWQ3MDI4MTNiM2RjYzdhZmU2OGFmY2VlYWEyNTA4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmUwMmI4ODM4NDljNjc4YTZhNjYxNWMwNmZjYjE5OGRkNGFjOWFjMTBhNDI5YTY5YzljMjRiMjgwNjFkZTc0MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDdhM2YwZGY0MzkxYTc5NjYzMmY1NjIzN2I2ZDhmOGRmOTVlNjExNDQ1YWM4NmJhNjliZDliNzcwMjhiMjVjNiJ9"
         }
       ]
@@ -41,18 +41,18 @@
       "statement": "Each served model keeps exactly one canonical recipe file (distinct operating profiles get their own named files), with measured numbers in benchmarks/ and the status row in INDEX.md whose row numbers are not renumbered.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L112-L118",
+          "resource": "repo://CLAUDE.md#L122-L128",
           "version": "repo-lines-v1:sha256:3d32862b99b7b977efe0c492021db40da92cc2a0a71b485ee8c3a37f524c8499:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTgyZTc2ODljYmQ4NGU3ODZiNzRjZjBiNTdiMjVhMzhjNzU1MTY1NmZlMmYxMDU4ODNkZGVkNjU2YTNlMWMwNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjAxNTZhZmFhMTFlZGRlOGM5NjliYmMyNjExNzhmYmIzNDEwZWNmMzJmNmE2MTZjNzkxYTY3ZjMyNWFkYzM1NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmFhYjlmMmRkMzNkOWEyYzAwMjQ2NjU3MTcyZWU5OTEyZDJhODY1YjQ4N2EyNTI1MzEwM2M1YTM5MmVkNjcxZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjcyNWQ1ODc5NTc2NzY4MDM2NmI1NmM4OWEzY2RmZTMxNDJlYTJhYjM2ZjA0YjMxNWI5NWMyMTM0ZmJjZDVkOSJ9"
         }
       ]
     },
     {
       "id": "claim_fd9f5cbb2cd54f16b219c0e4c29182ad",
-      "statement": "Platform fixes to prebuilt images are applied via directories under recipes/mods/ listed in a recipe's mods: key (run.sh executed pre-serve in each rank's container), rather than rebuilding the image.",
+      "statement": "Platform fixes to prebuilt images are applied via directories under recipes/mods/ listed in a recipe's mods: key as ../mods/<name> (run.sh executed pre-serve in each rank's container), rather than rebuilding the image.",
       "evidence": [
         {
-          "resource": "repo://recipes/glm-5.3-flash-exl3-abliterated-tp2.yaml",
-          "version": "repo-file-v1:sha256:e5d76111cf8814f85261e200d472189d806c70019113fde1f111628cb29c4bfd"
+          "resource": "repo://recipes/glm/glm-5.3-flash-exl3-abliterated-tp2.yaml#L38-L39",
+          "version": "repo-lines-v1:sha256:87742ec1b606e3224b359e8878c9d597a77b621d8fc73959cc3eb245a34779ba:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTVlMTExZjViOGRmYTg2NThmZGE1NzVjYmQ1ZmJmNDU4Y2Q4YWY1MmEyMWEwNzQ0ZWUyN2I4MzUyZjUwNzc1YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGUzMzU3ZTQzZTdkMTVmNzlkOWNjNDhjZjQ4MTNjMmQ4NGZlOTNhMjMzZmI2ZTBlMGEwZWFkYjAyY2UzNDQ5YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWNjZTYwYjU4NDhhYjUxYThhOThiNzRjNjFiOGQ0Y2NhMDZmMzdlYzlkM2Q1MzEyNDQwZmJhYzE0YjY1ZTA2YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmZkNjhiNWU3MmY2OWZhNzU2MDg3NTY2MWQ4Mjc2ZjJlMTQ5MTZjMzZkOGVmMDk5YzA1ZWRiMzM1ZmY5OTZkNyJ9"
         },
         {
           "resource": "repo://recipes/mods/glm53-exl3-gb10-topk/run.sh",
@@ -117,7 +117,7 @@
       "statement": "model_revision alone does not reach vLLM; the command must also pass --revision {model_revision}, and a recipe loading a local directory sets model_path with the container path /cache/huggingface/... instead.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L59-L62",
+          "resource": "repo://CLAUDE.md#L62-L65",
           "version": "repo-lines-v1:sha256:793be28ce33a7e2ea5fb5f682899b801c122c02628fc77ed93ca331fe954a27a:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODU2ZTY1OGJlY2MwZDNmZGE5MmNmYWY2ZTg2ZDk2NmNlYTM0ZGM1ODRkZjMxM2ExNzJiMWQyZDkyZGY1ZGQ3YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmZmMjRkNTIxZWFiM2YxNDQ3ZTUwZjI4Njg5ZTQyNjNkMjg1MjQzMmViOTc1NTE4OTU4Mjc4MjQ4YmE2ZDI4ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzA3Zjg1MjBhYmZjMjZlMmI3NGY0OTU2NTI3MjcwY2U5ZmIyYTgwZDA4OTllNGVmM2MzNzJkN2VlM2VlMzdlNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzQ0ZWQ1NjMyMTUxMTlmOGJiZjU3YzhiNDliZDMwZjIwYzhlZTA3ZWE5MTVkNmJlMTdjNDIxMzkwMGJiYTEzMyJ9"
         }
       ]
@@ -127,18 +127,42 @@
       "statement": "qwen36-35b-a3b-heretic-nvfp4.yaml pins model_revision a483749 and passes --revision because HF main c28027d only edits the README and has no cached weights.",
       "evidence": [
         {
-          "resource": "repo://recipes/qwen36-35b-a3b-heretic-nvfp4.yaml#L34-L34",
+          "resource": "repo://recipes/qwen/qwen36-35b-a3b-heretic-nvfp4.yaml#L34-L34",
           "version": "repo-lines-v1:sha256:5cc0c24c71d79801cf8f2ec72f6fdc3be726e34521c658551be076b4fa52fa98:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWNjMGMyNGM3MWQ3OTgwMWNmOGYyZWM3MmY2ZmRjM2JlNzI2ZTM0NTIxYzY1ODU1MWJlMDc2YjRmYTUyZmE5OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWNjMGMyNGM3MWQ3OTgwMWNmOGYyZWM3MmY2ZmRjM2JlNzI2ZTM0NTIxYzY1ODU1MWJlMDc2YjRmYTUyZmE5OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGY0ZmY4NjEwOGJkYzBjMDg5NjNkMDU1YTEzMjE4NTllNDk2OTJkMWIyMzkyNjEzZTM5NjE1Y2RjNWY3M2E5NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzRmNWVjYTIzNDg1MDg5ZTFhZTY2NjRjZDg2MzM3YmM5NTAyZGUzNDhmMTZlMmRhNzJjZTA3NjJjN2E2YmZiMSJ9"
         },
         {
-          "resource": "repo://recipes/qwen36-35b-a3b-heretic-nvfp4.yaml#L77-L77",
+          "resource": "repo://recipes/qwen/qwen36-35b-a3b-heretic-nvfp4.yaml#L77-L77",
           "version": "repo-lines-v1:sha256:ab97527d96bf2c059271d2391a5c8c1a5b1f1a4864eeafb19af2ec6ea7af661c:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWI5NzUyN2Q5NmJmMmMwNTkyNzFkMjM5MWE1YzhjMWE1YjFmMWE0ODY0ZWVhZmIxOWFmMmVjNmVhN2FmNjYxYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWI5NzUyN2Q5NmJmMmMwNTkyNzFkMjM5MWE1YzhjMWE1YjFmMWE0ODY0ZWVhZmIxOWFmMmVjNmVhN2FmNjYxYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODEyNWQ2ZjFlYmI2NDJiMzRiMWRiM2FhMjdiYzA0NDIyZmVkMzM2YmZiMzkxNDY5Yzc1ZWU0Yjk2MThmNzE0MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGQzOWMxZGI0MDE2NTAzNDExYmU0ZWFlNDljNWFiZjI5MGI0ZTMwNGJkMDMxYzAzZGQwNDkxMDBlZTkwMGVmZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_0975ae6d2b314e33a4066288c2929410",
+      "statement": "New recipes are saved as recipes/<family>/<name>.yaml with a filename stem unique across families, since the stem is the name @spark-forge/<name> resolves.",
+      "evidence": [
+        {
+          "resource": "repo://.claude/skills/verify/SKILL.md#L72-L72",
+          "version": "repo-lines-v1:sha256:396df975dcc0bd1d7a0b32f96872af48488fa713f69b3945f54bac745af339e3:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzk2ZGY5NzVkY2MwYmQxZDdhMGIzMmY5Njg3MmFmNDg0ODhmYTcxM2Y2OWIzOTQ1ZjU0YmFjNzQ1YWYzMzllMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzk2ZGY5NzVkY2MwYmQxZDdhMGIzMmY5Njg3MmFmNDg0ODhmYTcxM2Y2OWIzOTQ1ZjU0YmFjNzQ1YWYzMzllMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDZjZTU5YWZmMGRhMGQ1ZTdlZDlhZGUwMTU2ODQ0ZjRjZTliYjQzMTIwZmM4Y2NlNzU0MWNlZjA4YzgwNTRhOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjNlYWNjYjcxOTdhYmMwYmE1ZjU1OWMyYThmMWExZjE0MzZjZWY4NjY1ZjY1ZWFmY2FhNjI0MThjMzYzZTVlOCJ9"
+        },
+        {
+          "resource": "repo://CLAUDE.md#L95-L98",
+          "version": "repo-lines-v1:sha256:31c6914b9a0be1a8d412ea1cc715c436914b2a9b573008cc2feeae2e3f899ee6:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODFkMGY2ZDViMDllZjk5ZGExZWRiZjI2ZWEzYmZkYzhhMDQ3MGZhM2U5YTgzMjkwZTcyMzc3ZDM4MzI3YmVmMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTQ0NmRlYzRjZTY0OGIyZjJhMThmNjZhMDU1NjI2MGE1NmQ1ZTIwMTJmMDVjZGQ4ZTc4NzliMGVkNGFmNGNjNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDRmZDYwNTJlNmQ0NWU4ZjE1NjQ3NjE3ZGJjMjRjOThlZjFlYTI5OTg2NjE0ZDQwNDA4ZWNhNmI0NGQzNGRlYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTNjNzIyNDdlMTc4NmE3MjM5YzM4ZTU5ODgyMzVmYjlmN2NiZmNhOTVhOTM3NWI0OGE2NjFjM2MyNzM5M2MwNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_935310c5358b4851b6a8a359b2d3903d",
+      "statement": "qwen3.8-flash-next-fp4-b12x-tp1 was found by registry search as @eugr/qwen3.8-flash-next-nvfp4-solo and copied with only the image pin and the user's docker flags changed.",
+      "evidence": [
+        {
+          "resource": "repo://recipes/qwen/qwen3.8-flash-next-fp4-b12x-tp1.yaml#L1-L10",
+          "version": "repo-lines-v1:sha256:181b8f2e7f5a47b483a5d3043243aff6abecf20605063585f9a9edd565398876:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhNDQ0MjU3NzJkNDczOTc0NjA0Mzk3ZThlNmNlN2Y0ZjYzODVlNTRlYzkzNTRiY2NkNTQ0N2ExY2RiOWNiY2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjMmUyNWU3MGVjZjg3NDdiZTU3MGE5MzZiZjgxNmUzN2M1ODM3ODIwNzg3NzU2MDQwMTRlNzM5NTBmZDU2NjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZjMjE2MWRkYWE0ZGY4ODg4ZDU4ODdhMDA3YmM1ZDQwZTY3N2RiZWFiMzkwZDlhM2ZhNmZiMzZkY2U5N2U5YzIifQ"
         }
       ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-14T21:00:11.653Z"
+    "at": "2026-11-17T14:41:15.503Z"
   }
 }

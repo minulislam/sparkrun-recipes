@@ -4,6 +4,8 @@ title: Authoring & Changing Recipes
 description: How to add or change a recipe in this registry — search upstream first, copy with attribution and minimal changes, apply the image policy, keep one canonical copy, and publish by committing to main and refreshing the registry.
 tags: [workflow, authoring, recipes, registry, contribution]
 sources:
+  - id: openwiki-source-4f8c5f213160a2befb6f5465
+    resource: repo://.claude/skills/verify/SKILL.md
   - id: openwiki-source-a2371d6362e5db4bc834ad03
     resource: repo://CLAUDE.md
   - id: openwiki-source-382af0b12a087a97295aa93b
@@ -14,16 +16,18 @@ sources:
     resource: repo://notes/minimax-m3-sparkrun-port/README.md
   - id: openwiki-source-a96b242eacfe664db229043f
     resource: repo://notes/minimax-m3-sparkrun-port/sync-mods.sh
-  - id: openwiki-source-67c295973f38e30669ebf01c
-    resource: repo://recipes/glm-5.3-flash-exl3-abliterated-tp2.yaml
+  - id: openwiki-source-0b4daa01fa5e3095917b2425
+    resource: repo://recipes/glm/glm-5.3-flash-exl3-abliterated-tp2.yaml
   - id: openwiki-source-5c02b2143bb9723499b2edf3
     resource: repo://recipes/mods/glm53-exl3-gb10-topk/run.sh
-  - id: openwiki-source-b00adbe31ccd87dfcfd31feb
-    resource: repo://recipes/qwen36-35b-a3b-heretic-nvfp4.yaml
-generated: { by: "claude-code", at: "2026-11-10T21:00:18.041Z" }
+  - id: openwiki-source-6762b00fda0dc4208823fbf9
+    resource: repo://recipes/qwen/qwen3.8-flash-next-fp4-b12x-tp1.yaml
+  - id: openwiki-source-5332423c1fbb8cd374862570
+    resource: repo://recipes/qwen/qwen36-35b-a3b-heretic-nvfp4.yaml
+generated: { by: "claude-code", at: "2026-11-17T14:41:15.503Z" }
 verified:
   - by: openwiki/0.7.2
-    at: 2026-11-14T21:00:11.653Z
+    at: 2026-11-17T14:41:15.503Z
 ---
 
 # Authoring & Changing Recipes
@@ -79,12 +83,22 @@ directory sets `model_path:` instead, using the container path
 When a prebuilt image needs a platform fix (a GB10/SM121 kernel workaround, an
 upstream overlay edit the image lacks), add a directory under `recipes/mods/`
 with a `run.sh` that applies the edit idempotently inside each rank's
-container pre-serve, and list it under the recipe's `mods:` key. Carry upstream
+container pre-serve, and list it under the recipe's `mods:` key as
+`../mods/<name>` (sparkrun resolves mods relative to the recipe file, which sits
+one level down in `recipes/<family>/`). Carry upstream
 attribution/licensing files in the mod directory when the edit is ported from
 another project. See recipe anatomy for the mechanics and the worked
 `glm53-exl3-gb10-topk` example.
 
-## 4. Keep one canonical copy
+## 4. Place it in its family folder
+
+Save the file as `recipes/<family>/<name>.yaml`. Reuse an existing family folder
+(`qwen/`, `glm/`, `deepseek/`, `gemma/`, `nemotron/`, `minimax/`, `inkling/`,
+…) or create one for a new model family. The filename stem is the recipe name
+that `@spark-forge/<name>` resolves, so pick a stem no other family uses. Never
+name a file `recipe.yaml`.
+
+## 4a. Keep one canonical copy
 
 Each served model has exactly one canonical recipe file. A genuinely different
 operating profile of the same checkpoint (long-context, coder-agent, EP) is its
@@ -106,10 +120,23 @@ refreshed the clone. The working tree is often on `develop`, so check
 invisible to sparkrun. There is no pull-request step. **Commit and push only when the operator asks** — authoring and verifying
 a recipe does not imply permission to commit it.
 
-An uncommitted recipe is still usable before it lands: `sparkrun run` takes a
-file path directly, and a SparkRoute binding can reference the recipe by
-**absolute path** until the commit makes the registry name resolvable (the
-embedding/reranker pair ran and was gateway-bound this way on 2026-11-08).
+Because the registry clones the **local** `main`, a commit pushed to the remote
+is not enough on its own. After pushing, also fast-forward the local `main`,
+then run `sparkrun registry update spark-forge`.
+
+An uncommitted recipe is still usable before it lands, because `sparkrun run`
+takes a file path directly (`./recipes/<family>/<name>.yaml`). The spark-loader
+gateway catalog names `@spark-forge/<name>` recipes, so a recipe becomes
+gateway-loadable only after it is published. Under the old SparkRoute gateway,
+a binding could reference an uncommitted recipe by absolute path; the
+embedding/reranker pair ran that way on 2026-11-08.
+
+The 2026-11-17 additions show the copy-first path end to end.
+`qwen3.8-flash-next-fp4-b12x-tp1` was found as `@eugr/qwen3.8-flash-next-nvfp4-solo`
+by a registry search. It was copied with an attribution header, and only the
+image pin and the user's docker flags were changed. `nemotron-3.5-bolt-74b-a9b-24gb-tp1`
+is a copy of `@eugr/nemotron-3.5-bolt-24gb` on a pinned spark-arena image. Both
+were recorded at the bar they reached: lint-only and UNVERIFIED respectively.
 
 ## Staging ground: unverified ports under `notes/`
 

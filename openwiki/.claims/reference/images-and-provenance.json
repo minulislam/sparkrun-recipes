@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "pageVersion": "sha256:28c8b756ecd57bd13e77be7b928af02fbb70618187c64faa25f492983a22210e",
+  "pageVersion": "sha256:3c9694b965b2e8b678cba053f8cffc8c2ca5addfc55692f9f26a9d95cac43e8a",
   "claims": [
     {
       "id": "claim_977b881f419848fba8b33b37b14aefea",
@@ -37,7 +37,7 @@
       "statement": "Policy is immutable tags only (no :latest or floating :nightly); digest pins are otherwise strongest but sparkrun 0.3.10 fails to ship a digest-pinned image to the worker, so a dated tag is the practical right form on this pair.",
       "evidence": [
         {
-          "resource": "repo://CLAUDE.md#L119-L121",
+          "resource": "repo://CLAUDE.md#L129-L131",
           "version": "repo-lines-v1:sha256:f248508b89bf59aa80fb78a01a48aa991abe91c8daf5b7cd0db6587f8d54591b:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzJhOGViNTg4NjliM2NhMmRhZDEyMDYyMmRjMmNiNzMyMDJhODgyMWUwODdkZWUzNzEwNDY0ZWQyMjdhMjA4ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzQ4NDEyODk3M2UyMmEzMmIwYjJhYTVmMGE3Nzg5NDRkZjRmZWFhYzA3ZTY4NDhiMzg4ZmI3ZjRhMjAwY2U4MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2VmMDE4MTVkNTM5N2FmZGI4ZjAxMjQxM2U0MjcyMTU1OGQwNjhmYWYxOWU4NGU5OTcwYzYyZWIyODM5M2YxYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDQ0YTU0NzM5YWQ4OTRmNWE3ZGYxNzQ3MGUzNzI3Mjk5NDllZjc2ODhhOTM4NjdiN2Y3MDVjZjY5YzE5YmUzZCJ9"
         },
         {
@@ -62,7 +62,7 @@
       "evidence": [
         {
           "resource": "repo://images/deepseek-rank1/README.md#L1-L26",
-          "version": "repo-lines-v1:sha256:2547b3d2cef87e71dc0354928add64de02f16a4c2bcf85615db57bd482c5153a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhMjA3ZGE5NjU2ZDY3NTVlMzM0NGU2MWVkZjljMzJkZWE3YjU4NTNiMDE3MWUzYTBmOGUyMGQ4YTlkNTE1ODYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA2Mzc2YmRhYWMyMjNkYTQ4ZTc3NjQzNzdjMDc5ZjQ3MTQwOTFhYWM4ODI1MDgzODVlNjk5OTZjZjAyMWM3ZTkifQ"
+          "version": "repo-lines-v1:sha256:e20b59bce9297a524abd7d9556f390887fa31e5316e7a335db6fe9f06ef34c4e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhMjA3ZGE5NjU2ZDY3NTVlMzM0NGU2MWVkZjljMzJkZWE3YjU4NTNiMDE3MWUzYTBmOGUyMGQ4YTlkNTE1ODYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA2Mzc2YmRhYWMyMjNkYTQ4ZTc3NjQzNzdjMDc5ZjQ3MTQwOTFhYWM4ODI1MDgzODVlNjk5OTZjZjAyMWM3ZTkifQ"
         }
       ]
     },
@@ -72,11 +72,11 @@
       "evidence": [
         {
           "resource": "repo://HISTORY.md",
-          "version": "repo-file-v1:sha256:e2f45aa7dad4c3ca3135e8cabfb5f59c2c52d64c8de0d012788700e63667ceee"
+          "version": "repo-file-v1:sha256:937ad6ff1ff48084fc20ae7e20811c1220acb7d89600679bd7ee2b9f14b81e11"
         },
         {
-          "resource": "repo://recipes/qwen3-embedding-4b-tp1.yaml",
-          "version": "repo-file-v1:sha256:634e090a36b33661b0d8b56deda2e0081d51555de8cb52956a8f2ee0d5aa79b4"
+          "resource": "repo://recipes/qwen/qwen3-embedding-4b-tp1.yaml#L1-L10",
+          "version": "repo-lines-v1:sha256:10f59f2ca74c6f8cefed20c83bd5c8c187b06441fee8f3a3b2414c4715469b0b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNlNTE2MWQ2NjQxOTVmNjQ2OTEwY2MwODVmNjU2YTJhMjA5MzJiZTQ3YzZhOWY1MmU0OWEyZTBlYjU0OTc2ZmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5MThkM2NiZDNlOTM4MWY5YmE3ZDhkNmFmZGQ2NTc3ZTBlNmFmNGRlZWFkZjg1ZTljNWIwMzc1ZTZmOGVjNGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdjZjMxN2IwM2MyNzc1Y2NmNThkMTgzOGIxN2RkOWFlM2NmYWVkMjM2OWYzODljOTRhYzgzZTAxYTlhOGFlYzgifQ"
         }
       ]
     },
@@ -89,10 +89,34 @@
           "version": "repo-file-v1:sha256:4b0d29261912baa678926f114ccc759d2ea2cbafc47e4f67cb4b9318e60b5443"
         }
       ]
+    },
+    {
+      "id": "claim_3ff150ad3e054893bced5a3818712619",
+      "statement": "qwen3.8-flash-next-fp4-b12x-tp1 pins the direct eugr image eugr/spark-vllm-b12x:nightly-20261015 (image-policy tier 2, no spark-arena rebuild yet, no provenance labels) instead of the upstream @eugr recipe's unpinned vllm-node-b12x alias.",
+      "evidence": [
+        {
+          "resource": "repo://recipes/qwen/qwen3.8-flash-next-fp4-b12x-tp1.yaml#L1-L16",
+          "version": "repo-lines-v1:sha256:eee2325e0a6ed9ad42b8fc03ffead2bf127d6a98d73a5aa38b32d3275a8e9b25:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhNDQ0MjU3NzJkNDczOTc0NjA0Mzk3ZThlNmNlN2Y0ZjYzODVlNTRlYzkzNTRiY2NkNTQ0N2ExY2RiOWNiY2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjZGIxZGE3MGJmNzhiMzdmYTg0MDRmOTdlNTg2OGRlNWY1NjUxNzcyZDZhZGY5OGQ2NmU5OWFiOTM4MTg1ZTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYyMGVmY2MwZGQ2ZWYyOWQ2YmI4YmE1MjBjOTQxNjg2OGY4MWFkYTU4NjViMWM2N2E3YTkyZjQ3MmVlYzhlYTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_76a285a896fe4fa9a8899c584eb0d46a",
+      "statement": "qwen3.6-35b-a3b-nvfp4-tp1 runs on official vllm/vllm-openai:v0.24.0, which bakes an ENTRYPOINT, so the recipe sets executor_config.entrypoint to an empty string.",
+      "evidence": [
+        {
+          "resource": "repo://HISTORY.md#L936-L940",
+          "version": "repo-lines-v1:sha256:32aa39b3828f92c021ad694c830bc55643cfaec53eca6b582a00c954cf8ae384:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzA1MGRkMDI0Y2M4Mjk1Zjc2YWU1YTQwYWI5N2I5MzgwZTMzMjI2MDM1NjM1ZGRiNDc5MzI4NjkxODFmZDdmNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2NhZGY1MWI3MDQ5NGVhYjY5NTZlNzg2ZmUzMTlhZjZlMjE4ZThhY2Q4MjFlYWUzZGE4ZDc3ZWNhYjk3NzRjNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDBhNDQyYjg5MmUwNTgzMDIwOGUwNjhjMzdiNzFjMDNmZjI0MmYwNTM1MGNmNjhiNjE5Mjc4YmYxOTBkNDQ3MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWQzYmJjNDQxNzQ0ODk2ZDE2NThlZTNhN2MwNGMyYzQxODVmMjRjN2M0ODU4NDZkNTBmM2E1YTAwZDIzYTM4ZSJ9"
+        },
+        {
+          "resource": "repo://recipes/qwen/qwen3.6-35b-a3b-nvfp4-tp1.yaml#L22-L28",
+          "version": "repo-lines-v1:sha256:7c729c5ae0e010fc6832e7aa785fce6cafce7835408e46fa2ff75c1d594e18f0:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjkwMmQ2OTM5MmY5NWQ3YTZlM2FjYzVlZGU0OGZjOWQ0YTUyMmUzZDcxNjk3MTE0YzJhNmE2ZmE1MmJjNDVmOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWU0ZjU4NTg5NDNiYWVlODE1ODczYTY5ZTgyZGNjZGNlNzNjNzBmMzRmNzdkZjhlODEyZTUxOWMwZmQ4ZDc0OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGQxYmJjMDVlMDM0OGU2ZGI0MTViYzI2YmM0NTQ1ODA1YjgwYWMzMmI3MjE2Mzk0ZjU5Mzg0MTc4YmU5YzVhZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDcyNDRiMGIzMTU4Y2VjMmQwNGJhNGExNjRlZjdhOTA0YjJlYjUxNmI2MDVjOWU5NDM3NTNmZjgwZDU1ODBmNyJ9"
+        }
+      ]
     }
   ],
   "verification": {
     "by": "openwiki/0.7.2",
-    "at": "2026-11-14T21:00:11.653Z"
+    "at": "2026-11-17T14:41:15.503Z"
   }
 }
