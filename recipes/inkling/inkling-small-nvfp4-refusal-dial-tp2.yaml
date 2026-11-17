@@ -3,6 +3,8 @@
 # >>> Ablation is rank-1 refusal directions applied at runtime; lambda=0 is bit-exact to stock.
 # >>> Turn dial on/off live via POST /admin/refusal_lambda.
 # >>> Requires TP=2 across 2x DGX Spark nodes (gb10-spark 10.10.20.10 + gx10-spark 10.10.20.11).
+# >>> TEXT-ONLY (image limit 0): in this b12x image the multimodal warmup (mark_b12x_eager_shapes)
+# >>> crashes on Inkling with "'<=' not supported between NoneType and int" (2026-11-17).
 
 recipe_version: "2"
 model: thinkingmachines/Inkling-Small-NVFP4
@@ -63,4 +65,5 @@ command: |
     --gpu-memory-utilization {gpu_memory_utilization} \
     --max-model-len {max_model_len} \
     --trust-remote-code \
-    --enable-prefix-caching
+    --enable-prefix-caching \
+    --limit-mm-per-prompt '{"image": 0}'
