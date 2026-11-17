@@ -964,3 +964,13 @@ Gateway now lists: `qwen3.8-flash-next-abliterated`, `deepseek-v4-coder`,
 - Five stubs appeared on the head since 11-10 (two stalled GLM-5.3 FP4 downloads with
   `.incomplete` blobs, the FP4-Local index for row 67, magpie TTS, Qwen3-1.7B). Not deleted.
 - Free space: head 508 GiB, worker 1.9 TiB. Recipe count is 52 (51 before row 67).
+
+## 2026-11-17 (late): Flash-Next FP4-Local b12x TP1 verified on gx10
+
+- `qwen3.8-flash-next-fp4-b12x-tp1` (row 67) VERIFIED on gx10-solo through spark-loader :4000:
+  cold load 1092 s, answered 17*23=391, 31.6 tok/s end-to-end at c=1 (1024 tokens / 32.4 s, MTP x4).
+- Weights `nvidia/Qwen3.8-Flash-Next-FP4-Local` (102 GB, 187.8B params) downloaded to gx10 only; image
+  `eugr/spark-vllm-b12x:nightly-20261015` pulled on gx10 only. gx10's `hub/.locks` was root-owned
+  (from a container, 2026-11-16) and blocked `hf download`; moved aside to `.locks.root-20261116`.
+- After a big download the page cache fills unified memory (gx10 MemFree 31.5 GiB); vLLM and the
+  loader both need `sparkrun setup clear-cache --cluster <c>` before a large launch (passwordless on gx10).
