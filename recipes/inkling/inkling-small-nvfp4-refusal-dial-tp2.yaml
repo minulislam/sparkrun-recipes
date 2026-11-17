@@ -30,7 +30,7 @@ metadata:
   model_vram: 170
 
 mods:
-  - mods/inkling-refusal-dial
+  - ../mods/inkling-refusal-dial
 
 env:
   VLLM_REFUSAL_DIRS: /opt/refusal/refusal_dirs_inkling.safetensors

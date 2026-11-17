@@ -72,7 +72,7 @@ executor_config:
   shm_size: 32gb
 
 mods:
-  - mods/glm53-nvfp4kv-overlays
+  - ../mods/glm53-nvfp4kv-overlays
 
 readiness:
   port_timeout_s: 3600

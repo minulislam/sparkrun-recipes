@@ -36,7 +36,7 @@ min_nodes: 2
 max_nodes: 2
 
 mods:
-  - mods/glm53-exl3-gb10-topk
+  - ../mods/glm53-exl3-gb10-topk
 
 executor_config:
   entrypoint: ""
