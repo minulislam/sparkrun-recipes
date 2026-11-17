@@ -70,7 +70,7 @@ executor_config:
   shm_size: 32gb
 
 mods:
-  - mods/glm53-sm121-topk
+  - ../mods/glm53-sm121-topk
 
 readiness:
   port_timeout_s: 3600

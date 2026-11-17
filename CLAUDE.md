@@ -93,7 +93,9 @@ section on each node (copy it to the worker first).
   qwen, nemotron, minimax, inkling, and one folder per single-recipe family).
   The filename stem is the recipe name sparkrun resolves, so keep it unique
   across families and never rename it to `recipe.yaml`. Shared mods stay in
-  `recipes/mods/` via `mods_subpath` in `.sparkrun/registry.yaml`.
+  `recipes/mods/`; reference them as `../mods/<name>` so they resolve next to
+  the recipe for both `./recipes/...` and `@spark-forge/...` launches (a bare
+  `mods/<name>` only resolves through the eugr fallback).
 - **Keep what runs on two nodes; drop what needs three.**
 - **One canonical copy of each recipe.** Benchmark reports live in
   `benchmarks/`.
