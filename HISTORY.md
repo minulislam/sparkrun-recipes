@@ -782,7 +782,7 @@ nothing committed:
   cleanup for the leftover root-owned dir.
 - **qwen3.8-flash-next-nvfp4-tp2 re-benchmarked post-MTU-fix** (same recipe/image as 09-27 row):
   tg128 c=1 **73.7 tok/s vs 46.3 baseline (+59%)**; c=8 at tg=256 **118.5 agg vs 92.3 (+28%)**,
-  peak 206.7. pp2048 c=1 2167-2624 across runs (noisy, ≈baseline). Caveat: tg128 c=8 reads 38.5
+  peak 250.0 (243/242/265 per run in the raw file; an earlier note said 206.7). pp2048 c=1 2167-2624 across runs (noisy, ≈baseline). Caveat: tg128 c=8 reads 38.5
   agg — artifact of ~4.8 s TTFR stagger vs the short 128-tok window (per-request 19.6 ≈ baseline
   20.2); use tg=256 for c=8 comparisons. Raw: `benchmarks/results_qwen38-flash-next-tp2-20261103.{json,csv,yaml}`
   (file holds the final c8/tg256 row; c1 figures are in the session logs). Smoke test passed:
