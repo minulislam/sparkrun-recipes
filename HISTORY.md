@@ -989,3 +989,9 @@ Gateway now lists: `qwen3.8-flash-next-abliterated`, `deepseek-v4-coder`,
   KV 2.5 GiB = 74,021 tokens. VERIFIED on gb10-solo: ready 795 s, max_model_len 65536, 17*23 -> 391, 34.0 tok/s
   end-to-end on a 512-token answer, host low-water 21 GiB. First launch waited ~6 min on sparkrun's global
   reservation, held by the daemon while spark-loader's gx10 job booted.
+- 2026-11-18: spark-arena-v2 benchmark of `qwen3.8-flash-next-fp4-b12x-tp1` on gx10 (28/28 points,
+  `benchmarks/results/qwen3.8-flash-next-fp4-b12x-tp1-gx10-2026-11-17.{yaml,json,csv}`). Single stream
+  30–37 tok/s; total decode peaks ~62 tok/s at c=5 and holds to 100k context; c=10 queues past
+  `max_num_seqs: 8` and collapses at 65k/100k context (TTFR 55 s / 118 s). The first attempt was cut at
+  7/28 when spark-loader idle-stopped the model (benchmark traffic bypassed the loader); fixed in
+  spark-loader 2a13690 (idle stop reads vLLM /metrics).
