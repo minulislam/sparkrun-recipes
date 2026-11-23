@@ -40,7 +40,7 @@ of weight files only (`.safetensors` / `.gguf` / `.bin`), not the cache director
 
 Legend: **H** = complete on head, **W** = complete on worker.
 
-## Ready — weights on every node the recipe needs (28 recipes)
+## Ready — weights on every node the recipe needs (29 recipes)
 
 ### Two-node recipes (5)
 
@@ -51,10 +51,11 @@ Legend: **H** = complete on head, **W** = complete on worker.
 | `deepseek-ai/DeepSeek-V4-Flash-0731` | H W | 155.4 | `deepseek-v4-flash-0731-tp2`, `deepseek-v4-flash-0731-refusal-dial-tp2` |
 | `dealignai/Qwen3.8-Flash-Next-ABLITERATED-NVFP4` | H W | 125.9 | `qwen3.8-flash-next-abliterated-nvfp4-tp2` |
 
-### Single-node recipes (23)
+### Single-node recipes (24)
 
 | Model | Nodes | GiB | Recipes |
 |---|---|---|---|
+| `DevelopingDad/Qwen3.8-Flash-Next-FP4-Local-Abliterated` | W | 95.2 | `qwen3.8-flash-next-fp4-abliterated-tp1` (downloaded 2026-11-18, rev fe8c47f) |
 | `poolside/Laguna-S-2.1-NVFP4` | H | 92.9 | `laguna-s-2.1-nvfp4-tp1` |
 | `AEON-7/Qwen3.6-27B-AEON-Ultimate-Uncensored-NVFP4` | H | 25.8 | `qwen36-27b-aeon-ultimate-nvfp4`, `qwen36-27b-aeon-colocate` |
 | `orcarouter/Qwen3.8-27B-Uncensored-NVFP4` | H | 23.0 | `qwen3.8-27b-uncensored-nvfp4-tp1` |

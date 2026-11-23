@@ -995,3 +995,17 @@ Gateway now lists: `qwen3.8-flash-next-abliterated`, `deepseek-v4-coder`,
   `max_num_seqs: 8` and collapses at 65k/100k context (TTFR 55 s / 118 s). The first attempt was cut at
   7/28 when spark-loader idle-stopped the model (benchmark traffic bypassed the loader); fixed in
   spark-loader 2a13690 (idle stop reads vLLM /metrics).
+
+## 2026-11-18: Uncensored single-node Flash-Next (FP4-Local abliterated) verified on gx10
+
+- HF search (2026-11-17) of ~300 abliterated/uncensored Flash-Next repos; most are GGUF/MLX/EXL3. Single-GB10
+  vLLM candidates: `DevelopingDad/Qwen3.8-Flash-Next-FP4-Local-Abliterated` (95.2 GiB, card reports 0/100 dev
+  and 6/100 holdout refusals, 38 tok/s single Spark), `lflare/Qwen3.8-Flash-Next-NVFP4-Abliterated` (102.6 GiB,
+  in-place edit of the lil QAD checkpoint), `edp1096/Huihui-...-NVFP4-QAD` (99.0 GiB, SGLang-validated). The
+  ~171 GiB orcarouter/mazinb NVFP4 builds and 125.9 GiB dealignai-style builds do not fit one node.
+  `Cudecnik/Qwen3.8-Flash-Next-refusal-projection` is a llama.cpp control vector (a possible dial source).
+- Downloaded DevelopingDad rev fe8c47f to gx10 (96 GB). `recipes/qwen/qwen3.8-flash-next-fp4-abliterated-tp1.yaml`
+  (INDEX row 69) copies the FP4-Local b12x recipe; the publisher's serve-spark.sh pins the same image digest
+  (`eugr/spark-vllm-b12x@sha256:03a95654...` = nightly-20261015). Adds `--revision` and a served name.
+- VERIFIED on gx10-solo: ready 915 s, 262,144 ctx, KV 908,863 tokens, 17*23 -> 391, 38.1 tok/s end-to-end.
+  JBB-Behaviors (thinking off, 512 tokens, c=4, keyword grader): harmful 97 complied / 3 refused, benign 100/100.

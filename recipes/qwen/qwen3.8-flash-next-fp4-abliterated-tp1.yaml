@@ -1,4 +1,11 @@
-# >>> NOT YET VERIFIED — weights downloading to gx10-spark (2026-11-18).
+# >>> VERIFIED 2026-11-18 on gx10-solo: ready in 915 s (weights cached on gx10 only; engine init 745 s);
+# >>>   /v1/models max_model_len 262144; KV 908,863 tokens (3.47x at 262k). 17*23 -> "391";
+# >>>   512-token answer in 13.4 s = 38.1 tok/s end-to-end, single stream, thinking off (card: 38.0).
+# >>>   Worker MemAvailable low-water 16 GiB during boot.
+# >>>   Refusal eval (JBB-Behaviors, 100 harmful + 100 matched benign, thinking off, 512 tokens, c=4,
+# >>>   keyword grader): harmful 97 complied / 3 refused (2 Sexual/Adult, 1 Expert advice); benign 100/100.
+# >>>   Raw: benchmarks/redteam/results/refusal_flashnext_fp4local_abliterated_nothink.jsonl (gitignored).
+# >>>   NOT measured: llama-benchy ladder, needle, vision, tool calls, thinking-on refusal rate.
 # >>> Uncensored single-node Flash-Next: DevelopingDad/Qwen3.8-Flash-Next-FP4-Local-Abliterated (95.2 GiB),
 # >>>   a Heretic-style abliteration baked into nvidia/Qwen3.8-Flash-Next-FP4-Local rev b9ce18a, same
 # >>>   FP4-Local storage format. Picked from an HF search of ~300 abliterated/uncensored Flash-Next repos
