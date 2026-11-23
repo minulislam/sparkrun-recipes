@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "3c3367bd-7a30-4269-8cab-773d98bb7dd2",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "/home/devops/workspace/sparkrun-recipes/.archify/architecture-spark-loader-20261123-190917/candidate.json",
+  "output": "/home/devops/workspace/sparkrun-recipes/.archify/architecture-spark-loader-20261123-190917/spark-loader.html",
+  "specification": {
+    "sha256": "d5da8329aba4c803239a41b8db45762358a956b01e689510ecd9ea5cac481ab0",
+    "bytes": 7431
+  },
+  "artifact": {
+    "sha256": "42f9251778c6a7a23f2791ea193eb621b9acc836e1bc0686eef5736ca9cf048d",
+    "bytes": 767876
+  }
+}

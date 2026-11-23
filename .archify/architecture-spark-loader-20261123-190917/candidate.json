@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "spark-loader serving stack",
+    "output": ".archify/architecture-spark-loader-20261123-190917/spark-loader.html",
+    "quality_profile": "showcase",
+    "repository": {
+      "url": "https://github.com/minulislam/spark-loader.git",
+      "provider": "github",
+      "link_mode": "web",
+      "revision": "2a13690a8543302cc6996b8ddeea4ea19d5bd19e"
+    }
+  },
+  "components": [
+    {
+      "id": "clients",
+      "type": "external",
+      "label": "Clients",
+      "sublabel": "one OpenAI-compatible endpoint",
+      "pos": [40, 214],
+      "size": [130, 60],
+      "sources": [{ "path": "README.md", "line": 4 }]
+    },
+    {
+      "id": "loader",
+      "type": "backend",
+      "label": "spark-loader",
+      "sublabel": "FastAPI front + LoadManager",
+      "tag": ":4000 (0.0.0.0)",
+      "pos": [260, 190],
+      "size": [190, 108],
+      "sources": [
+        { "path": "src/spark_loader/app.py", "line": 128, "end_line": 141, "label": "Front: route, stream, relay" },
+        { "path": "src/spark_loader/loader.py", "line": 121, "end_line": 158, "label": "LoadManager: resolve, load, fall back" },
+        { "path": "src/spark_loader/app.py", "line": 87, "end_line": 101, "label": "optional bearer auth" }
+      ]
+    },
+    {
+      "id": "catalog",
+      "type": "database",
+      "label": "catalog.yaml + aliases",
+      "sublabel": "models, clusters, static endpoints",
+      "pos": [260, 56],
+      "size": [190, 64],
+      "sources": [
+        { "path": "src/spark_loader/config.py", "line": 74, "end_line": 110, "label": "load_catalog" },
+        { "path": "src/spark_loader/config.py", "line": 149, "end_line": 156, "label": "load_aliases" }
+      ]
+    },
+    {
+      "id": "litellm",
+      "type": "backend",
+      "label": "LiteLLM proxy",
+      "sublabel": "runs in a sparkrun daemon worker",
+      "tag": "127.0.0.1:4001",
+      "pos": [560, 214],
+      "size": [150, 64],
+      "sources": [
+        { "path": "src/spark_loader/config.py", "line": 16, "label": "UPSTREAM" },
+        { "path": "README.md", "line": 64, "label": "uvx inside daemon worker" }
+      ]
+    },
+    {
+      "id": "vllm",
+      "type": "cloud",
+      "label": "vLLM chat workloads",
+      "sublabel": "one whole GPU per workload",
+      "tag": "gb10 + gx10",
+      "pos": [830, 190],
+      "size": [190, 108],
+      "sources": [
+        { "path": "src/spark_loader/daemon.py", "line": 245, "end_line": 256, "label": "ensure_ready returns endpoint" },
+        { "path": "README.md", "line": 84, "label": "one GPU per workload" }
+      ]
+    },
+    {
+      "id": "daemon",
+      "type": "backend",
+      "label": "sparkrun daemon",
+      "sublabel": "HTTP/1.1 over Unix socket",
+      "pos": [240, 430],
+      "size": [180, 68],
+      "sources": [
+        { "path": "src/spark_loader/daemon.py", "line": 1, "end_line": 5, "label": "durable jobs protocol" },
+        { "path": "src/spark_loader/daemon.py", "line": 97, "end_line": 140, "label": "DaemonClient, UDS transport" }
+      ]
+    },
+    {
+      "id": "pinned",
+      "type": "backend",
+      "label": "Pinned static pair",
+      "sublabel": "embedder :8000 · reranker :8001",
+      "tag": "docker compose",
+      "pos": [480, 430],
+      "size": [200, 68],
+      "sources": [
+        { "path": "deploy/pinned/compose.yaml", "line": 20, "end_line": 30, "label": "embed + rerank services" },
+        { "path": "src/spark_loader/forward.py", "line": 70, "end_line": 78, "label": "endpoint bypass in Upstream.open" }
+      ]
+    },
+    {
+      "id": "hosts",
+      "type": "cloud",
+      "label": "Host memory probe",
+      "sublabel": "/proc/meminfo · local + ssh",
+      "pos": [40, 430],
+      "size": [170, 68],
+      "sources": [
+        { "path": "src/spark_loader/memory.py", "line": 48, "end_line": 65, "label": "local read or ssh cat" },
+        { "path": "src/spark_loader/memory.py", "line": 110, "end_line": 123, "label": "fits: MemFree >= footprint + 4 GiB" }
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "gb10-spark (10.10.20.10)",
+      "wraps": ["catalog", "loader", "litellm", "daemon", "pinned"]
+    }
+  ],
+  "connections": [
+    {
+      "id": "clients-to-loader",
+      "from": "clients",
+      "to": "loader",
+      "label": "OpenAI API :4000",
+      "variant": "emphasis"
+    },
+    {
+      "id": "catalog-to-loader",
+      "from": "catalog",
+      "to": "loader",
+      "label": "read at startup",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "loader-to-litellm",
+      "from": "loader",
+      "to": "litellm",
+      "label": "forward",
+      "variant": "emphasis"
+    },
+    {
+      "id": "litellm-to-vllm",
+      "from": "litellm",
+      "to": "vllm",
+      "label": "route to workload"
+    },
+    {
+      "id": "loader-to-daemon",
+      "from": "loader",
+      "to": "daemon",
+      "label": "daemon jobs",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "daemon-view-return",
+      "from": "daemon",
+      "to": "loader",
+      "label": "endpoints view · 10 s",
+      "variant": "dashed",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "daemon-proxy-sync",
+      "from": "daemon",
+      "to": "litellm",
+      "label": "proxy.sync · restart",
+      "fromSide": "right",
+      "toSide": "bottom"
+    },
+    {
+      "id": "daemon-to-vllm",
+      "from": "daemon",
+      "to": "vllm",
+      "label": "ensure_ready · start / stop",
+      "fromSide": "bottom",
+      "toSide": "bottom",
+      "via": [[330, 540], [925, 540]],
+      "labelSegment": 1
+    },
+    {
+      "id": "loader-to-pinned",
+      "from": "loader",
+      "to": "pinned",
+      "label": "static bypass",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "loader-to-hosts",
+      "from": "loader",
+      "to": "hosts",
+      "label": "MemFree check",
+      "fromSide": "left",
+      "toSide": "top"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Request path",
+      "items": [
+        "Running model: payload forwarded, `model` rewritten to the served name; response relayed, hop-by-hop headers dropped",
+        "Cold model: one single-flight load per name; the request waits, a streaming request gets SSE `: loading` keep-alives",
+        "Static pair: `/v1/embeddings` and `/v1/rerank` go straight to the pinned endpoints, never through LiteLLM"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Cold load sequence",
+      "items": [
+        "`workloads.plan` per candidate cluster, then every host needs MemFree >= gpu_memory_utilization x MemTotal + 4 GiB",
+        "`workloads.ensure_ready` (up to 30 min), then `proxy.sync` restarts LiteLLM so it lists the new model",
+        "Poll up to 60 s for the daemon view + LiteLLM `/v1/models`; on timeout the request falls back (`registration_timeout`)"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Fallback & idle stop",
+      "items": [
+        "Chat falls back to `default` (largest running chat model) with an `x-spark-loader-fallback: reason=` header; embedding / rerank get a 503",
+        "A failed launch cools the model down for 900 s; leftover unhealthy workloads owned by the loader are stopped",
+        "A loader-started chat model idle for 30 min is stopped via the daemon; vLLM `/metrics` catches traffic that bypasses the loader"
+      ]
+    }
+  ]
+}
