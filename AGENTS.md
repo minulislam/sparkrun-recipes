@@ -4,20 +4,22 @@
 ## Session Learnings (auto-updated by handoff)
 
 ### Implicit Rules
-- spark-forge registry clones LOCAL main (file://); after pushing main also fast-forward local main then sparkrun registry update spark-forge
+- spark-forge registry clones LOCAL main (file://); after committing on develop, fast-forward local main (never push main) then sparkrun registry update spark-forge
 - Worker gx10-spark: mgmt 10.10.20.11 works again (ssh OK 2026-11-17) but has been flaky; CX7 data 10.99.10.11 for rsync
 - Gateway: spark-loader on 0.0.0.0:4000 (on-demand load, default = largest running chat model, 30 min idle stop) in front of LiteLLM on 127.0.0.1:4001; SparkRoute removed 2026-11-17. Repo ~/workspace/llm/serving/spark-loader
 - Embedder :8000 + reranker :8001 run OUTSIDE sparkrun (docker compose `spark-pinned` on gb10) because sparkrun 0.4.2 reserves a whole GPU per workload
 - gh active account minulislam (rehanpatwary also logged in)
+- sparkrun venv python: ~/.local/share/uv/tools/sparkrun/bin/python (import sparkrun internals)
+- DGX Spark platform tier supplies CUTE_DSL_ARCH=sm_121a and PYTORCH_CUDA_ALLOC_CONF for vllm/sglang (sparkrun/platforms/dgx_spark.py:82)
+- Platform default images are :latest (dgx_spark.py:23) — always set container:
+- Head f1 ports now static: Wired connection 5 = 10.99.10.10/24, 4 = 10.99.11.10/24
 
 ### Key Decisions
-- Decision: layout recipes/<family>/<name>.yaml, filename stem unchanged — Reason: sparkrun recipe name = file stem; recipe.yaml everywhere would collide
-- Decision: local mods referenced as ../mods/<name> — Reason: sparkrun resolves mods adjacent to recipe file; mods/<name> broke after reorg (fell to eugr fallback)
-- Decision: Inkling refusal-dial text-only via --limit-mm-per-prompt image 0 — Reason: b12x image's mark_b12x_eager_shapes crashes on Inkling (encoder_rows None)
-- Decision: Inkling mod run.sh chmod 0644 refusal dirs — Reason: cp kept 0600 as root; vLLM uid 1000 PermissionError
-- Decision: Inkling gpu_memory_utilization 0.82 — Reason: 0.85 above repo ceiling, NVRM OOM risk
 - Decision: Throughput artifact rows in db collection recipes (owner-write, view-read) + built-in fallback — Reason: update numbers without republish
 - Decision: Flash-Next solo 73.7 from HISTORY.md:784 — Reason: post-MTU-fix figure; raw file holds only c=8 row
+- Decision: pin 42 vLLM/SGLang recipes to head refs/main SHA + --revision {model_revision} — Reason: sparkrun download_model calls snapshot_download every online launch (models/download.py:495) so unpinned drifts; SHA pin w/o --revision fails offline (no refs/, HF_HUB_OFFLINE=1). All 44 cached refs matched upstream at pin time
+- Decision: Atlas EP2 recipes unpinned — Reason: Atlas runtime declares no model_revision_flags
+- Decision: keep minimax/inkling comm env + glm TRITON_CACHE_DIR — Reason: measured workarounds in VERIFIED recipes; removal needs live retest
 
 <!-- handoff:learnings:end -->
 
