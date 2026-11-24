@@ -13,6 +13,7 @@
 
 recipe_version: "2"
 model: nvidia/Qwen3.6-27B-NVFP4
+model_revision: 0893e1606ff3d5f97a441f405d5fc541a6bdf404
 runtime: vllm
 container: vllm/vllm-openai:nightly-ddd6fbca148a867aad1fcab7ec72f582b9977db4  # pinned 2026-09-28 — commit tag of local build; head/worker had diverged under the floating tag
 # 2026-09-27: official vllm-openai images bake ENTRYPOINT ["vllm","serve"]; sparkrun aborts with
@@ -42,6 +43,7 @@ defaults:
 
 command: |
   vllm serve {model} \
+    --revision {model_revision} \
     --served-model-name {served_model_name} \
     --host {host} \
     --port {port} \

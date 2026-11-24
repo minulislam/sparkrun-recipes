@@ -14,6 +14,7 @@
 
 recipe_version: "2"
 model: mistralai/Leanstral-1.5-119B-A6B
+model_revision: bd2ed6eadc8dcf9dc9a1f206c17388bcf558c8b9
 runtime: vllm
 container: vllm/vllm-openai:v0.24.0
 min_nodes: 2
@@ -40,6 +41,7 @@ defaults:
 
 command: |
   vllm serve {model} \
+    --revision {model_revision} \
     --served-model-name {served_model_name} \
     --host {host} \
     --port {port} \

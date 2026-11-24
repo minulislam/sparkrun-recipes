@@ -23,6 +23,7 @@
 
 recipe_version: "2"
 model: deepseek-ai/DeepSeek-V4-Flash-0731
+model_revision: 7872f01b1d1fe23eabc4c98b48bffcef5a386062
 runtime: vllm
 container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly-b12x:20260926
 min_nodes: 2
@@ -77,6 +78,7 @@ defaults:
 
 command: |
   vllm serve {model} \
+    --revision {model_revision} \
     --served-model-name {served_model_name} \
     --host {host} \
     --port {port} \

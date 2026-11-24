@@ -26,6 +26,7 @@
 
 recipe_version: "2"
 model: AEON-7/Gemma-4-12B-it-AEON-Abliterated-K4-NVFP4-FP8
+model_revision: 69c97d2b02ead484ccb1529d4dcdd9a6bcd14759
 runtime: vllm
 # Digest = :2026-07-08-v0.24.0-maxsafe (vllm 0.24.0+aeon.sm121a.dflash) — live-
 # validated with this recipe 2026-07-18 (21.7 tok/s single-stream). Digest pin
@@ -71,6 +72,7 @@ defaults:
 # (verified on the 26B card). Mixed FP8/NVFP4 quant left to auto-detect.
 command: |
   vllm serve {model} \
+      --revision {model_revision} \
       --served-model-name {served_model_name} \
       --host {host} \
       --port {port} \

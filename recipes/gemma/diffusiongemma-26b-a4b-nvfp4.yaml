@@ -31,6 +31,7 @@
 
 recipe_version: "2"
 model: nvidia/diffusiongemma-26B-A4B-it-NVFP4
+model_revision: ec4ff3df205028f4e81c954c2227f9312b3ec2ea
 runtime: vllm
 # Digest = :2026-07-08-v0.24.0-maxsafe (vllm 0.24.0+aeon.sm121a.dflash) — same
 # pinned build as the other AEON recipes; digest pin avoids sparkrun's ':latest'
@@ -71,6 +72,7 @@ defaults:
 
 command: |
   vllm serve {model} \
+      --revision {model_revision} \
       --served-model-name {served_model_name} \
       --host {host} \
       --port {port} \

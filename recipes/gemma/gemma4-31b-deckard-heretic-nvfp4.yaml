@@ -41,6 +41,7 @@
 
 recipe_version: "2"
 model: AEON-7/Gemma-4-31B-it-DECKARD-HERETIC-Uncensored-NVFP4
+model_revision: 68c692037af335f9d0e86e12c6867ccbd9353f3c
 runtime: vllm
 # Digest = ':latest' as pulled + live-validated 2026-07-25 (31.3 tok/s c=1,
 # 113.8 tok/s 8-way on gb10-spark). NOTE: this container ships vLLM 0.20.1 (not
@@ -91,6 +92,7 @@ defaults:
 # left to the patched loader's auto-detect.
 command: |
   vllm serve {model} \
+      --revision {model_revision} \
       --served-model-name {served_model_name} \
       --host {host} \
       --port {port} \

@@ -18,6 +18,7 @@
 
 recipe_version: "2"
 model: unsloth/Qwen3.8-27B-NVFP4
+model_revision: f0b7c9e722f5565102fff8481c99e4d86ae099c7
 runtime: vllm
 container: vllm/vllm-openai:nightly-ddd6fbca148a867aad1fcab7ec72f582b9977db4  # pinned 2026-09-28 — commit tag of local build; head/worker had diverged under the floating tag
 
@@ -49,6 +50,7 @@ defaults:
 
 command: |
   vllm serve {model} \
+    --revision {model_revision} \
     --served-model-name {served_model_name} \
     --host {host} \
     --port {port} \

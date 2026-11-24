@@ -30,6 +30,7 @@
 # Source: https://github.com/MiaAI-Lab/GLM-5.3-Flash-EXL3-2x-DGX-Sparks
 recipe_version: "2"
 model: bullerwins/GLM-5.3-Flash-exl3-4bpw-ablit
+model_revision: 14858211ed81d7fa773f8a0db02f38f36d230252
 runtime: vllm
 container: ghcr.io/miaai-lab/glm-5.3-flash-2x-dgx-sparks:exl3
 min_nodes: 2
@@ -94,6 +95,7 @@ defaults:
 
 command: |
   vllm serve {model} \
+    --revision {model_revision} \
     --served-model-name {served_model_name} \
     --host 0.0.0.0 \
     --port {port} \

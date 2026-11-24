@@ -14,6 +14,7 @@
 
 recipe_version: "2"
 model: nvidia/NVIDIA-Nemotron-Labs-3-Puzzle-75B-A9B-NVFP4
+model_revision: 1d370e47fbc56d1019a471c2339663cdbbb5236f
 runtime: vllm
 container: vllm/vllm-openai:v0.24.0
 min_nodes: 1
@@ -44,6 +45,7 @@ defaults:
 
 command: |
   vllm serve {model} \
+    --revision {model_revision} \
     --served-model-name {served_model_name} \
     --host {host} \
     --port {port} \

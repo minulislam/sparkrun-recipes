@@ -24,6 +24,7 @@
 
 recipe_version: "2"
 model: local-inference-lab/Qwen3.8-Flash-Next-NVFP4
+model_revision: 6c01ac378d22f6652c9f392c87700496eca8e5dc
 runtime: vllm
 container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly-b12x:20260926  # same pinned build as the TP2 recipe
 min_nodes: 1
@@ -83,6 +84,7 @@ defaults:
 
 command: |
   vllm serve {model} \
+    --revision {model_revision} \
     --served-model-name {served_model_name} \
     --host {host} \
     --port {port} \

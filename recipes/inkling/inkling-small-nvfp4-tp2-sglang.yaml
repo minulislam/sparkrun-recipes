@@ -25,6 +25,7 @@
 
 recipe_version: "2"
 model: thinkingmachines/Inkling-Small-NVFP4
+model_revision: b6a99534467840620d411e4cd4ad5819b2610d9c
 runtime: sglang
 container: ghcr.io/drowzeys/inkling-sglang-gb10:kvquant
 # MEASURED 2026-09-27: the champion image bakes an ENTRYPOINT (lmsysorg/sglang base), so sparkrun aborts
@@ -96,6 +97,7 @@ defaults:
 command: |
   python3 -m sglang.launch_server \
     --model-path {model} \
+    --revision {model_revision} \
     --trust-remote-code \
     --served-model-name {served_model_name} \
     --tp {tensor_parallel} \

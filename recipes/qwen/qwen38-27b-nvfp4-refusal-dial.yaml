@@ -55,6 +55,7 @@
 
 recipe_version: "2"
 model: unsloth/Qwen3.8-27B-NVFP4
+model_revision: f0b7c9e722f5565102fff8481c99e4d86ae099c7
 # Deliberately NOT pinned to a sha: Unsloth super-squashes their repos and old revisions
 # (a767244d… and everything before 2026-08-15) have been 404 since then. sparkrun tracks
 # `main` when no model_revision is set; a `model_revision: main` pin would make sparkrun
@@ -182,6 +183,7 @@ post_commands:
 # "Server health check never passed".
 command: |
   vllm serve {model} \
+    --revision {model_revision} \
     --served-model-name {served_model_name} \
     --max-model-len {max_model_len} \
     --kv-cache-dtype {kv_cache_dtype} \

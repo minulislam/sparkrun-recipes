@@ -13,6 +13,7 @@
 
 recipe_version: "2"
 model: kodelow/Hy3-NVFP4-W4A16
+model_revision: 4f7e1f02f32f4662bdc47f1237f34995088867a9
 runtime: vllm-ray
 container: ghcr.io/miaai-lab/hy3-dual-dgx-spark:vllm-probe-modded
 min_nodes: 2
@@ -37,6 +38,7 @@ defaults:
 
 command: |
   vllm serve {model} \
+    --revision {model_revision} \
     --served-model-name {served_model_name} \
     --host {host} \
     --port {port} \

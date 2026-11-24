@@ -2,6 +2,7 @@
 # >>> models whose weights are on dgx-pair). Source content unchanged except where noted.
 recipe_version: "2"
 model: nvidia/MiniMax-M2.7-NVFP4
+model_revision: e79701cb1f9dce8fe5395b9ed2b20170beebecde
 runtime: vllm
 min_nodes: 2
 container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly:20260927  # pinned from :latest 2026-09-28 — build already on disk, verified live
@@ -67,6 +68,7 @@ env:
 
 command: |
   vllm serve {model} \
+    --revision {model_revision} \
     --trust-remote-code \
     --gpu-memory-utilization {gpu_memory_utilization} \
     -tp {tensor_parallel} \

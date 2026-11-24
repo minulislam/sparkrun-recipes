@@ -2,6 +2,7 @@
 # >>> models whose weights are on dgx-pair). Source content unchanged except where noted.
 recipe_version: "2"
 model: Qwen/Qwen3.8-27B-FP8
+model_revision: c3a462cc3d38cf351f3b26cbd763469eeb74ef81
 runtime: vllm
 container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly:20260927  # pinned from :latest 2026-09-28 — build already on disk, verified live
 
@@ -26,6 +27,7 @@ defaults:
 
 command: |
   vllm serve {model} \
+    --revision {model_revision} \
     --host {host} \
     --port {port} \
     --max-model-len {max_model_len} \

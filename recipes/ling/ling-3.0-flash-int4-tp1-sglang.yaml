@@ -14,7 +14,9 @@
 
 recipe_version: "2"
 model: inclusionAI/Ling-3.0-flash-int4
+model_revision: 7a27e9eb8179b2c2eb71eb214f0dab14ec6a63f2
 runtime: sglang
+container: lmsysorg/sglang:dev-Ling-3.0-flash
 min_nodes: 1
 max_nodes: 1
 
@@ -38,6 +40,7 @@ defaults:
 command: |
   sglang serve \
     --model-path {model} \
+    --revision {model_revision} \
     --host {host} \
     --port {port} \
     --tp {tensor_parallel} \

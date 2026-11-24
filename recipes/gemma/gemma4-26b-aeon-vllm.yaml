@@ -45,6 +45,7 @@
 
 recipe_version: "2"
 model: AEON-7/Gemma-4-26B-A4B-it-Uncensored-NVFP4
+model_revision: c7e78e0c008527ee9bcda2ef3e0f52cde20b149e
 runtime: vllm
 # Digest = :2026-07-08-v0.24.0-maxsafe (vllm 0.24.0+aeon.sm121a.dflash), the build
 # all 2026-07-18 benchmarks ran on (76.8 tok/s single-stream on this recipe).
@@ -96,6 +97,7 @@ defaults:
 # Drafter is referenced by HF id (resolved from the mounted HF cache — see prereq).
 command: |
   vllm serve {model} \
+      --revision {model_revision} \
       --served-model-name {served_model_name} \
       --host {host} \
       --port {port} \

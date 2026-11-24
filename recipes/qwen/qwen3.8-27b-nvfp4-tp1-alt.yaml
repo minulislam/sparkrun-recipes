@@ -12,7 +12,9 @@
 
 recipe_version: "2"
 model: RadixArk/Qwen3.8-27B-NVFP4
+model_revision: 319f741cce68d7914884900c138a1fbb70a42f30
 runtime: vllm
+container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly-tf5:2026092702
 min_nodes: 1
 max_nodes: 1
 
@@ -36,6 +38,7 @@ defaults:
 
 command: |
   vllm serve {model} \
+    --revision {model_revision} \
     --served-model-name {served_model_name} \
     --host {host} \
     --port {port} \

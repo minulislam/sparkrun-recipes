@@ -21,6 +21,7 @@
 
 recipe_version: "2"
 model: AEON-7/Qwen3.6-27B-AEON-Ultimate-Uncensored-NVFP4
+model_revision: cdbd3d013b39f75918636fce27e0f9363b7a5fe0
 runtime: vllm
 # Digest = :2026-07-08-v0.24.0-maxsafe (vllm 0.24.0+aeon.sm121a.dflash); pin
 # avoids sparkrun's ':latest' re-pull hang and silent upstream tag drift.
@@ -61,6 +62,7 @@ defaults:
 
 command: |
   vllm serve {model} \
+      --revision {model_revision} \
       --served-model-name {served_model_name} \
       --host {host} \
       --port {port} \

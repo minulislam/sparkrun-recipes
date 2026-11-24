@@ -21,6 +21,7 @@
 
 recipe_version: "2"
 model: AEON-7/Gemma-4-26B-A4B-it-Uncensored-NVFP4
+model_revision: c7e78e0c008527ee9bcda2ef3e0f52cde20b149e
 runtime: vllm
 # Pinned digest from the model card's verified baseline run (swap to :latest if preferred):
 container: vllm/vllm-openai@sha256:9eff9734a30b6713a8566217d36f8277630fd2d31cec7f0a0292835901a23aa4
@@ -59,6 +60,7 @@ defaults:
 
 command: |
   vllm serve {model} \
+      --revision {model_revision} \
       --served-model-name {served_model_name} \
       --host {host} \
       --port {port} \

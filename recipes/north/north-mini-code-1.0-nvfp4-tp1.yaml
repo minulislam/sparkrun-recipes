@@ -13,6 +13,7 @@
 # >>> verified pre_exec is safer than substituting an untested mod. Suggestion does not block launch.
 recipe_version: "2"
 model: XanuNetworks/North-Mini-Code-1.0-NVFP4
+model_revision: 1902122b2bdae4ba550f81444d6e19eac007898e
 runtime: vllm
 container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly:20260927  # pinned from :latest 2026-10-01 — build already on disk both nodes
 
@@ -45,6 +46,7 @@ pre_exec:
 command: |
   vllm serve \
       {model} \
+      --revision {model_revision} \
       --served-model-name {served_model_name} \
       --gpu-memory-utilization {gpu_memory_utilization} \
       -tp {tensor_parallel} \

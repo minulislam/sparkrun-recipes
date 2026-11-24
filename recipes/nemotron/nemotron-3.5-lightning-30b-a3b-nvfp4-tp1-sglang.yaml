@@ -14,6 +14,7 @@
 
 recipe_version: "2"
 model: nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4
+model_revision: bee7596271d1495f6992ae224aefde4410e816b8
 runtime: sglang
 container: lmsysorg/sglang:dev-nemotron3-5-lightning
 min_nodes: 1
@@ -41,6 +42,7 @@ defaults:
 command: |
   sglang serve \
     --model-path {model} \
+    --revision {model_revision} \
     --host {host} \
     --port {port} \
     --tp {tensor_parallel} \

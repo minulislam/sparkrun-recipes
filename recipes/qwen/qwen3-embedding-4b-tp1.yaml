@@ -6,6 +6,7 @@
 # >>> Measured in benchmarks/qwen3-embedding-4b-gx10-2026-11-09.md.
 recipe_version: "2"
 model: Qwen/Qwen3-Embedding-4B
+model_revision: 5cf2132abc99cad020ac570b19d031efec650f2b
 runtime: vllm
 container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly-tf5:2026092702  # pinned from tf5:latest, build on disk
 
@@ -29,6 +30,7 @@ defaults:
 
 command: |
   vllm serve {model} \
+    --revision {model_revision} \
     --runner pooling \
     --gpu-memory-utilization {gpu_memory_utilization} \
     -tp {tensor_parallel} \

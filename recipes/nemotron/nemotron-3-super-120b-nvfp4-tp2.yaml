@@ -2,6 +2,7 @@
 # >>> models whose weights are on dgx-pair). Source content unchanged except where noted.
 recipe_version: "2"
 model: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4
+model_revision: ff433f5493e25d631c9f12b5d55c674229923d02
 runtime: vllm
 min_nodes: 2
 container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly:20260927  # pinned from :latest 2026-09-28 — build already on disk, verified live
@@ -26,6 +27,7 @@ env:
 
 command: |
   vllm serve {model} \
+    --revision {model_revision} \
     --kv-cache-dtype fp8 \
     --moe-backend cutlass \
     --trust-remote-code \

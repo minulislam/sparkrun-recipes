@@ -18,6 +18,7 @@
 
 recipe_version: "2"
 model: nvidia/Qwen3.6-35B-A3B-NVFP4
+model_revision: 1355db6a052410cfd62085d94b58866fd0f2c3c5
 runtime: vllm
 container: vllm/vllm-openai:v0.24.0
 min_nodes: 1
@@ -47,6 +48,7 @@ defaults:
 
 command: |
   vllm serve {model} \
+    --revision {model_revision} \
     --served-model-name {served_model_name} \
     --host {host} \
     --port {port} \

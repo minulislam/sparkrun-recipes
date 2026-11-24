@@ -12,6 +12,7 @@
 
 recipe_version: "2"
 model: nvidia/Qwen3.8-Flash-Next-FP4-Local
+model_revision: b9ce18a6887e18c089fdea8509a33e63429a3300
 runtime: vllm
 container: eugr/spark-vllm-b12x:nightly-20261015
 min_nodes: 1
@@ -36,7 +37,6 @@ env:
   PYTORCH_ALLOC_CONF: "per_process_memory_fraction:0.8"
   VLLM_PLE_TABLE_MEMORY: "disk"
   B12X_DISK_BACKEND: "io_uring"
-  CUTE_DSL_ARCH: "sm_121a"
   SAFETENSORS_FAST_GPU: "1"
   VLLM_WORKER_MULTIPROC_METHOD: "spawn"
   VLLM_SSM_CONV_STATE_LAYOUT: "DS"
@@ -55,6 +55,7 @@ defaults:
   tensor_parallel: 1
   pipeline_parallel: 1
   block_size: 16
+  kv_cache_dtype: fp8
   max_model_len: 262144
   max_num_seqs: 8
   max_num_batched_tokens: 4096
@@ -63,6 +64,7 @@ defaults:
 
 command: |
   vllm serve {model} \
+    --revision {model_revision} \
     --host {host} \
     --port {port} \
     --tensor-parallel-size {tensor_parallel} \
@@ -71,7 +73,7 @@ command: |
     --enable-prefix-caching \
     --enable-chunked-prefill \
     --dtype bfloat16 \
-    --kv-cache-dtype fp8 \
+    --kv-cache-dtype {kv_cache_dtype} \
     --quantization modelopt_mixed \
     --block-size {block_size} \
     --load-format b12x \

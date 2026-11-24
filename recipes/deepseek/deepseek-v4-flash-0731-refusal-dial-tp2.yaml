@@ -52,6 +52,7 @@
 
 recipe_version: "2"
 model: deepseek-ai/DeepSeek-V4-Flash-0731
+model_revision: 7872f01b1d1fe23eabc4c98b48bffcef5a386062
 runtime: vllm
 container: spark-forge/vllm-dsv4-rank1:20261013
 min_nodes: 2
@@ -118,6 +119,7 @@ post_commands:
 
 command: |
   vllm serve {model} \
+    --revision {model_revision} \
     --served-model-name {served_model_name} \
     --host {host} \
     --port {port} \

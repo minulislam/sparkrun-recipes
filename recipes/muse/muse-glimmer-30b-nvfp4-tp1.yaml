@@ -13,7 +13,9 @@
 
 recipe_version: "2"
 model: RedHatAI/Muse-Glimmer-30B-NVFP4
+model_revision: 403f780a4d35194b7230bc2d809effa3c147f407
 runtime: vllm
+container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly-tf5:2026092702
 min_nodes: 1
 max_nodes: 1
 
@@ -38,6 +40,7 @@ defaults:
 
 command: |
   vllm serve {model} \
+    --revision {model_revision} \
     --served-model-name {served_model_name} \
     --host {host} \
     --port {port} \

@@ -2,6 +2,7 @@
 # >>> models whose weights are on dgx-pair). Source content unchanged except where noted.
 recipe_version: "2"
 model: nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4
+model_revision: 6efb4a2a1c1fa277ce7b3df7a1416255011b1c99
 runtime: vllm
 max_nodes: 1
 container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly:20260927  # pinned from :latest 2026-09-28 — build already on disk, verified live
@@ -24,6 +25,7 @@ defaults:
 
 command: |
   vllm serve {model} \
+    --revision {model_revision} \
     --moe-backend cutlass \
     --max-model-len {max_model_len} \
     --host {host} \

@@ -1009,3 +1009,37 @@ Gateway now lists: `qwen3.8-flash-next-abliterated`, `deepseek-v4-coder`,
   (`eugr/spark-vllm-b12x@sha256:03a95654...` = nightly-20261015). Adds `--revision` and a served name.
 - VERIFIED on gx10-solo: ready 915 s, 262,144 ctx, KV 908,863 tokens, 17*23 -> 391, 38.1 tok/s end-to-end.
   JBB-Behaviors (thinking off, 512 tokens, c=4, keyword grader): harmful 97 complied / 3 refused, benign 100/100.
+
+## 2026-11-24: All recipes pinned to a model revision; lint pass
+
+- Lint pass over all 54 recipes (`sparkrun recipe validate --json`): 0 errors. Each `command:` was also rendered
+  with its default config chain through sparkrun 0.4.2's `Recipe.render_command`: 52 render with no unresolved
+  placeholder, and the 2 Atlas EP2 recipes have no command. `--dry-run` could not run: both GPUs were occupied,
+  so placement refused every recipe. Status reached is Lints, nothing more.
+- Why pin: sparkrun's `download_model` calls `snapshot_download` on every online launch, even for a cached
+  model (`models/download.py:495`). An unpinned recipe therefore re-resolves upstream `main` and can serve new
+  weights under an old VERIFIED header. A SHA pin writes no `refs/`, and the container runs
+  `HF_HUB_OFFLINE=1`, so the pin only works when the command also passes `--revision {model_revision}`.
+- Pinned 42 unpinned vLLM/SGLang recipes to the SHA cached at head `refs/main` (the weights the headers were
+  measured on), and added `--revision {model_revision}` to each command. Before pinning, all 44 cached
+  `refs/main` SHAs matched upstream (HfApi), and the worker's `refs/main` matched the head's wherever it held
+  the repo. Left unpinned:
+  - the 2 Atlas EP2 recipes (the Atlas runtime declares no revision flag);
+  - `glm-5.3-flash-abliterated-nvfp4kv-long-tp2` (serves a local `model_path`; its unused pin became a comment).
+- Pinned images in the 3 recipes that had no `container:` and so took the runtime default `:latest`:
+  - `muse-glimmer-30b-nvfp4-tp1` and `qwen3.8-27b-nvfp4-tp1-alt` → `ghcr.io/spark-arena/dgx-vllm-eugr-nightly-tf5:2026092702`
+    (the default image family; already on both nodes);
+  - `ling-3.0-flash-int4-tp1-sglang` → `lmsysorg/sglang:dev-Ling-3.0-flash` (the image named in its source header;
+    a named tag, not on disk). All three remain UNVERIFIED.
+- Earlier the same day: `qwen3.8-flash-next-fp4-{abliterated,b12x}-tp1` moved `--kv-cache-dtype fp8` into
+  `defaults.kv_cache_dtype` and dropped `CUTE_DSL_ARCH`, which the DGX Spark platform tier supplies.
+- Warnings left in place, since each one is a measured workaround in a verified recipe and removing it needs a
+  live retest:
+  - `minimax-m2.7-nvfp4-vllm-tp2`: GLOO/TP/NCCL_SOCKET_IFNAME pinned to `enP7s7`. Its stated root cause, the
+    head's f1 ports having no static IPv4, is now fixed: both connections are `manual`, 10.99.10.10/24 and
+    10.99.11.10/24. A TP2 retest without these pins should let them go.
+  - `inkling-small-nvfp4-tp2-sglang`: NCCL transport env.
+  - `glm-5.3-flash-abliterated-nvfp4-tp2`: `TRITON_CACHE_DIR`.
+- Open container risk: 8 recipes use named, re-pushable tags, 2 use digests (worker failure was seen on
+  0.3.10, not re-checked on 0.4.2), and 12 reference images on neither node. Recommended: record the
+  RepoDigest in each header, and `docker save` the in-use images to NAS.

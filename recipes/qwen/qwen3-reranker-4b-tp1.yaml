@@ -5,6 +5,7 @@
 # >>> policy). UNVERIFIED until launched on this pair.
 recipe_version: "2"
 model: Qwen/Qwen3-Reranker-4B
+model_revision: 22e683669bc0f0bd69640a1354a6d0aebcfeede5
 runtime: vllm
 container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly-tf5:2026092702  # pinned from tf5:latest, build on disk
 
@@ -25,6 +26,7 @@ defaults:
 
 command: |
   vllm serve {model} \
+    --revision {model_revision} \
     --runner pooling \
     --gpu-memory-utilization {gpu_memory_utilization} \
     -tp {tensor_parallel} \

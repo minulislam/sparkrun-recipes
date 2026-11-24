@@ -2,6 +2,7 @@
 # >>> models whose weights are on dgx-pair). Source content unchanged except where noted.
 recipe_version: "2"
 model: cyankiwi/GLM-4.7-Flash-AWQ-4bit
+model_revision: f2af2359081b56d020f550c3314a54669301979c
 runtime: vllm
 container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly-tf5:2026092702  # pinned from :latest 2026-09-28 — tf5 mirrors main nightly, same manifest as :20260927
 
@@ -25,6 +26,7 @@ defaults:
 
 command: |
   vllm serve {model} \
+    --revision {model_revision} \
     --tool-call-parser {tool_call_parser} \
     --reasoning-parser {reasoning_parser} \
     --enable-auto-tool-choice \

@@ -13,6 +13,7 @@
 
 recipe_version: "2"
 model: nvidia/Gemma-4-26B-A4B-NVFP4
+model_revision: a19cfe00be84568a6867111c9a68c9c44fdcffe6
 runtime: vllm
 container: vllm/vllm-openai:nightly-ddd6fbca148a867aad1fcab7ec72f582b9977db4  # pinned from :nightly 2026-09-28 — same commit tag as the aarch64 build on disk
 # 2026-09-27: official vllm-openai images bake ENTRYPOINT ["vllm","serve"]; sparkrun aborts with
@@ -41,6 +42,7 @@ defaults:
 
 command: |
   vllm serve {model} \
+    --revision {model_revision} \
     --served-model-name {served_model_name} \
     --host {host} \
     --port {port} \

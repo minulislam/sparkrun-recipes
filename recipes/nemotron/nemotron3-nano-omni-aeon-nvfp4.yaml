@@ -31,6 +31,7 @@
 
 recipe_version: "2"
 model: AEON-7/Nemotron-3-Nano-Omni-AEON-Ultimate-Uncensored-NVFP4
+model_revision: fecf8abb4d23ace83500f79d7d373726c38a962a
 runtime: vllm
 # Digest = :2026-07-08-v0.24.0-maxsafe (vllm 0.24.0+aeon.sm121a.dflash) — live-
 # validated with this recipe 2026-07-18 (265 tok/s @ 8-way). Digest pin avoids
@@ -73,6 +74,7 @@ defaults:
 # no Gemma triton_attn override.
 command: |
   vllm serve {model} \
+      --revision {model_revision} \
       --served-model-name {served_model_name} \
       --host {host} \
       --port {port} \

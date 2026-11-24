@@ -12,6 +12,7 @@
 # >>>   the -LiLiCorr drafter (0.9 GiB) are complete on gb10-spark only, so run it on gb10-solo.
 recipe_version: "2"
 model: nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB
+model_revision: e0590ed2f3a564fd99725d9d891cb09deb7cc201
 runtime: vllm
 min_nodes: 1
 max_nodes: 1
@@ -35,6 +36,7 @@ defaults:
 
 command: |
   vllm serve {model} \
+    --revision {model_revision} \
     --served-model-name {served_model_name} \
     --host {host} \
     --port {port} \

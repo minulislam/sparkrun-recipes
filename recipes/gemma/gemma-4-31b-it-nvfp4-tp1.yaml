@@ -14,6 +14,7 @@
 
 recipe_version: "2"
 model: nvidia/Gemma-4-31B-IT-NVFP4
+model_revision: 4135a98a9b728a548947683219633b25682223ac
 runtime: vllm
 container: vllm/vllm-openai:v0.25.1
 # 2026-09-27: official vllm-openai images bake ENTRYPOINT ["vllm","serve"]; sparkrun aborts with
@@ -43,6 +44,7 @@ defaults:
 
 command: |
   vllm serve {model} \
+    --revision {model_revision} \
     --served-model-name {served_model_name} \
     --host {host} \
     --port {port} \

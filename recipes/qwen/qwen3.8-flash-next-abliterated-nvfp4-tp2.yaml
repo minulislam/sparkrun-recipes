@@ -31,6 +31,7 @@
 
 recipe_version: "2"
 model: dealignai/Qwen3.8-Flash-Next-ABLITERATED-NVFP4
+model_revision: be794b990578ef3031eccf9f28e675a289a09ee9
 runtime: vllm
 container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly-b12x:20260926  # pinned from :latest 2026-09-28 — build already on disk (upstream latest moved past it)
 min_nodes: 2
@@ -90,6 +91,7 @@ defaults:
 
 command: |
   vllm serve {model} \
+    --revision {model_revision} \
     --served-model-name {served_model_name} \
     --host {host} \
     --port {port} \

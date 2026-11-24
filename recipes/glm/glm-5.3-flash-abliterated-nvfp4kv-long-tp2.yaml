@@ -60,7 +60,7 @@
 
 recipe_version: "2"
 model: drowzeys/keys-GLM-5.3-Flash-NVFP4-ablit-l15-43-mtp-l45
-model_revision: cecebc0ff0bbce8eefaa19667290a79d0216cd0e
+# Source revision of the local model_path copy (not passed: weights load from model_path): cecebc0ff0bbce8eefaa19667290a79d0216cd0e
 runtime: vllm
 container: ghcr.io/drowzeys/keys-vllm-glm53-flash-nvfp4-ablit:b12x-cu130-20261013
 min_nodes: 2
