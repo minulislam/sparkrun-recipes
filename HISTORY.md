@@ -1058,3 +1058,16 @@ Gateway now lists: `qwen3.8-flash-next-abliterated`, `deepseek-v4-coder`,
       snapshot dirs.
     - The 3 measured-workaround warnings noted above.
   - Status: Lints. Nothing relaunched.
+
+## 2026-11-25: NAS backup brought up to date (both nodes)
+
+- Compared every HF cache repo on both nodes against `/mnt/nas/ai-models/model-backup/huggingface-hub/`.
+  The check covered each snapshot file, dereferenced, by name and size.
+- Head: 7 repos were missing only `refs/` and snapshot pointer files (<200 KB in total); synced.
+- Worker-only weights, now on the NAS:
+  - `DevelopingDad/Qwen3.8-Flash-Next-FP4-Local-Abliterated` fe8c47f (44 files, 102.2 GB);
+  - `nvidia/Qwen3.8-Flash-Next-FP4-Local` b9ce18a (34 files, 102.3 GB).
+- Method: `rsync -rlt --copy-unsafe-links --chmod=Du+rwx,Fu+rw`, run per repo. Additive only; nothing was
+  deleted on the NAS.
+- Re-audit after the sync: every repo that holds weights matches the NAS (head 68 repos, worker 15).
+- Not copied: 10 config-only stubs with no weights, matching the 11-10 cleanup of stubs from the NAS.
