@@ -24,6 +24,7 @@ metadata:
   draft_model: nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB-LiLiCorr
 
 defaults:
+  kv_cache_dtype: fp8
   port: 8000
   host: 0.0.0.0
   tensor_parallel: 1
@@ -41,7 +42,7 @@ command: |
     --host {host} \
     --port {port} \
     --tensor-parallel-size {tensor_parallel} \
-    --kv-cache-dtype fp8 \
+    --kv-cache-dtype {kv_cache_dtype} \
     --max-num-seqs {max_num_seqs} \
     --trust-remote-code \
     --max-model-len {max_model_len} \

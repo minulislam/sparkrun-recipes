@@ -144,7 +144,6 @@ defaults:
 
 env:
   VLLM_ALLOW_LONG_MAX_MODEL_LEN: "1"
-  PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
   # Without VLLM_REFUSAL_DIRS the hook is never constructed and the image is
   # byte-equivalent to its base. That is the rollback: unset this, restart.
   VLLM_REFUSAL_DIRS: /opt/refusal/refusal_dirs_qwen38.safetensors

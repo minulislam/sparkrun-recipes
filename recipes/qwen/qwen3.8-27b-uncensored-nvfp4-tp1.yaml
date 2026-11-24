@@ -44,7 +44,6 @@ metadata:
 
 env:
   VLLM_ALLOW_LONG_MAX_MODEL_LEN: "1"
-  PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
   VLLM_WORKER_MULTIPROC_METHOD: "spawn"
 
 defaults:

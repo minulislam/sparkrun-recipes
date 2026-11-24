@@ -11,6 +11,7 @@ metadata:
   description: Nemotron-3-Super NVFP4 — CUTLASS kernels optimized
 
 defaults:
+  kv_cache_dtype: fp8
   port: 8000
   host: 0.0.0.0
   tensor_parallel: 2
@@ -28,7 +29,7 @@ env:
 command: |
   vllm serve {model} \
     --revision {model_revision} \
-    --kv-cache-dtype fp8 \
+    --kv-cache-dtype {kv_cache_dtype} \
     --moe-backend cutlass \
     --trust-remote-code \
     --gpu-memory-utilization {gpu_memory_utilization} \

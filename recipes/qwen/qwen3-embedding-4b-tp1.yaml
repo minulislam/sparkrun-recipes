@@ -13,9 +13,6 @@ container: ghcr.io/spark-arena/dgx-vllm-eugr-nightly-tf5:2026092702  # pinned fr
 metadata:
   description: Qwen3-Embedding-4B — text embedding model for RAG / agent memories (2560-dim, MRL)
 
-sparkroute:
-  capabilities: [single_vector_embedding]
-
 # Pooling runners serve no chat route; check the endpoint only (chat probe 404s and fails activation).
 readiness:
   inference: false

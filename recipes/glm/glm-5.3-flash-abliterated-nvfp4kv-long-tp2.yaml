@@ -98,7 +98,6 @@ env:
   VLLM_ENGINE_READY_TIMEOUT_S: "3600"
   VLLM_ALLOW_LONG_MAX_MODEL_LEN: "1"
   TORCH_CUDA_ARCH_LIST: "9.0;10.0;12.0"
-  PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
 
 defaults:
   host: 0.0.0.0

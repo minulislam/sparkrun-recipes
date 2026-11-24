@@ -1043,3 +1043,18 @@ Gateway now lists: `qwen3.8-flash-next-abliterated`, `deepseek-v4-coder`,
 - Open container risk: 8 recipes use named, re-pushable tags, 2 use digests (worker failure was seen on
   0.3.10, not re-checked on 0.4.2), and 12 reference images on neither node. Recommended: record the
   RepoDigest in each header, and `docker save` the in-use images to NAS.
+- Same day, lint cleanup (31 suggestions cleared; 48/54 recipes now lint with no findings):
+  - Removed `CUTE_DSL_ARCH: "sm_121a"` and `PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"` from 25
+    recipes, including the 5 orcarouter uncensored ones. sparkrun's DGX Spark platform tier sets both, with
+    identical values, for the vllm and sglang families (`platforms/dgx_spark.py:75-87`), so the launch env
+    is unchanged on GB10. `nemotron-labs-3-puzzle-75b-nvfp4-tp1` lost its now-empty `env:` block.
+  - The 3 Nemotron recipes take `kv_cache_dtype: fp8` from defaults; `deepseek-v4-flash-0731-refusal-dial-tp2`
+    takes `pipeline_parallel: 1` from defaults.
+  - Dropped the stale `sparkroute:` block from `qwen3-embedding-4b-tp1` (SparkRoute was removed 2026-11-17).
+  - Left in place:
+    - `north-mini` pip install in `pre_exec`: needs an image rebuild.
+    - The `exl3` metadata values the linter does not recognise: informational only.
+    - The 3 hardcoded `/cache/huggingface` paths in the two GLM NVFP4 recipes: they point at local
+      snapshot dirs.
+    - The 3 measured-workaround warnings noted above.
+  - Status: Lints. Nothing relaunched.

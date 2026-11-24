@@ -36,7 +36,6 @@ metadata:
   model_vram: 168
 
 env:
-  CUTE_DSL_ARCH: "sm_121a"
   VLLM_USE_AOT_COMPILE: "1"
   VLLM_USE_BREAKABLE_CUDAGRAPH: "0"
   VLLM_USE_MEGA_AOT_ARTIFACT: "1"

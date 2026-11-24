@@ -41,7 +41,6 @@ metadata:
 
 env:
   VLLM_ALLOW_LONG_MAX_MODEL_LEN: "1"
-  PYTORCH_CUDA_ALLOC_CONF: "expandable_segments:True"
 
 defaults:
   host: 0.0.0.0
