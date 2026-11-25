@@ -1082,3 +1082,20 @@ Gateway now lists: `qwen3.8-flash-next-abliterated`, `deepseek-v4-coder`,
 - Conclusion: the 2026-11-17 failure was not only the embed/rerank co-tenants. The load itself
   overruns memory. Status stays UNVERIFIED.
 - Next try: safetensors loading in place of instanttensor, and a lower `gpu_memory_utilization`.
+
+## 2026-11-26: Bolt-74B verified on gb10-solo
+
+- Root cause of the 2026-11-17 and 2026-11-25 out-of-memory failures: the spark-arena 20260927 image
+  has no IQ2_XXS support, so it cannot load the 2-bit experts of the modelopt MIXED_PRECISION
+  checkpoint in place. Checked by a source grep in each image on disk.
+- Sources: NVIDIA's model card Quick Start (vLLM nightly 77154ca + b12x, b12x linear and MoE backends,
+  FlashInfer, `--load-format auto`, `VLLM_USE_V2_MODEL_RUNNER=1`, ultra_v3 reasoning parser) and
+  github.com/vcruz305/Nemotron-3.5-Bolt-74B-A9B-24GB-vLLM-recipe (one Spark, util 0.55, 262k, 8 seqs).
+- Recipe rewritten to those flags on `ghcr.io/spark-arena/dgx-vllm-eugr-nightly-b12x:2026112501`
+  (pulled 2026-11-26; its vLLM has IQ2_XXS in modelopt and the b12x MoE path).
+- First boot on that image: config error, `LiLiCorrDraftModel` not supported. DFlash removed.
+- Second boot: VERIFIED. max_model_len 262144, weights 22.53 GiB, KV 36.84 GiB, engine init 1414 s
+  (mostly one-time flashinfer JIT), 17*23=391, tool call correct, c=1 36.4 tok/s. Memory guard
+  never tripped. Workload stopped afterwards. INDEX row 70.
+- Open: DFlash needs an image with both LiLiCorr and IQ2_XXS. sparkrun waited the full 30 min
+  readiness timeout after the instant config error, so watch the serve log on new images.

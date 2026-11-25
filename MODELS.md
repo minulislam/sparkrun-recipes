@@ -59,7 +59,7 @@ Legend: **H** = complete on head, **W** = complete on worker.
 | `poolside/Laguna-S-2.1-NVFP4` | H | 92.9 | `laguna-s-2.1-nvfp4-tp1` |
 | `AEON-7/Qwen3.6-27B-AEON-Ultimate-Uncensored-NVFP4` | H | 25.8 | `qwen36-27b-aeon-ultimate-nvfp4`, `qwen36-27b-aeon-colocate` |
 | `orcarouter/Qwen3.8-27B-Uncensored-NVFP4` | H | 23.0 | `qwen3.8-27b-uncensored-nvfp4-tp1` |
-| `nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB` | H | 22.4 | `nemotron-3.5-bolt-74b-a9b-24gb-tp1` (develop; drafter `-LiLiCorr` on head) |
+| `nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB` | H | 22.4 | `nemotron-3.5-bolt-74b-a9b-24gb-tp1` (develop; VERIFIED 2026-11-26 on gb10-solo) |
 | `orcarouter/Nex-N2.5-mini-Uncensored-NVFP4` | H | 22.3 | `nex-n2.5-mini-uncensored-nvfp4-tp1` (UNFIT 2026-10-16, garbage output) |
 | `AEON-7/Qwen3.6-35B-A3B-heretic-NVFP4` | H W | 21.8 | `qwen36-35b-a3b-heretic-nvfp4`, `qwen36-35b-a3b-heretic-nvfp4-batch` |
 | `nvidia/Qwen3.6-35B-A3B-NVFP4` | H W | 21.8 | `qwen3.6-35b-a3b-nvfp4-tp1`, `qwen3.6-35b-a3b-nvfp4-unofficial-tp1` (repointed here on develop, 2026-11-17) |
@@ -109,7 +109,7 @@ containers run `HF_HUB_OFFLINE=1`.
 | `incoai/GLM-5.3-Flash-DFlash2` | H | 2.2 | `glm-5.3-flash-abliterated-nvfp4-tp2` |
 | `RadixArk/Inkling-Small-DSpark-Preview` | H | 1.7 | `inkling-small-nvfp4-tp2-sglang` |
 | `nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4-DSpark` | H | 1.3 | Nothing: the Lightning recipe's command passes no speculative flags |
-| `nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB-LiLiCorr` | H | 0.9 | `nemotron-3.5-bolt-74b-a9b-24gb-tp1` (DFlash, 7 tokens) |
+| `nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB-LiLiCorr` | H | 0.9 | none at present (the Bolt recipe dropped DFlash 2026-11-26: no image has both LiLiCorr and IQ2_XXS) |
 | `z-lab/gemma-4-26B-A4B-it-DFlash` | H | 0.8 | `gemma4-26b-aeon-vllm` |
 | `z-lab/Qwen3.6-35B-A3B-DFlash` | H W | 0.7 | `qwen36-35b-a3b-heretic-nvfp4` |
 | `pocharlies/qwen38-27b-uncensored-abliterated-refusal-directions` | H | 0.003 | `qwen38-27b-nvfp4-refusal-dial` |
