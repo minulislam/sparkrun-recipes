@@ -1071,3 +1071,14 @@ Gateway now lists: `qwen3.8-flash-next-abliterated`, `deepseek-v4-coder`,
   deleted on the NAS.
 - Re-audit after the sync: every repo that holds weights matches the NAS (head 68 repos, worker 15).
 - Not copied: 10 config-only stubs with no weights, matching the 11-10 cleanup of stubs from the NAS.
+
+## 2026-11-25: Bolt-74B second boot fails with the head free
+
+- Recipe `nemotron-3.5-bolt-74b-a9b-24gb-tp1` on `gb10-solo`, defaults unchanged (util 0.8,
+  `--load-format instanttensor`, DFlash with the LiLiCorr drafter). Before launch: no other
+  model containers, 108 GiB free on the head, weights 90/90 shards plus drafter, no symlinked blobs.
+- Result: `NV_ERR_NO_MEMORY` in the kernel log about 20 s after `Loading model from scratch`.
+  Host used memory reached 118 of 121 GiB, then vLLM died. Workload stopped; head back to 114 GiB free.
+- Conclusion: the 2026-11-17 failure was not only the embed/rerank co-tenants. The load itself
+  overruns memory. Status stays UNVERIFIED.
+- Next try: safetensors loading in place of instanttensor, and a lower `gpu_memory_utilization`.
