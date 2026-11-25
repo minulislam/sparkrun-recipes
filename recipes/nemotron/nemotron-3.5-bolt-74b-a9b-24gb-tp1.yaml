@@ -2,6 +2,10 @@
 # >>>   containers (~28 GiB), overrides port 8002 and gpu_memory_utilization 0.5: NV_ERR_NO_MEMORY
 # >>>   while loading, earlyoom killed it and the co-resident embed/rerank. Needs the head to itself
 # >>>   (or a smaller budget and safetensors loading) before the next try.
+# >>> 2026-11-25 second boot on gb10-solo with the head to itself (108 GiB free, defaults as
+# >>>   below): NV_ERR_NO_MEMORY again ~20 s into "Loading model from scratch" (instanttensor),
+# >>>   host used peaked at 118/121 GiB. Co-tenants were not the cause. Next try: drop
+# >>>   --load-format instanttensor (safetensors) and/or lower gpu_memory_utilization.
 # >>> COPY of @eugr/nemotron-3.5-bolt-24gb (fetched 2026-11-17). Upstream serves it on one DGX Spark
 # >>> with the LiLiCorr draft model and DFlash speculation. Local changes, nothing else:
 # >>>   - container: eugr's local `vllm-node` build -> pinned spark-arena rebuild 20260927
