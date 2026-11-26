@@ -1,0 +1,6 @@
+interface:
+  display_name: "Sparkrun Recipes"
+  short_description: "Repo-specific patterns and workflows for sparkrun-recipes"
+  default_prompt: "Use the sparkrun-recipes repo skill to follow existing architecture, testing, and workflow conventions."
+policy:
+  allow_implicit_invocation: true
