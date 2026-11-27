@@ -1,5 +1,16 @@
-# >>> UNVERIFIED — source: https://github.com/MiaAI-Lab/Nemotron3.5-Lightning-DGX-Spark-RTX-5090-6000-PRO
-# >>> Please test and run --dry-run first, then update with your verified launch facts.
+# >>> VERIFIED 2026-11-25 on gb10-solo at the full 1,048,576-token window (node to itself).
+# >>>   /v1/models reports max_model_len 1048576; a 1,049,344-token prompt returns HTTP 400.
+# >>>   Boot: ready in 390 s cold (weights 24.5 GB in 105 s). fp8 KV pool 11,557,502 tokens at
+# >>>     mem-fraction 0.82 (hybrid Mamba/MoE: only a handful of attention layers keep KV).
+# >>>   Passkey (centre depth, temp 0): PASS at 14,499 / 133,422 / 541,145 / 1,022,658 prompt tokens
+# >>>     (5.5 / 37.6 / 287 / 840 s; prefill ~0.8-1.9k tok/s). Engine alive after (17*23 -> 391).
+# >>>   Head MemAvailable 16-17 GiB through the 1M run (MemFree 2-6 GiB, earlyoom line 2.49 GiB).
+# >>>   NOT measured: decode tok/s, concurrency, tool calls, the DSpark drafter (not wired in).
+# >>> Image: lmsysorg/sglang:dev-nemotron3-5-lightning is a mutable tag; pulled 2026-11-25 as
+# >>>   lmsysorg/sglang@sha256:a04d9a1a7ffe371b05230aecab001d4ba2bfa0e5c137bc56409ecc4cbc3ac864.
+# >>> Source: https://github.com/MiaAI-Lab/Nemotron3.5-Lightning-DGX-Spark-RTX-5090-6000-PRO
+# >>>   Local changes: entrypoint blanked, mem-fraction 0.88 -> {gpu_memory_utilization} 0.82,
+# >>>   --context-length {max_model_len} passed (upstream relied on SGLang's default), 1M default.
 
 # =============================================================================
 # sparkrun recipe — NVIDIA Nemotron 3.5 Lightning 30B-A3B NVFP4 via SGLang   [MiaAI-Lab]
@@ -17,13 +28,16 @@ model: nvidia/NVIDIA-Nemotron-3.5-Lightning-30B-A3B-NVFP4
 model_revision: bee7596271d1495f6992ae224aefde4410e816b8
 runtime: sglang
 container: lmsysorg/sglang:dev-nemotron3-5-lightning
+# The image bakes ENTRYPOINT ["/opt/nvidia/nvidia_entrypoint.sh"]; sparkrun's run-then-exec model needs it blank.
+executor_config:
+  entrypoint: ""
 min_nodes: 1
 max_nodes: 1
 
 metadata:
   description: >-
     NVIDIA Nemotron 3.5 Lightning 30B-A3B NVFP4 + DSpark via SGLang on
-    DGX Spark / RTX 5090 / RTX 6000 PRO. 256k context.
+    DGX Spark / RTX 5090 / RTX 6000 PRO. 1M context (verified on GB10).
     Source-validated by MiaAI-Lab.
   maintainer: MiaAI-Lab (https://github.com/MiaAI-Lab)
   model_params: 30B
@@ -35,8 +49,8 @@ defaults:
   host: 0.0.0.0
   port: 8000
   tensor_parallel: 1
-  gpu_memory_utilization: 0.90
-  max_model_len: 262144
+  gpu_memory_utilization: 0.82
+  max_model_len: 1048576
   served_model_name: nemotron-3.5-lightning
 
 command: |
@@ -46,5 +60,6 @@ command: |
     --host {host} \
     --port {port} \
     --tp {tensor_parallel} \
-    --mem-fraction-static 0.88 \
+    --context-length {max_model_len} \
+    --mem-fraction-static {gpu_memory_utilization} \
     --trust-remote-code

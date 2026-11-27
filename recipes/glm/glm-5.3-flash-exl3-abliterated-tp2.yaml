@@ -1,3 +1,10 @@
+# >>> 1M CONTEXT VERIFIED 2026-11-25 on dgx-pair (pair to itself, HF page cache evicted first).
+# >>>   max_model_len raised 850000 -> 1048576 with the SAME 14 GiB KV pin: vLLM reports a KV pool of
+# >>>   1,919,700 tokens (1.83x at 1M), so the 850k window was never memory-bound. Ready in ~9 min.
+# >>>   Passkey, centre depth, temp 0, thinking off: PASS at 12,105 / 793,071 (568 s) /
+# >>>   1,032,281 prompt tokens (792 s, ~1.3k tok/s). Engine alive after (17*23 -> 391).
+# >>>   Low-water through the 1M run: head MemAvailable 5 GiB, worker 6 GiB (earlyoom 2.49 GiB).
+# >>>   Worker weights re-copied 2026-11-25 (the worker copy was gone; 120/120 shards now).
 # >>> VERIFIED + BENCHMARKED 2026-10-29 on dgx-pair (launched over CX7 addresses 10.99.10.10/.11
 # >>>   because the worker's enP7s7 mgmt link was down; recipe itself is address-agnostic).
 # >>>   Context: /v1/models reports max_model_len 850000. Boot ~8 min warm (466-541 s).
@@ -81,7 +88,7 @@ defaults:
   port: 8888
   tensor_parallel: 2
   gpu_memory_utilization: 0.85
-  max_model_len: 850000
+  max_model_len: 1048576
   max_num_seqs: 4
   max_num_batched_tokens: 7168
   kv_cache_dtype: fp8

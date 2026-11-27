@@ -1082,3 +1082,46 @@ Gateway now lists: `qwen3.8-flash-next-abliterated`, `deepseek-v4-coder`,
 - Conclusion: the 2026-11-17 failure was not only the embed/rerank co-tenants. The load itself
   overruns memory. Status stays UNVERIFIED.
 - Next try: safetensors loading in place of instanttensor, and a lower `gpu_memory_utilization`.
+
+## 2026-11-26: Bolt-74B verified on gb10-solo
+
+- Root cause of the 2026-11-17 and 2026-11-25 out-of-memory failures: the spark-arena 20260927 image
+  has no IQ2_XXS support, so it cannot load the 2-bit experts of the modelopt MIXED_PRECISION
+  checkpoint in place. Checked by a source grep in each image on disk.
+- Sources: NVIDIA's model card Quick Start (vLLM nightly 77154ca + b12x, b12x linear and MoE backends,
+  FlashInfer, `--load-format auto`, `VLLM_USE_V2_MODEL_RUNNER=1`, ultra_v3 reasoning parser) and
+  github.com/vcruz305/Nemotron-3.5-Bolt-74B-A9B-24GB-vLLM-recipe (one Spark, util 0.55, 262k, 8 seqs).
+- Recipe rewritten to those flags on `ghcr.io/spark-arena/dgx-vllm-eugr-nightly-b12x:2026112501`
+  (pulled 2026-11-26; its vLLM has IQ2_XXS in modelopt and the b12x MoE path).
+- First boot on that image: config error, `LiLiCorrDraftModel` not supported. DFlash removed.
+- Second boot: VERIFIED. max_model_len 262144, weights 22.53 GiB, KV 36.84 GiB, engine init 1414 s
+  (mostly one-time flashinfer JIT), 17*23=391, tool call correct, c=1 36.4 tok/s. Memory guard
+  never tripped. Workload stopped afterwards. INDEX row 70.
+- Open: DFlash needs an image with both LiLiCorr and IQ2_XXS. sparkrun waited the full 30 min
+  readiness timeout after the instant config error, so watch the serve log on new images.
+
+## 2026-11-25: 1M-context verification of the remaining 1M-native models
+
+User asked to verify every unverified model that supports 1M natively; all inference on the pair
+was stopped for the window (sparkrun-ui draft workload stopped, spark-loader paused, peers told).
+Bar per model: /v1/models shows 1,048,576, a passkey at centre depth passes near 1M, engine alive
+after. HF page cache evicted on both nodes (posix_fadvise DONTNEED) before every launch.
+
+| Recipe | Result | Deepest passkey PASS | Notes |
+|---|---|---|---|
+| `nemotron-3.5-lightning-30b-a3b-nvfp4-tp1-sglang` | **VERIFIED 1M** (gb10-solo) | 1,022,658 tok, 840 s | fp8 KV pool 11.56M; recipe fixed (entrypoint, mem-fraction 0.88 -> 0.82, `--context-length`); default now 1M |
+| `deepseek-v4-flash-0731-refusal-dial-tp2` | **VERIFIED 1M** via `-o max_model_len=1048576` | 1,017,144 tok at lambda 0, 1393 s | KV pool 2.39M. At lambda 2.0: PASS to 521,621, one two-digit miss at 1,017,639. Default left at 393k |
+| `inkling-small-nvfp4-tp2-sglang` | **VERIFIED 1M only with overrides** | 1,018,515 tok, 3970 s | As shipped the KV pool is 750,845 (prompts cap at 750,839; PASS at 750,531). `gpu_memory_utilization=0.87`, `cuda_graph_bs=1 2 4 8`, `max_num_seqs=8` -> pool 1.18M; head low-water 3 GiB (0.5 above earlyoom). Kept as an override |
+| `glm-5.3-flash-exl3-abliterated-tp2` | **VERIFIED 1M** | 1,032,281 tok, 792 s | Same 14 GiB KV pin holds 1.92M tokens; default raised 850000 -> 1048576. Worker copy re-made (175.7 GB over CX7) |
+
+Not attempted, and why:
+- `glm-5.3-flash-abliterated-nvfp4kv-long-tp2` / `-nvfp4-tp2`: weights ~99 GiB/rank leave no room;
+  1M would need a ~5.9 GiB KV pin against a 3.3 GiB head low-water at 368k.
+- `laguna-s-2.1-nvfp4-tp1`: ~48 KB/token bf16 KV (12 full-attention layers) -> ~48 GiB at 1M on
+  top of 93 GiB weights; impossible on one node. A new TP2 recipe could fit (~47 GiB weights/rank)
+  but needs the weights and `vllm/vllm-openai:v0.25.1` copied to the worker. Not done.
+- `deepseek-v4-flash-0731-tp2` (stock, fp8 KV, eugr image): KV pool 360k, cannot hold 1M. The dial
+  recipe at lambda 0 is bit-exact stock and is the 1M route for these weights.
+- `deepseek-v4-flash-vision-uncensored-tp2` was already verified at 1M; its `-coder` profile is
+  262k by design; Atlas EP2 not tried. Qwen/Gemma/others are 262k or less natively.
+- `leanstral-1.5-119b-a6b-tp2`: weights are on neither node nor the NAS.
