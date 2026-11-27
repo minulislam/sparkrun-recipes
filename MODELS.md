@@ -83,7 +83,7 @@ marked **W**.
 | Model | Nodes | GiB | Recipes |
 |---|---|---|---|
 | `drowzeys/keys-GLM-5.3-Flash-NVFP4-ablit-l15-43-mtp-l45` | H | 184.3 | `glm-5.3-flash-abliterated-nvfp4-tp2` (drafter `incoai/GLM-5.3-Flash-DFlash2` head-only too) |
-| `bullerwins/GLM-5.3-Flash-exl3-4bpw-ablit` | H | 163.6 | `glm-5.3-flash-exl3-abliterated-tp2` |
+| `bullerwins/GLM-5.3-Flash-exl3-4bpw-ablit` | H W | 163.6 | `glm-5.3-flash-exl3-abliterated-tp2` (worker copy made 2026-11-25, 120/120 shards; ready for two-node) |
 | `orcarouter/DeepSeek-V4-Flash-Vision-Uncensored` | H | 156.3 | `deepseek-v4-flash-vision-uncensored-tp2`, `-coder-tp2`, `-ep2` (ep2 UNFIT) |
 | `nvidia/MiniMax-M2.7-NVFP4` | H | 130.3 | `minimax-m2.7-nvfp4-vllm-tp2` |
 | `lukealonso/MiniMax-M2.7-NVFP4` | H | 125.3 | `minimax-m2.7-nvfp4-atlas-ep2` |

@@ -6,7 +6,19 @@
 # >>>   NVFP4 KV (fp4_mx_block16, triton lane), the DSpark conv-state commit fix for multi-node, a 64K
 # >>>   draft-context cap, and TORCH_CUDA_ARCH_LIST=12.1a. Upstream measured 1,142,712 KV tokens across
 # >>>   both nodes at 1M context with the DSpark draft (~5 GB) loaded.
-# >>> UNVERIFIED on this cluster — first TP=2 boot here is the experiment. `--dry-run` first.
+# >>> (Superseded line from 09-27: "UNVERIFIED on this cluster — first TP=2 boot is the experiment".)
+# >>> LONG-CONTEXT VERIFIED 2026-11-25 on dgx-pair (pair to itself, HF page cache evicted first).
+# >>>   AS SHIPPED (mem-fraction 0.85, 12 graph sizes): /v1/models says 1048576, but the full-attention
+# >>>     KV pool is only 750,845 tokens (SWAKVPool 4.23 GB; verify graphs took 4.33 GB), so one
+# >>>     request tops out at 750,839: a 912,099-token prompt returns HTTP 400 "exceeds the maximum
+# >>>     allowed length (750839)". Passkey PASS at 10,976 / 532,162 (1191 s) / 750,531 (2236 s).
+# >>>   FULL 1M PROFILE: -o gpu_memory_utilization=0.87 -o 'cuda_graph_bs=1 2 4 8' -o max_num_seqs=8
+# >>>     moves ~2.4 GB from CUDA graphs to KV: pool 1,182,527 tokens (1.13x at 1M), graphs 2.8 GB.
+# >>>     Ready in ~7 min. Passkey PASS at 1,018,515 prompt tokens in 3970 s (prefill ~260 tok/s at
+# >>>     depth). Engine alive after (17*23 -> 391). Head MemAvailable fell to 3 GiB at the end of
+# >>>     that request (earlyoom kills at 2.49 GiB); worker 5 GiB. 0.87 is over the repo's 0.82
+# >>>     ceiling, so this stays an override, not the default: the margin is ~0.5 GiB.
+# >>>   NOT measured: decode tok/s at depth, concurrency at long context, tool calls.
 # >>> The draft model RadixArk/Inkling-Small-DSpark-Preview (1.8 GB) must be in the HF cache on the head;
 # >>>   sparkrun distributes `speculative_draft_model_path` to the worker like the main model.
 

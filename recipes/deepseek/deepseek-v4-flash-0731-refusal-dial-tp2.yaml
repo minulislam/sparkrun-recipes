@@ -23,6 +23,16 @@
 # >>>     ran out of budget while reasoning; they are not refusals. Raw:
 # >>>     benchmarks/redteam/results/<this recipe>.lambda{1.5,2.0}.refusal.*
 # >>>   NOT measured: GSM8K/MMLU at any lambda, tool calls, lambda above 2.0, prompts past 130k.
+# >>> 1M CONTEXT VERIFIED 2026-11-25 on dgx-pair with `-o max_model_len=1048576` (default stays
+# >>>   393216). /v1/models reports 1048576; ready in 500 s; KV pool 2,387,014 tokens (2.28x at 1M,
+# >>>   after evicting HF page cache on both nodes; the 1.35M figure above was measured unevicted).
+# >>>   Passkey, centre depth, temp 0, thinking off:
+# >>>     lambda 0:   PASS at 781,459 (932 s) and 1,017,144 prompt tokens (1393 s).
+# >>>     lambda 2.0: PASS at 112,999 and 521,621 (537 s); at 1,017,639 (1318 s) it answered
+# >>>                 86192626 for 86192600 — a two-digit miss, one sample.
+# >>>   Memory through the 1M runs: head MemAvailable 6-7 GiB, worker 5-6 GiB (earlyoom 2.49 GiB).
+# >>>   Engine alive after every run. Seen once after the runs, lambda 2.0 + thinking off: 17*23
+# >>>     answered 65 / 119 (wrong); at lambda 0 the same prompt gives 391. Use thinking on at 2.0.
 # >>>   Weights served are revision 7872f01; the directions were extracted against 9e165c3.
 # >>> RUNTIME ABLITERATION for DeepSeek-V4-Flash-0731. Serves the STOCK deepseek-ai weights; the
 # >>>   uncensoring is 757 KB of rank-1 refusal directions baked into the image at
